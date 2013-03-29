@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.security.ntk;
 
 import java.util.ArrayList;
@@ -39,27 +39,27 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ntk:AccessIndividual.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ntk:AccessSystemName</u>: The system described by this access record (exactly 1 required), implemented as a 
+ * <u>ntk:AccessSystemName</u>: The system described by this access record (exactly 1 required), implemented as a
  * {@link SystemName}<br />
- * <u>ntk:AccessIndividualValue</u>: The value used to describe the individual (1-to-many required), implemented as an 
+ * <u>ntk:AccessIndividualValue</u>: The value used to describe the individual (1-to-many required), implemented as an
  * {@link IndividualValue}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public final class Individual extends AbstractAccessEntity {
-	
+
 	private List<IndividualValue> _individualValues = null;
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Individual(Element element) throws InvalidDDMSException {
@@ -103,7 +103,7 @@ public final class Individual extends AbstractAccessEntity {
 			throw (e);
 		}
 	}
-			
+
 	/**
 	 * Validates the component.
 	 * 
@@ -122,7 +122,7 @@ public final class Individual extends AbstractAccessEntity {
 
 		super.validate();
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -135,7 +135,7 @@ public final class Individual extends AbstractAccessEntity {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -144,14 +144,14 @@ public final class Individual extends AbstractAccessEntity {
 		list.addAll(getIndividualValues());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof Individual))
 			return (false);
-		return (true);		
+		return (true);
 	}
 
 	/**
@@ -164,14 +164,14 @@ public final class Individual extends AbstractAccessEntity {
 		Util.requireValue("version", version);
 		return ("AccessIndividual");
 	}
-	
+
 	/**
 	 * Accessor for the list of individual values (1-many)
 	 */
 	public List<IndividualValue> getIndividualValues() {
 		return (Collections.unmodifiableList(_individualValues));
-	}	
-		
+	}
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -182,14 +182,14 @@ public final class Individual extends AbstractAccessEntity {
 	public static class Builder extends AbstractAccessEntity.Builder {
 		private static final long serialVersionUID = 7851044806424206976L;
 		private List<IndividualValue.Builder> _individualValues;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {
 			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -198,7 +198,7 @@ public final class Individual extends AbstractAccessEntity {
 			for (IndividualValue value : individual.getIndividualValues())
 				getIndividualValues().add(new IndividualValue.Builder(value));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -223,7 +223,7 @@ public final class Individual extends AbstractAccessEntity {
 				hasValueInList = hasValueInList || !builder.isEmpty();
 			return (!hasValueInList && super.isEmpty());
 		}
-		
+
 		/**
 		 * Builder accessor for the values
 		 */
@@ -233,4 +233,4 @@ public final class Individual extends AbstractAccessEntity {
 			return _individualValues;
 		}
 	}
-} 
+}

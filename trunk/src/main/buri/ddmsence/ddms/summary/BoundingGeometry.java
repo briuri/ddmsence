@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
@@ -38,8 +38,8 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:boundingGeometry.
- *
- * <p>The DDMS documentation has no Text/HTML examples for the output of this component. However, the component has no 
+ * 
+ * <p>The DDMS documentation has no Text/HTML examples for the output of this component. However, the component has no
  * additional attributes or elements besides the nested Polygon/Point components, so no additional output is needed.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
@@ -55,11 +55,11 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 
 	private List<Polygon> _polygons = null;
 	private List<Point> _points = null;
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public BoundingGeometry(Element element) throws InvalidDDMSException {
@@ -84,10 +84,10 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param polygons an ordered list of the polygons used in this geometry
 	 * @param points an ordered list of the points used in this geometry
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -112,7 +112,7 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-		
+
 	/**
 	 * Validates the component.
 	 * 
@@ -122,16 +122,16 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
-	 */	
+	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), BoundingGeometry.getName(getDDMSVersion()));
 		if (getPolygons().size() + getPoints().size() == 0) {
 			throw new InvalidDDMSException("At least 1 of Polygon or Point must be used.");
 		}
-		
+
 		super.validate();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -142,7 +142,7 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 		text.append(buildOutput(isHTML, localPrefix, getPoints()));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -152,7 +152,7 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 		list.addAll(getPolygons());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -161,7 +161,7 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 			return (false);
 		return (true);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -172,21 +172,21 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("boundingGeometry");
 	}
-	
+
 	/**
 	 * Accessor for the polygons in this geometry.
 	 */
 	public List<Polygon> getPolygons() {
-		return (Collections.unmodifiableList(_polygons)); 
+		return (Collections.unmodifiableList(_polygons));
 	}
-	
+
 	/**
 	 * Accessor for the points in this geometry.
 	 */
 	public List<Point> getPoints() {
-		return (Collections.unmodifiableList(_points)); 
+		return (Collections.unmodifiableList(_points));
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -198,12 +198,12 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 		private static final long serialVersionUID = -5734267242408462644L;
 		private List<Polygon.Builder> _polygons;
 		private List<Point.Builder> _points;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -213,7 +213,7 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 			for (Point point : geometry.getPoints())
 				getPoints().add(new Point.Builder(point));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -234,7 +234,7 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 			}
 			return (new BoundingGeometry(polygons, points));
 		}
-		
+
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
@@ -245,7 +245,7 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 			}
 			return (!hasValueInList);
 		}
-		
+
 		/**
 		 * Convenience method to get every child Builder in this Builder.
 		 * 
@@ -257,23 +257,23 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 			list.addAll(getPoints());
 			return (list);
 		}
-		
+
 		/**
 		 * Builder accessor for the polygons in this geometry.
 		 */
 		public List<Polygon.Builder> getPolygons() {
 			if (_polygons == null)
-				_polygons = new LazyList(Polygon.Builder.class);			
+				_polygons = new LazyList(Polygon.Builder.class);
 			return _polygons;
 		}
-		
+
 		/**
 		 * Builder accessor for the points in this geometry.
 		 */
 		public List<Point.Builder> getPoints() {
 			if (_points == null)
-				_points = new LazyList(Point.Builder.class);					
+				_points = new LazyList(Point.Builder.class);
 			return _points;
 		}
-	}	
-} 
+	}
+}

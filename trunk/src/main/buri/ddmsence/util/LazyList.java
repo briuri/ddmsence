@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.util;
 
 import java.io.IOException;
@@ -39,11 +39,11 @@ import java.util.ListIterator;
  * components are added / removed at the web page level. </p>
  * 
  * <p> This class is similar in intent to the Apache commons-collections version, but my implementation differs in the
- * following ways: </p> 
- * <ul> 
- * <li>Simplified layers of abstraction.</li> 
- * <li>Eliminated overhead of Factory boilerplate to instantiate new items. Classes can just be instantiated through 
- * the basic no-arg constructor.</li> 
+ * following ways: </p>
+ * <ul>
+ * <li>Simplified layers of abstraction.</li>
+ * <li>Eliminated overhead of Factory boilerplate to instantiate new items. Classes can just be instantiated through
+ * the basic no-arg constructor.</li>
  * <li>Interim positions are also instantiated when an index beyond the size of the list is requested.</li>
  * </ul>
  * 
@@ -54,40 +54,40 @@ public class LazyList implements List, Serializable {
 	private static final long serialVersionUID = 1241524905390180551L;
 	private List<?> _list;
 	private Class _class;
-    
-    /**
-     * Base constructor for a lazy list.
-     * 
-     * @param instantiatingClass the class that will be instantiated when get() returns null
-     * @throws IllegalArgumentException if either the list or class are null
-     */
-    public LazyList(Class instantiatingClass) {
-    	this(new ArrayList(), instantiatingClass);
-    }
-    
-    /**
-     * Complete constructor for a lazy list.
-     * 
-     * @param list the underlying list that will be wrapped
-     * @param instantiatingClass the class that will be instantiated when get() returns null
-     * @throws IllegalArgumentException if either the list or class are null
-     */
-    public LazyList(List<?> list, Class instantiatingClass) {
-    	Util.requireValue("instantiatingClass", instantiatingClass);
-    	_list = (list == null) ? new ArrayList() : new ArrayList(list);
-    	_class = instantiatingClass;
-    }
-    
+
+	/**
+	 * Base constructor for a lazy list.
+	 * 
+	 * @param instantiatingClass the class that will be instantiated when get() returns null
+	 * @throws IllegalArgumentException if either the list or class are null
+	 */
+	public LazyList(Class instantiatingClass) {
+		this(new ArrayList(), instantiatingClass);
+	}
+
+	/**
+	 * Complete constructor for a lazy list.
+	 * 
+	 * @param list the underlying list that will be wrapped
+	 * @param instantiatingClass the class that will be instantiated when get() returns null
+	 * @throws IllegalArgumentException if either the list or class are null
+	 */
+	public LazyList(List<?> list, Class instantiatingClass) {
+		Util.requireValue("instantiatingClass", instantiatingClass);
+		_list = (list == null) ? new ArrayList() : new ArrayList(list);
+		_class = instantiatingClass;
+	}
+
 	/**
 	 * Write the list out using a custom routine.
 	 * 
 	 * @param out the output stream
 	 * @throws IOException
 	 */
-    private void writeObject(ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
-        out.writeObject(_list);
-    }
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+		out.writeObject(_list);
+	}
 
 	/**
 	 * Read the list in using a custom routine.
@@ -96,35 +96,35 @@ public class LazyList implements List, Serializable {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        _list = (List<?>) in.readObject();
-    }
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+		_list = (List<?>) in.readObject();
+	}
 
-    /**
-     * @see Object#equals(Object)
-     */
-    public boolean equals(Object object) {
-        if (object == this) {
-            return true;
-        }
-        return getList().equals(object);
-    }
+	/**
+	 * @see Object#equals(Object)
+	 */
+	public boolean equals(Object object) {
+		if (object == this) {
+			return true;
+		}
+		return getList().equals(object);
+	}
 
-    /**
-     * @see Object#hashCode()
-     */
-    public int hashCode() {
-        return getList().hashCode();
-    }
+	/**
+	 * @see Object#hashCode()
+	 */
+	public int hashCode() {
+		return getList().hashCode();
+	}
 
-    /**
-     * @see Object#toString()
-     */
-    public String toString() {
-        return getList().toString();
-    }
-    
+	/**
+	 * @see Object#toString()
+	 */
+	public String toString() {
+		return getList().toString();
+	}
+
 	/**
 	 * Intercepts the get() method to create new items if get() might return null. The type of the item returned is
 	 * determined by the instantiatingClass of the LazyList, and will be instantiated with the no-args constructor via
@@ -153,24 +153,24 @@ public class LazyList implements List, Serializable {
 				+ e.getMessage());
 		}
 	}
-    
+
 	/**
 	 * Intercepts the subList method to maintain a LazyList on the returned sublist.
 	 * 
 	 * @see java.util.List#subList(int, int)
 	 */
 	public List<?> subList(int fromIndex, int toIndex) {
-        List<?> sub = getList().subList(fromIndex, toIndex);
-        return new LazyList(sub, getInstantiatingClass());
+		List<?> sub = getList().subList(fromIndex, toIndex);
+		return new LazyList(sub, getInstantiatingClass());
 	}
-	
+
 	/**
 	 * Accessor for the wrapped list
 	 */
 	private List getList() {
 		return _list;
 	}
-	
+
 	/**
 	 * Accessor for the class that will be instantiated lazily
 	 */
@@ -273,7 +273,7 @@ public class LazyList implements List, Serializable {
 	 * @see java.util.List#clear()
 	 */
 	public void clear() {
-		getList().clear();		
+		getList().clear();
 	}
 
 	/**
@@ -287,7 +287,7 @@ public class LazyList implements List, Serializable {
 	 * @see java.util.List#add(int, java.lang.Object)
 	 */
 	public void add(int index, Object element) {
-		getList().add(index, element);		
+		getList().add(index, element);
 	}
 
 	/**

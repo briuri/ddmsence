@@ -16,11 +16,10 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms;
 
 import java.net.URISyntaxException;
-
 
 /**
  * Exception class for attempts to generate invalid DDMS components.
@@ -37,11 +36,11 @@ import java.net.URISyntaxException;
  * @since 0.9.b
  */
 public class InvalidDDMSException extends Exception {
-	
+
 	private ValidationMessage _message = null;
-	
+
 	private static final long serialVersionUID = -183915550465140589L;
-	
+
 	/**
 	 * @see Exception#Exception(String)
 	 */
@@ -49,7 +48,7 @@ public class InvalidDDMSException extends Exception {
 		super(message);
 		_message = ValidationMessage.newError(getMessage(), null);
 	}
-	
+
 	/**
 	 * @see Exception#Exception(Throwable)
 	 */
@@ -57,31 +56,31 @@ public class InvalidDDMSException extends Exception {
 		super(nested);
 		_message = ValidationMessage.newError(getMessage(), null);
 	}
-	
+
 	/**
 	 * Handles nested URISyntaxExceptions
 	 * 
-	 * @param e	the exception
+	 * @param e the exception
 	 */
 	public InvalidDDMSException(URISyntaxException e) {
-		super("Invalid URI (" + e.getMessage() +")", e);
+		super("Invalid URI (" + e.getMessage() + ")", e);
 		_message = ValidationMessage.newError(getMessage(), null);
-	}	
-	
+	}
+
 	/**
 	 * Accessor for the underlying ValidationMessage
 	 */
 	private ValidationMessage getValidationMessage() {
 		return _message;
-	}	
-	
+	}
+
 	/**
 	 * Accessor for the locator
 	 */
 	public String getLocator() {
 		return getValidationMessage().getLocator();
-	}	
-		
+	}
+
 	/**
 	 * Prefixes some string to the beginning of the existing locator.
 	 */

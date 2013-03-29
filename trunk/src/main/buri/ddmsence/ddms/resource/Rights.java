@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import java.io.Serializable;
@@ -36,7 +36,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:intellectualProperty</u>: has an intellectual property rights owner (optional, default=false)<br />
  * <u>ddms:copyright</u>: has a copyright owner (optional, default=false)<br />
  * </td></tr></table>
- *  
+ * 
  * @author Brian Uri!
  * @since 0.9.b
  */
@@ -45,7 +45,7 @@ public final class Rights extends AbstractBaseComponent {
 	private static final String PRIVACY_ACT_NAME = "privacyAct";
 	private static final String INTELLECTUAL_PROPERY_NAME = "intellectualProperty";
 	private static final String COPYRIGHT_NAME = "copyright";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 * 
@@ -72,7 +72,7 @@ public final class Rights extends AbstractBaseComponent {
 		setXOMElement(element, true);
 		// This cannot actually throw an exception, so locator information is not inserted in a catch statement.
 	}
-		
+
 	/**
 	 * Validates the component.
 	 * 
@@ -87,7 +87,7 @@ public final class Rights extends AbstractBaseComponent {
 		Util.requireDDMSQName(getXOMElement(), Rights.getName(getDDMSVersion()));
 		super.validate();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -95,11 +95,12 @@ public final class Rights extends AbstractBaseComponent {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, localPrefix + PRIVACY_ACT_NAME, String.valueOf(getPrivacyAct())));
-		text.append(buildOutput(isHTML, localPrefix + INTELLECTUAL_PROPERY_NAME, String.valueOf(getIntellectualProperty())));
+		text.append(buildOutput(isHTML, localPrefix + INTELLECTUAL_PROPERY_NAME,
+			String.valueOf(getIntellectualProperty())));
 		text.append(buildOutput(isHTML, localPrefix + COPYRIGHT_NAME, String.valueOf(getCopyright())));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -111,7 +112,7 @@ public final class Rights extends AbstractBaseComponent {
 			&& getIntellectualProperty() == test.getIntellectualProperty() 
 			&& getCopyright() == test.getCopyright());
 	}
-		
+
 	/**
 	 * @see Object#hashCode()
 	 */
@@ -122,7 +123,7 @@ public final class Rights extends AbstractBaseComponent {
 		result = 7 * result + Util.booleanHashCode(getCopyright());
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -133,26 +134,26 @@ public final class Rights extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("rights");
 	}
-	
+
 	/**
 	 * Accessor for the privacyAct attribute. The default value is false.
 	 */
 	public boolean getPrivacyAct() {
-		return (Boolean.valueOf(getAttributeValue(PRIVACY_ACT_NAME))); 
+		return (Boolean.valueOf(getAttributeValue(PRIVACY_ACT_NAME)));
 	}
-	
+
 	/**
 	 * Accessor for the intellectualProperty attribute. The default value is false.
 	 */
 	public boolean getIntellectualProperty() {
-		return (Boolean.valueOf(getAttributeValue(INTELLECTUAL_PROPERY_NAME))); 
+		return (Boolean.valueOf(getAttributeValue(INTELLECTUAL_PROPERY_NAME)));
 	}
-	
+
 	/**
 	 * Accessor for the copyright attribute. The default value is false.
 	 */
 	public boolean getCopyright() {
-		return (Boolean.valueOf(getAttributeValue(COPYRIGHT_NAME))); 
+		return (Boolean.valueOf(getAttributeValue(COPYRIGHT_NAME)));
 	}
 
 	/**
@@ -167,12 +168,12 @@ public final class Rights extends AbstractBaseComponent {
 		private Boolean _privacyAct = null;
 		private Boolean _intellectualProperty = null;
 		private Boolean _copyright = null;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -196,54 +197,54 @@ public final class Rights extends AbstractBaseComponent {
 			boolean copyright = (getCopyright() == null) ? false : getCopyright().booleanValue();
 			return (new Rights(privacyAct, intellectualProperty, copyright));
 		}
-		
+
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
 			return (getPrivacyAct() == null && getIntellectualProperty() == null && getCopyright() == null);
 		}
-		
+
 		/**
 		 * Builder accessor for the privacyAct attribute.
 		 */
 		public Boolean getPrivacyAct() {
 			return _privacyAct;
 		}
-		
+
 		/**
 		 * Builder accessor for the privacyAct attribute.
 		 */
 		public void setPrivacyAct(Boolean privacyAct) {
 			_privacyAct = privacyAct;
 		}
-		
+
 		/**
 		 * Builder accessor for the intellectualProperty attribute.
 		 */
 		public Boolean getIntellectualProperty() {
 			return _intellectualProperty;
 		}
-		
+
 		/**
 		 * Builder accessor for the intellectualProperty attribute.
 		 */
 		public void setIntellectualProperty(Boolean intellectualProperty) {
 			_intellectualProperty = intellectualProperty;
 		}
-		
+
 		/**
 		 * Builder accessor for the copyright attribute.
 		 */
 		public Boolean getCopyright() {
 			return _copyright;
 		}
-		
+
 		/**
 		 * Builder accessor for the copyright attribute.
 		 */
 		public void setCopyright(Boolean copyright) {
 			_copyright = copyright;
-		}		
+		}
 	}
-} 
+}

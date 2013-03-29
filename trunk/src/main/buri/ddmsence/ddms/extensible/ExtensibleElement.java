@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.extensible;
 
 import java.io.Serializable;
@@ -42,7 +42,8 @@ import buri.ddmsence.util.Util;
  * namespace besides the DDMS namespace. In DDMS 2.0, only one of these is allowed.</p>
  * 
  * <p>No validation or processing of any kind is performed by DDMSence on extensible attributes, other than the base
- * validation used when loading attributes from an XML file. This class merely exposes a <code>getXOMElementCopy()</code> 
+ * validation used when loading attributes from an XML file. This class merely exposes a
+ * <code>getXOMElementCopy()</code>
  * method which returns a XOM Element that can be manipulated in business-specific ways.</p>
  * 
  * <p>XOM elements can be created as follows:</p>
@@ -66,17 +67,17 @@ import buri.ddmsence.util.Util;
  * @since 1.1.0
  */
 public final class ExtensibleElement extends AbstractBaseComponent {
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ExtensibleElement(Element element) throws InvalidDDMSException {
 		super(element);
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
@@ -99,7 +100,7 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		return ("");
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -109,7 +110,7 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 		ExtensibleElement test = (ExtensibleElement) obj;
 		return (getXOMElement().toXML().equals(test.getXOMElement().toXML()));
 	}
-	
+
 	/**
 	 * @see Object#hashCode()
 	 */
@@ -118,7 +119,7 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 		result = 7 * result + getXOMElement().toXML().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -134,14 +135,14 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(ExtensibleElement element) {
 			setXml(element.toXML());
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -165,7 +166,7 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 		public boolean isEmpty() {
 			return (Util.isEmpty(getXml()));
 		}
-		
+
 		/**
 		 * Builder accessor for the XML string representing the element.
 		 */
@@ -180,4 +181,4 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 			_xml = xml;
 		}
 	}
-} 
+}

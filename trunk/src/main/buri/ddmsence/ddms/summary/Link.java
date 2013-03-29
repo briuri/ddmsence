@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
@@ -46,8 +46,8 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>{@link XLinkAttributes}</u>: The xlink:type attribute is required and must have a fixed
  * value of "locator". The xlink:href attribute is also required.<br />
- * <u>{@link SecurityAttributes}</u>: Only allowed when used in the context of a {@link RevisionRecall} 
- * (starting in DDMS 4.0.1). The classification and ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: Only allowed when used in the context of a {@link RevisionRecall} (starting in
+ * DDMS 4.0.1). The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -57,13 +57,13 @@ public final class Link extends AbstractBaseComponent {
 
 	private XLinkAttributes _xlinkAttributes = null;
 	private SecurityAttributes _securityAttributes = null;
-		
+
 	private static final String FIXED_TYPE = "locator";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Link(Element element) throws InvalidDDMSException {
@@ -77,10 +77,10 @@ public final class Link extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param xlinkAttributes the xlink attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
@@ -90,13 +90,12 @@ public final class Link extends AbstractBaseComponent {
 
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param xlinkAttributes the xlink attributes
 	 * @param securityAttributes attributes, which are only allowed on links within a ddms:revisionRecall
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Link(XLinkAttributes xlinkAttributes, SecurityAttributes securityAttributes)
-		throws InvalidDDMSException {
+	public Link(XLinkAttributes xlinkAttributes, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(Link.getName(DDMSVersion.getCurrentVersion()), null);
 			_xlinkAttributes = XLinkAttributes.getNonNullInstance(xlinkAttributes);
@@ -110,7 +109,7 @@ public final class Link extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
@@ -131,10 +130,10 @@ public final class Link extends AbstractBaseComponent {
 
 		if (!getXLinkAttributes().getType().equals(FIXED_TYPE))
 			throw new InvalidDDMSException("The type attribute must have a fixed value of \"" + FIXED_TYPE + "\".");
-				
+
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -147,7 +146,7 @@ public final class Link extends AbstractBaseComponent {
 			addWarnings(getXLinkAttributes().getValidationWarnings(), true);
 		super.validateWarnings();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -158,7 +157,7 @@ public final class Link extends AbstractBaseComponent {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -177,7 +176,7 @@ public final class Link extends AbstractBaseComponent {
 		result = 7 * result + getXLinkAttributes().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -188,21 +187,21 @@ public final class Link extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("link");
 	}
-		
+
 	/**
 	 * Accessor for the XLink Attributes. Will always be non-null, even if it has no values set.
 	 */
 	public XLinkAttributes getXLinkAttributes() {
 		return (_xlinkAttributes);
 	}
-	
+
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_securityAttributes);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -214,12 +213,12 @@ public final class Link extends AbstractBaseComponent {
 		private static final long serialVersionUID = 4325950371570699184L;
 		private XLinkAttributes.Builder _xlinkAttributes;
 		private SecurityAttributes.Builder _securityAttributes;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -227,7 +226,7 @@ public final class Link extends AbstractBaseComponent {
 			setXLinkAttributes(new XLinkAttributes.Builder(link.getXLinkAttributes()));
 			setSecurityAttributes(new SecurityAttributes.Builder(link.getSecurityAttributes()));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -239,9 +238,9 @@ public final class Link extends AbstractBaseComponent {
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
-			return (getXLinkAttributes().isEmpty() && getSecurityAttributes().isEmpty());				
+			return (getXLinkAttributes().isEmpty() && getSecurityAttributes().isEmpty());
 		}
-		
+
 		/**
 		 * Builder accessor for the XLink Attributes
 		 */
@@ -250,14 +249,14 @@ public final class Link extends AbstractBaseComponent {
 				_xlinkAttributes = new XLinkAttributes.Builder();
 			return _xlinkAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the XLink Attributes
 		 */
 		public void setXLinkAttributes(XLinkAttributes.Builder xlinkAttributes) {
 			_xlinkAttributes = xlinkAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
@@ -266,13 +265,13 @@ public final class Link extends AbstractBaseComponent {
 				_securityAttributes = new SecurityAttributes.Builder();
 			return _securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
 		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
 			_securityAttributes = securityAttributes;
 		}
-		
+
 	}
-} 
+}

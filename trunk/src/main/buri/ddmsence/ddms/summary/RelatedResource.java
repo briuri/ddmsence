@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary;
 
 import java.util.ArrayList;
@@ -47,14 +47,14 @@ import buri.ddmsence.util.Util;
  * <p>The element-based constructor for this class can automatically handle these cases, and will automatically
  * mediate the Text/HTML/XML output:</p>
  * <ul>
- * 	<li>A pre-DDMS 4.0.1 ddms:RelatedResources element containing 1 ddms:relatedResource.</li>
- *  <li>A post-DDMS 4.0.1 ddms:relatedResource element.</li>
+ * <li>A pre-DDMS 4.0.1 ddms:RelatedResources element containing 1 ddms:relatedResource.</li>
+ * <li>A post-DDMS 4.0.1 ddms:relatedResource element.</li>
  * </ul>
  * <p>If you have a case where a pre-DDMS 4.0.1 ddms:RelatedResources element contained 5 ddms:relatedResource
  * elements, the Resource class will automatically mediate it to create 5 RelatedResource instances. If an
  * old-fashioned parent element containing multiple children is loaded in the element-based constructor,
  * only the first child will be processed, and a warning will be provided.</p>
- *  
+ * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
@@ -87,33 +87,33 @@ public final class RelatedResource extends AbstractQualifierValue {
 
 	private List<Link> _links = null;
 	private SecurityAttributes _securityAttributes = null;
-	
+
 	/** The value for an inbound direction. */
 	public static final String INBOUND_DIRECTION = "inbound";
-	
+
 	/** The value for an outbound direction. */
 	public static final String OUTBOUND_DIRECTION = "outbound";
-	
+
 	/** The value for an bidirectional direction. */
 	public static final String BIDRECTIONAL_DIRECTION = "bidirectional";
 
 	/** The pre-DDMS 4.0.1 name of the nested resource elements */
 	public static final String OLD_INNER_NAME = "RelatedResource";
-	
+
 	private static Set<String> RELATIONSHIP_DIRECTIONS = new HashSet<String>();
 	static {
 		RELATIONSHIP_DIRECTIONS.add(INBOUND_DIRECTION);
 		RELATIONSHIP_DIRECTIONS.add(OUTBOUND_DIRECTION);
 		RELATIONSHIP_DIRECTIONS.add(BIDRECTIONAL_DIRECTION);
 	}
-	
+
 	private static final String RELATIONSHIP_NAME = "relationship";
 	private static final String DIRECTION_NAME = "direction";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public RelatedResource(Element element) throws InvalidDDMSException {
@@ -136,7 +136,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
@@ -145,7 +145,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 * @param direction the relationship direction (optional)
 	 * @param qualifier the value of the qualifier attribute
 	 * @param value the value of the value attribute
-	 * @param securityAttributes any security attributes (optional) 
+	 * @param securityAttributes any security attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public RelatedResource(List<Link> links, String relationship, String direction, String qualifier, String value,
@@ -181,7 +181,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	/**
 	 * Asserts that a direction is valid.
 	 * 
-	 * @param direction	the string to check
+	 * @param direction the string to check
 	 * @throws InvalidDDMSException if the value is null, empty or invalid.
 	 */
 	public static void validateRelationshipDirection(String direction) throws InvalidDDMSException {
@@ -189,7 +189,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 		if (!RELATIONSHIP_DIRECTIONS.contains(direction))
 			throw new InvalidDDMSException("The direction attribute must be one of " + RELATIONSHIP_DIRECTIONS);
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
@@ -207,7 +207,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException  if any required information is missing or malformed
+	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), RelatedResource.getName(getDDMSVersion()));
@@ -224,10 +224,10 @@ public final class RelatedResource extends AbstractQualifierValue {
 			if (!link.getSecurityAttributes().isEmpty())
 				throw new InvalidDDMSException("Security attributes cannot be applied to links in a related resource.");
 		}
-		
+
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -243,10 +243,10 @@ public final class RelatedResource extends AbstractQualifierValue {
 					+ "To ensure consistency between versions of DDMS, each ddms:RelatedResources element "
 					+ "should contain only 1 ddms:RelatedResource. DDMSence will only process the first child.");
 		}
-		
+
 		super.validateWarnings();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -263,7 +263,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -272,7 +272,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 		list.addAll(getLinks());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -293,7 +293,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 		result = 7 * result + getDirection().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -304,7 +304,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 		Util.requireValue("version", version);
 		return (version.isAtLeast("4.0.1") ? "relatedResource" : "relatedResources");
 	}
-	
+
 	/**
 	 * Accessor for the element which contains the links, qualifier and value. Before DDMS 4.0.1,
 	 * this is a wrapper element called ddms:RelatedResource. Starting in DDMS 4.0.1, it is the ddms:relatedResource
@@ -313,7 +313,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	private Element getInnerElement() {
 		return (getDDMSVersion().isAtLeast("4.0.1") ? getXOMElement() : getChild(OLD_INNER_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the links (1 to many).
 	 * 
@@ -322,21 +322,21 @@ public final class RelatedResource extends AbstractQualifierValue {
 	public List<Link> getLinks() {
 		return (Collections.unmodifiableList(_links));
 	}
-	
+
 	/**
 	 * Accessor for the relationship attribute
 	 */
 	public String getRelationship() {
 		return (getAttributeValue(RELATIONSHIP_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the direction attribute (may be empty)
 	 */
 	public String getDirection() {
 		return (getAttributeValue(DIRECTION_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the value of the qualifier attribute
 	 */
@@ -345,7 +345,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 		String attrValue = innerElement.getAttributeValue(getQualifierName(), getNamespace());
 		return (Util.getNonNullString(attrValue));
 	}
-	
+
 	/**
 	 * Accessor for the value of the value attribute
 	 */
@@ -354,14 +354,14 @@ public final class RelatedResource extends AbstractQualifierValue {
 		String attrValue = innerElement.getAttributeValue(getValueName(), getNamespace());
 		return (Util.getNonNullString(attrValue));
 	}
-	
+
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_securityAttributes);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -375,14 +375,14 @@ public final class RelatedResource extends AbstractQualifierValue {
 		private String _direction;
 		private List<Link.Builder> _links;
 		private SecurityAttributes.Builder _securityAttributes;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {
 			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -395,7 +395,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 			}
 			setSecurityAttributes(new SecurityAttributes.Builder(resource.getSecurityAttributes()));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -411,7 +411,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 			return (new RelatedResource(links, getRelationship(), getDirection(), getQualifier(), getValue(),
 				getSecurityAttributes().commit()));
 		}
-		
+
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
@@ -425,7 +425,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 				&& Util.isEmpty(getDirection())
 				&& getSecurityAttributes().isEmpty());
 		}
-		
+
 		/**
 		 * Builder accessor for the links
 		 */
@@ -434,35 +434,35 @@ public final class RelatedResource extends AbstractQualifierValue {
 				_links = new LazyList(Link.Builder.class);
 			return _links;
 		}
-		
+
 		/**
 		 * Builder accessor for the relationship attribute
 		 */
 		public String getRelationship() {
 			return _relationship;
 		}
-		
+
 		/**
 		 * Builder accessor for the relationship attribute
 		 */
 		public void setRelationship(String relationship) {
 			_relationship = relationship;
 		}
-		
+
 		/**
 		 * Builder accessor for the direction attribute
 		 */
 		public String getDirection() {
 			return _direction;
 		}
-		
+
 		/**
 		 * Builder accessor for the direction attribute
 		 */
 		public void setDirection(String direction) {
 			_direction = direction;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
@@ -471,7 +471,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 				_securityAttributes = new SecurityAttributes.Builder();
 			return _securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
@@ -479,4 +479,4 @@ public final class RelatedResource extends AbstractQualifierValue {
 			_securityAttributes = securityAttributes;
 		}
 	}
-} 
+}

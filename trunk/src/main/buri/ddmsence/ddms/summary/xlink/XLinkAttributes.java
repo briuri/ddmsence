@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary.xlink;
 
 import java.io.Serializable;
@@ -39,8 +39,8 @@ import buri.ddmsence.util.Util;
  * Attribute group for the XLINK attributes.
  * 
  * <p>
- * This class only models the subset of attributes and values that are employed by the DDMS specification. 
- * Determinations about whether an attribute is optional or required depend on the decorated class 
+ * This class only models the subset of attributes and values that are employed by the DDMS specification.
+ * Determinations about whether an attribute is optional or required depend on the decorated class
  * ({@link Link}, {@link RevisionRecall}, or {@link TaskID}).
  * </p>
  * 
@@ -79,12 +79,12 @@ import buri.ddmsence.util.Util;
  * @since 2.0.0
  */
 public final class XLinkAttributes extends AbstractAttributeGroup {
-	
+
 	private String _type = null;
 	private String _href = null;
 	private String _role = null;
-	private String _title = null;	
-	private String _label = null;	
+	private String _title = null;
+	private String _label = null;
 	private String _arcrole = null;
 	private String _show = null;
 	private String _actuate = null;
@@ -97,11 +97,11 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	private static final String ARC_ROLE_NAME = "arcrole";
 	private static final String SHOW_NAME = "show";
 	private static final String ACTUATE_NAME = "actuate";
-	
+
 	private static final String TYPE_LOCATOR = "locator";
 	private static final String TYPE_SIMPLE = "simple";
 	private static final String TYPE_RESOURCE = "resource";
-	
+
 	private static Set<String> TYPE_TYPES = new HashSet<String>();
 	static {
 		TYPE_TYPES.add(TYPE_LOCATOR);
@@ -114,9 +114,9 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 		SHOW_TYPES.add("replace");
 		SHOW_TYPES.add("embed");
 		SHOW_TYPES.add("other");
-		SHOW_TYPES.add("none");		
+		SHOW_TYPES.add("none");
 	}
-	
+
 	private static Set<String> ACTUATE_TYPES = new HashSet<String>();
 	static {
 		ACTUATE_TYPES.add("onLoad");
@@ -124,7 +124,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 		ACTUATE_TYPES.add("other");
 		ACTUATE_TYPES.add("none");
 	}
-	
+
 	/**
 	 * Returns a non-null instance of XLink attributes. If the instance passed in is not null, it will be returned.
 	 * 
@@ -135,14 +135,14 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	public static XLinkAttributes getNonNullInstance(XLinkAttributes xlinkAttributes) throws InvalidDDMSException {
 		return (xlinkAttributes == null ? new XLinkAttributes() : xlinkAttributes);
 	}
-	
+
 	/**
 	 * Base constructor
 	 * 
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public XLinkAttributes(Element element) throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getVersionForNamespace(element.getNamespaceURI()); 
+		DDMSVersion version = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
 		setNamespace(version.getXlinkNamespace());
 		_type = element.getAttributeValue(TYPE_NAME, getNamespace());
 		_href = element.getAttributeValue(HREF_NAME, getNamespace());
@@ -164,11 +164,11 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 		setNamespace(DDMSVersion.getCurrentVersion().getXlinkNamespace());
 		validate(DDMSVersion.getCurrentVersion());
 	}
-	
+
 	/**
 	 * Constructor which builds from raw data for a resource link.
 	 * 
-	 * @param role	the role attribute (optional)
+	 * @param role the role attribute (optional)
 	 * @param title the link title (optional)
 	 * @param label the name of the link (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -200,12 +200,12 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 		_label = label;
 		validate(DDMSVersion.getCurrentVersion());
 	}
-	
+
 	/**
 	 * Constructor which builds from raw data for a simple link.
 	 * 
-	 * @param href	the link href (optional)
-	 * @param role	the role attribute (optional)
+	 * @param href the link href (optional)
+	 * @param role the role attribute (optional)
 	 * @param title the link title (optional)
 	 * @param arcrole the arcrole (optional)
 	 * @param show the show token (optional)
@@ -224,7 +224,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 		_actuate = actuate;
 		validate(DDMSVersion.getCurrentVersion());
 	}
-	
+
 	/**
 	 * Convenience method to add these attributes onto an existing XOM Element
 	 * 
@@ -236,7 +236,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 		validateCompatibleVersion(elementVersion);
 		String xlinkNamespace = elementVersion.getXlinkNamespace();
 		String xlinkPrefix = PropertyReader.getPrefix("xlink");
-		
+
 		Util.addAttribute(element, xlinkPrefix, TYPE_NAME, xlinkNamespace, getType());
 		Util.addAttribute(element, xlinkPrefix, HREF_NAME, xlinkNamespace, getHref());
 		Util.addAttribute(element, xlinkPrefix, ROLE_NAME, xlinkNamespace, getRole());
@@ -246,7 +246,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 		Util.addAttribute(element, xlinkPrefix, SHOW_NAME, xlinkNamespace, getShow());
 		Util.addAttribute(element, xlinkPrefix, ACTUATE_NAME, xlinkNamespace, getActuate());
 	}
-	 
+
 	/**
 	 * Compares the DDMS version of these attributes to another DDMS version
 	 * 
@@ -256,7 +256,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	protected void validateCompatibleVersion(DDMSVersion newParentVersion) throws InvalidDDMSException {
 		// No test yet, because every version of DDMS uses the same version of XLink.
 	}
-	
+
 	/**
 	 * Validates the attribute group.
 	 * 
@@ -272,7 +272,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 * </td></tr></table>
 	 * 
 	 * @param version the DDMS version to validate against. This cannot be stored in the attribute group because some
-	 * DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).
+	 *        DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate(DDMSVersion version) throws InvalidDDMSException {
@@ -291,15 +291,15 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 		if (!Util.isEmpty(getShow()) && !SHOW_TYPES.contains(getShow()))
 			throw new InvalidDDMSException("The show attribute must be one of " + SHOW_TYPES);
 		if (!Util.isEmpty(getActuate()) && !ACTUATE_TYPES.contains(getActuate()))
-			throw new InvalidDDMSException("The actuate attribute must be one of " + ACTUATE_TYPES);		
+			throw new InvalidDDMSException("The actuate attribute must be one of " + ACTUATE_TYPES);
 		super.validate(version);
 	}
-	
+
 	/**
 	 * @see AbstractAttributeGroup#getOutput(boolean, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix) {
-		String localPrefix = Util.getNonNullString(prefix);		
+		String localPrefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer();
 		text.append(Resource.buildOutput(isHTML, localPrefix + TYPE_NAME, getType()));
 		text.append(Resource.buildOutput(isHTML, localPrefix + HREF_NAME, getHref()));
@@ -311,7 +311,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 		text.append(Resource.buildOutput(isHTML, localPrefix + ACTUATE_NAME, getActuate()));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -333,7 +333,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 * @see Object#hashCode()
 	 */
 	public int hashCode() {
-		int result = 0; 
+		int result = 0;
 		result = 7 * result + getType().hashCode();
 		result = 7 * result + getHref().hashCode();
 		result = 7 * result + getRole().hashCode();
@@ -344,7 +344,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 		result = 7 * result + getActuate().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the type
 	 */
@@ -379,28 +379,28 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	public String getLabel() {
 		return (Util.getNonNullString(_label));
 	}
-	
+
 	/**
 	 * Accessor for the arcrole
 	 */
 	public String getArcrole() {
 		return (Util.getNonNullString(_arcrole));
 	}
-	
+
 	/**
 	 * Accessor for the show
 	 */
 	public String getShow() {
 		return (Util.getNonNullString(_show));
 	}
-	
+
 	/**
 	 * Accessor for the actuate
 	 */
 	public String getActuate() {
 		return (Util.getNonNullString(_actuate));
 	}
-	
+
 	/**
 	 * Builder for these attributes.
 	 * 
@@ -422,12 +422,12 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 		private String _arcrole;
 		private String _show;
 		private String _actuate;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -441,7 +441,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 			setShow(attributes.getShow());
 			setActuate(attributes.getActuate());
 		}
-		
+
 		/**
 		 * Finalizes the data gathered for this builder instance. Will always return an empty instance instead of a null
 		 * one.
@@ -457,7 +457,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 				return (new XLinkAttributes(getRole(), getTitle(), getLabel()));
 			return (new XLinkAttributes());
 		}
-		
+
 		/**
 		 * Checks if any values have been provided for this Builder.
 		 * 
@@ -473,7 +473,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 				&& Util.isEmpty(getShow())
 				&& Util.isEmpty(getActuate()));				
 		}
-		
+
 		/**
 		 * Builder accessor for the type
 		 */

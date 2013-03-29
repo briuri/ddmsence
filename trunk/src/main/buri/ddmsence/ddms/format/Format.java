@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.format;
 
 import java.io.Serializable;
@@ -37,7 +37,7 @@ import buri.ddmsence.util.Util;
  * 
  * <p>
  * Before DDMS 4.0.1, a format element contains a locally defined Media construct.
- * This Media construct is a container for the mimeType,extent, and medium of a resource. 
+ * This Media construct is a container for the mimeType,extent, and medium of a resource.
  * It exists only inside of a ddms:format parent, so it is not implemented as a Java
  * object. Starting in DDMS 4.0.1, the Media wrapper has been removed.
  * </p>
@@ -64,19 +64,19 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class Format extends AbstractBaseComponent {
-	
+
 	private String _mimeType = null;
 	private Extent _extent = null;
 	private String _medium = null;
-	
+
 	private static final String MEDIA_NAME = "Media";
 	private static final String MIME_TYPE_NAME = "mimeType";
 	private static final String MEDIUM_NAME = "medium";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Format(Element element) throws InvalidDDMSException {
@@ -102,10 +102,10 @@ public final class Format extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param mimeType the mimeType element (required)
 	 * @param extent the extent element (may be null)
 	 * @param medium the medium element (may be null)
@@ -114,8 +114,8 @@ public final class Format extends AbstractBaseComponent {
 	public Format(String mimeType, Extent extent, String medium) throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(Format.getName(DDMSVersion.getCurrentVersion()), null);
-			Element mediaElement = DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? element : Util.buildDDMSElement(
-				MEDIA_NAME, null);
+			Element mediaElement = DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? element
+				: Util.buildDDMSElement(MEDIA_NAME, null);
 			Util.addDDMSChildElement(mediaElement, MIME_TYPE_NAME, mimeType);
 			if (extent != null)
 				mediaElement.appendChild(extent.getXOMElementCopy());
@@ -134,7 +134,7 @@ public final class Format extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-			
+
 	/**
 	 * Validates the component.
 	 * 
@@ -158,7 +158,7 @@ public final class Format extends AbstractBaseComponent {
 
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -173,7 +173,7 @@ public final class Format extends AbstractBaseComponent {
 			addWarning("A ddms:medium element was found with no value.");
 		super.validateWarnings();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getLocatorSuffix()
 	 */
@@ -181,14 +181,14 @@ public final class Format extends AbstractBaseComponent {
 		return (getDDMSVersion().isAtLeast("4.0.1") ? "" : ValidationMessage.ELEMENT_PREFIX
 			+ getXOMElement().getNamespacePrefix() + ":" + MEDIA_NAME);
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		if (!getDDMSVersion().isAtLeast("4.0.1"))
-			localPrefix += MEDIA_NAME + ".";		
+			localPrefix += MEDIA_NAME + ".";
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, localPrefix + MIME_TYPE_NAME, getMimeType()));
 		if (getExtent() != null)
@@ -196,7 +196,7 @@ public final class Format extends AbstractBaseComponent {
 		text.append(buildOutput(isHTML, localPrefix + MEDIUM_NAME, getMedium()));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -205,7 +205,7 @@ public final class Format extends AbstractBaseComponent {
 		list.add(getExtent());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -238,7 +238,7 @@ public final class Format extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("format");
 	}
-	
+
 	/**
 	 * Accessor for the element which contains the mimeType, medium, and extent. Before DDMS 4.0.1,
 	 * this is a wrapper element called ddms:Media. Starting in DDMS 4.0.1, it is the ddms:format
@@ -247,7 +247,7 @@ public final class Format extends AbstractBaseComponent {
 	private Element getMediaElement() {
 		return (getDDMSVersion().isAtLeast("4.0.1") ? getXOMElement() : getChild(MEDIA_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the mimeType element child text. Will return an empty string if not set, but that cannot occur after
 	 * instantiation.
@@ -283,7 +283,7 @@ public final class Format extends AbstractBaseComponent {
 	public String getMedium() {
 		return (Util.getNonNullString(_medium));
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -296,12 +296,12 @@ public final class Format extends AbstractBaseComponent {
 		private String _mimeType;
 		private Extent.Builder _extent;
 		private String _medium;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -309,9 +309,9 @@ public final class Format extends AbstractBaseComponent {
 			setMimeType(format.getMimeType());
 			if (format.getExtent() != null)
 				setExtent(new Extent.Builder(format.getExtent()));
-			setMedium(format.getMedium());			
+			setMedium(format.getMedium());
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -325,7 +325,7 @@ public final class Format extends AbstractBaseComponent {
 		public boolean isEmpty() {
 			return (Util.isEmpty(getMimeType()) && Util.isEmpty(getMedium()) && getExtent().isEmpty());
 		}
-		
+
 		/**
 		 * Builder accessor for the mimeType element child text.
 		 */
@@ -369,5 +369,5 @@ public final class Format extends AbstractBaseComponent {
 		public void setMedium(String medium) {
 			_medium = medium;
 		}
-	}	
-} 
+	}
+}

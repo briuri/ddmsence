@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:name</u>: names of the producer entity (1-many, at least 1 required)<br />
  * <u>ddms:phone</u>: phone numbers of the producer entity (0-many optional)<br />
  * <u>ddms:email</u>: email addresses of the producer entity (0-many optional)<br />
- * <u>ddms:subOrganization</u>: suborganization (0-many optional, starting in DDMS 4.0.1), implemented as a 
+ * <u>ddms:subOrganization</u>: suborganization (0-many optional, starting in DDMS 4.0.1), implemented as a
  * {@link SubOrganization}<br />
  * </td></tr></table>
  * 
@@ -70,14 +70,14 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class Organization extends AbstractRoleEntity {
-	
+
 	private List<SubOrganization> _subOrganizations = null;
-	
+
 	private static final String ACRONYM_NAME = "acronym";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
+	 * 
 	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
@@ -96,7 +96,7 @@ public final class Organization extends AbstractRoleEntity {
 			throw (e);
 		}
 	}
-		
+
 	/**
 	 * Constructor for creating a component from raw data.
 	 * 
@@ -110,7 +110,7 @@ public final class Organization extends AbstractRoleEntity {
 		List<SubOrganization> subOrganizations, String acronym) throws InvalidDDMSException {
 		this(names, phones, emails, subOrganizations, acronym, null);
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data.
 	 * 
@@ -139,7 +139,7 @@ public final class Organization extends AbstractRoleEntity {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
@@ -154,16 +154,16 @@ public final class Organization extends AbstractRoleEntity {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Organization.getName(getDDMSVersion()));
-		
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0.1")) {
 			if (!Util.isEmpty(getAcronym()))
 				throw new InvalidDDMSException("An organization cannot have an acronym until DDMS 4.0.1 or later.");
 		}
-		
+
 		if (getDDMSVersion().isAtLeast("5.0") && !getExtensibleAttributes().isEmpty())
 			throw new InvalidDDMSException("ddms:" + getName() + " cannot have extensible attributes after DDMS 4.1.");
-		
+
 		super.validate();
 	}
 
@@ -177,7 +177,7 @@ public final class Organization extends AbstractRoleEntity {
 		text.append(buildOutput(isHTML, localPrefix + ACRONYM_NAME, getAcronym()));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -186,7 +186,7 @@ public final class Organization extends AbstractRoleEntity {
 		list.addAll(getSubOrganizations());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -196,7 +196,7 @@ public final class Organization extends AbstractRoleEntity {
 		Organization test = (Organization) obj;
 		return (getAcronym().equals(test.getAcronym()));
 	}
-	
+
 	/**
 	 * @see Object#hashCode()
 	 */
@@ -205,7 +205,7 @@ public final class Organization extends AbstractRoleEntity {
 		result = 7 * result + getAcronym().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -216,21 +216,21 @@ public final class Organization extends AbstractRoleEntity {
 		Util.requireValue("version", version);
 		return (version.isAtLeast("4.0.1") ? "organization" : "Organization");
 	}
-	
+
 	/**
 	 * Accessor for the suborganizations (0-many)
 	 */
 	public List<SubOrganization> getSubOrganizations() {
 		return (Collections.unmodifiableList(_subOrganizations));
 	}
-	
+
 	/**
 	 * Accessor for the acronym
 	 */
 	public String getAcronym() {
 		return (getAttributeValue(ACRONYM_NAME));
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -242,14 +242,14 @@ public final class Organization extends AbstractRoleEntity {
 		private static final long serialVersionUID = 4565840434345629470L;
 		private List<SubOrganization.Builder> _subOrganizations;
 		private String _acronym;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {
 			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -259,7 +259,7 @@ public final class Organization extends AbstractRoleEntity {
 				getSubOrganizations().add(new SubOrganization.Builder(subOrg));
 			setAcronym(organization.getAcronym());
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -287,7 +287,7 @@ public final class Organization extends AbstractRoleEntity {
 				&& !hasValueInList
 				&& Util.isEmpty(getAcronym()));
 		}
-		
+
 		/**
 		 * Builder accessor for suborganizations
 		 */
@@ -296,7 +296,7 @@ public final class Organization extends AbstractRoleEntity {
 				_subOrganizations = new LazyList(SubOrganization.Builder.class);
 			return _subOrganizations;
 		}
-		
+
 		/**
 		 * Builder accessor for the acronym
 		 */
@@ -311,4 +311,4 @@ public final class Organization extends AbstractRoleEntity {
 			_acronym = acronym;
 		}
 	}
-} 
+}

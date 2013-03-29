@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.security.ntk;
 
 import nu.xom.Element;
@@ -43,28 +43,28 @@ import buri.ddmsence.util.Util;
  * <u>ntk:vocabulary</u>: A lexicon associated with the profile (required)<br />
  * <u>ntk:id</u>: A unique XML identifier (optional)<br />
  * <u>ntk:IDReference</u>: A cross-reference to a unique identifier (optional)<br />
- * <u>ntk:qualifier</u>: A user-defined property within an element for general purpose processing used with block 
+ * <u>ntk:qualifier</u>: A user-defined property within an element for general purpose processing used with block
  * objects to provide supplemental information over and above that conveyed by the element name (optional)<br />
- * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public final class ProfileValue extends AbstractNtkString {
-	
+
 	private static final String VOCABULARY_NAME = "vocabulary";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ProfileValue(Element element) throws InvalidDDMSException {
 		super(false, element);
 	}
-	
+
 	/**
 	 * Constructor which builds from raw data.
 	 * 
@@ -80,8 +80,8 @@ public final class ProfileValue extends AbstractNtkString {
 		super(false, ProfileValue.getName(DDMSVersion.getCurrentVersion()), value, id, idReference, qualifier,
 			securityAttributes, false);
 		try {
-			Util.addAttribute(getXOMElement(), PropertyReader.getPrefix("ntk"), VOCABULARY_NAME, DDMSVersion
-				.getCurrentVersion().getNtkNamespace(), vocabulary);
+			Util.addAttribute(getXOMElement(), PropertyReader.getPrefix("ntk"), VOCABULARY_NAME,
+				DDMSVersion.getCurrentVersion().getNtkNamespace(), vocabulary);
 			validate();
 		}
 		catch (InvalidDDMSException e) {
@@ -89,7 +89,7 @@ public final class ProfileValue extends AbstractNtkString {
 			throw (e);
 		}
 	}
-		
+
 	/**
 	 * Validates the component.
 	 * 
@@ -97,7 +97,7 @@ public final class ProfileValue extends AbstractNtkString {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>The vocabulary attribute is set, and is a valid NMTOKEN.</li>
 	 * </td></tr></table>
-	 *  
+	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
@@ -105,7 +105,7 @@ public final class ProfileValue extends AbstractNtkString {
 		Util.requireValidNMToken(getVocabulary());
 		super.validate();
 	}
-		
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -118,7 +118,7 @@ public final class ProfileValue extends AbstractNtkString {
 			addWarning("A ntk:" + getName() + " element was found with no value.");
 		super.validateWarnings();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -133,7 +133,7 @@ public final class ProfileValue extends AbstractNtkString {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix + "."));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Builder for the element name of this component, based on the version of DDMS used
 	 * 
@@ -144,7 +144,7 @@ public final class ProfileValue extends AbstractNtkString {
 		Util.requireValue("version", version);
 		return ("AccessProfileValue");
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -152,9 +152,9 @@ public final class ProfileValue extends AbstractNtkString {
 		if (!super.equals(obj) || !(obj instanceof ProfileValue))
 			return (false);
 		ProfileValue test = (ProfileValue) obj;
-		return (getVocabulary().equals(test.getVocabulary()));			
+		return (getVocabulary().equals(test.getVocabulary()));
 	}
-	
+
 	/**
 	 * @see Object#hashCode()
 	 */
@@ -163,14 +163,14 @@ public final class ProfileValue extends AbstractNtkString {
 		result = 7 * result + getVocabulary().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Builder for the vocabulary
 	 */
 	public String getVocabulary() {
 		return (getAttributeValue(VOCABULARY_NAME, getDDMSVersion().getNtkNamespace()));
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -181,14 +181,14 @@ public final class ProfileValue extends AbstractNtkString {
 	public static class Builder extends AbstractNtkString.Builder {
 		private static final long serialVersionUID = 7750664735441105296L;
 		private String _vocabulary;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {
 			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -196,7 +196,7 @@ public final class ProfileValue extends AbstractNtkString {
 			super(value);
 			setVocabulary(value.getVocabulary());
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -219,4 +219,4 @@ public final class ProfileValue extends AbstractNtkString {
 			_vocabulary = vocabulary;
 		}
 	}
-} 
+}

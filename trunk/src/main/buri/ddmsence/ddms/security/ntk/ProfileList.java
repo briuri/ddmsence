@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.security.ntk;
 
 import java.io.Serializable;
@@ -39,30 +39,30 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ntk:AccessProfileList.
  * 
- * <p>Unlike ntk:AccessIndividualList and ntk:AccessGroupList, this element is implemented in DDMSence because it has 
+ * <p>Unlike ntk:AccessIndividualList and ntk:AccessGroupList, this element is implemented in DDMSence because it has
  * security attributes.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ntk:AccessProfile</u>: A system access record matching a profile (1-to-many required), implemented as a 
+ * <u>ntk:AccessProfile</u>: A system access record matching a profile (1-to-many required), implemented as a
  * {@link Profile}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
- *  
+ * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public final class ProfileList extends AbstractBaseComponent {
-	
+
 	private List<Profile> _profiles = null;
 	private SecurityAttributes _securityAttributes = null;
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ProfileList(Element element) throws InvalidDDMSException {
@@ -92,8 +92,8 @@ public final class ProfileList extends AbstractBaseComponent {
 	public ProfileList(List<Profile> profiles, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			Element element = Util.buildElement(PropertyReader.getPrefix("ntk"), ProfileList.getName(version), version
-				.getNtkNamespace(), null);
+			Element element = Util.buildElement(PropertyReader.getPrefix("ntk"), ProfileList.getName(version),
+				version.getNtkNamespace(), null);
 			setXOMElement(element, false);
 			if (profiles == null)
 				profiles = Collections.emptyList();
@@ -110,7 +110,7 @@ public final class ProfileList extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-			
+
 	/**
 	 * Validates the component.
 	 * 
@@ -131,13 +131,13 @@ public final class ProfileList extends AbstractBaseComponent {
 			throw new InvalidDDMSException("At least one profile is required.");
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
-		
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0.1");
-		
+
 		super.validate();
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -148,7 +148,7 @@ public final class ProfileList extends AbstractBaseComponent {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -157,14 +157,14 @@ public final class ProfileList extends AbstractBaseComponent {
 		list.addAll(getProfiles());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof ProfileList))
 			return (false);
-		return (true);		
+		return (true);
 	}
 
 	/**
@@ -177,21 +177,21 @@ public final class ProfileList extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("AccessProfileList");
 	}
-	
+
 	/**
 	 * Accessor for the list of profile values (1-many)
 	 */
 	public List<Profile> getProfiles() {
 		return (Collections.unmodifiableList(_profiles));
-	}	
-	
+	}
+
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_securityAttributes);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -203,12 +203,12 @@ public final class ProfileList extends AbstractBaseComponent {
 		private static final long serialVersionUID = 7851044806424206976L;
 		private List<Profile.Builder> _profiles;
 		private SecurityAttributes.Builder _securityAttributes;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -217,7 +217,7 @@ public final class ProfileList extends AbstractBaseComponent {
 				getProfiles().add(new Profile.Builder(value));
 			setSecurityAttributes(new SecurityAttributes.Builder(profileList.getSecurityAttributes()));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -242,7 +242,7 @@ public final class ProfileList extends AbstractBaseComponent {
 				hasValueInList = hasValueInList || !builder.isEmpty();
 			return (!hasValueInList && getSecurityAttributes().isEmpty());
 		}
-		
+
 		/**
 		 * Builder accessor for the values
 		 */
@@ -251,7 +251,7 @@ public final class ProfileList extends AbstractBaseComponent {
 				_profiles = new LazyList(Profile.Builder.class);
 			return _profiles;
 		}
-		
+
 		/**
 		 * Builder accessor for the securityAttributes
 		 */
@@ -260,7 +260,7 @@ public final class ProfileList extends AbstractBaseComponent {
 				_securityAttributes = new SecurityAttributes.Builder();
 			return _securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the securityAttributes
 		 */
@@ -268,4 +268,4 @@ public final class ProfileList extends AbstractBaseComponent {
 			_securityAttributes = securityAttributes;
 		}
 	}
-} 
+}

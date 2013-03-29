@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
@@ -39,7 +39,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -49,17 +49,17 @@ public final class Title extends AbstractSimpleString {
 
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Title(Element element) throws InvalidDDMSException {
 		super(element, true);
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param title the value of the title child text
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -67,7 +67,7 @@ public final class Title extends AbstractSimpleString {
 	public Title(String title, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		super(Title.getName(DDMSVersion.getCurrentVersion()), title, securityAttributes, true);
 	}
-		
+
 	/**
 	 * Validates the component.
 	 * 
@@ -82,7 +82,7 @@ public final class Title extends AbstractSimpleString {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Title.getName(getDDMSVersion()));
-		Util.requireDDMSValue("title value", getValue());		
+		Util.requireDDMSValue("title value", getValue());
 		super.validate();
 	}
 
@@ -96,7 +96,7 @@ public final class Title extends AbstractSimpleString {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix + "."));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -105,7 +105,7 @@ public final class Title extends AbstractSimpleString {
 			return (false);
 		return (true);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -116,7 +116,7 @@ public final class Title extends AbstractSimpleString {
 		Util.requireValue("version", version);
 		return ("title");
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -126,21 +126,21 @@ public final class Title extends AbstractSimpleString {
 	 */
 	public static class Builder extends AbstractSimpleString.Builder {
 		private static final long serialVersionUID = -7348511606867959470L;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {
 			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(Title title) {
 			super(title);
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -148,4 +148,4 @@ public final class Title extends AbstractSimpleString {
 			return (isEmpty() ? null : new Title(getValue(), getSecurityAttributes().commit()));
 		}
 	}
-} 
+}

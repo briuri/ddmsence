@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.format;
 
 import nu.xom.Element;
@@ -52,17 +52,17 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class Extent extends AbstractQualifierValue {
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Extent(Element element) throws InvalidDDMSException {
 		super(element, true);
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
@@ -96,7 +96,7 @@ public final class Extent extends AbstractQualifierValue {
 
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -110,7 +110,7 @@ public final class Extent extends AbstractQualifierValue {
 			addWarning("A qualifier has been set without an accompanying value attribute.");
 		if (Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()))
 			addWarning("A completely empty ddms:extent element was found.");
-		
+
 		super.validateWarnings();
 	}
 
@@ -124,14 +124,14 @@ public final class Extent extends AbstractQualifierValue {
 		text.append(buildOutput(isHTML, localPrefix + getValueName(), getValue()));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		return (super.equals(obj) && (obj instanceof Extent));
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -142,7 +142,7 @@ public final class Extent extends AbstractQualifierValue {
 		Util.requireValue("version", version);
 		return ("extent");
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -159,21 +159,21 @@ public final class Extent extends AbstractQualifierValue {
 		public Builder() {
 			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(Extent mediaExtent) {
 			super(mediaExtent);
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
 		public Extent commit() throws InvalidDDMSException {
 			return (isEmpty() ? null : new Extent(getQualifier(), getValue()));
 		}
-		
+
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
@@ -181,4 +181,4 @@ public final class Extent extends AbstractQualifierValue {
 			return (Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()));
 		}
 	}
-} 
+}

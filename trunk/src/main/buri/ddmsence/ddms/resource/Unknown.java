@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import java.util.Collections;
@@ -48,7 +48,7 @@ import buri.ddmsence.util.Util;
  * </ul>
  * </td></tr></table>
  * 
- * <p>The ddms:unknown element is new in DDMS 3.0. Attempts to use it with DDMS 2.0 will result in an 
+ * <p>The ddms:unknown element is new in DDMS 3.0. Attempts to use it with DDMS 2.0 will result in an
  * UnsupportedVersionException. Its name was changed from "Unknown" to "unknown" in DDMS 4.0.1.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
@@ -66,14 +66,14 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class Unknown extends AbstractRoleEntity {
-	
+
 	private List<String> _affiliations = null;
-	
+
 	private static final String AFFILIATION_NAME = "affiliation";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
+	 * 
 	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
@@ -81,22 +81,21 @@ public final class Unknown extends AbstractRoleEntity {
 		super(element, true);
 		_affiliations = Util.getDDMSChildValues(element, AFFILIATION_NAME);
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data.
 	 * 
-	 * @deprecated A new constructor was added for DDMS 5.0 to support ddms:affiliation. This constructor is preserved for 
-	 * backwards compatibility, but may disappear in the next major release.
+	 * @deprecated A new constructor was added for DDMS 5.0 to support ddms:affiliation. This constructor is preserved
+	 *             for backwards compatibility, but may disappear in the next major release.
 	 * 
 	 * @param names an ordered list of names
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
 	 */
-	public Unknown(List<String> names, List<String> phones, List<String> emails)
-		throws InvalidDDMSException {
+	public Unknown(List<String> names, List<String> phones, List<String> emails) throws InvalidDDMSException {
 		this(names, phones, emails, null, null);
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data.
 	 * 
@@ -121,9 +120,9 @@ public final class Unknown extends AbstractRoleEntity {
 		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
-		}	
+		}
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
@@ -137,13 +136,13 @@ public final class Unknown extends AbstractRoleEntity {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Unknown.getName(getDDMSVersion()));
-		
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("3.0");
-		
+
 		super.validate();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -153,7 +152,7 @@ public final class Unknown extends AbstractRoleEntity {
 		text.append(buildOutput(isHTML, localPrefix + AFFILIATION_NAME, getAffiliations()));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -163,7 +162,7 @@ public final class Unknown extends AbstractRoleEntity {
 		Unknown test = (Unknown) obj;
 		return (Util.listEquals(getAffiliations(), test.getAffiliations()));
 	}
-	
+
 	/**
 	 * @see Object#hashCode()
 	 */
@@ -172,14 +171,14 @@ public final class Unknown extends AbstractRoleEntity {
 		result = 7 * result + getAffiliations().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the affiliations of the person
 	 */
 	public List<String> getAffiliations() {
 		return (Collections.unmodifiableList(_affiliations));
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -190,7 +189,7 @@ public final class Unknown extends AbstractRoleEntity {
 		Util.requireValue("version", version);
 		return (version.isAtLeast("4.0.1") ? "unknown" : "Unknown");
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -201,14 +200,14 @@ public final class Unknown extends AbstractRoleEntity {
 	public static class Builder extends AbstractRoleEntity.Builder {
 		private static final long serialVersionUID = -2278534009019179572L;
 		private List<String> _affiliations;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {
 			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -216,25 +215,24 @@ public final class Unknown extends AbstractRoleEntity {
 			super(unknown);
 			setAffiliations(unknown.getAffiliations());
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
 		public Unknown commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Unknown(getNames(), getPhones(), getEmails(), getAffiliations(), 
+			return (isEmpty() ? null : new Unknown(getNames(), getPhones(), getEmails(), getAffiliations(),
 				getExtensibleAttributes().commit()));
 		}
-		
+
 		/**
 		 * Helper method to determine if any values have been entered for this Person.
 		 * 
 		 * @return true if all values are empty
 		 */
 		public boolean isEmpty() {
-			return (super.isEmpty()
-				&& Util.containsOnlyEmptyValues(getAffiliations()));
+			return (super.isEmpty() && Util.containsOnlyEmptyValues(getAffiliations()));
 		}
-		
+
 		/**
 		 * Builder accessor for the affiliations
 		 */
@@ -251,4 +249,4 @@ public final class Unknown extends AbstractRoleEntity {
 			_affiliations = new LazyList(affiliations, String.class);
 		}
 	}
-} 
+}

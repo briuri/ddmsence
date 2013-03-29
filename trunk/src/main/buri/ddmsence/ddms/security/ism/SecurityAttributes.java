@@ -226,8 +226,8 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	public SecurityAttributes(Element element) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
 		setNamespace(version.getIsmNamespace());
-		_atomicEnergyMarkings = Util.getXsListAsList(element
-			.getAttributeValue(ATOMIC_ENERGY_MARKINGS_NAME, getNamespace()));
+		_atomicEnergyMarkings = Util.getXsListAsList(element.getAttributeValue(ATOMIC_ENERGY_MARKINGS_NAME,
+			getNamespace()));
 		_classification = element.getAttributeValue(CLASSIFICATION_NAME, getNamespace());
 		_classificationReason = element.getAttributeValue(CLASSIFICATION_REASON_NAME, getNamespace());
 		_classifiedBy = element.getAttributeValue(CLASSIFIED_BY_NAME, getNamespace());
@@ -274,7 +274,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * @param classification the classification level, which must be a legal classification type (optional)
 	 * @param ownerProducers a list of ownerProducers (optional)
 	 * @param otherAttributes a name/value mapping of other ISM attributes. The value will be a String value, as it
-	 * appears in XML.
+	 *        appears in XML.
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public SecurityAttributes(String classification, List<String> ownerProducers, Map<String, String> otherAttributes)
@@ -341,32 +341,32 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		String icNamespace = elementVersion.getIsmNamespace();
 		String icPrefix = PropertyReader.getPrefix("ism");
 
-		Util.addAttribute(element, icPrefix, ATOMIC_ENERGY_MARKINGS_NAME, icNamespace, Util
-			.getXsList(getAtomicEnergyMarkings()));
+		Util.addAttribute(element, icPrefix, ATOMIC_ENERGY_MARKINGS_NAME, icNamespace,
+			Util.getXsList(getAtomicEnergyMarkings()));
 		Util.addAttribute(element, icPrefix, CLASSIFICATION_NAME, icNamespace, getClassification());
 		Util.addAttribute(element, icPrefix, CLASSIFICATION_REASON_NAME, icNamespace, getClassificationReason());
 		Util.addAttribute(element, icPrefix, CLASSIFIED_BY_NAME, icNamespace, getClassifiedBy());
 		Util.addAttribute(element, icPrefix, COMPILATION_REASON_NAME, icNamespace, getCompilationReason());
 		if (getDateOfExemptedSource() != null)
-			Util.addAttribute(element, icPrefix, DATE_OF_EXEMPTED_SOURCE_NAME, icNamespace, getDateOfExemptedSource()
-				.toXMLFormat());
+			Util.addAttribute(element, icPrefix, DATE_OF_EXEMPTED_SOURCE_NAME, icNamespace,
+				getDateOfExemptedSource().toXMLFormat());
 		if (getDeclassDate() != null)
 			Util.addAttribute(element, icPrefix, DECLASS_DATE_NAME, icNamespace, getDeclassDate().toXMLFormat());
 		Util.addAttribute(element, icPrefix, DECLASS_EVENT_NAME, icNamespace, getDeclassEvent());
 		Util.addAttribute(element, icPrefix, DECLASS_EXCEPTION_NAME, icNamespace, getDeclassException());
 		if (getDeclassManualReview() != null) {
-			Util.addAttribute(element, icPrefix, DECLASS_MANUAL_REVIEW_NAME, icNamespace, getDeclassManualReview()
-				.toString());
+			Util.addAttribute(element, icPrefix, DECLASS_MANUAL_REVIEW_NAME, icNamespace,
+				getDeclassManualReview().toString());
 		}
 		Util.addAttribute(element, icPrefix, DERIVATIVELY_CLASSIFIED_BY_NAME, icNamespace,
 			getDerivativelyClassifiedBy());
 		Util.addAttribute(element, icPrefix, DERIVED_FROM_NAME, icNamespace, getDerivedFrom());
 		Util.addAttribute(element, icPrefix, DISPLAY_ONLY_TO_NAME, icNamespace, Util.getXsList(getDisplayOnlyTo()));
-		Util.addAttribute(element, icPrefix, DISSEMINATION_CONTROLS_NAME, icNamespace, Util
-			.getXsList(getDisseminationControls()));
+		Util.addAttribute(element, icPrefix, DISSEMINATION_CONTROLS_NAME, icNamespace,
+			Util.getXsList(getDisseminationControls()));
 		Util.addAttribute(element, icPrefix, FGI_SOURCE_OPEN_NAME, icNamespace, Util.getXsList(getFGIsourceOpen()));
-		Util.addAttribute(element, icPrefix, FGI_SOURCE_PROTECTED_NAME, icNamespace, Util
-			.getXsList(getFGIsourceProtected()));
+		Util.addAttribute(element, icPrefix, FGI_SOURCE_PROTECTED_NAME, icNamespace,
+			Util.getXsList(getFGIsourceProtected()));
 		Util.addAttribute(element, icPrefix, NON_IC_MARKINGS_NAME, icNamespace, Util.getXsList(getNonICmarkings()));
 		Util.addAttribute(element, icPrefix, NON_US_CONTROLS_NAME, icNamespace, Util.getXsList(getNonUSControls()));
 		Util.addAttribute(element, icPrefix, OWNER_PRODUCER_NAME, icNamespace, Util.getXsList(getOwnerProducers()));
@@ -384,8 +384,8 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	public boolean isEmpty() {
 		return (getAtomicEnergyMarkings().isEmpty() && Util.isEmpty(getClassification())
 			&& Util.isEmpty(getClassificationReason()) && Util.isEmpty(getClassifiedBy())
-			&& Util.isEmpty(getCompilationReason()) && getDateOfExemptedSource() == null
-			&& getDeclassDate() == null && Util.isEmpty(getDeclassEvent()) && Util.isEmpty(getDeclassException())
+			&& Util.isEmpty(getCompilationReason()) && getDateOfExemptedSource() == null && getDeclassDate() == null
+			&& Util.isEmpty(getDeclassEvent()) && Util.isEmpty(getDeclassException())
 			&& getDeclassManualReview() == null && Util.isEmpty(getDerivativelyClassifiedBy())
 			&& Util.isEmpty(getDerivedFrom()) && getDisplayOnlyTo().isEmpty() && getDisseminationControls().isEmpty()
 			&& getFGIsourceOpen().isEmpty() && getFGIsourceProtected().isEmpty() && getNonICmarkings().isEmpty()
@@ -403,11 +403,11 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		if (!newParentVersion.getIsmNamespace().equals(getNamespace()))
 			throw new InvalidDDMSException(INCOMPATIBLE_VERSION_MESSAGE);
 	}
-	
+
 	/**
 	 * Validates the attribute group. Where appropriate the {@link ISMVocabulary} enumerations are validated.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody"> 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The atomicEnergyMarkings cannot be used until DDMS 3.1 or later.</li>
 	 * <li>If set, the atomicEnergyMarkings attribute must be valid tokens.</li>
 	 * <li>If set, the classification attribute must be a valid token.</li>
@@ -435,7 +435,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * </td></tr></table>
 	 * 
 	 * @param version the DDMS version to validate against. This cannot be stored in the attribute group because some
-	 * DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).
+	 *        DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate(DDMSVersion version) throws InvalidDDMSException {
@@ -453,8 +453,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		if (!version.isAtLeast("3.0") && !Util.isEmpty(getCompilationReason()))
 			throw new InvalidDDMSException("The compilationReason attribute cannot be used until DDMS 3.0 or later.");
 		if (version.isAtLeast("3.1") && getDateOfExemptedSource() != null)
-			throw new InvalidDDMSException(
-				"The dateOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0.");
+			throw new InvalidDDMSException("The dateOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0.");
 		if (getDateOfExemptedSource() != null
 			&& !getDateOfExemptedSource().getXMLSchemaType().equals(DatatypeConstants.DATE))
 			throw new InvalidDDMSException(
@@ -530,33 +529,33 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	public String getOutput(boolean isHTML, String prefix) {
 		String localPrefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer();
-		text.append(Resource.buildOutput(isHTML, localPrefix + ATOMIC_ENERGY_MARKINGS_NAME, Util
-			.getXsList(getAtomicEnergyMarkings())));
+		text.append(Resource.buildOutput(isHTML, localPrefix + ATOMIC_ENERGY_MARKINGS_NAME,
+			Util.getXsList(getAtomicEnergyMarkings())));
 		text.append(Resource.buildOutput(isHTML, localPrefix + CLASSIFICATION_NAME, getClassification()));
 		text.append(Resource.buildOutput(isHTML, localPrefix + CLASSIFICATION_REASON_NAME, getClassificationReason()));
 		text.append(Resource.buildOutput(isHTML, localPrefix + CLASSIFIED_BY_NAME, getClassifiedBy()));
 		text.append(Resource.buildOutput(isHTML, localPrefix + COMPILATION_REASON_NAME, getCompilationReason()));
 		if (getDateOfExemptedSource() != null) {
-			text.append(Resource.buildOutput(isHTML, localPrefix + DATE_OF_EXEMPTED_SOURCE_NAME, getDateOfExemptedSource()
-				.toXMLFormat()));
+			text.append(Resource.buildOutput(isHTML, localPrefix + DATE_OF_EXEMPTED_SOURCE_NAME,
+				getDateOfExemptedSource().toXMLFormat()));
 		}
 		if (getDeclassDate() != null)
 			text.append(Resource.buildOutput(isHTML, localPrefix + DECLASS_DATE_NAME, getDeclassDate().toXMLFormat()));
 		text.append(Resource.buildOutput(isHTML, localPrefix + DECLASS_EVENT_NAME, getDeclassEvent()));
 		text.append(Resource.buildOutput(isHTML, localPrefix + DECLASS_EXCEPTION_NAME, getDeclassException()));
 		if (getDeclassManualReview() != null) {
-			text.append(Resource.buildOutput(isHTML, localPrefix + DECLASS_MANUAL_REVIEW_NAME, getDeclassManualReview()
-				.toString()));
+			text.append(Resource.buildOutput(isHTML, localPrefix + DECLASS_MANUAL_REVIEW_NAME,
+				getDeclassManualReview().toString()));
 		}
 		text.append(Resource.buildOutput(isHTML, localPrefix + DERIVATIVELY_CLASSIFIED_BY_NAME,
 			getDerivativelyClassifiedBy()));
 		text.append(Resource.buildOutput(isHTML, localPrefix + DERIVED_FROM_NAME, getDerivedFrom()));
 		text.append(Resource.buildOutput(isHTML, localPrefix + DISPLAY_ONLY_TO_NAME, Util.getXsList(getDisplayOnlyTo())));
-		text.append(Resource.buildOutput(isHTML, localPrefix + DISSEMINATION_CONTROLS_NAME, Util
-			.getXsList(getDisseminationControls())));
+		text.append(Resource.buildOutput(isHTML, localPrefix + DISSEMINATION_CONTROLS_NAME,
+			Util.getXsList(getDisseminationControls())));
 		text.append(Resource.buildOutput(isHTML, localPrefix + FGI_SOURCE_OPEN_NAME, Util.getXsList(getFGIsourceOpen())));
-		text.append(Resource.buildOutput(isHTML, localPrefix + FGI_SOURCE_PROTECTED_NAME, Util
-			.getXsList(getFGIsourceProtected())));
+		text.append(Resource.buildOutput(isHTML, localPrefix + FGI_SOURCE_PROTECTED_NAME,
+			Util.getXsList(getFGIsourceProtected())));
 		text.append(Resource.buildOutput(isHTML, localPrefix + NON_IC_MARKINGS_NAME, Util.getXsList(getNonICmarkings())));
 		text.append(Resource.buildOutput(isHTML, localPrefix + NON_US_CONTROLS_NAME, Util.getXsList(getNonUSControls())));
 		text.append(Resource.buildOutput(isHTML, localPrefix + OWNER_PRODUCER_NAME, Util.getXsList(getOwnerProducers())));
@@ -825,8 +824,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		/**
 		 * Empty constructor
 		 */
-		public Builder() {
-		}
+		public Builder() {}
 
 		/**
 		 * Constructor which starts from an existing component.

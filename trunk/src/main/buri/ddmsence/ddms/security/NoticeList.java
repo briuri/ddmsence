@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.security;
 
 import java.io.Serializable;
@@ -44,29 +44,29 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public final class NoticeList extends AbstractBaseComponent {
-	
+
 	private List<Notice> _notices = null;
 	private SecurityAttributes _securityAttributes = null;
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public NoticeList(Element element) throws InvalidDDMSException {
 		try {
 			setXOMElement(element, false);
 			_notices = new ArrayList<Notice>();
-			Elements notices = element.getChildElements(Notice.getName(getDDMSVersion()), getDDMSVersion()
-				.getIsmNamespace());
+			Elements notices = element.getChildElements(Notice.getName(getDDMSVersion()),
+				getDDMSVersion().getIsmNamespace());
 			for (int i = 0; i < notices.size(); i++) {
 				_notices.add(new Notice(notices.get(i)));
 			}
@@ -78,10 +78,10 @@ public final class NoticeList extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param notices the notices (at least 1 required)
 	 * @param securityAttributes any security attributes (classification and ownerProducer are optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -90,12 +90,12 @@ public final class NoticeList extends AbstractBaseComponent {
 		try {
 			if (notices == null)
 				notices = Collections.emptyList();
-			
+
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			Element element = Util.buildDDMSElement(NoticeList.getName(version), null);
 			for (Notice noticeText : notices)
 				element.appendChild(noticeText.getXOMElementCopy());
-			
+
 			_notices = notices;
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
@@ -106,7 +106,7 @@ public final class NoticeList extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-		
+
 	/**
 	 * Validates the component.
 	 * 
@@ -117,23 +117,23 @@ public final class NoticeList extends AbstractBaseComponent {
 	 * <li>A classification is required.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
 	 * </td></tr></table>
-	 *  
+	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), NoticeList.getName(getDDMSVersion()));
-		
+
 		if (getNotices().isEmpty())
 			throw new InvalidDDMSException("At least one ISM:Notice must exist within a ddms:noticeList element.");
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
-		
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0.1");
-		
+
 		super.validate();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -144,7 +144,7 @@ public final class NoticeList extends AbstractBaseComponent {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -153,16 +153,16 @@ public final class NoticeList extends AbstractBaseComponent {
 		list.addAll(getNotices());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof NoticeList))
 			return (false);
-		return (true);		
+		return (true);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -173,21 +173,21 @@ public final class NoticeList extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("noticeList");
 	}
-	
+
 	/**
 	 * Accessor for the list of Notices.
 	 */
 	public List<Notice> getNotices() {
 		return (Collections.unmodifiableList(_notices));
 	}
-	
+
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_securityAttributes);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -199,12 +199,12 @@ public final class NoticeList extends AbstractBaseComponent {
 		private static final long serialVersionUID = 7750664735441105296L;
 		private List<Notice.Builder> _notices;
 		private SecurityAttributes.Builder _securityAttributes = null;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -213,7 +213,7 @@ public final class NoticeList extends AbstractBaseComponent {
 				getNotices().add(new Notice.Builder(noticeText));
 			setSecurityAttributes(new SecurityAttributes.Builder(notice.getSecurityAttributes()));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -238,7 +238,7 @@ public final class NoticeList extends AbstractBaseComponent {
 				hasValueInList = hasValueInList || !builder.isEmpty();
 			return (!hasValueInList && getSecurityAttributes().isEmpty());
 		}
-		
+
 		/**
 		 * Builder accessor for the notices
 		 */
@@ -247,7 +247,7 @@ public final class NoticeList extends AbstractBaseComponent {
 				_notices = new LazyList(Notice.Builder.class);
 			return _notices;
 		}
-		
+
 		/**
 		 * Builder accessor for the securityAttributes
 		 */
@@ -256,7 +256,7 @@ public final class NoticeList extends AbstractBaseComponent {
 				_securityAttributes = new SecurityAttributes.Builder();
 			return _securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the securityAttributes
 		 */
@@ -264,4 +264,4 @@ public final class NoticeList extends AbstractBaseComponent {
 			_securityAttributes = securityAttributes;
 		}
 	}
-} 
+}

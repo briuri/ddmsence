@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary.gml;
 
 import java.io.Serializable;
@@ -59,20 +59,19 @@ public final class Point extends AbstractBaseComponent {
 
 	private Position _position = null;
 	private SRSAttributes _srsAttributes = null;
-	
+
 	private static final String ID_NAME = "id";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Point(Element element) throws InvalidDDMSException {
 		try {
 			setXOMElement(element, false);
-			Element posElement = element.getFirstChildElement(Position.getName(getDDMSVersion()), 
-				getNamespace());
+			Element posElement = element.getFirstChildElement(Position.getName(getDDMSVersion()), getNamespace());
 			if (posElement != null)
 				_position = new Position(posElement);
 			_srsAttributes = new SRSAttributes(element);
@@ -83,13 +82,13 @@ public final class Point extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
 	 * @param position the position of the Point (required)
 	 * @param srsAttributes the attribute group containing srsName, srsDimension, axisLabels, and uomLabels (srsName
-	 * required)
+	 *        required)
 	 * @param id the id value (required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
@@ -101,8 +100,8 @@ public final class Point extends AbstractBaseComponent {
 			if (position != null) {
 				element.appendChild(position.getXOMElementCopy());
 			}
-			Util.addAttribute(element, PropertyReader.getPrefix("gml"), ID_NAME, DDMSVersion
-				.getCurrentVersion().getGmlNamespace(), id);
+			Util.addAttribute(element, PropertyReader.getPrefix("gml"), ID_NAME,
+				DDMSVersion.getCurrentVersion().getGmlNamespace(), id);
 
 			_position = position;
 			_srsAttributes = SRSAttributes.getNonNullInstance(srsAttributes);
@@ -114,7 +113,7 @@ public final class Point extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-		
+
 	/**
 	 * Validates the component.
 	 * 
@@ -125,7 +124,7 @@ public final class Point extends AbstractBaseComponent {
 	 * <li>If the position has an srsName, it matches the srsName of this Point.</li>
 	 * <li>Does not perform any special validation on the third coordinate (height above ellipsoid).</li>
 	 * </td></tr></table>
-	 *
+	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
@@ -138,10 +137,10 @@ public final class Point extends AbstractBaseComponent {
 		String srsName = getPosition().getSRSAttributes().getSrsName();
 		if (!Util.isEmpty(srsName) && !srsName.equals(getSRSAttributes().getSrsName()))
 			throw new InvalidDDMSException("The srsName of the position must match the srsName of the Point.");
-		
+
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -153,7 +152,7 @@ public final class Point extends AbstractBaseComponent {
 		addWarnings(getSRSAttributes().getValidationWarnings(), true);
 		super.validateWarnings();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -174,7 +173,7 @@ public final class Point extends AbstractBaseComponent {
 		list.add(getPosition());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -195,7 +194,7 @@ public final class Point extends AbstractBaseComponent {
 		result = 7 * result + getId().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -206,28 +205,28 @@ public final class Point extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("Point");
 	}
-	 
+
 	/**
 	 * Accessor for the SRS Attributes. Will always be non-null.
 	 */
 	public SRSAttributes getSRSAttributes() {
 		return (_srsAttributes);
 	}
-	
+
 	/**
 	 * Accessor for the ID
 	 */
 	public String getId() {
 		return (getAttributeValue(ID_NAME, getNamespace()));
 	}
-	
+
 	/**
 	 * Accessor for the coordinates of the position. May return null, but cannot happen after instantiation.
 	 */
 	public Position getPosition() {
 		return (_position);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -240,12 +239,12 @@ public final class Point extends AbstractBaseComponent {
 		private SRSAttributes.Builder _srsAttributes;
 		private Position.Builder _position;
 		private String _id;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -254,21 +253,21 @@ public final class Point extends AbstractBaseComponent {
 			setPosition(new Position.Builder(point.getPosition()));
 			setId(point.getId());
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
 		public Point commit() throws InvalidDDMSException {
 			return (isEmpty() ? null : new Point(getPosition().commit(), getSrsAttributes().commit(), getId()));
 		}
-		
+
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
 			return (Util.isEmpty(getId()) && getPosition().isEmpty() && getSrsAttributes().isEmpty());
 		}
-		
+
 		/**
 		 * Builder accessor for the SRS Attributes
 		 */
@@ -277,7 +276,7 @@ public final class Point extends AbstractBaseComponent {
 				_srsAttributes = new SRSAttributes.Builder();
 			return _srsAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the SRS Attributes
 		 */
@@ -313,6 +312,6 @@ public final class Point extends AbstractBaseComponent {
 		 */
 		public void setId(String id) {
 			_id = id;
-		}			
-	}	
-} 
+		}
+	}
+}

@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
@@ -35,7 +35,7 @@ import buri.ddmsence.util.Util;
  * <ul>
  * <li>A non-empty qualifier value is required when the value attribute is set.</li>
  * </ul>
- *  
+ * 
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
  * <li>A qualifier can be set with no value.</li>
@@ -52,22 +52,22 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class Language extends AbstractQualifierValue {
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Language(Element element) throws InvalidDDMSException {
 		super(element, true);
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
-	 * @param qualifier	the value of the qualifier attribute
-	 * @param value	the value of the value attribute 
+	 * 
+	 * @param qualifier the value of the qualifier attribute
+	 * @param value the value of the value attribute
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Language(String qualifier, String value) throws InvalidDDMSException {
@@ -90,10 +90,10 @@ public final class Language extends AbstractQualifierValue {
 		Util.requireDDMSQName(getXOMElement(), Language.getName(getDDMSVersion()));
 		if (!Util.isEmpty(getValue()))
 			Util.requireDDMSValue("qualifier attribute", getQualifier());
-		
+
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -109,7 +109,7 @@ public final class Language extends AbstractQualifierValue {
 			addWarning("Neither a qualifier nor a value was set on this language.");
 		super.validateWarnings();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -120,14 +120,14 @@ public final class Language extends AbstractQualifierValue {
 		text.append(buildOutput(isHTML, localPrefix + getValueName(), getValue()));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		return (super.equals(obj) && (obj instanceof Language));
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -138,7 +138,7 @@ public final class Language extends AbstractQualifierValue {
 		Util.requireValue("version", version);
 		return ("language");
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -155,14 +155,14 @@ public final class Language extends AbstractQualifierValue {
 		public Builder() {
 			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(Language language) {
 			super(language);
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -170,4 +170,4 @@ public final class Language extends AbstractQualifierValue {
 			return (isEmpty() ? null : new Language(getQualifier(), getValue()));
 		}
 	}
-} 
+}

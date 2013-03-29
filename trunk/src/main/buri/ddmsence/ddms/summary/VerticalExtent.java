@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
@@ -32,18 +32,18 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:verticalExtent.
- *
+ * 
  * <p>
  * DDMSence is stricter than the specification in the following ways:</p><ul>
- * <li>The optional unitOfMeasure and datum on the minVerticalExtent/maxVerticalExtent child elements MUST match the 
- * values on the required attributes of the same name on this element. It does not seem logical to specify these 
- * attributes on the parent element and then express the actual values with a different measure. Note that because 
- * DDMSence is giving precedence to the top-level unitOfMeasure and datum attributes, those attributes on the 
- * children are not displayed in HTML/Text. However, they are still rendered in XML, if present in an existing 
+ * <li>The optional unitOfMeasure and datum on the minVerticalExtent/maxVerticalExtent child elements MUST match the
+ * values on the required attributes of the same name on this element. It does not seem logical to specify these
+ * attributes on the parent element and then express the actual values with a different measure. Note that because
+ * DDMSence is giving precedence to the top-level unitOfMeasure and datum attributes, those attributes on the
+ * children are not displayed in HTML/Text. However, they are still rendered in XML, if present in an existing
  * document.</li>
  * </ul></p>
  * 
- * <p>The above design decision dictates that VerticalDistance (the type behind minVerticalExtent and maxVerticalExtent) 
+ * <p>The above design decision dictates that VerticalDistance (the type behind minVerticalExtent and maxVerticalExtent)
  * does not need to be implemented as a Java class.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
@@ -54,7 +54,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>ddms:unitOfMeasure</u>: unit of measure (Meter, Kilometer, Foot, StatuteMile, NauticalMile, Fathom, Inch) 
+ * <u>ddms:unitOfMeasure</u>: unit of measure (Meter, Kilometer, Foot, StatuteMile, NauticalMile, Fathom, Inch)
  * (required) <br />
  * <u>ddms:datum</u>: vertical datum (MSL, AGL, HAE) (required)<br />
  * </td></tr></table>
@@ -66,7 +66,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 
 	private Double _min = null;
 	private Double _max = null;
-		
+
 	private static Set<String> VERTICAL_DATUM_TYPES = new HashSet<String>();
 	static {
 		VERTICAL_DATUM_TYPES.add("MSL");
@@ -86,12 +86,12 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	}
 
 	private static final String DATUM_NAME = "datum";
-	private static final String UOM_NAME ="unitOfMeasure";
-	
+	private static final String UOM_NAME = "unitOfMeasure";
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public VerticalExtent(Element element) throws InvalidDDMSException {
@@ -107,7 +107,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-		
+
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
@@ -135,7 +135,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-		
+
 	/**
 	 * Validates a vertical datum type against the allowed types.
 	 * 
@@ -147,7 +147,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 		if (!VERTICAL_DATUM_TYPES.contains(datumType))
 			throw new InvalidDDMSException("The vertical datum type must be one of " + VERTICAL_DATUM_TYPES);
 	}
-	
+
 	/**
 	 * Validates a length measure type against the allowed types.
 	 * 
@@ -159,7 +159,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 		if (!LENGTH_MEASURE_TYPES.contains(lengthType))
 			throw new InvalidDDMSException("The length measure type must be one of " + LENGTH_MEASURE_TYPES);
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
@@ -183,14 +183,14 @@ public final class VerticalExtent extends AbstractBaseComponent {
 		Util.requireDDMSValue(UOM_NAME, getUnitOfMeasure());
 		Util.requireDDMSValue(DATUM_NAME, getDatum());
 		validateLengthMeasureType(getUnitOfMeasure());
-		validateVerticalDatumType(getDatum());	
+		validateVerticalDatumType(getDatum());
 		validateInheritedAttributes(getChild(getMinVerticalExtentName()));
 		validateInheritedAttributes(getChild(getMaxVerticalExtentName()));
 		if (getMaxVerticalExtent().compareTo(getMinVerticalExtent()) < 0)
 			throw new InvalidDDMSException("Minimum vertical extent must be less than maximum vertical extent.");
 		super.validate();
 	}
-	
+
 	/**
 	 * Confirms that the unitOfMeasure and datum on minimum and maximum extent elements matches the parent attribute
 	 * values. This is an additional level of logic added by DDMSence.
@@ -208,7 +208,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 			throw new InvalidDDMSException("The datum on the " + extentElement.getLocalName()
 				+ " element must match the datum on the enclosing verticalExtent element.");
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -221,7 +221,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 		text.append(buildOutput(isHTML, localPrefix + "maximum", String.valueOf(getMaxVerticalExtent())));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -246,7 +246,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 		result = 7 * result + getMaxVerticalExtent().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -257,49 +257,49 @@ public final class VerticalExtent extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("verticalExtent");
 	}
-	
+
 	/**
 	 * Accessor for the name of the minimum vertical extent element, which changed in DDMS 4.0.1.
 	 */
 	private String getMinVerticalExtentName() {
 		return (getDDMSVersion().isAtLeast("4.0.1") ? "minVerticalExtent" : "MinVerticalExtent");
 	}
-	
+
 	/**
 	 * Accessor for the name of the maximum vertical extent element, which changed in DDMS 4.0.1.
 	 */
 	private String getMaxVerticalExtentName() {
 		return (getDDMSVersion().isAtLeast("4.0.1") ? "maxVerticalExtent" : "MaxVerticalExtent");
 	}
-	
+
 	/**
 	 * Accessor for the unitOfMeasure attribute
 	 */
 	public String getUnitOfMeasure() {
-		return (getAttributeValue(UOM_NAME)); 
+		return (getAttributeValue(UOM_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the vertical datum attribute
 	 */
 	public String getDatum() {
 		return (getAttributeValue(DATUM_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the minimum extent
 	 */
 	public Double getMinVerticalExtent() {
-		return (_min); 
+		return (_min);
 	}
-	
+
 	/**
 	 * Accessor for the maximum extent
 	 */
 	public Double getMaxVerticalExtent() {
-		return (_max); 
+		return (_max);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -313,12 +313,12 @@ public final class VerticalExtent extends AbstractBaseComponent {
 		private Double _maxVerticalExtent;
 		private String _unitOfMeasure;
 		private String _datum;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -328,7 +328,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 			setUnitOfMeasure(extent.getUnitOfMeasure());
 			setDatum(extent.getDatum());
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -341,7 +341,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 			return (new VerticalExtent(getMinVerticalExtent().doubleValue(), getMaxVerticalExtent().doubleValue(),
 				getUnitOfMeasure(), getDatum()));
 		}
-		
+
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
@@ -350,7 +350,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 				&& Util.isEmpty(getUnitOfMeasure())
 				&& Util.isEmpty(getDatum()));
 		}
-		
+
 		/**
 		 * Builder accessor for the minimum extent
 		 */
@@ -407,4 +407,4 @@ public final class VerticalExtent extends AbstractBaseComponent {
 			_datum = datum;
 		}
 	}
-} 
+}

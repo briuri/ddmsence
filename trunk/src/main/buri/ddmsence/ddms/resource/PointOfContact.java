@@ -34,7 +34,8 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:pointOfContact.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:organization</u>: The organization who is in this role (0-1, optional), implemented as an {@link Organization}<br />
+ * <u>ddms:organization</u>: The organization who is in this role (0-1, optional), implemented as an
+ * {@link Organization}<br />
  * <u>ddms:person</u>: the person who is in this role (0-1, optional), implemented as a {@link Person}<br />
  * <u>ddms:service</u>: The web service who is in this role (0-1, optional), implemented as a {@link Service}<br />
  * <u>ddms:unknown</u>: The unknown entity who is in this role (0-1, optional), implemented as an {@link Unknown}<br />
@@ -42,7 +43,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are optional.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -59,7 +60,7 @@ public class PointOfContact extends AbstractProducerRole {
 	public PointOfContact(Element element) throws InvalidDDMSException {
 		super(element);
 	}
-	
+
 	/**
 	 * Constructor which builds from raw data.
 	 * 
@@ -71,7 +72,7 @@ public class PointOfContact extends AbstractProducerRole {
 		throws InvalidDDMSException {
 		super(PointOfContact.getName(DDMSVersion.getCurrentVersion()), entity, pocTypes, securityAttributes);
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
@@ -86,14 +87,14 @@ public class PointOfContact extends AbstractProducerRole {
 		Util.requireDDMSQName(getXOMElement(), PointOfContact.getName(getDDMSVersion()));
 		super.validate();
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		return (super.equals(obj) && (obj instanceof PointOfContact));
-	}	
-	
+	}
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -104,7 +105,7 @@ public class PointOfContact extends AbstractProducerRole {
 		Util.requireValue("version", version);
 		return ("pointOfContact");
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -119,20 +120,20 @@ public class PointOfContact extends AbstractProducerRole {
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(PointOfContact producer) {
 			super(producer);
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
 		public PointOfContact commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new PointOfContact(commitSelectedEntity(), getPocTypes(), getSecurityAttributes()
-				.commit()));
+			return (isEmpty() ? null : new PointOfContact(commitSelectedEntity(), getPocTypes(),
+				getSecurityAttributes().commit()));
 		}
 	}
 }

@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
@@ -44,7 +44,7 @@ import buri.ddmsence.util.Util;
  * (optional)<br />
  * <u>ddms:schemaQualifier</u>: the schema type (optional)<br />
  * <u>ddms:schemaHref</u>: a resolvable reference to the schema (optional)<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting 
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting
  * in DDMS 3.0)
  * </td></tr></table>
  * 
@@ -54,14 +54,14 @@ import buri.ddmsence.util.Util;
 public final class Source extends AbstractQualifierValue {
 
 	private SecurityAttributes _securityAttributes = null;
-	
+
 	private static final String SCHEMA_QUALIFIER_NAME = "schemaQualifier";
 	private static final String SCHEMA_HREF_NAME = "schemaHref";
 
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Source(Element element) throws InvalidDDMSException {
@@ -75,12 +75,12 @@ public final class Source extends AbstractQualifierValue {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
-	 * @param qualifier	the value of the qualifier attribute
-	 * @param value	the value of the value attribute 
+	 * 
+	 * @param qualifier the value of the qualifier attribute
+	 * @param value the value of the value attribute
 	 * @param schemaQualifier the value of the schemaQualifier attribute
 	 * @param schemaHref the value of the schemaHref attribute
 	 * @param securityAttributes any security attributes (optional)
@@ -119,16 +119,16 @@ public final class Source extends AbstractQualifierValue {
 		Util.requireDDMSQName(getXOMElement(), Source.getName(getDDMSVersion()));
 		if (!Util.isEmpty(getSchemaHref())) {
 			Util.requireDDMSValidURI(getSchemaHref());
-		}		
+		}
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException(
 				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
-		
+
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -143,7 +143,7 @@ public final class Source extends AbstractQualifierValue {
 		}
 		super.validateWarnings();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -157,7 +157,7 @@ public final class Source extends AbstractQualifierValue {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
-			
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -165,10 +165,9 @@ public final class Source extends AbstractQualifierValue {
 		if (!super.equals(obj) || !(obj instanceof Source))
 			return (false);
 		Source test = (Source) obj;
-		return (getSchemaQualifier().equals(test.getSchemaQualifier()) 
-			&& getSchemaHref().equals(test.getSchemaHref()));
+		return (getSchemaQualifier().equals(test.getSchemaQualifier()) && getSchemaHref().equals(test.getSchemaHref()));
 	}
-	
+
 	/**
 	 * @see Object#hashCode()
 	 */
@@ -178,7 +177,7 @@ public final class Source extends AbstractQualifierValue {
 		result = 7 * result + getSchemaHref().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -189,28 +188,28 @@ public final class Source extends AbstractQualifierValue {
 		Util.requireValue("version", version);
 		return ("source");
 	}
-	
+
 	/**
 	 * Accessor for the value of the schema qualifier
 	 */
 	public String getSchemaQualifier() {
 		return (getAttributeValue(SCHEMA_QUALIFIER_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the value of the schema href
 	 */
 	public String getSchemaHref() {
 		return (getAttributeValue(SCHEMA_HREF_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_securityAttributes);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -223,14 +222,14 @@ public final class Source extends AbstractQualifierValue {
 		private String _schemaQualifier;
 		private String _schemaHref;
 		private SecurityAttributes.Builder _securityAttributes;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {
 			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -240,7 +239,7 @@ public final class Source extends AbstractQualifierValue {
 			setSchemaHref(source.getSchemaHref());
 			setSecurityAttributes(new SecurityAttributes.Builder(source.getSecurityAttributes()));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -248,7 +247,7 @@ public final class Source extends AbstractQualifierValue {
 			return (isEmpty() ? null : new Source(getQualifier(), getValue(), getSchemaQualifier(), getSchemaHref(),
 				getSecurityAttributes().commit()));
 		}
-		
+
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
@@ -258,7 +257,7 @@ public final class Source extends AbstractQualifierValue {
 				&& Util.isEmpty(getSchemaHref())
 				&& getSecurityAttributes().isEmpty());
 		}
-		
+
 		/**
 		 * Builder accessor for the schema qualifier
 		 */
@@ -286,7 +285,7 @@ public final class Source extends AbstractQualifierValue {
 		public void setSchemaHref(String schemaHref) {
 			_schemaHref = schemaHref;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
@@ -295,7 +294,7 @@ public final class Source extends AbstractQualifierValue {
 				_securityAttributes = new SecurityAttributes.Builder();
 			return _securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
@@ -303,4 +302,4 @@ public final class Source extends AbstractQualifierValue {
 			_securityAttributes = securityAttributes;
 		}
 	}
-} 
+}

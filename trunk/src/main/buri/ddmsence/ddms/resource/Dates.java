@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import java.io.Serializable;
@@ -49,7 +49,8 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:acquiredOn</u>: the acquisition date (0-many, starting in DDMS 4.1), implemented as an {@link ApproximableDate}<br />
+ * <u>ddms:acquiredOn</u>: the acquisition date (0-many, starting in DDMS 4.1), implemented as an
+ * {@link ApproximableDate}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
@@ -67,7 +68,7 @@ import buri.ddmsence.util.Util;
 public final class Dates extends AbstractBaseComponent {
 
 	private List<ApproximableDate> _acquiredOns = null;
-	
+
 	private static final String CREATED_NAME = "created";
 	private static final String POSTED_NAME = "posted";
 	private static final String VALID_TIL_NAME = "validTil";
@@ -75,11 +76,11 @@ public final class Dates extends AbstractBaseComponent {
 	private static final String APPROVED_ON_NAME = "approvedOn";
 	private static final String RECEIVED_ON_NAME = "receivedOn";
 	private static final String ACQUIRED_ON_NAME = "acquiredOn";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Dates(Element element) throws InvalidDDMSException {
@@ -97,12 +98,12 @@ public final class Dates extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
-	 * Constructor for creating a component from raw data. 
+	 * Constructor for creating a component from raw data.
 	 * 
-	 * @deprecated A new constructor was added for DDMS 4.1 to support ddms:acquiredOn. This constructor is preserved for 
-	 * backwards compatibility, but may disappear in the next major release.
+	 * @deprecated A new constructor was added for DDMS 4.1 to support ddms:acquiredOn. This constructor is preserved
+	 *             for backwards compatibility, but may disappear in the next major release.
 	 * 
 	 * @param created the creation date (optional)
 	 * @param posted the posting date (optional)
@@ -112,13 +113,13 @@ public final class Dates extends AbstractBaseComponent {
 	 * @param receivedOn the received on date (optional, starting in DDMS 4.0.1)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Dates(String created, String posted, String validTil, String infoCutOff, String approvedOn,
-		String receivedOn) throws InvalidDDMSException {
+	public Dates(String created, String posted, String validTil, String infoCutOff, String approvedOn, String receivedOn)
+		throws InvalidDDMSException {
 		this(null, created, posted, validTil, infoCutOff, approvedOn, receivedOn);
 	}
-	
+
 	/**
-	 * Constructor for creating a component from raw data. 
+	 * Constructor for creating a component from raw data.
 	 * 
 	 * @param acquiredOns the acquisition dates (optional, starting in DDMS 4.1)
 	 * @param created the creation date (optional)
@@ -153,7 +154,7 @@ public final class Dates extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
@@ -175,13 +176,13 @@ public final class Dates extends AbstractBaseComponent {
 			Util.requireDDMSDateFormat(getPostedString(), getNamespace());
 		if (!Util.isEmpty(getValidTilString()))
 			Util.requireDDMSDateFormat(getValidTilString(), getNamespace());
-		if (!Util.isEmpty(getInfoCutOffString())) 
+		if (!Util.isEmpty(getInfoCutOffString()))
 			Util.requireDDMSDateFormat(getInfoCutOffString(), getNamespace());
 		if (!Util.isEmpty(getApprovedOnString()))
 			Util.requireDDMSDateFormat(getApprovedOnString(), getNamespace());
 		if (!Util.isEmpty(getReceivedOnString()))
 			Util.requireDDMSDateFormat(getReceivedOnString(), getNamespace());
-		
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("3.1") && !Util.isEmpty(getApprovedOnString())) {
 			throw new InvalidDDMSException("This component cannot have an approvedOn date until DDMS 3.1 or later.");
@@ -195,7 +196,7 @@ public final class Dates extends AbstractBaseComponent {
 
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -216,10 +217,10 @@ public final class Dates extends AbstractBaseComponent {
 		}
 		if (!getAcquiredOns().isEmpty())
 			addDdms40Warning("ddms:acquiredOn element");
-		
+
 		super.validateWarnings();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -235,7 +236,7 @@ public final class Dates extends AbstractBaseComponent {
 		text.append(buildOutput(isHTML, localPrefix + RECEIVED_ON_NAME, getReceivedOnString()));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -244,7 +245,7 @@ public final class Dates extends AbstractBaseComponent {
 		list.addAll(getAcquiredOns());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -273,7 +274,7 @@ public final class Dates extends AbstractBaseComponent {
 		result = 7 * result + getReceivedOnString().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -284,14 +285,14 @@ public final class Dates extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("dates");
 	}
-	
+
 	/**
 	 * Accessor for the created date (optional). Returns a copy.
 	 * 
 	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
-	 * XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
-	 * null for dates in the new format. Use <code>getCreatedString()</code> to
-	 * access the raw XML format of the date instead.
+	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
+	 *             null for dates in the new format. Use <code>getCreatedString()</code> to
+	 *             access the raw XML format of the date instead.
 	 */
 	public XMLGregorianCalendar getCreated() {
 		try {
@@ -308,14 +309,14 @@ public final class Dates extends AbstractBaseComponent {
 	public String getCreatedString() {
 		return (getAttributeValue(CREATED_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the posted date (optional). Returns a copy.
 	 * 
 	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
-	 * XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
-	 * null for dates in the new format. Use <code>getPostedString()</code> to
-	 * access the raw XML format of the date instead.
+	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
+	 *             null for dates in the new format. Use <code>getPostedString()</code> to
+	 *             access the raw XML format of the date instead.
 	 */
 	public XMLGregorianCalendar getPosted() {
 		try {
@@ -325,7 +326,7 @@ public final class Dates extends AbstractBaseComponent {
 			return (null);
 		}
 	}
-	
+
 	/**
 	 * Accessor for the posted date (optional).
 	 */
@@ -337,9 +338,9 @@ public final class Dates extends AbstractBaseComponent {
 	 * Accessor for the expiration date (optional). Returns a copy.
 	 * 
 	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
-	 * XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
-	 * null for dates in the new format. Use <code>getValidTilString()</code> to
-	 * access the raw XML format of the date instead.
+	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
+	 *             null for dates in the new format. Use <code>getValidTilString()</code> to
+	 *             access the raw XML format of the date instead.
 	 */
 	public XMLGregorianCalendar getValidTil() {
 		try {
@@ -349,7 +350,7 @@ public final class Dates extends AbstractBaseComponent {
 			return (null);
 		}
 	}
-	
+
 	/**
 	 * Accessor for the expiration date (optional).
 	 */
@@ -361,9 +362,9 @@ public final class Dates extends AbstractBaseComponent {
 	 * Accessor for the cutoff date (optional). Returns a copy.
 	 * 
 	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
-	 * XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
-	 * null for dates in the new format. Use <code>getInfoCutOffString()</code> to
-	 * access the raw XML format of the date instead.
+	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
+	 *             null for dates in the new format. Use <code>getInfoCutOffString()</code> to
+	 *             access the raw XML format of the date instead.
 	 */
 	public XMLGregorianCalendar getInfoCutOff() {
 		try {
@@ -373,21 +374,21 @@ public final class Dates extends AbstractBaseComponent {
 			return (null);
 		}
 	}
-	
+
 	/**
 	 * Accessor for the cutoff date (optional).
 	 */
 	public String getInfoCutOffString() {
 		return (getAttributeValue(INFO_CUT_OFF_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the approved on date (optional). Returns a copy.
 	 * 
 	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
-	 * XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
-	 * null for dates in the new format. Use <code>getApprovedOnString()</code> to
-	 * access the raw XML format of the date instead.
+	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
+	 *             null for dates in the new format. Use <code>getApprovedOnString()</code> to
+	 *             access the raw XML format of the date instead.
 	 */
 	public XMLGregorianCalendar getApprovedOn() {
 		try {
@@ -404,14 +405,14 @@ public final class Dates extends AbstractBaseComponent {
 	public String getApprovedOnString() {
 		return (getAttributeValue(APPROVED_ON_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the received on date (optional). Returns a copy.
 	 * 
 	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
-	 * XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
-	 * null for dates in the new format. Use <code>getReceivedOnString()</code> to
-	 * access the raw XML format of the date instead.
+	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
+	 *             null for dates in the new format. Use <code>getReceivedOnString()</code> to
+	 *             access the raw XML format of the date instead.
 	 */
 	public XMLGregorianCalendar getReceivedOn() {
 		try {
@@ -421,28 +422,28 @@ public final class Dates extends AbstractBaseComponent {
 			return (null);
 		}
 	}
-	
+
 	/**
 	 * Accessor for the received on date (optional).
 	 */
 	public String getReceivedOnString() {
 		return (getAttributeValue(RECEIVED_ON_NAME));
 	}
-	
+
 	/**
-	 * Accessor for the acquiredOn dates (0-many optional). 
+	 * Accessor for the acquiredOn dates (0-many optional).
 	 */
 	public List<ApproximableDate> getAcquiredOns() {
 		return (Collections.unmodifiableList(_acquiredOns));
 	}
-	
+
 	/**
 	 * Accesor for the datatype factory
 	 */
 	private static DatatypeFactory getFactory() {
 		return (Util.getDataTypeFactory());
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -459,12 +460,12 @@ public final class Dates extends AbstractBaseComponent {
 		private String _infoCutOff;
 		private String _approvedOn;
 		private String _receivedOn;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -478,7 +479,7 @@ public final class Dates extends AbstractBaseComponent {
 			setApprovedOn(dates.getApprovedOnString());
 			setReceivedOn(dates.getReceivedOnString());
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -491,8 +492,8 @@ public final class Dates extends AbstractBaseComponent {
 				if (component != null)
 					acquiredOns.add(component);
 			}
-			return (new Dates(acquiredOns, getCreated(), getPosted(), getValidTil(),
-				getInfoCutOff(), getApprovedOn(), getReceivedOn()));
+			return (new Dates(acquiredOns, getCreated(), getPosted(), getValidTil(), getInfoCutOff(), getApprovedOn(),
+				getReceivedOn()));
 		}
 
 		/**
@@ -503,10 +504,9 @@ public final class Dates extends AbstractBaseComponent {
 			for (IBuilder builder : getAcquiredOns())
 				hasValueInList = hasValueInList || !builder.isEmpty();
 			return (!hasValueInList && Util.isEmpty(getCreated()) && Util.isEmpty(getPosted())
-				&& Util.isEmpty(getValidTil()) && Util.isEmpty(getInfoCutOff()) && Util.isEmpty(getApprovedOn()) && Util
-				.isEmpty(getReceivedOn()));
+				&& Util.isEmpty(getValidTil()) && Util.isEmpty(getInfoCutOff()) && Util.isEmpty(getApprovedOn()) && Util.isEmpty(getReceivedOn()));
 		}
-		
+
 		/**
 		 * Builder accessor for the acquiredOn dates
 		 */
@@ -515,7 +515,7 @@ public final class Dates extends AbstractBaseComponent {
 				_acquiredOns = new LazyList(ApproximableDate.Builder.class);
 			return _acquiredOns;
 		}
-		
+
 		/**
 		 * Builder accessor for the created date.
 		 */

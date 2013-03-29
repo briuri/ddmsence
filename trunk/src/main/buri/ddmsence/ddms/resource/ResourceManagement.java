@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import java.io.Serializable;
@@ -39,7 +39,7 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:resourceManagement.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:recordsManagementInfo</u>: Information about the record keeper and software used to create the object to 
+ * <u>ddms:recordsManagementInfo</u>: Information about the record keeper and software used to create the object to
  * which this metadata applies (0-1 optional), implemented as a {@link RecordsManagementInfo}<br />
  * <u>ddms:revisionRecall</u>: Details about any revision recalls for this resource (0-1 optional), implemented as a
  * {@link RevisionRecall}<br />
@@ -50,31 +50,31 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are optional.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public final class ResourceManagement extends AbstractBaseComponent {
-	
+
 	private RecordsManagementInfo _recordsManagementInfo = null;
 	private RevisionRecall _revisionRecall = null;
 	private List<TaskingInfo> _taskingInfos = null;
 	private List<ProcessingInfo> _processingInfos = null;
-	private SecurityAttributes _securityAttributes = null;	
+	private SecurityAttributes _securityAttributes = null;
 
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ResourceManagement(Element element) throws InvalidDDMSException {
 		try {
 			setXOMElement(element, false);
-			Element recordsManagementInfo = element.getFirstChildElement(RecordsManagementInfo
-				.getName(getDDMSVersion()), getNamespace());
+			Element recordsManagementInfo = element.getFirstChildElement(
+				RecordsManagementInfo.getName(getDDMSVersion()), getNamespace());
 			if (recordsManagementInfo != null)
 				_recordsManagementInfo = new RecordsManagementInfo(recordsManagementInfo);
 			Element revisionRecall = element.getFirstChildElement(RevisionRecall.getName(getDDMSVersion()),
@@ -100,10 +100,10 @@ public final class ResourceManagement extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param recordsManagementInfo records management info (optional)
 	 * @param revisionRecall information about revision recalls (optional)
 	 * @param taskingInfos list of tasking info (optional)
@@ -144,7 +144,7 @@ public final class ResourceManagement extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-			
+
 	/**
 	 * Validates the component.
 	 * 
@@ -161,13 +161,13 @@ public final class ResourceManagement extends AbstractBaseComponent {
 		Util.requireDDMSQName(getXOMElement(), ResourceManagement.getName(getDDMSVersion()));
 		Util.requireBoundedChildCount(getXOMElement(), RecordsManagementInfo.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), RevisionRecall.getName(getDDMSVersion()), 0, 1);
-		
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0.1");
 
 		super.validate();
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -183,7 +183,7 @@ public final class ResourceManagement extends AbstractBaseComponent {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -195,14 +195,14 @@ public final class ResourceManagement extends AbstractBaseComponent {
 		list.addAll(getProcessingInfos());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof ResourceManagement))
 			return (false);
-		return (true);		
+		return (true);
 	}
 
 	/**
@@ -215,7 +215,7 @@ public final class ResourceManagement extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("resourceManagement");
 	}
-	
+
 	/**
 	 * Accessor for the recordsManagementInfo
 	 */
@@ -228,29 +228,29 @@ public final class ResourceManagement extends AbstractBaseComponent {
 	 */
 	public RevisionRecall getRevisionRecall() {
 		return _revisionRecall;
-	}	
-	
+	}
+
 	/**
 	 * Accessor for the tasking information
 	 */
 	public List<TaskingInfo> getTaskingInfos() {
-		return (Collections.unmodifiableList(_taskingInfos)); 
+		return (Collections.unmodifiableList(_taskingInfos));
 	}
-	
+
 	/**
 	 * Accessor for the processing information
 	 */
 	public List<ProcessingInfo> getProcessingInfos() {
-		return (Collections.unmodifiableList(_processingInfos)); 
+		return (Collections.unmodifiableList(_processingInfos));
 	}
-	
+
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_securityAttributes);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -265,18 +265,19 @@ public final class ResourceManagement extends AbstractBaseComponent {
 		private List<TaskingInfo.Builder> _taskingInfos;
 		private List<ProcessingInfo.Builder> _processingInfos;
 		private SecurityAttributes.Builder _securityAttributes;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(ResourceManagement resourceManagement) {
 			if (resourceManagement.getRecordsManagementInfo() != null)
-				setRecordsManagementInfo(new RecordsManagementInfo.Builder(resourceManagement.getRecordsManagementInfo()));
+				setRecordsManagementInfo(new RecordsManagementInfo.Builder(
+					resourceManagement.getRecordsManagementInfo()));
 			if (resourceManagement.getRevisionRecall() != null)
 				setRevisionRecall(new RevisionRecall.Builder(resourceManagement.getRevisionRecall()));
 			for (TaskingInfo info : resourceManagement.getTaskingInfos())
@@ -285,7 +286,7 @@ public final class ResourceManagement extends AbstractBaseComponent {
 				getProcessingInfos().add(new ProcessingInfo.Builder(info));
 			setSecurityAttributes(new SecurityAttributes.Builder(resourceManagement.getSecurityAttributes()));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -319,8 +320,7 @@ public final class ResourceManagement extends AbstractBaseComponent {
 			for (IBuilder builder : getTaskingInfos()) {
 				hasValueInList = hasValueInList || !builder.isEmpty();
 			}
-			return (!hasValueInList && getRecordsManagementInfo().isEmpty() && getRevisionRecall().isEmpty() && getSecurityAttributes()
-				.isEmpty());
+			return (!hasValueInList && getRecordsManagementInfo().isEmpty() && getRevisionRecall().isEmpty() && getSecurityAttributes().isEmpty());
 		}
 
 		/**
@@ -360,19 +360,19 @@ public final class ResourceManagement extends AbstractBaseComponent {
 		 */
 		public List<TaskingInfo.Builder> getTaskingInfos() {
 			if (_taskingInfos == null)
-				_taskingInfos = new LazyList(TaskingInfo.Builder.class);					
+				_taskingInfos = new LazyList(TaskingInfo.Builder.class);
 			return _taskingInfos;
 		}
-		
+
 		/**
 		 * Builder accessor for the processingInfos
 		 */
 		public List<ProcessingInfo.Builder> getProcessingInfos() {
 			if (_processingInfos == null)
-				_processingInfos = new LazyList(ProcessingInfo.Builder.class);					
+				_processingInfos = new LazyList(ProcessingInfo.Builder.class);
 			return _processingInfos;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
@@ -381,7 +381,7 @@ public final class ResourceManagement extends AbstractBaseComponent {
 				_securityAttributes = new SecurityAttributes.Builder();
 			return _securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
@@ -389,4 +389,4 @@ public final class ResourceManagement extends AbstractBaseComponent {
 			_securityAttributes = securityAttributes;
 		}
 	}
-} 
+}

@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
@@ -42,7 +42,7 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:value</u>: The keyword itself (required)<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS 
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS
  * 4.0.1)<br />
  * <u>{@link ExtensibleAttributes}</u>: (optional, starting in DDMS 3.0).
  * </td></tr></table>
@@ -54,13 +54,13 @@ public final class Keyword extends AbstractBaseComponent {
 
 	private SecurityAttributes _securityAttributes = null;
 	private ExtensibleAttributes _extensibleAttributes = null;
-	
+
 	private static final String VALUE_NAME = "value";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Keyword(Element element) throws InvalidDDMSException {
@@ -74,10 +74,10 @@ public final class Keyword extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-		
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param value the value attribute (required)
 	 * @param securityAttributes any security attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -85,13 +85,13 @@ public final class Keyword extends AbstractBaseComponent {
 	public Keyword(String value, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		this(value, securityAttributes, null);
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data.
 	 * 
 	 * <p>This constructor will throw an InvalidDDMSException if the extensible attributes uses the reserved
 	 * attribute "ddms:value".</p>
-	 *  
+	 * 
 	 * @param value the value attribute (required)
 	 * @param securityAttributes any security attributes (optional)
 	 * @param extensibleAttributes extensible attributes (optional)
@@ -113,7 +113,7 @@ public final class Keyword extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-		
+
 	/**
 	 * Validates the component.
 	 * 
@@ -139,7 +139,7 @@ public final class Keyword extends AbstractBaseComponent {
 
 		super.validate();
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -151,7 +151,7 @@ public final class Keyword extends AbstractBaseComponent {
 		text.append(getExtensibleAttributes().getOutput(isHTML, localPrefix + "."));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -159,8 +159,7 @@ public final class Keyword extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof Keyword))
 			return (false);
 		Keyword test = (Keyword) obj;
-		return (getValue().equals(test.getValue())
-			&& getExtensibleAttributes().equals(test.getExtensibleAttributes()));
+		return (getValue().equals(test.getValue()) && getExtensibleAttributes().equals(test.getExtensibleAttributes()));
 	}
 
 	/**
@@ -172,7 +171,7 @@ public final class Keyword extends AbstractBaseComponent {
 		result = 7 * result + getExtensibleAttributes().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -183,28 +182,28 @@ public final class Keyword extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("keyword");
 	}
-	
+
 	/**
 	 * Accessor for the value attribute.
 	 */
 	public String getValue() {
 		return (getAttributeValue(VALUE_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_securityAttributes);
 	}
-	
+
 	/**
 	 * Accessor for the extensible attributes. Will always be non-null, even if not set.
 	 */
 	public ExtensibleAttributes getExtensibleAttributes() {
 		return (_extensibleAttributes);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -217,12 +216,12 @@ public final class Keyword extends AbstractBaseComponent {
 		private String _value;
 		private SecurityAttributes.Builder _securityAttributes;
 		private ExtensibleAttributes.Builder _extensibleAttributes;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -231,7 +230,7 @@ public final class Keyword extends AbstractBaseComponent {
 			setSecurityAttributes(new SecurityAttributes.Builder(keyword.getSecurityAttributes()));
 			setExtensibleAttributes(new ExtensibleAttributes.Builder(keyword.getExtensibleAttributes()));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -239,7 +238,7 @@ public final class Keyword extends AbstractBaseComponent {
 			return (isEmpty() ? null : new Keyword(getValue(), getSecurityAttributes().commit(),
 				getExtensibleAttributes().commit()));
 		}
-		
+
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
@@ -262,7 +261,7 @@ public final class Keyword extends AbstractBaseComponent {
 		public void setValue(String value) {
 			_value = value;
 		}
-				
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
@@ -271,14 +270,14 @@ public final class Keyword extends AbstractBaseComponent {
 				_securityAttributes = new SecurityAttributes.Builder();
 			return _securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
 		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
 			_securityAttributes = securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the Extensible Attributes
 		 */
@@ -287,7 +286,7 @@ public final class Keyword extends AbstractBaseComponent {
 				_extensibleAttributes = new ExtensibleAttributes.Builder();
 			return _extensibleAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the Extensible Attributes
 		 */
@@ -295,4 +294,4 @@ public final class Keyword extends AbstractBaseComponent {
 			_extensibleAttributes = extensibleAttributes;
 		}
 	}
-} 
+}

@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary.gml;
 
 import java.io.Serializable;
@@ -55,11 +55,11 @@ public final class Position extends AbstractBaseComponent {
 
 	private SRSAttributes _srsAttributes = null;
 	private List<Double> _coordinates = null;
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Position(Element element) throws InvalidDDMSException {
@@ -78,12 +78,13 @@ public final class Position extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
+	 * 
 	 * @param coordinates a list of either 2 or 3 coordinate Double values
 	 * @param srsAttributes the attribute group containing srsName, srsDimension, axisLabels, and uomLabels
-	 *  
+	 * 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Position(List<Double> coordinates, SRSAttributes srsAttributes) throws InvalidDDMSException {
@@ -104,7 +105,7 @@ public final class Position extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-			
+
 	/**
 	 * Validates the component.
 	 * 
@@ -127,10 +128,10 @@ public final class Position extends AbstractBaseComponent {
 			throw new InvalidDDMSException("A position must be represented by either 2 or 3 coordinates.");
 		Util.requireValidLatitude(getCoordinates().get(0));
 		Util.requireValidLongitude(getCoordinates().get(1));
-		
+
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -142,7 +143,7 @@ public final class Position extends AbstractBaseComponent {
 		addWarnings(getSRSAttributes().getValidationWarnings(), true);
 		super.validateWarnings();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -153,7 +154,7 @@ public final class Position extends AbstractBaseComponent {
 		text.append(getSRSAttributes().getOutput(isHTML, localPrefix + "."));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -161,7 +162,7 @@ public final class Position extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof Position))
 			return (false);
 		Position test = (Position) obj;
-		return (getSRSAttributes().equals(test.getSRSAttributes()) 
+		return (getSRSAttributes().equals(test.getSRSAttributes())
 			&& getCoordinates().size() == test.getCoordinates().size()
 			&& Util.listEquals(getCoordinates(), test.getCoordinates()));
 	}
@@ -175,7 +176,7 @@ public final class Position extends AbstractBaseComponent {
 		result = 7 * result + getCoordinatesAsXsList().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -186,28 +187,28 @@ public final class Position extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("pos");
 	}
-	
+
 	/**
 	 * Accessor for the SRS Attributes. Will always be non-null, even if the attributes inside are not set.
 	 */
 	public SRSAttributes getSRSAttributes() {
 		return (_srsAttributes);
 	}
-	
+
 	/**
 	 * Accessor for the coordinates of the position. May return null, but cannot happen after instantiation.
 	 */
 	public List<Double> getCoordinates() {
 		return (Collections.unmodifiableList(_coordinates));
 	}
-		
+
 	/**
 	 * Accessor for the String representation of the coordinates
 	 */
 	public String getCoordinatesAsXsList() {
 		return (getXOMElement().getValue());
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -219,12 +220,12 @@ public final class Position extends AbstractBaseComponent {
 		private static final long serialVersionUID = 33638279863455987L;
 		private SRSAttributes.Builder _srsAttributes;
 		private List<Position.DoubleBuilder> _coordinates;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -233,7 +234,7 @@ public final class Position extends AbstractBaseComponent {
 			for (Double coord : position.getCoordinates())
 				getCoordinates().add(new DoubleBuilder(coord));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -245,10 +246,10 @@ public final class Position extends AbstractBaseComponent {
 				Double coord = builder.commit();
 				if (coord != null)
 					coordinates.add(coord);
-			}	
+			}
 			return (new Position(coordinates, getSrsAttributes().commit()));
 		}
-		
+
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
@@ -259,7 +260,7 @@ public final class Position extends AbstractBaseComponent {
 			}
 			return (!hasValueInList && getSrsAttributes().isEmpty());
 		}
-		
+
 		/**
 		 * Builder accessor for the SRS Attributes
 		 */
@@ -268,14 +269,14 @@ public final class Position extends AbstractBaseComponent {
 				_srsAttributes = new SRSAttributes.Builder();
 			return _srsAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the SRS Attributes
 		 */
 		public void setSrsAttributes(SRSAttributes.Builder srsAttributes) {
 			_srsAttributes = srsAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the coordinates of the position
 		 */
@@ -283,9 +284,9 @@ public final class Position extends AbstractBaseComponent {
 			if (_coordinates == null)
 				_coordinates = new LazyList(Position.DoubleBuilder.class);
 			return _coordinates;
-		}		
+		}
 	}
-	
+
 	/**
 	 * Builder for a Double
 	 * 
@@ -300,19 +301,19 @@ public final class Position extends AbstractBaseComponent {
 	public static class DoubleBuilder implements Serializable {
 		private static final long serialVersionUID = -5102193614065692204L;
 		private Double _value;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public DoubleBuilder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
 		public DoubleBuilder(Double value) {
 			setValue(value);
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -341,4 +342,4 @@ public final class Position extends AbstractBaseComponent {
 			_value = value;
 		}
 	}
-} 
+}

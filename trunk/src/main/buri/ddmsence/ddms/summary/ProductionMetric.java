@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
@@ -35,13 +35,16 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
- * <li>The subject and coverage attributes must be non-empty. This rule is codified in the schema, starting in DDMS 5.0.</li>
+ * <li>The subject and coverage attributes must be non-empty. This rule is codified in the schema, starting in DDMS
+ * 5.0.</li>
  * </ul>
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>ddms:subject</u>: A method of categorizing the subject of a document in a fashion understandable by DDNI-A. (required)<br />
- * <u>ddms:coverage</u>: A method of categorizing the coverage of a document in a fashion understandable by DDNI-A (required)<br />
+ * <u>ddms:subject</u>: A method of categorizing the subject of a document in a fashion understandable by DDNI-A.
+ * (required)<br />
+ * <u>ddms:coverage</u>: A method of categorizing the coverage of a document in a fashion understandable by DDNI-A
+ * (required)<br />
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
  * </td></tr></table>
  * 
@@ -51,10 +54,10 @@ import buri.ddmsence.util.Util;
 public final class ProductionMetric extends AbstractBaseComponent {
 
 	private SecurityAttributes _securityAttributes = null;
-	
+
 	private static final String SUBJECT_NAME = "subject";
 	private static final String COVERAGE_NAME = "coverage";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 * 
@@ -76,9 +79,9 @@ public final class ProductionMetric extends AbstractBaseComponent {
 	 * Constructor for creating a component from raw data.
 	 * 
 	 * @param subject a method of categorizing the subject of a document in a fashion understandable by DDNI-A
-	 * (required)
+	 *        (required)
 	 * @param coverage a method of categorizing the coverage of a document in a fashion understandable by DDNI-A
-	 * (required)
+	 *        (required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ProductionMetric(String subject, String coverage, SecurityAttributes securityAttributes)
@@ -113,13 +116,13 @@ public final class ProductionMetric extends AbstractBaseComponent {
 		Util.requireDDMSQName(getXOMElement(), ProductionMetric.getName(getDDMSVersion()));
 		Util.requireDDMSValue("subject attribute", getSubject());
 		Util.requireDDMSValue("coverage attribute", getCoverage());
-		
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0.1");
-		
+
 		super.validate();
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -131,7 +134,7 @@ public final class ProductionMetric extends AbstractBaseComponent {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -152,7 +155,7 @@ public final class ProductionMetric extends AbstractBaseComponent {
 		result = 7 * result + getCoverage().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -163,28 +166,28 @@ public final class ProductionMetric extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("productionMetric");
 	}
-	
+
 	/**
 	 * Accessor for the subject attribute.
 	 */
 	public String getSubject() {
 		return (getAttributeValue(SUBJECT_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the coverage attribute.
 	 */
 	public String getCoverage() {
 		return (getAttributeValue(COVERAGE_NAME));
 	}
-		
+
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_securityAttributes);
 	}
-		
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -197,12 +200,12 @@ public final class ProductionMetric extends AbstractBaseComponent {
 		private String _subject;
 		private String _coverage;
 		private SecurityAttributes.Builder _securityAttributes;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -211,15 +214,15 @@ public final class ProductionMetric extends AbstractBaseComponent {
 			setCoverage(metric.getCoverage());
 			setSecurityAttributes(new SecurityAttributes.Builder(metric.getSecurityAttributes()));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
 		public ProductionMetric commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new ProductionMetric(getSubject(), getCoverage(), 
+			return (isEmpty() ? null : new ProductionMetric(getSubject(), getCoverage(),
 				getSecurityAttributes().commit()));
 		}
-		
+
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
@@ -263,7 +266,7 @@ public final class ProductionMetric extends AbstractBaseComponent {
 				_securityAttributes = new SecurityAttributes.Builder();
 			return _securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
@@ -271,4 +274,4 @@ public final class ProductionMetric extends AbstractBaseComponent {
 			_securityAttributes = securityAttributes;
 		}
 	}
-} 
+}

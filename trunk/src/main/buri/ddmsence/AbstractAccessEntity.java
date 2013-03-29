@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence;
 
 import java.io.Serializable;
@@ -40,26 +40,26 @@ import buri.ddmsence.util.Util;
  * before the component is used. </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ntk:AccessSystemName</u>: The system described by this access record (exactly 1 required), implemented as a 
+ * <u>ntk:AccessSystemName</u>: The system described by this access record (exactly 1 required), implemented as a
  * {@link SystemName}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public abstract class AbstractAccessEntity extends AbstractBaseComponent {
-	
+
 	private SystemName _systemName = null;
 	private SecurityAttributes _securityAttributes = null;
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element. Does not validate.
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public AbstractAccessEntity(Element element) throws InvalidDDMSException {
@@ -69,10 +69,10 @@ public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 			_systemName = new SystemName(systemElement);
 		_securityAttributes = new SecurityAttributes(element);
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data. Does not validate.
-	 *  
+	 * 
 	 * @param systemName the system name (required)
 	 * @param securityAttributes security attributes (required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -88,7 +88,7 @@ public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 		_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 		_securityAttributes.addTo(element);
 	}
-			
+
 	/**
 	 * Validates the component.
 	 * 
@@ -108,13 +108,13 @@ public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 		Util.requireBoundedChildCount(getXOMElement(), SystemName.getName(getDDMSVersion()), 1, 1);
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
-		
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0.1");
 
 		super.validate();
 	}
-				
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -123,30 +123,30 @@ public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 		list.add(getSystemName());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof AbstractAccessEntity))
 			return (false);
-		return (true);		
+		return (true);
 	}
-	
+
 	/**
 	 * Accessor for the system name
 	 */
 	public SystemName getSystemName() {
 		return _systemName;
 	}
-	
+
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_securityAttributes);
 	}
-		
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -212,4 +212,4 @@ public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 			_securityAttributes = securityAttributes;
 		}
 	}
-} 
+}

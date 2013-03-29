@@ -16,9 +16,8 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms;
-
 
 /**
  * Identifying interface for a mutable Builder of components
@@ -35,7 +34,7 @@ package buri.ddmsence.ddms;
  * @since 1.8.0
  */
 public interface IBuilder {
-	
+
 	/**
 	 * Finalizes the data gathered for this builder instance. If no values have been provided, a null instance will be
 	 * returned instead of a possibly invalid one or an empty one.
@@ -43,7 +42,7 @@ public interface IBuilder {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public IDDMSComponent commit() throws InvalidDDMSException;
-	
+
 	/**
 	 * Checks if any values have been provided for this Builder.
 	 * 

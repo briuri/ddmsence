@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence;
 
 import java.io.Serializable;
@@ -39,29 +39,29 @@ import buri.ddmsence.util.Util;
  * example, if this entity's role is a "pointOfContact", the HTML meta tags will prefix each
  * field with "pointOfContact."</p>
  * 
- * <p> Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set
+ * <p>Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set
  * before the component is used. </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public abstract class AbstractRoleEntity extends AbstractBaseComponent implements IRoleEntity {
-	
+
 	private List<String> _names = null;
 	private List<String> _phones = null;
 	private List<String> _emails = null;
 	private ExtensibleAttributes _extensibleAttributes = null;
-	
+
 	private static final String NAME_NAME = "name";
 	private static final String PHONE_NAME = "phone";
-	private static final String EMAIL_NAME = "email";	
-	
+	private static final String EMAIL_NAME = "email";
+
 	/**
 	 * Base constructor
 	 * 
 	 * @param element the XOM element representing this component
 	 * @param validateNow true to validate the component immediately. Because Person and Organization entities have
-	 * additional fields they should not be validated in the superconstructor.
+	 *        additional fields they should not be validated in the superconstructor.
 	 */
 	protected AbstractRoleEntity(Element element, boolean validateNow) throws InvalidDDMSException {
 		try {
@@ -76,7 +76,7 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor which builds from raw data. Does not validate.
 	 * 
@@ -111,7 +111,7 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 		_extensibleAttributes.addTo(element);
 		setXOMElement(element, false);
 	}
-			
+
 	/**
 	 * Validates the component.
 	 * 
@@ -125,13 +125,13 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	protected void validate() throws InvalidDDMSException {
 		if (getXOMElement().getChildElements(NAME_NAME, getNamespace()).size() == 0)
 			throw new InvalidDDMSException("At least 1 name element must exist.");
-		
+
 		if (Util.containsOnlyEmptyValues(getNames()))
 			throw new InvalidDDMSException("At least 1 name element must have a non-empty value.");
 
-		super.validate();	
+		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -159,7 +159,7 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 		}
 		super.validateWarnings();
 	}
-			
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -184,7 +184,7 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 		result = 7 * result + getExtensibleAttributes().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -198,7 +198,7 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 		text.append(getExtensibleAttributes().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Accessor for the names of the entity (1 to many).
 	 * 
@@ -207,7 +207,7 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	public List<String> getNames() {
 		return (Collections.unmodifiableList(_names));
 	}
-	
+
 	/**
 	 * Accessor for the phone numbers of the entity (0 to many).
 	 * 
@@ -216,7 +216,7 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	public List<String> getPhones() {
 		return (Collections.unmodifiableList(_phones));
 	}
-	
+
 	/**
 	 * Accessor for the emails of the entity (0 to many).
 	 * 
@@ -225,14 +225,14 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	public List<String> getEmails() {
 		return (Collections.unmodifiableList(_emails));
 	}
-	
+
 	/**
 	 * Accessor for the extensible attributes. Will always be non-null, even if not set.
 	 */
 	public ExtensibleAttributes getExtensibleAttributes() {
 		return (_extensibleAttributes);
 	}
-	
+
 	/**
 	 * Abstract Builder for this DDMS component.
 	 * 
@@ -249,12 +249,12 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 		private List<String> _phones;
 		private List<String> _emails;
 		private ExtensibleAttributes.Builder _extensibleAttributes;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		protected Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -264,7 +264,7 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 			setEmails(entity.getEmails());
 			setExtensibleAttributes(new ExtensibleAttributes.Builder(entity.getExtensibleAttributes()));
 		}
-		
+
 		/**
 		 * Helper method to determine if any values have been entered for this producer.
 		 * 
@@ -276,7 +276,7 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 				&& Util.containsOnlyEmptyValues(getEmails())
 				&& getExtensibleAttributes().isEmpty());
 		}
-		
+
 		/**
 		 * Builder accessor for the names
 		 */
@@ -324,7 +324,7 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 		public void setEmails(List<String> emails) {
 			_emails = new LazyList(emails, String.class);
 		}
-		
+
 		/**
 		 * Builder accessor for the Extensible Attributes
 		 */
@@ -333,7 +333,7 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 				_extensibleAttributes = new ExtensibleAttributes.Builder();
 			return _extensibleAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the Extensible Attributes
 		 */

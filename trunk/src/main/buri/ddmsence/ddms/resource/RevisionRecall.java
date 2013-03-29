@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import java.io.Serializable;
@@ -45,7 +45,7 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:revisionRecall.
  * 
- * <p>A revisionRecall element will either contain free child text describing the recall, or a set of link and details 
+ * <p>A revisionRecall element will either contain free child text describing the recall, or a set of link and details
  * elements.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
@@ -56,7 +56,8 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:link</u>: Links to further information about the recall (0-many optional), implemented as a {@link Link}<br />
+ * <u>ddms:link</u>: Links to further information about the recall (0-many optional), implemented as a {@link Link}<br
+ * />
  * <u>ddms:details</u>: Further details about the recall (0-many optional), implemented as a {@link Details}<br />
  * </td></tr></table>
  * 
@@ -66,7 +67,7 @@ import buri.ddmsence.util.Util;
  * <u>network</u>: the name of the network, taken from a token list (optional)<br />
  * <u>otherNetwork</u>: an alternate network name (optional)<br />
  * <u>{@link XLinkAttributes}</u>: If set, the xlink:type attribute must have a fixed value of "resource".<br />
- * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -79,15 +80,15 @@ public final class RevisionRecall extends AbstractBaseComponent {
 	private Integer _revisionID = null;
 	private XLinkAttributes _xlinkAttributes = null;
 	private SecurityAttributes _securityAttributes = null;
-	
+
 	private static final String FIXED_TYPE = "resource";
 
 	/** The prefix of the network attributes */
 	public static final String NO_PREFIX = "";
-	
+
 	/** The namespace of the network attributes */
 	public static final String NO_NAMESPACE = "";
-	
+
 	private static final String REVISION_ID_NAME = "revisionID";
 	private static final String REVISION_TYPE_NAME = "revisionType";
 	private static final String NETWORK_NAME = "network";
@@ -100,11 +101,11 @@ public final class RevisionRecall extends AbstractBaseComponent {
 		REVISION_TYPE_TYPES.add("SUBSTANTIVE RECALL");
 		REVISION_TYPE_TYPES.add("SUBSTANTIVE REVISION");
 	}
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public RevisionRecall(Element element) throws InvalidDDMSException {
@@ -126,7 +127,7 @@ public final class RevisionRecall extends AbstractBaseComponent {
 					_revisionID = Integer.valueOf(revisionID);
 				}
 				catch (NumberFormatException e) {
-					// 	This will be thrown as an InvalidDDMSException during validation
+					// This will be thrown as an InvalidDDMSException during validation
 				}
 			}
 			_xlinkAttributes = new XLinkAttributes(element);
@@ -223,7 +224,7 @@ public final class RevisionRecall extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
@@ -241,14 +242,14 @@ public final class RevisionRecall extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), RevisionRecall.getName(getDDMSVersion()));
-		
+
 		boolean hasChildText = false;
 		for (int i = 0; i < getXOMElement().getChildCount(); i++) {
 			Node child = getXOMElement().getChild(i);
 			hasChildText = (hasChildText || (child instanceof Text && !Util.isEmpty(child.getValue().trim())));
 		}
 		boolean hasNestedElements = (!getLinks().isEmpty() || !getDetails().isEmpty());
-		
+
 		if (hasChildText && hasNestedElements) {
 			throw new InvalidDDMSException(
 				"A ddms:revisionRecall element cannot have both child text and nested elements.");
@@ -259,15 +260,15 @@ public final class RevisionRecall extends AbstractBaseComponent {
 		}
 		Util.requireDDMSValue("revision ID", getRevisionID());
 		if (!REVISION_TYPE_TYPES.contains(getRevisionType()))
-			throw new InvalidDDMSException("The revisionType attribute must be one of " + REVISION_TYPE_TYPES);		
+			throw new InvalidDDMSException("The revisionType attribute must be one of " + REVISION_TYPE_TYPES);
 		if (!Util.isEmpty(getXLinkAttributes().getType()) && !getXLinkAttributes().getType().equals(FIXED_TYPE))
 			throw new InvalidDDMSException("The type attribute must have a fixed value of \"" + FIXED_TYPE + "\".");
 		if (!Util.isEmpty(getNetwork()))
 			ISMVocabulary.requireValidNetwork(getNetwork());
-		
+
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -280,7 +281,7 @@ public final class RevisionRecall extends AbstractBaseComponent {
 			addWarnings(getXLinkAttributes().getValidationWarnings(), true);
 		super.validateWarnings();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -300,7 +301,7 @@ public final class RevisionRecall extends AbstractBaseComponent {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix + "."));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -310,7 +311,7 @@ public final class RevisionRecall extends AbstractBaseComponent {
 		list.addAll(getDetails());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -339,7 +340,7 @@ public final class RevisionRecall extends AbstractBaseComponent {
 		result = 7 * result + getXLinkAttributes().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -350,70 +351,70 @@ public final class RevisionRecall extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("revisionRecall");
 	}
-		
+
 	/**
 	 * Accessor for the list of Links.
 	 */
 	public List<Link> getLinks() {
 		return (Collections.unmodifiableList(_links));
 	}
-	
+
 	/**
 	 * Accessor for the list of Details.
 	 */
 	public List<Details> getDetails() {
 		return (Collections.unmodifiableList(_details));
 	}
-	
+
 	/**
 	 * Accessor for the value of the child text.
 	 */
 	public String getValue() {
 		return (getXOMElement().getValue());
 	}
-	
+
 	/**
 	 * Accessor for the revisionID attribute.
 	 */
 	public Integer getRevisionID() {
 		return (_revisionID);
 	}
-	
+
 	/**
 	 * Accessor for the revisionType attribute.
 	 */
 	public String getRevisionType() {
 		return (getAttributeValue(REVISION_TYPE_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the network attribute.
 	 */
 	public String getNetwork() {
 		return (getAttributeValue(NETWORK_NAME, NO_NAMESPACE));
 	}
-	
+
 	/**
 	 * Accessor for the otherNetwork attribute.
 	 */
 	public String getOtherNetwork() {
 		return (getAttributeValue(OTHER_NETWORK_NAME, NO_NAMESPACE));
 	}
-	
+
 	/**
 	 * Accessor for the XDetails Attributes. Will always be non-null, even if it has no values set.
 	 */
 	public XLinkAttributes getXLinkAttributes() {
 		return (_xlinkAttributes);
 	}
-	
+
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_securityAttributes);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -431,13 +432,13 @@ public final class RevisionRecall extends AbstractBaseComponent {
 		private String _network;
 		private String _otherNetwork;
 		private XLinkAttributes.Builder _xlinkAttributes;
-		private SecurityAttributes.Builder _securityAttributes;		 
-		 
+		private SecurityAttributes.Builder _securityAttributes;
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -455,7 +456,7 @@ public final class RevisionRecall extends AbstractBaseComponent {
 			setXLinkAttributes(new XLinkAttributes.Builder(recall.getXLinkAttributes()));
 			setSecurityAttributes(new SecurityAttributes.Builder(recall.getSecurityAttributes()));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -593,7 +594,7 @@ public final class RevisionRecall extends AbstractBaseComponent {
 				_xlinkAttributes = new XLinkAttributes.Builder();
 			return _xlinkAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the XLink Attributes
 		 */
@@ -609,12 +610,12 @@ public final class RevisionRecall extends AbstractBaseComponent {
 				_securityAttributes = new SecurityAttributes.Builder();
 			return _securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
 		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
 			_securityAttributes = securityAttributes;
-		}			
+		}
 	}
-} 
+}

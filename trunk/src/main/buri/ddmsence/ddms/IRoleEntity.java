@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms;
 
 import java.util.List;
@@ -25,39 +25,39 @@ import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 
 /**
  * Identifying interface for an entity element (person, organization, service, unknown) which may be used to fulfill
- * a producer role (creator, contributor, pointOfContact, publisher) or a tasking role (addressee, requesterInfo, 
+ * a producer role (creator, contributor, pointOfContact, publisher) or a tasking role (addressee, requesterInfo,
  * recordKeeper).
- *  
+ * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public interface IRoleEntity extends IDDMSComponent {
-	
+
 	/**
 	 * Accessor for the names of the entity (1 to many).
 	 * 
 	 * @return unmodifiable List
 	 */
 	public List<String> getNames();
-	
+
 	/**
 	 * Accessor for the phone numbers of the entity (0 to many).
 	 * 
 	 * @return unmodifiable List
 	 */
 	public List<String> getPhones();
-	
+
 	/**
 	 * Accessor for the emails of the entity (0 to many).
 	 * 
 	 * @return unmodifiable List
 	 */
 	public List<String> getEmails();
-	
+
 	/**
 	 * Accessor for any extensible attributes on the producer
 	 * 
 	 * @return the attributes
 	 */
-	public ExtensibleAttributes getExtensibleAttributes();	
+	public ExtensibleAttributes getExtensibleAttributes();
 }

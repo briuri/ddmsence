@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.security.ism;
 
 import java.io.Serializable;
@@ -59,25 +59,25 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	private XMLGregorianCalendar _noticeDate = null;
 	private String _unregisteredNoticeType = null;
 	private Boolean _externalNotice = null;
-		
+
 	/** Attribute name */
 	public static final String NOTICE_TYPE_NAME = "noticeType";
-	
+
 	/** Attribute name */
 	public static final String NOTICE_REASON_NAME = "noticeReason";
-	
+
 	/** Attribute name */
 	public static final String NOTICE_DATE_NAME = "noticeDate";
-	
+
 	/** Attribute name */
 	public static final String UNREGISTERED_NOTICE_TYPE_NAME = "unregisteredNoticeType";
-			
+
 	/** Attribute name */
 	public static final String EXTERNAL_NOTICE_NAME = "externalNotice";
-	
+
 	/** Maximum length of reason and unregistered notice type attributes. */
 	public static final int MAX_LENGTH = 2048;
-	
+
 	private static final Set<String> ALL_NAMES = new HashSet<String>();
 	static {
 		ALL_NAMES.add(NOTICE_TYPE_NAME);
@@ -86,10 +86,10 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 		ALL_NAMES.add(UNREGISTERED_NOTICE_TYPE_NAME);
 		ALL_NAMES.add(EXTERNAL_NOTICE_NAME);
 	}
-	
+
 	/** A set of all SecurityAttribute names which should not be converted into ExtensibleAttributes */
 	public static final Set<String> NON_EXTENSIBLE_NAMES = Collections.unmodifiableSet(ALL_NAMES);
-	
+
 	/**
 	 * Returns a non-null instance of notice attributes. If the instance passed in is not null, it will be returned.
 	 * 
@@ -100,7 +100,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	public static NoticeAttributes getNonNullInstance(NoticeAttributes noticeAttributes) throws InvalidDDMSException {
 		return (noticeAttributes == null ? new NoticeAttributes(null, null, null, null) : noticeAttributes);
 	}
-	
+
 	/**
 	 * Base constructor
 	 * 
@@ -120,12 +120,12 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 			_externalNotice = Boolean.valueOf(external);
 		validate(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()));
 	}
-	
+
 	/**
 	 * Constructor which builds from raw data.
 	 * 
-	 *  @deprecated A new constructor was added for DDMS 4.1 to support ism:externalNotice. This constructor is preserved for 
-	 * backwards compatibility, but may disappear in the next major release.
+	 * @deprecated A new constructor was added for DDMS 4.1 to support ism:externalNotice. This constructor is preserved
+	 *             for backwards compatibility, but may disappear in the next major release.
 	 * 
 	 * @param noticeType the notice type (with a value from the CVE)
 	 * @param noticeReason the reason associated with a notice
@@ -137,7 +137,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 		throws InvalidDDMSException {
 		this(noticeType, noticeReason, noticeDate, unregisteredNoticeType, null);
 	}
-	
+
 	/**
 	 * Constructor which builds from raw data.
 	 * 
@@ -166,7 +166,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 		_externalNotice = externalNotice;
 		validate(version);
 	}
-			
+
 	/**
 	 * Convenience method to add these attributes onto an existing XOM Element
 	 * 
@@ -184,7 +184,8 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 			Util.addAttribute(element, icPrefix, NOTICE_DATE_NAME, icNamespace, getNoticeDate().toXMLFormat());
 		Util.addAttribute(element, icPrefix, UNREGISTERED_NOTICE_TYPE_NAME, icNamespace, getUnregisteredNoticeType());
 		if (isExternalReference() != null)
-			Util.addAttribute(element, icPrefix, EXTERNAL_NOTICE_NAME, icNamespace, String.valueOf(isExternalReference()));
+			Util.addAttribute(element, icPrefix, EXTERNAL_NOTICE_NAME, icNamespace,
+				String.valueOf(isExternalReference()));
 	}
 
 	/**
@@ -210,7 +211,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 		if (!newParentVersion.getIsmNamespace().equals(getNamespace()))
 			throw new InvalidDDMSException(INCOMPATIBLE_VERSION_MESSAGE);
 	}
-	
+
 	/**
 	 * Validates the attribute group. Where appropriate the {@link ISMVocabulary} enumerations are validated.
 	 * 
@@ -225,25 +226,25 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 * </td></tr></table>
 	 * 
 	 * @param version the DDMS version to validate against. This cannot be stored in the attribute group because some
-	 * DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).
+	 *        DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate(DDMSVersion version) throws InvalidDDMSException {
-		// Should be reviewed as additional versions of DDMS are supported.	
+		// Should be reviewed as additional versions of DDMS are supported.
 		if (version.isAtLeast("4.0.1") && !Util.isEmpty(getNoticeType()))
 			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_NOTICE_TYPE, getNoticeType());
 		if (!Util.isEmpty(getNoticeReason()) && getNoticeReason().length() > MAX_LENGTH)
 			throw new InvalidDDMSException("The noticeReason attribute must be shorter than " + MAX_LENGTH
 				+ " characters.");
 		if (!Util.isEmpty(getUnregisteredNoticeType()) && getUnregisteredNoticeType().length() > MAX_LENGTH)
-			throw new InvalidDDMSException("The unregisteredNoticeType attribute must be shorter than "
-				+ MAX_LENGTH + " characters.");
+			throw new InvalidDDMSException("The unregisteredNoticeType attribute must be shorter than " + MAX_LENGTH
+				+ " characters.");
 		if (getNoticeDate() != null && !getNoticeDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
 			throw new InvalidDDMSException("The noticeDate attribute must be in the xs:date format (YYYY-MM-DD).");
 		if (!version.isAtLeast("4.0.1") && !isEmpty())
 			throw new InvalidDDMSException("Notice attributes cannot be used until DDMS 4.0.1 or later.");
 		// Test for 4.1 externalNotice is implicit, since 4.0.1 and 4.1 have same XML namespace.
-		
+
 		super.validate(version);
 	}
 
@@ -258,20 +259,22 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 		if (getNoticeDate() != null) {
 			text.append(Resource.buildOutput(isHTML, localPrefix + NOTICE_DATE_NAME, getNoticeDate().toXMLFormat()));
 		}
-		text.append(Resource.buildOutput(isHTML, localPrefix + UNREGISTERED_NOTICE_TYPE_NAME, getUnregisteredNoticeType()));
+		text.append(Resource.buildOutput(isHTML, localPrefix + UNREGISTERED_NOTICE_TYPE_NAME,
+			getUnregisteredNoticeType()));
 		if (isExternalReference() != null) {
-			text.append(Resource.buildOutput(isHTML, localPrefix + EXTERNAL_NOTICE_NAME, String.valueOf(isExternalReference())));
+			text.append(Resource.buildOutput(isHTML, localPrefix + EXTERNAL_NOTICE_NAME,
+				String.valueOf(isExternalReference())));
 		}
-			
+
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		if (!(obj instanceof NoticeAttributes))
-			return (false);		
+			return (false);
 		NoticeAttributes test = (NoticeAttributes) obj;
 		return (getNoticeType().equals(test.getNoticeType())
 			&& getNoticeReason().equals(test.getNoticeReason())
@@ -293,8 +296,8 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 		if (isExternalReference() != null)
 			result = 7 * result + isExternalReference().hashCode();
 		return (result);
-	}	
-	
+	}
+
 	/**
 	 * Accessor for the noticeType attribute.
 	 */
@@ -308,27 +311,26 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	public String getNoticeReason() {
 		return (Util.getNonNullString(_noticeReason));
 	}
-	
+
 	/**
 	 * Accessor for the unregisteredNoticeType attribute.
 	 */
 	public String getUnregisteredNoticeType() {
 		return (Util.getNonNullString(_unregisteredNoticeType));
 	}
-	
+
 	/**
 	 * Accessor for the externalNotice attribute. This may be null before DDMS 4.1.
 	 */
 	public Boolean isExternalReference() {
 		return (_externalNotice);
 	}
-	
+
 	/**
 	 * Accessor for the noticeDate attribute. May return null if not set.
 	 */
 	public XMLGregorianCalendar getNoticeDate() {
-		return (_noticeDate == null ? null : getFactory()
-			.newXMLGregorianCalendar(_noticeDate.toXMLFormat()));
+		return (_noticeDate == null ? null : getFactory().newXMLGregorianCalendar(_noticeDate.toXMLFormat()));
 	}
 
 	/**
@@ -337,7 +339,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	private static DatatypeFactory getFactory() {
 		return (Util.getDataTypeFactory());
 	}
-	
+
 	/**
 	 * Builder for these attributes.
 	 * 
@@ -350,15 +352,15 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 * @since 2.0.0
 	 */
 	public static class Builder implements Serializable {
-		private static final long serialVersionUID = 279072341662308051L;		
+		private static final long serialVersionUID = 279072341662308051L;
 		private Map<String, String> _stringAttributes = new HashMap<String, String>();
 		private Boolean _externalNotice;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -370,7 +372,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 			setUnregisteredNoticeType(attributes.getUnregisteredNoticeType());
 			setExternalNotice(attributes.isExternalReference());
 		}
-		
+
 		/**
 		 * Finalizes the data gathered for this builder instance. Will always return an empty instance instead of
 		 * a null one.
@@ -381,7 +383,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 			return (new NoticeAttributes(getNoticeType(), getNoticeReason(), getNoticeDate(),
 				getUnregisteredNoticeType(), getExternalNotice()));
 		}
-		
+
 		/**
 		 * Checks if any values have been provided for this Builder.
 		 * 
@@ -392,9 +394,9 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 			for (String value : getStringAttributes().values()) {
 				isEmpty = isEmpty && Util.isEmpty(value);
 			}
-			return (isEmpty && getExternalNotice() == null);				
+			return (isEmpty && getExternalNotice() == null);
 		}
-		
+
 		/**
 		 * Builder accessor for the noticeType attribute
 		 */
@@ -408,7 +410,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 		public void setNoticeType(String noticeType) {
 			getStringAttributes().put(NOTICE_TYPE_NAME, noticeType);
 		}
-		
+
 		/**
 		 * Builder accessor for the noticeReason attribute
 		 */
@@ -422,7 +424,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 		public void setNoticeReason(String noticeReason) {
 			getStringAttributes().put(NOTICE_REASON_NAME, noticeReason);
 		}
-		
+
 		/**
 		 * Builder accessor for the noticeDate attribute
 		 */
@@ -436,7 +438,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 		public void setNoticeDate(String noticeDate) {
 			getStringAttributes().put(NOTICE_DATE_NAME, noticeDate);
 		}
-		
+
 		/**
 		 * Builder accessor for the unregisteredNoticeType attribute
 		 */
@@ -450,7 +452,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 		public void setUnregisteredNoticeType(String unregisteredNoticeType) {
 			getStringAttributes().put(UNREGISTERED_NOTICE_TYPE_NAME, unregisteredNoticeType);
 		}
-			
+
 		/**
 		 * Builder accessor for the externalNotice attribute
 		 */
@@ -464,11 +466,11 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 		public void setExternalNotice(Boolean externalNotice) {
 			_externalNotice = externalNotice;
 		}
-		
+
 		/**
 		 * Accessor for the map of attribute names to string values
 		 */
-		private Map<String, String> getStringAttributes()  {
+		private Map<String, String> getStringAttributes() {
 			return (_stringAttributes);
 		}
 	}

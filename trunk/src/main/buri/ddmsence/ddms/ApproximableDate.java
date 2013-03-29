@@ -47,7 +47,7 @@ import buri.ddmsence.util.Util;
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
  * <li>This component can be used with no description, approximableDate, or searchableDate values.</li>
- * <li>A ddms:description element can be used without child text. This loophole goes away in DDMS 5.0.</li> 
+ * <li>A ddms:description element can be used without child text. This loophole goes away in DDMS 5.0.</li>
  * </ul>
  * </td></tr></table>
  * 
@@ -96,7 +96,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 		NAME_TYPES.add("approximableStart");
 		NAME_TYPES.add("approximableEnd");
 	}
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 * 
@@ -145,7 +145,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Validates an approximation against the allowed values.
 	 * 
@@ -169,7 +169,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 		if (!NAME_TYPES.contains(name))
 			throw new InvalidDDMSException("The element name must be one of " + NAME_TYPES);
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
@@ -195,7 +195,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 			Util.requireDDMSDateFormat(getSearchableStartString(), getNamespace());
 		if (!Util.isEmpty(getSearchableEndString()))
 			Util.requireDDMSDateFormat(getSearchableEndString(), getNamespace());
-		
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.1");
 
@@ -222,7 +222,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 			addWarning("A completely empty ddms:description element was found.");
 		super.validateWarnings();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -231,9 +231,12 @@ public final class ApproximableDate extends AbstractBaseComponent {
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, localPrefix + "." + DESCRIPTION_NAME, getDescription()));
 		text.append(buildOutput(isHTML, localPrefix + "." + APPROXIMABLE_DATE_NAME, getApproximableDateString()));
-		text.append(buildOutput(isHTML, localPrefix + "." + APPROXIMABLE_DATE_NAME + "." + APPROXIMATION_NAME, getApproximation()));
-		text.append(buildOutput(isHTML, localPrefix + "." + SEARCHABLE_DATE_NAME + "." + START_NAME, getSearchableStartString()));
-		text.append(buildOutput(isHTML, localPrefix + "." + SEARCHABLE_DATE_NAME + "." + END_NAME, getSearchableEndString()));
+		text.append(buildOutput(isHTML, localPrefix + "." + APPROXIMABLE_DATE_NAME + "." + APPROXIMATION_NAME,
+			getApproximation()));
+		text.append(buildOutput(isHTML, localPrefix + "." + SEARCHABLE_DATE_NAME + "." + START_NAME,
+			getSearchableStartString()));
+		text.append(buildOutput(isHTML, localPrefix + "." + SEARCHABLE_DATE_NAME + "." + END_NAME,
+			getSearchableEndString()));
 		return (text.toString());
 	}
 
@@ -260,10 +263,10 @@ public final class ApproximableDate extends AbstractBaseComponent {
 		result = 7 * result + getApproximableDateString().hashCode();
 		result = 7 * result + getApproximation().hashCode();
 		result = 7 * result + getSearchableStartString().hashCode();
-		result = 7 * result + getSearchableEndString().hashCode();		
+		result = 7 * result + getSearchableEndString().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the description.
 	 */
@@ -271,7 +274,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 		Element descriptionElement = getChild(DESCRIPTION_NAME);
 		return (descriptionElement == null ? "" : Util.getNonNullString(descriptionElement.getValue()));
 	}
-	
+
 	/**
 	 * Accessor for the approximableDate (optional).
 	 */
@@ -303,9 +306,9 @@ public final class ApproximableDate extends AbstractBaseComponent {
 			if (startElement != null)
 				date = Util.getNonNullString(startElement.getValue());
 		}
-		return (date);		
+		return (date);
 	}
-	
+
 	/**
 	 * Accessor for the searchableEnd date (optional)
 	 */
@@ -317,7 +320,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 			if (endElement != null)
 				date = Util.getNonNullString(endElement.getValue());
 		}
-		return (date);	
+		return (date);
 	}
 
 	/**
@@ -363,6 +366,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 
 		/**
 		 * Does not include the element name.
+		 * 
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
@@ -398,7 +402,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 		public void setDescription(String description) {
 			_description = description;
 		}
-		
+
 		/**
 		 * Builder accessor for the approximableDate
 		 */
@@ -440,7 +444,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 		public void setSearchableStart(String searchableStart) {
 			_searchableStart = searchableStart;
 		}
-		
+
 		/**
 		 * Builder accessor for the searchableEnd
 		 */

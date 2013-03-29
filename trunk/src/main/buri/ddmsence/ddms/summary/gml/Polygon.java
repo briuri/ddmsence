@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary.gml;
 
 import java.io.Serializable;
@@ -40,7 +40,7 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of gml:Polygon.
  * 
  * <p>
- * A Polygon element contains a nested gml:exterior element, which itself contains a nested gml:LinearRing element. 
+ * A Polygon element contains a nested gml:exterior element, which itself contains a nested gml:LinearRing element.
  * The points which mark the boundaries of the polygon should be provided in counter-clockwise order.
  * Because DDMS does not decorate these elements with any special attributes, they are not implemented as Java objects.
  * </p>
@@ -51,9 +51,9 @@ import buri.ddmsence.util.Util;
  * <li>The srsName must also be non-empty.</li>
  * </ul>
  * </td></tr></table>
- *  
+ * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>gml:pos</u>: the positions which comprise the LinearRing in this Polygon (at least 4 required), implemented as 
+ * <u>gml:pos</u>: the positions which comprise the LinearRing in this Polygon (at least 4 required), implemented as
  * a {@link Position}<br />
  * </td></tr></table>
  * 
@@ -69,15 +69,15 @@ public final class Polygon extends AbstractBaseComponent {
 
 	private List<Position> _positions;
 	private SRSAttributes _srsAttributes;
-	
+
 	private static final String EXTERIOR_NAME = "exterior";
 	private static final String LINEAR_RING_NAME = "LinearRing";
 	private static final String ID_NAME = "id";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Polygon(Element element) throws InvalidDDMSException {
@@ -103,14 +103,15 @@ public final class Polygon extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
+	 * 
 	 * @param positions the positions of the Polygon (required)
-	 * @param srsAttributes the attribute group containing srsName, srsDimension, axisLabels, and uomLabels (srsName 
-	 * required)
+	 * @param srsAttributes the attribute group containing srsName, srsDimension, axisLabels, and uomLabels (srsName
+	 *        required)
 	 * @param id the id value (required)
-	 *  
+	 * 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Polygon(List<Position> positions, SRSAttributes srsAttributes, String id) throws InvalidDDMSException {
@@ -129,7 +130,7 @@ public final class Polygon extends AbstractBaseComponent {
 			Element element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
 			element.appendChild(extElement);
 			Util.addAttribute(element, gmlPrefix, ID_NAME, gmlNamespace, id);
-			
+
 			_positions = positions;
 			_srsAttributes = SRSAttributes.getNonNullInstance(srsAttributes);
 			_srsAttributes.addTo(element);
@@ -140,7 +141,7 @@ public final class Polygon extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
@@ -152,7 +153,7 @@ public final class Polygon extends AbstractBaseComponent {
 	 * <li>The first and last position coordinates must be identical (a closed polygon).</li>
 	 * <li>Does not perform any special validation on the third coordinate (height above ellipsoid).</li>
 	 * </td></tr></table>
-	 *
+	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
@@ -161,7 +162,7 @@ public final class Polygon extends AbstractBaseComponent {
 		Util.requireDDMSValue("srsName", getSRSAttributes().getSrsName());
 		Util.requireDDMSValue(ID_NAME, getId());
 		Util.requireValidNCName(getId());
-		
+
 		Element extElement = getXOMElement().getFirstChildElement(EXTERIOR_NAME, getNamespace());
 		Util.requireDDMSValue("exterior element", extElement);
 		if (extElement != null) {
@@ -173,7 +174,8 @@ public final class Polygon extends AbstractBaseComponent {
 			if (pos.getSRSAttributes() != null) {
 				String srsName = pos.getSRSAttributes().getSrsName();
 				if (!Util.isEmpty(srsName) && !srsName.equals(getSRSAttributes().getSrsName()))
-					throw new InvalidDDMSException("The srsName of each position must match the srsName of the Polygon.");
+					throw new InvalidDDMSException(
+						"The srsName of each position must match the srsName of the Polygon.");
 			}
 		}
 		if (positions.size() < 4)
@@ -184,7 +186,7 @@ public final class Polygon extends AbstractBaseComponent {
 
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -196,16 +198,16 @@ public final class Polygon extends AbstractBaseComponent {
 		addWarnings(getSRSAttributes().getValidationWarnings(), true);
 		super.validateWarnings();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getLocatorSuffix()
 	 */
 	protected String getLocatorSuffix() {
 		String gmlPrefix = PropertyReader.getPrefix("gml");
-		return (ValidationMessage.ELEMENT_PREFIX + gmlPrefix + ":" + EXTERIOR_NAME
-			+ ValidationMessage.ELEMENT_PREFIX + gmlPrefix + ":" + LINEAR_RING_NAME);
+		return (ValidationMessage.ELEMENT_PREFIX + gmlPrefix + ":" + EXTERIOR_NAME + ValidationMessage.ELEMENT_PREFIX
+			+ gmlPrefix + ":" + LINEAR_RING_NAME);
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -217,7 +219,7 @@ public final class Polygon extends AbstractBaseComponent {
 		text.append(buildOutput(isHTML, localPrefix, getPositions()));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -226,7 +228,7 @@ public final class Polygon extends AbstractBaseComponent {
 		list.addAll(getPositions());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -247,7 +249,7 @@ public final class Polygon extends AbstractBaseComponent {
 		result = 7 * result + getId().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -258,28 +260,28 @@ public final class Polygon extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("Polygon");
 	}
-	
+
 	/**
 	 * Accessor for the SRS Attributes. Will always be non-null.
 	 */
 	public SRSAttributes getSRSAttributes() {
 		return (_srsAttributes);
 	}
-	
+
 	/**
 	 * Accessor for the ID
 	 */
 	public String getId() {
 		return (getAttributeValue(ID_NAME, getNamespace()));
 	}
-	
+
 	/**
 	 * Accessor for the coordinates. May return null, but cannot happen after instantiation.
 	 */
 	public List<Position> getPositions() {
 		return (Collections.unmodifiableList(_positions));
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -292,12 +294,12 @@ public final class Polygon extends AbstractBaseComponent {
 		private SRSAttributes.Builder _srsAttributes;
 		private List<Position.Builder> _positions;
 		private String _id;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -308,7 +310,7 @@ public final class Polygon extends AbstractBaseComponent {
 			}
 			setId(polygon.getId());
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -323,7 +325,7 @@ public final class Polygon extends AbstractBaseComponent {
 			}
 			return (new Polygon(positions, getSrsAttributes().commit(), getId()));
 		}
-		
+
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
@@ -334,7 +336,7 @@ public final class Polygon extends AbstractBaseComponent {
 			}
 			return (Util.isEmpty(getId()) && !hasValueInList && getSrsAttributes().isEmpty());
 		}
-		
+
 		/**
 		 * Builder accessor for the SRS Attributes
 		 */
@@ -343,7 +345,7 @@ public final class Polygon extends AbstractBaseComponent {
 				_srsAttributes = new SRSAttributes.Builder();
 			return _srsAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the SRS Attributes
 		 */
@@ -372,6 +374,6 @@ public final class Polygon extends AbstractBaseComponent {
 		 */
 		public void setId(String id) {
 			_id = id;
-		}			
+		}
 	}
-} 
+}
