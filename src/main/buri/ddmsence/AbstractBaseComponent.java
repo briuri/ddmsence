@@ -167,7 +167,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	protected void addDdms40Warning(String component) {
 		addWarning("The " + component
 			+ " in this DDMS component was introduced in DDMS 4.1, and will prevent this XML instance"
-			+ "from being understood by DDMS 4.0.1 systems.");
+			+ " from being understood by DDMS 4.0.1 systems.");
 	}
 
 	/**

@@ -44,7 +44,7 @@ public class AccessTest extends AbstractBaseTestCase {
 	 */
 	public AccessTest() {
 		super("access.xml");
-		removeSupportedVersions("2.0 3.0 3.1");
+		removeSupportedVersions("2.0 3.0 3.1 5.0");
 	}
 
 	/**
@@ -52,8 +52,8 @@ public class AccessTest extends AbstractBaseTestCase {
 	 */
 	public static Access getFixture() {
 		try {
-			return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? new Access(IndividualTest.getFixtureList(),
-				null, null, SecurityAttributesTest.getFixture()) : null);
+			if ("4.1".equals(DDMSVersion.getCurrentVersion().getVersion()))
+				return (new Access(IndividualTest.getFixtureList(), null, null, SecurityAttributesTest.getFixture()));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
@@ -377,7 +377,8 @@ public class AccessTest extends AbstractBaseTestCase {
 	}
 
 	public void testWrongVersion() {
-		// Implicit, since the NTK namespace does not exist before DDMS 4.0.1.
+		// Pre-4.0.1 test is implicit, since NTK namespace did not exist.
+		// Post-4.1 test is handled in MetacardInfoTest.
 	}
 
 	public void testBuilderLazyList() throws InvalidDDMSException {

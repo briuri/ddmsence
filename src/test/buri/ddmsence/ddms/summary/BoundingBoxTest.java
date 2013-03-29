@@ -52,9 +52,8 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 	 */
 	public static BoundingBox getFixture() {
 		try {
-			if (DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
-				return (null);
-			return (new BoundingBox(1.1, 2.2, 3.3, 4.4));
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
+				return (new BoundingBox(1.1, 2.2, 3.3, 4.4));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());

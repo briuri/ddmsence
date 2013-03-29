@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--  Represents a single ntk:AccessGroupValue element, for unit testing -->
-<ntk:AccessGroupValue xmlns:ISM="urn:us:gov:ic:ism" xmlns:ntk="urn:us:gov:ic:ntk" ntk:id="ID" ntk:IDReference="ID" ntk:qualifier="qualifier" ISM:classification="U" ISM:ownerProducer="USA">WISE/RODCA</ntk:AccessGroupValue>

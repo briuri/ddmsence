@@ -124,7 +124,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:geospatialCoverage</u>: (0-many optional), implemented as a {@link GeospatialCoverage}<br />
  * <u>ddms:relatedResource</u>: (0-many optional), implemented as a {@link RelatedResource}<br />
  * <u>ddms:resourceManagement</u>: (0-1 optional, starting in DDMS 4.0.1), implemented as a {@link ResourceManagement}<br />
- * <u>ddms:security</u>: (exactly 1 required), implemented as a {@link Security}<br />
+ * <u>ddms:security</u>: (exactly 1 required), implemented as a {@link Security}, removed in DDMS 5.0<br />
  * <u>Extensible Layer</u>: (0-many optional), implemented as a {@link ExtensibleElement}<br />
  * </td></tr></table>
  * 
@@ -674,7 +674,8 @@ public final class Resource extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>Exactly 1 metacardInfo, 1-many identifiers, 1-many titles, 0-1 descriptions, 0-1 dates, 0-1 rights,
-	 * 0-1 formats, exactly 1 subjectCoverage, 0-1 resourceManagement, and exactly 1 security element must exist.</li>
+	 * 0-1 formats, exactly 1 subjectCoverage, and 0-1 resourceManagement must exist.</li>
+	 * <li>Exactly 1 security element must exist, through DDMS 4.1.</li>
 	 * <li>Starting in DDMS 4.0.1, 1-many subjectCoverage elements can exist.</li>
 	 * <li>At least 1 of creator, publisher, contributor, or pointOfContact must exist.</li>
 	 * <li>All ddms:order attributes make a complete, consecutive set, starting at 1.</li>
@@ -717,7 +718,8 @@ public final class Resource extends AbstractBaseComponent {
 		}
 		else
 			Util.requireBoundedChildCount(getXOMElement(), SubjectCoverage.getName(getDDMSVersion()), 1, 1);
-		Util.requireBoundedChildCount(getXOMElement(), Security.getName(getDDMSVersion()), 1, 1);
+		if (!getDDMSVersion().isAtLeast("5.0"))
+			Util.requireBoundedChildCount(getXOMElement(), Security.getName(getDDMSVersion()), 1, 1);
 
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (getDDMSVersion().isAtLeast("4.0.1")) {
@@ -784,7 +786,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		if (!getNoticeAttributes().isEmpty()) {
+		if (!getDDMSVersion().isAtLeast("5.0") && !getNoticeAttributes().isEmpty()) {
 			addWarnings(getNoticeAttributes().getValidationWarnings(), true);
 			if (getNoticeAttributes().isExternalReference() != null)
 				addDdms40Warning("ISM:externalNotice attribute");

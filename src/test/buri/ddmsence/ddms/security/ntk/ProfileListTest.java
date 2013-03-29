@@ -43,7 +43,7 @@ public class ProfileListTest extends AbstractBaseTestCase {
 	 */
 	public ProfileListTest() {
 		super("accessProfileList.xml");
-		removeSupportedVersions("2.0 3.0 3.1");
+		removeSupportedVersions("2.0 3.0 3.1 5.0");
 	}
 
 	/**
@@ -256,7 +256,8 @@ public class ProfileListTest extends AbstractBaseTestCase {
 	}
 
 	public void testWrongVersion() {
-		// Implicit, since the NTK namespace does not exist before DDMS 4.0.1.
+		// Pre-4.0.1 test is implicit, since NTK namespace did not exist.
+		// Post-4.1 test is handled in MetacardInfoTest.
 	}
 
 	public void testBuilderEquality() throws InvalidDDMSException {
