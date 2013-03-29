@@ -36,6 +36,8 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:geographicIdentifier.
  * 
+ * <p>Starting in DDMS 5.0, additional content rules apply to a ddms:countryCode element.</p>
+ * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
@@ -163,6 +165,8 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * <li>At least 1 of name, region, countryCode, subDivisionCode or facilityIdentifier must exist.</li>
 	 * <li>No more than 1 countryCode, subDivisionCode or facilityIdentifier can exist.</li>
 	 * <li>If facilityIdentifier is used, no other components can exist.</li>
+	 * <li>Starting in DDMS 5.0, if countryCode is used, it must pass several content rules for Geopolitical Entities,
+	 * Names, and Codes (GENC) tokens.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -183,7 +187,74 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 				|| getSubDivisionCode() != null)
 				throw new InvalidDDMSException("facilityIdentifier cannot be used in tandem with other components.");
 		}
+		if (getDDMSVersion().isAtLeast("5.0") && getCountryCode() != null) {
+			validateGencCountryCode(getCountryCode());
+		}
 		super.validate();
+	}
+	
+	/**
+	 * Validates the syntax of the codespace/code value in a DDMS 5.0 (or later) country code.
+	 * 
+	 * <p>
+	 * The codespace will fall into one of 4 flavours:
+	 * <ul>
+	 * <li>URL: <code>http://api.nsgreg.nga.mil/geo-political/GENC/2/ed1</code></li>
+	 * <li>URN: <code>urn:us:gov:dod:nga:def:geo-political:GENC:3:ed1</code></li>
+	 * <li>URNBased: <code>geo-political:GENC:3:ed1</code></li>
+	 * <li>URNBasedShort: <code>ge:GENC:3:ed1</code></li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * <p>
+	 * This method converts all codespaces into a URNBased version for comparison and then confirms that the code value
+	 * is correct for the provided codespace.
+	 * </p>
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The codespace is one of the 4 flavors.</li>
+	 * <li>If the codespace requires a trigraph, the code is 3 uppercase alpha characters.</li>
+	 * <li>If the codespace requires a digraph, the code is 2 uppercase alpha characters.</li>
+	 * <li>If the codespace requires numbers, the code is 3 numerals.</li>
+	 * </td></tr></table>
+	 * 
+	 * @param countryCode the country code to validate
+	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	protected static void validateGencCountryCode(CountryCode countryCode) throws InvalidDDMSException {
+		String codespace = countryCode.getQualifier()
+			.replaceFirst("^http://api.nsgreg.nga.mil/geo-political/", "geo-political/")
+			.replaceFirst("^urn:us:gov:dod:nga:def:geo-political:", "geo-political/")
+			.replaceFirst("^ge:", "geo-political:")
+			.replaceAll("/", ":");
+		String code = countryCode.getValue();
+		if (!codespace.matches("^geo-political:GENC:[23n]:ed\\d$"))
+			throw new InvalidDDMSException(
+				"ddms:countryCode must use a geo-political URN or URL, as specified in the DDMS Schematron file.");
+		else if (codespace.contains("GENC:3:") && !code.matches("^[A-Z]{3}$"))
+			throw new InvalidDDMSException(
+				"A GENC country code in a 3-alpha codespace (e.g. geo-political:GENC:3:ed1) must consist of exactly 3 uppercase alpha characters.");
+		else if (codespace.contains("GENC:2:") && !code.matches("^[A-Z]{2}$"))
+			throw new InvalidDDMSException(
+				"A GENC country code in a 2-alpha codespace (e.g. geo-political:GENC:2:ed1) must consist of exactly 2 uppercase alpha characters.");
+		else if (codespace.contains("GENC:n:") && !code.matches("^[0-9]{3}$"))
+			throw new InvalidDDMSException(
+				"A GENC country code in a numeric codespace (e.g. geo-political:GENC:n:ed1) must consist of exactly 3 numerals.");
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>Starting in DDMS 5.0, if a countryCode is used, the GENC tokens are not actually looked up in the NGA registry.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
+		if (getDDMSVersion().isAtLeast("5.0") && getCountryCode() != null) {
+			addWarning("The ddms:countryCode is syntactically correct, "
+				+ "but was not looked up in the NGA registry at http://api.nsgreg.nga.mil/.");
+		}
+		super.validateWarnings();
 	}
 
 	/**
