@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import java.io.Serializable;
@@ -35,14 +35,14 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:recordsManagementInfo.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:recordKeeper</u>: The organization responsible for the custody and ongoing management of the records 
+ * <u>ddms:recordKeeper</u>: The organization responsible for the custody and ongoing management of the records
  * (0-1 optional), implemented as a {@link RecordKeeper}<br />
- * <u>ddms:applicationSoftware</u>: The software used to create the object to which this metadata applies (0-1 
+ * <u>ddms:applicationSoftware</u>: The software used to create the object to which this metadata applies (0-1
  * optional), implemented as an {@link ApplicationSoftware}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>ddms:vitalRecordIndicator</u>: An indication that a publication is categorized a vital record by the originating 
+ * <u>ddms:vitalRecordIndicator</u>: An indication that a publication is categorized a vital record by the originating
  * agency (defaults to false)<br />
  * </td></tr></table>
  * 
@@ -50,15 +50,16 @@ import buri.ddmsence.util.Util;
  * @since 2.0.0
  */
 public final class RecordsManagementInfo extends AbstractBaseComponent {
-	
+
 	private RecordKeeper _recordKeeper = null;
 	private ApplicationSoftware _applicationSoftware = null;
-	
+
 	private static final String VITAL_RECORD_INDICATOR_NAME = "vitalRecordIndicator";
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public RecordsManagementInfo(Element element) throws InvalidDDMSException {
@@ -78,10 +79,10 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param recordKeeper the record keeper (optional)
 	 * @param applicationSoftware the software (optional)
 	 * @param vitalRecordIndicator whether this is a vital record (optional, defaults to false)
@@ -107,7 +108,7 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-			
+
 	/**
 	 * Validates the component.
 	 * 
@@ -124,13 +125,13 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 		Util.requireDDMSQName(getXOMElement(), RecordsManagementInfo.getName(getDDMSVersion()));
 		Util.requireBoundedChildCount(getXOMElement(), RecordKeeper.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), ApplicationSoftware.getName(getDDMSVersion()), 0, 1);
-		
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0.1");
 
 		super.validate();
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -145,7 +146,7 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 			String.valueOf(getVitalRecordIndicator())));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -155,7 +156,7 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 		list.add(getApplicationSoftware());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -163,7 +164,7 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof RecordsManagementInfo))
 			return (false);
 		RecordsManagementInfo test = (RecordsManagementInfo) obj;
-		return (getVitalRecordIndicator().equals(test.getVitalRecordIndicator()));		
+		return (getVitalRecordIndicator().equals(test.getVitalRecordIndicator()));
 	}
 
 	/**
@@ -171,7 +172,7 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 	 */
 	public int hashCode() {
 		int result = super.hashCode();
-		result = 7 *  result + getVitalRecordIndicator().hashCode();
+		result = 7 * result + getVitalRecordIndicator().hashCode();
 		return (result);
 	}
 
@@ -185,7 +186,7 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("recordsManagementInfo");
 	}
-	
+
 	/**
 	 * Accessor for the recordKeeper
 	 */
@@ -198,8 +199,8 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 	 */
 	public ApplicationSoftware getApplicationSoftware() {
 		return _applicationSoftware;
-	}	
-	
+	}
+
 	/**
 	 * Accessor for the vitalRecordIndicator attribute. This defaults to false if not found.
 	 */
@@ -209,7 +210,7 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 			return (Boolean.TRUE);
 		return (Boolean.FALSE);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -222,12 +223,12 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 		private RecordKeeper.Builder _recordKeeper;
 		private ApplicationSoftware.Builder _applicationSoftware;
 		private Boolean _vitalRecordIndicator;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -238,13 +239,13 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 				setApplicationSoftware(new ApplicationSoftware.Builder(info.getApplicationSoftware()));
 			setVitalRecordIndicator(info.getVitalRecordIndicator());
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
 		public RecordsManagementInfo commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new RecordsManagementInfo(getRecordKeeper().commit(), getApplicationSoftware()
-				.commit(), getVitalRecordIndicator()));
+			return (isEmpty() ? null : new RecordsManagementInfo(getRecordKeeper().commit(),
+				getApplicationSoftware().commit(), getVitalRecordIndicator()));
 		}
 
 		/**
@@ -253,7 +254,7 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 		public boolean isEmpty() {
 			return (getRecordKeeper().isEmpty() && getApplicationSoftware().isEmpty() && getVitalRecordIndicator() == null);
 		}
-		
+
 		/**
 		 * Builder accessor for the recordKeeper
 		 */
@@ -292,7 +293,7 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 		public Boolean getVitalRecordIndicator() {
 			return _vitalRecordIndicator;
 		}
-		
+
 		/**
 		 * Builder accessor for the vitalRecordIndicator flag
 		 */
@@ -300,4 +301,4 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 			_vitalRecordIndicator = vitalRecordIndicator;
 		}
 	}
-} 
+}

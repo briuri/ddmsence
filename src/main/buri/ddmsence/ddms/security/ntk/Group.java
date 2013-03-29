@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.security.ntk;
 
 import java.util.ArrayList;
@@ -39,27 +39,27 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ntk:AccessGroup.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ntk:AccessSystemName</u>: The system described by this access record (exactly 1 required), implemented as a 
+ * <u>ntk:AccessSystemName</u>: The system described by this access record (exactly 1 required), implemented as a
  * {@link SystemName}<br />
- * <u>ntk:AccessGroupValue</u>: The value used to describe the group (1-to-many required), implemented as a 
+ * <u>ntk:AccessGroupValue</u>: The value used to describe the group (1-to-many required), implemented as a
  * {@link GroupValue}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public final class Group extends AbstractAccessEntity {
-	
+
 	private List<GroupValue> _groupValues = null;
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Group(Element element) throws InvalidDDMSException {
@@ -69,7 +69,7 @@ public final class Group extends AbstractAccessEntity {
 			_groupValues = new ArrayList<GroupValue>();
 			for (int i = 0; i < values.size(); i++) {
 				_groupValues.add(new GroupValue(values.get(i)));
-			}			
+			}
 			validate();
 		}
 		catch (InvalidDDMSException e) {
@@ -77,17 +77,17 @@ public final class Group extends AbstractAccessEntity {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param systemName the system name (required)
 	 * @param groupValues the list of values (at least 1 required)
 	 * @param securityAttributes security attributes (required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Group(SystemName systemName, List<GroupValue> groupValues,
-		SecurityAttributes securityAttributes) throws InvalidDDMSException {
+	public Group(SystemName systemName, List<GroupValue> groupValues, SecurityAttributes securityAttributes)
+		throws InvalidDDMSException {
 		super(Group.getName(DDMSVersion.getCurrentVersion()), systemName, securityAttributes);
 		try {
 			if (groupValues == null)
@@ -103,7 +103,7 @@ public final class Group extends AbstractAccessEntity {
 			throw (e);
 		}
 	}
-			
+
 	/**
 	 * Validates the component.
 	 * 
@@ -119,10 +119,10 @@ public final class Group extends AbstractAccessEntity {
 		Util.requireQName(getXOMElement(), getNamespace(), Group.getName(getDDMSVersion()));
 		if (getGroupValues().isEmpty())
 			throw new InvalidDDMSException("At least one group value is required.");
-		
+
 		super.validate();
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -135,7 +135,7 @@ public final class Group extends AbstractAccessEntity {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -144,14 +144,14 @@ public final class Group extends AbstractAccessEntity {
 		list.addAll(getGroupValues());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof Group))
 			return (false);
-		return (true);		
+		return (true);
 	}
 
 	/**
@@ -171,7 +171,7 @@ public final class Group extends AbstractAccessEntity {
 	public List<GroupValue> getGroupValues() {
 		return (Collections.unmodifiableList(_groupValues));
 	}
-			
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -182,14 +182,14 @@ public final class Group extends AbstractAccessEntity {
 	public static class Builder extends AbstractAccessEntity.Builder {
 		private static final long serialVersionUID = 7851044806424206976L;
 		private List<GroupValue.Builder> _groupValues;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {
-			super();			
+			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -198,7 +198,7 @@ public final class Group extends AbstractAccessEntity {
 			for (GroupValue value : group.getGroupValues())
 				getGroupValues().add(new GroupValue.Builder(value));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -233,4 +233,4 @@ public final class Group extends AbstractAccessEntity {
 			return _groupValues;
 		}
 	}
-} 
+}

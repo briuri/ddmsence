@@ -55,9 +55,9 @@ import buri.ddmsence.util.Util;
 public class RecordKeeper extends AbstractBaseComponent {
 
 	private Organization _organization = null;
-	
+
 	private static final String RECORD_KEEPER_ID_NAME = "recordKeeperID";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 * 
@@ -79,7 +79,7 @@ public class RecordKeeper extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor which builds from raw data.
 	 * 
@@ -101,7 +101,7 @@ public class RecordKeeper extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
@@ -124,10 +124,10 @@ public class RecordKeeper extends AbstractBaseComponent {
 
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0.1");
-		
+
 		super.validate();
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -136,8 +136,8 @@ public class RecordKeeper extends AbstractBaseComponent {
 			return (false);
 		RecordKeeper test = (RecordKeeper) obj;
 		return (getRecordKeeperID().equals(test.getRecordKeeperID()));
-	}	
-	
+	}
+
 	/**
 	 * @see Object#hashCode()
 	 */
@@ -146,7 +146,7 @@ public class RecordKeeper extends AbstractBaseComponent {
 		result = 7 * result + getRecordKeeperID().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -157,7 +157,7 @@ public class RecordKeeper extends AbstractBaseComponent {
 		text.append(getOrganization().getOutput(isHTML, localPrefix, ""));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -166,7 +166,7 @@ public class RecordKeeper extends AbstractBaseComponent {
 		list.add(getOrganization());
 		return (list);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -177,21 +177,21 @@ public class RecordKeeper extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("recordKeeper");
 	}
-	
+
 	/**
 	 * Accessor for the recordKeeperID
 	 */
 	public String getRecordKeeperID() {
 		return (Util.getFirstDDMSChildValue(getXOMElement(), RECORD_KEEPER_ID_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the organization
 	 */
 	public Organization getOrganization() {
 		return (_organization);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -203,20 +203,20 @@ public class RecordKeeper extends AbstractBaseComponent {
 		private static final long serialVersionUID = 4565840434345629470L;
 		private String _recordKeeperID;
 		private Organization.Builder _organization;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(RecordKeeper keeper) {
 			setRecordKeeperID(keeper.getRecordKeeperID());
-			setOrganization(new Organization.Builder(keeper.getOrganization()));			
+			setOrganization(new Organization.Builder(keeper.getOrganization()));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -229,11 +229,11 @@ public class RecordKeeper extends AbstractBaseComponent {
 		 * 
 		 * @return true if all values are empty
 		 */
-		public boolean isEmpty() {	
+		public boolean isEmpty() {
 			return (getOrganization().isEmpty()
 				&& Util.isEmpty(getRecordKeeperID()));
 		}
-		
+
 		/**
 		 * Builder accessor for the recordKeeperID
 		 */
@@ -247,7 +247,7 @@ public class RecordKeeper extends AbstractBaseComponent {
 		public void setRecordKeeperID(String recordKeeperID) {
 			_recordKeeperID = recordKeeperID;
 		}
-		
+
 		/**
 		 * Builder accessor for the organization builder
 		 */

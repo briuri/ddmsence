@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import java.util.Collections;
@@ -58,7 +58,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:name</u>: names of the producer (1-many, at least 1 required)<br />
  * <u>ddms:surname</u>: surname of the producer (exactly 1 required)<br />
  * <u>ddms:userID</u>: userId of the producer (0-1 optional)<br />
- * <u>ddms:affiliation</u>: organizational affiliation (0-1 optional through DDMS 4.x, 0-many optional starting 
+ * <u>ddms:affiliation</u>: organizational affiliation (0-1 optional through DDMS 4.x, 0-many optional starting
  * in DDMS 5.0)<br />
  * <u>ddms:phone</u>: phone numbers of the producer (0-many optional)<br />
  * <u>ddms:email</u>: email addresses of the producer (0-many optional)<br />
@@ -74,7 +74,7 @@ import buri.ddmsence.util.Util;
 public final class Person extends AbstractRoleEntity {
 
 	private List<String> _affiliations = null;
-	
+
 	private static final String AFFILIATION_NAME = "affiliation";
 	private static final String USERID_NAME = "userID";
 	private static final String SURNAME_NAME = "surname";
@@ -87,11 +87,12 @@ public final class Person extends AbstractRoleEntity {
 	 */
 	public Person(Element element) throws InvalidDDMSException {
 		super(element, true);
-		_affiliations = Util.getDDMSChildValues(element, AFFILIATION_NAME);		
+		_affiliations = Util.getDDMSChildValues(element, AFFILIATION_NAME);
 	}
 
 	/**
 	 * Constructor for creating a component from raw data.
+	 * 
 	 * @param names an ordered list of names
 	 * @param surname the surname of the person
 	 * @param phones an ordered list of phone numbers
@@ -99,13 +100,14 @@ public final class Person extends AbstractRoleEntity {
 	 * @param userID optional unique identifier within an organization
 	 * @param affiliations organizational affiliation of the person
 	 */
-	public Person(List<String> names, String surname, List<String> phones, List<String> emails,
-		String userID, List<String> affiliations) throws InvalidDDMSException {
+	public Person(List<String> names, String surname, List<String> phones, List<String> emails, String userID,
+		List<String> affiliations) throws InvalidDDMSException {
 		this(names, surname, phones, emails, userID, affiliations, null);
 	}
 
 	/**
 	 * Constructor for creating a component from raw data.
+	 * 
 	 * @param names an ordered list of names
 	 * @param surname the surname of the person
 	 * @param phones an ordered list of phone numbers
@@ -151,8 +153,8 @@ public final class Person extends AbstractRoleEntity {
 				element.appendChild(Util.buildDDMSElement(AFFILIATION_NAME, affiliation));
 		}
 		else {
-			// 	Inserting in reverse order allow the same index to be reused. Later inserts will "push" the early ones
-			// 	forward.
+			// Inserting in reverse order allow the same index to be reused. Later inserts will "push" the early ones
+			// forward.
 			for (String affiliation : affiliations)
 				element.insertChild(Util.buildDDMSElement(AFFILIATION_NAME, affiliation), insertIndex);
 			if (!Util.isEmpty(userID))
@@ -169,7 +171,7 @@ public final class Person extends AbstractRoleEntity {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>Surname exists and is not empty.</li>
 	 * <li>Exactly 1 surname, and 0-1 userIDs exist.</li>
-	 * <li>Exactly 0-1 affiliations exist, through DDMS 4.1.</li> 
+	 * <li>Exactly 0-1 affiliations exist, through DDMS 4.1.</li>
 	 * <li>Extensible attributes cannot be used after DDMS 3.1.</li>
 	 * </td></tr></table>
 	 * 
@@ -183,13 +185,13 @@ public final class Person extends AbstractRoleEntity {
 		Util.requireBoundedChildCount(getXOMElement(), USERID_NAME, 0, 1);
 		if (!getDDMSVersion().isAtLeast("5.0"))
 			Util.requireBoundedChildCount(getXOMElement(), AFFILIATION_NAME, 0, 1);
-		
+
 		if (getDDMSVersion().isAtLeast("4.0.1") && !getExtensibleAttributes().isEmpty())
 			throw new InvalidDDMSException("ddms:" + getName() + " cannot have extensible attributes after DDMS 3.1.");
-		
+
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -209,7 +211,7 @@ public final class Person extends AbstractRoleEntity {
 					addWarning("A ddms:affiliation element was found with no value.");
 					break;
 				}
-			}			
+			}
 		}
 
 		super.validateWarnings();
@@ -226,7 +228,7 @@ public final class Person extends AbstractRoleEntity {
 		text.append(buildOutput(isHTML, localPrefix + AFFILIATION_NAME, getAffiliations()));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -238,7 +240,7 @@ public final class Person extends AbstractRoleEntity {
 			&& getUserID().equals(test.getUserID()) 
 			&& Util.listEquals(getAffiliations(), test.getAffiliations()));
 	}
-	
+
 	/**
 	 * @see Object#hashCode()
 	 */
@@ -249,7 +251,7 @@ public final class Person extends AbstractRoleEntity {
 		result = 7 * result + getAffiliations().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -260,28 +262,28 @@ public final class Person extends AbstractRoleEntity {
 		Util.requireValue("version", version);
 		return (version.isAtLeast("4.0.1") ? "person" : "Person");
 	}
-	
+
 	/**
 	 * Accessor for the surname of the person
 	 */
 	public String getSurname() {
 		return (Util.getFirstDDMSChildValue(getXOMElement(), SURNAME_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the userID of the person
 	 */
 	public String getUserID() {
 		return (Util.getFirstDDMSChildValue(getXOMElement(), USERID_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the affiliations of the person
 	 */
 	public List<String> getAffiliations() {
 		return (Collections.unmodifiableList(_affiliations));
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -294,14 +296,14 @@ public final class Person extends AbstractRoleEntity {
 		private String _surname;
 		private String _userID;
 		private List<String> _affiliations;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {
 			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -311,7 +313,7 @@ public final class Person extends AbstractRoleEntity {
 			setUserID(person.getUserID());
 			setAffiliations(person.getAffiliations());
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -331,7 +333,7 @@ public final class Person extends AbstractRoleEntity {
 				&& Util.isEmpty(getUserID())
 				&& Util.containsOnlyEmptyValues(getAffiliations()));
 		}
-		
+
 		/**
 		 * Builder accessor for the surname
 		 */
@@ -376,4 +378,4 @@ public final class Person extends AbstractRoleEntity {
 			_affiliations = new LazyList(affiliations, String.class);
 		}
 	}
-} 
+}

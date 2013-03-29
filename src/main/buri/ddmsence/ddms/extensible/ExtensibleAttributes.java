@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.extensible;
 
 import java.io.Serializable;
@@ -46,10 +46,10 @@ import buri.ddmsence.util.Util;
 /**
  * Attribute group representing the xs:anyAttribute tag which appears on various DDMS components.
  * 
- * <p>Starting in DDMS 3.0, this attribute group can decorate {@link buri.ddmsence.ddms.resource.Organization}, 
+ * <p>Starting in DDMS 3.0, this attribute group can decorate {@link buri.ddmsence.ddms.resource.Organization},
  * {@link buri.ddmsence.ddms.resource.Person}, {@link buri.ddmsence.ddms.resource.Service},
- * {@link buri.ddmsence.ddms.resource.Unknown}, {@link Keyword}, {@link Category}, or the {@link Resource} itself. 
- * In DDMS 2.0, this attribute group can only decorate {@link buri.ddmsence.ddms.resource.Organization}, 
+ * {@link buri.ddmsence.ddms.resource.Unknown}, {@link Keyword}, {@link Category}, or the {@link Resource} itself.
+ * In DDMS 2.0, this attribute group can only decorate {@link buri.ddmsence.ddms.resource.Organization},
  * {@link buri.ddmsence.ddms.resource.Person}, {@link buri.ddmsence.ddms.resource.Service}, or the {@link Resource}.</p>
  * 
  * <p>No validation or processing of any kind is performed by DDMSence on extensible attributes, other than the base
@@ -69,7 +69,7 @@ import buri.ddmsence.util.Util;
  * 
  * <p>The DDMS documentation does not provide sample HTML/Text output for extensible attributes, so the following
  * approach is used. In general, the HTML/Text output of extensible attributes will be prefixed with the name of the
- * element being marked. For example:</p> 
+ * element being marked. For example:</p>
  * 
  * <ul><code> keyword opensearch:relevance: 95<br /> keyword opensearch:confidence: 82<br />
  * &lt;meta name="subjectCoverage.Subject.keyword.opensearch.relevance" content="95" /&gt;<br />
@@ -83,11 +83,11 @@ import buri.ddmsence.util.Util;
  * @since 1.1.0
  */
 public final class ExtensibleAttributes extends AbstractAttributeGroup {
-	
+
 	private List<Attribute> _attributes = null;
-	
+
 	private final Set<QName> RESERVED_RESOURCE_NAMES = new HashSet<QName>();
-	
+
 	/**
 	 * Returns a non-null instance of extensible attributes. If the instance passed in is not null, it will be returned.
 	 * 
@@ -99,7 +99,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		throws InvalidDDMSException {
 		return (extensibleAttributes == null ? new ExtensibleAttributes((List<Attribute>) null) : extensibleAttributes);
 	}
-	
+
 	/**
 	 * Base constructor
 	 * 
@@ -111,19 +111,19 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	public ExtensibleAttributes(Element element) throws InvalidDDMSException {
 		buildReservedNames(element.getNamespaceURI());
 		DDMSVersion version = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
-		
+
 		_attributes = new ArrayList<Attribute>();
 		for (int i = 0; i < element.getAttributeCount(); i++) {
 			Attribute attribute = element.getAttribute(i);
 			// Skip ddms: attributes.
 			if (element.getNamespaceURI().equals(attribute.getNamespaceURI()))
 				continue;
-			// Skip reserved ISM attributes on Resource and Category			
+			// Skip reserved ISM attributes on Resource and Category
 			if (Resource.getName(version).equals(element.getLocalName())
 				|| Category.getName(version).equals(element.getLocalName())
 				|| Keyword.getName(version).equals(element.getLocalName())) {
-				QName testName = new QName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
-					.getNamespacePrefix());
+				QName testName = new QName(attribute.getNamespaceURI(), attribute.getLocalName(),
+					attribute.getNamespacePrefix());
 				if (RESERVED_RESOURCE_NAMES.contains(testName))
 					continue;
 			}
@@ -131,7 +131,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		}
 		validate(version);
 	}
-	
+
 	/**
 	 * Constructor which builds from raw data. Because the parent is not known at this time, will accept
 	 * all attributes. The method, addTo() will confirm that the names do not clash with existing or reserved
@@ -146,7 +146,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		_attributes = new ArrayList<Attribute>(attributes);
 		validate(DDMSVersion.getCurrentVersion());
 	}
-		
+
 	/**
 	 * Compiles lists of attribute names which should be ignored when creating extensible attributes. In most cases,
 	 * this is easy to determine, because namespace="##other" forces all extensible attributes to be in a non-DDMS
@@ -173,7 +173,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 			RESERVED_RESOURCE_NAMES.add(new QName(version.getNtkNamespace(), Resource.DES_VERSION_NAME, ntkPrefix));
 		}
 	}
-	
+
 	/**
 	 * Convenience method to add these attributes onto an existing XOM Element
 	 * 
@@ -206,7 +206,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	protected void validate(DDMSVersion version) throws InvalidDDMSException {
 		super.validate(version);
 	}
-	
+
 	/**
 	 * @see AbstractAttributeGroup#getOutput(boolean, String)
 	 */
@@ -219,7 +219,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		}
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -245,14 +245,14 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 */
 	public int hashCode() {
 		int result = 0;
-		// XOM Attribute has no logical equality. Must calculate by hand.		
+		// XOM Attribute has no logical equality. Must calculate by hand.
 		for (Attribute attribute : getAttributes()) {
 			result = 7 * result + attribute.getLocalName().hashCode();
 			result = 7 * result + attribute.getNamespaceURI().hashCode();
 		}
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the attributes. Returns a copy.
 	 */
@@ -283,7 +283,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -292,7 +292,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 				getAttributes().add(new ExtensibleAttributes.AttributeBuilder(attribute));
 			}
 		}
-		
+
 		/**
 		 * Finalizes the data gathered for this builder instance. Will always return an empty instance instead of
 		 * a null one.
@@ -315,9 +315,9 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		 * @return true if every field is empty
 		 */
 		public boolean isEmpty() {
-			return (getAttributes().isEmpty());				
+			return (getAttributes().isEmpty());
 		}
-		
+
 		/**
 		 * Builder accessor for the attributes
 		 */
@@ -327,7 +327,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 			return _attributes;
 		}
 	}
-	
+
 	/**
 	 * Builder for a XOM attribute.
 	 * 
@@ -345,12 +345,12 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		private String _uri;
 		private String _value;
 		private Attribute.Type _type;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public AttributeBuilder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -360,7 +360,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 			setValue(attribute.getValue());
 			setType(attribute.getType());
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -429,6 +429,6 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		 */
 		public void setType(Attribute.Type type) {
 			_type = type;
-		}		
+		}
 	}
 }

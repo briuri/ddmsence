@@ -78,12 +78,12 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:resource (the top-level element of a DDMS record).
  * 
  * <p>
- * Starting in DDMS 3.0, resources have additional ISM attributes which did not exist in 2.0. However, the 2.0 schema 
+ * Starting in DDMS 3.0, resources have additional ISM attributes which did not exist in 2.0. However, the 2.0 schema
  * still allows "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present.
  * </p>
- *  
- * <p>When generating HTML/Text output for a Resource, additional tags are generated listing the version of DDMSence 
- * used to create the record (to help identify formatting bugs), and the version of DDMS. These lines are not required 
+ * 
+ * <p>When generating HTML/Text output for a Resource, additional tags are generated listing the version of DDMSence
+ * used to create the record (to help identify formatting bugs), and the version of DDMS. These lines are not required
  * (and may be removed). For example:</p>
  * 
  * <ul><code>
@@ -131,29 +131,29 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ISM:resourceElement</u>: Identifies whether this tag sets the classification for the xml file as a whole
  * (required, starting in DDMS 3.0)<br />
- * <u>ISM:createDate</u>: Specifies the creation or latest modification date (YYYY-MM-DD) (required, starting in 
+ * <u>ISM:createDate</u>: Specifies the creation or latest modification date (YYYY-MM-DD) (required, starting in
  * DDMS 3.0)<br />
  * <u>ISM:DESVersion</u>: Specifies the version of the Data Encoding Specification used for the security
  * markings on this record. (required, starting in DDMS 3.0)<br />
  * <u>ntk:DESVersion</u>: Specifies the version of the Data Encoding Specification used for Need-To-Know markings
  * on this record. (required, starting in DDMS 4.0.1 with a fixed value)<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required. (starting in DDMS 
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required. (starting in DDMS
  * 3.0)<br />
  * <u>{@link NoticeAttributes}</u>: (optional, starting in DDMS 4.0.1)<br />
  * <u>{@link ExtensibleAttributes}</u>: (optional)<br />
  * <br />
- * Starting in DDMS 3.0, the ISM attributes explicitly defined in the schema should appear in the SecurityAttributes, 
+ * Starting in DDMS 3.0, the ISM attributes explicitly defined in the schema should appear in the SecurityAttributes,
  * not the ExtensibleAttributes. Attempts to load them as ExtensibleAttributes will throw an InvalidDDMSException.
- * In DDMS 2.0, there are no ISM attributes explicitly defined in the schema, so you can load them in any way you 
- * want. It is recommended that you load them as SecurityAttributes anyhow, for consistency with newer DDMS resources. 
- * Please see the "Power Tips" on the Extensible Layer (on the DDMSence home page) for details. 
+ * In DDMS 2.0, there are no ISM attributes explicitly defined in the schema, so you can load them in any way you
+ * want. It is recommended that you load them as SecurityAttributes anyhow, for consistency with newer DDMS resources.
+ * Please see the "Power Tips" on the Extensible Layer (on the DDMSence home page) for details.
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public final class Resource extends AbstractBaseComponent {
-	
+
 	private MetacardInfo _metacardInfo = null;
 	private List<Identifier> _identifiers = new ArrayList<Identifier>();
 	private List<Title> _titles = new ArrayList<Title>();
@@ -186,10 +186,10 @@ public final class Resource extends AbstractBaseComponent {
 	private NoticeAttributes _noticeAttributes = null;
 	private SecurityAttributes _securityAttributes = null;
 	private ExtensibleAttributes _extensibleAttributes = null;
-	
+
 	/** The attribute name for resource element flag */
 	protected static final String RESOURCE_ELEMENT_NAME = "resourceElement";
-		
+
 	/** The attribute name for create date */
 	protected static final String CREATE_DATE_NAME = "createDate";
 
@@ -198,17 +198,17 @@ public final class Resource extends AbstractBaseComponent {
 
 	/** The attribute name for DES version */
 	public static final String DES_VERSION_NAME = "DESVersion";
-	
+
 	private static final Set<String> ALL_IC_ATTRIBUTES = new HashSet<String>();
 	static {
 		ALL_IC_ATTRIBUTES.add(RESOURCE_ELEMENT_NAME);
 		ALL_IC_ATTRIBUTES.add(CREATE_DATE_NAME);
 		ALL_IC_ATTRIBUTES.add(DES_VERSION_NAME);
 	}
-	
+
 	/** A set of all Resource attribute names which should not be converted into ExtensibleAttributes */
 	public static final Set<String> NON_EXTENSIBLE_NAMES = Collections.unmodifiableSet(ALL_IC_ATTRIBUTES);
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 * 
@@ -223,10 +223,10 @@ public final class Resource extends AbstractBaseComponent {
 			setXOMElement(element, false);
 			String namespace = element.getNamespaceURI();
 			String ismNamespace = getDDMSVersion().getIsmNamespace();
-			
+
 			String createDate = getAttributeValue(CREATE_DATE_NAME, ismNamespace);
 			if (!Util.isEmpty(createDate))
-				_createDate = getFactory().newXMLGregorianCalendar(createDate);	
+				_createDate = getFactory().newXMLGregorianCalendar(createDate);
 			_compliesWiths = Util.getXsListAsList(getAttributeValue(COMPLIES_WITH_NAME, ismNamespace));
 			String ismDESVersion = element.getAttributeValue(DES_VERSION_NAME, ismNamespace);
 			if (!Util.isEmpty(ismDESVersion)) {
@@ -234,7 +234,7 @@ public final class Resource extends AbstractBaseComponent {
 					_ismDESVersion = Integer.valueOf(ismDESVersion);
 				}
 				catch (NumberFormatException e) {
-					// 	This will be thrown as an InvalidDDMSException during validation
+					// This will be thrown as an InvalidDDMSException during validation
 				}
 			}
 			if (getDDMSVersion().isAtLeast("4.0.1")) {
@@ -253,7 +253,7 @@ public final class Resource extends AbstractBaseComponent {
 			_extensibleAttributes = new ExtensibleAttributes(element);
 
 			DDMSVersion version = getDDMSVersion();
-			
+
 			// Metacard Set
 			Element component = getChild(MetacardInfo.getName(version));
 			if (component != null) {
@@ -326,7 +326,7 @@ public final class Resource extends AbstractBaseComponent {
 			component = getChild(ResourceManagement.getName(version));
 			if (component != null)
 				_resourceManagement = new ResourceManagement(component);
-			
+
 			// Security Set
 			component = getChild(Security.getName(version));
 			if (component != null) {
@@ -375,7 +375,7 @@ public final class Resource extends AbstractBaseComponent {
 			}
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a DDMS 2.0 Resource from raw data.
 	 * 
@@ -401,10 +401,10 @@ public final class Resource extends AbstractBaseComponent {
 	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required, starting in DDMS 3.0)
 	 * @param ismDESVersion the DES Version as an Integer (required, starting in DDMS 3.0)
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in
-	 * DDMS 3.0)
+	 *        DDMS 3.0)
 	 * @param extensibleAttributes any extensible attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed, or if one of the components
-	 * does not belong at the top-level of the Resource.
+	 *         does not belong at the top-level of the Resource.
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, Boolean resourceElement, String createDate,
 		Integer ismDESVersion, SecurityAttributes securityAttributes, ExtensibleAttributes extensibleAttributes)
@@ -412,7 +412,7 @@ public final class Resource extends AbstractBaseComponent {
 		this(topLevelComponents, resourceElement, createDate, null, ismDESVersion, null, securityAttributes, null,
 			extensibleAttributes);
 	}
-	
+
 	/**
 	 * Constructor for creating a DDMS 3.1 Resource from raw data.
 	 * 
@@ -425,10 +425,10 @@ public final class Resource extends AbstractBaseComponent {
 	 * @param compliesWiths shows what ISM rulesets this resource complies with (optional, starting in DDMS 3.1)
 	 * @param ismDESVersion the DES Version as an Integer (required, starting in DDMS 3.0)
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in
-	 * DDMS 3.0)
+	 *        DDMS 3.0)
 	 * @param extensibleAttributes any extensible attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed, or if one of the components
-	 * does not belong at the top-level of the Resource.
+	 *         does not belong at the top-level of the Resource.
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, Boolean resourceElement, String createDate,
 		List<String> compliesWiths, Integer ismDESVersion, SecurityAttributes securityAttributes,
@@ -436,7 +436,7 @@ public final class Resource extends AbstractBaseComponent {
 		this(topLevelComponents, resourceElement, createDate, compliesWiths, ismDESVersion, null, securityAttributes,
 			null, extensibleAttributes);
 	}
-	
+
 	/**
 	 * Constructor for creating a DDMS resource of any version from raw data.
 	 * 
@@ -461,41 +461,41 @@ public final class Resource extends AbstractBaseComponent {
 	 * @param ismDESVersion the DES Version as an Integer (required, starting in DDMS 3.0)
 	 * @param ntkDESVersion the DES Version as an Integer (required, starting in DDMS 4.0.1)
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in
-	 * DDMS 3.0)
+	 *        DDMS 3.0)
 	 * @param noticeAttributes any notice attributes (optional, starting in DDMS 4.0.1)
 	 * @param extensibleAttributes any extensible attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed, or if one of the components
-	 * does not belong at the top-level of the Resource.
+	 *         does not belong at the top-level of the Resource.
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, Boolean resourceElement, String createDate,
-		List<String> compliesWiths, Integer ismDESVersion, Integer ntkDESVersion, SecurityAttributes securityAttributes,
-		NoticeAttributes noticeAttributes, ExtensibleAttributes extensibleAttributes) throws InvalidDDMSException {
+		List<String> compliesWiths, Integer ismDESVersion, Integer ntkDESVersion,
+		SecurityAttributes securityAttributes, NoticeAttributes noticeAttributes,
+		ExtensibleAttributes extensibleAttributes) throws InvalidDDMSException {
 		try {
 			if (topLevelComponents == null)
 				topLevelComponents = Collections.emptyList();
 			if (compliesWiths == null)
 				compliesWiths = Collections.emptyList();
-			
+
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			String ismPrefix = PropertyReader.getPrefix("ism");
 			String ismNamespace = version.getIsmNamespace();
 			String ntkPrefix = PropertyReader.getPrefix("ntk");
 			String ntkNamespace = version.getNtkNamespace();
 			Element element = Util.buildDDMSElement(Resource.getName(version), null);
-						
+
 			// Attributes
 			_compliesWiths = compliesWiths;
 			if (!compliesWiths.isEmpty()) {
-				Util.addAttribute(element, ismPrefix, COMPLIES_WITH_NAME, ismNamespace, 
-					Util.getXsList(compliesWiths));
+				Util.addAttribute(element, ismPrefix, COMPLIES_WITH_NAME, ismNamespace, Util.getXsList(compliesWiths));
 			}
 			if (ntkDESVersion != null) {
 				_ntkDESVersion = ntkDESVersion;
 				Util.addAttribute(element, ntkPrefix, DES_VERSION_NAME, ntkNamespace, ntkDESVersion.toString());
 			}
 			if (resourceElement != null) {
-				Util.addAttribute(element, ismPrefix, RESOURCE_ELEMENT_NAME, ismNamespace, String
-					.valueOf(resourceElement));
+				Util.addAttribute(element, ismPrefix, RESOURCE_ELEMENT_NAME, ismNamespace,
+					String.valueOf(resourceElement));
 			}
 			if (ismDESVersion != null) {
 				_ismDESVersion = ismDESVersion;
@@ -508,8 +508,8 @@ public final class Resource extends AbstractBaseComponent {
 				catch (IllegalArgumentException e) {
 					throw new InvalidDDMSException("The ISM:createDate attribute is not in a valid date format.");
 				}
-				Util.addAttribute(element, ismPrefix, CREATE_DATE_NAME, version.getIsmNamespace(), getCreateDate()
-					.toXMLFormat());
+				Util.addAttribute(element, ismPrefix, CREATE_DATE_NAME, version.getIsmNamespace(),
+					getCreateDate().toXMLFormat());
 			}
 			_noticeAttributes = NoticeAttributes.getNonNullInstance(noticeAttributes);
 			_noticeAttributes.addTo(element);
@@ -521,7 +521,7 @@ public final class Resource extends AbstractBaseComponent {
 			for (IDDMSComponent component : topLevelComponents) {
 				if (component == null)
 					continue;
-				
+
 				// Metacard Set
 				if (component instanceof MetacardInfo)
 					_metacardInfo = (MetacardInfo) component;
@@ -627,10 +627,10 @@ public final class Resource extends AbstractBaseComponent {
 			_orderedList.add(getSecurity());
 		_orderedList.addAll(getExtensibleElements());
 	}
-	
+
 	/**
 	 * Performs a Schematron validation of the DDMS Resource, via the ISO Schematron skeleton stylesheets for XSLT1
-	 * or XSLT2 processors. This action can only be performed on a DDMS Resource which is already valid according 
+	 * or XSLT2 processors. This action can only be performed on a DDMS Resource which is already valid according
 	 * to the DDMS specification.
 	 * 
 	 * <p>The informational results of this validation are returned to the caller in a list of ValidationMessages of
@@ -641,7 +641,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * <p>Details about ISO Schematron can be found at: http://www.schematron.com/ </p>
 	 * 
 	 * @param schematronFile the file containing the ISO Schematron constraints. This file is transformed with the ISO
-	 * Schematron skeleton files.
+	 *        Schematron skeleton files.
 	 * @return a list of ValidationMessages
 	 * @throws XSLException if there are XSL problems transforming with stylesheets
 	 * @throws IOException if there are problems reading or parsing the Schematron file
@@ -667,13 +667,13 @@ public final class Resource extends AbstractBaseComponent {
 		}
 		return (messages);
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>Exactly 1 metacardInfo, 1-many identifiers, 1-many titles, 0-1 descriptions, 0-1 dates, 0-1 rights, 
+	 * <li>Exactly 1 metacardInfo, 1-many identifiers, 1-many titles, 0-1 descriptions, 0-1 dates, 0-1 rights,
 	 * 0-1 formats, exactly 1 subjectCoverage, 0-1 resourceManagement, and exactly 1 security element must exist.</li>
 	 * <li>Starting in DDMS 4.0.1, 1-many subjectCoverage elements can exist.</li>
 	 * <li>At least 1 of creator, publisher, contributor, or pointOfContact must exist.</li>
@@ -683,9 +683,11 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>The compliesWith attribute cannot be used until DDMS 3.1 or later.</li>
 	 * <li>If set, the compliesWith attribute must be valid tokens.</li>
 	 * <li>ISM DESVersion must exist and be a valid Integer, starting in DDMS 3.0.</li>
-	 * <li>The value of ISM DESVersion must be fixed, starting in DDMS 3.1. This is checked during schema validation.</li>
+	 * <li>The value of ISM DESVersion must be fixed, starting in DDMS 3.1. This is checked during schema
+	 * validation.</li>
 	 * <li>NTK DESVersion must exist and be a valid Integer, starting in DDMS 4.0.1.</li>
-	 * <li>The value of NTK DESVersion must be fixed,s tarting in DDMS 4.0.1. This is checked during schema validation.</li>
+	 * <li>The value of NTK DESVersion must be fixed,s tarting in DDMS 4.0.1. This is checked during schema
+	 * validation.</li>
 	 * <li>A classification is required, starting in DDMS 3.0.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty, starting in DDMS 3.0.</li>
 	 * <li>Only 1 extensible element can exist in DDMS 2.0.</li>
@@ -716,7 +718,7 @@ public final class Resource extends AbstractBaseComponent {
 		else
 			Util.requireBoundedChildCount(getXOMElement(), SubjectCoverage.getName(getDDMSVersion()), 1, 1);
 		Util.requireBoundedChildCount(getXOMElement(), Security.getName(getDDMSVersion()), 1, 1);
-		
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (getDDMSVersion().isAtLeast("4.0.1")) {
 			validateOrderAttributes();
@@ -743,11 +745,12 @@ public final class Resource extends AbstractBaseComponent {
 
 		super.validate();
 	}
-	
+
 	/**
-	 * Validates the ddms:order attributes on ddms:nonStateActor and ddms:geospatialCoverage elements.  All elements 
+	 * Validates the ddms:order attributes on ddms:nonStateActor and ddms:geospatialCoverage elements. All elements
 	 * in the document which specify the order attribute should be interpreted as entries in a single, ordered list.
 	 * Values must be sequential, starting at 1, and may not contain duplicates.
+	 * 
 	 * @throws InvalidDDMSException if the orders do not make a unique consecutive list starting at 1.
 	 */
 	private void validateOrderAttributes() throws InvalidDDMSException {
@@ -769,9 +772,9 @@ public final class Resource extends AbstractBaseComponent {
 				throw new InvalidDDMSException("The ddms:order attributes throughout this resource must form "
 					+ "a single, ordered list starting from 1.");
 			}
-		}		
+		}
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -788,7 +791,7 @@ public final class Resource extends AbstractBaseComponent {
 		}
 		super.validateWarnings();
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -807,7 +810,7 @@ public final class Resource extends AbstractBaseComponent {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		text.append(getNoticeAttributes().getOutput(isHTML, localPrefix));
 		text.append(getExtensibleAttributes().getOutput(isHTML, localPrefix));
-		
+
 		// Traverse top-level components, suppressing the resource prefix
 		if (getMetacardInfo() != null)
 			text.append(getMetacardInfo().getOutput(isHTML, "", ""));
@@ -839,13 +842,13 @@ public final class Resource extends AbstractBaseComponent {
 		if (getSecurity() != null)
 			text.append(getSecurity().getOutput(isHTML, "", ""));
 		text.append(buildOutput(isHTML, "", getExtensibleElements()));
-		
+
 		text.append(buildOutput(isHTML, "extensible.layer", String.valueOf(!getExtensibleElements().isEmpty())));
 		text.append(buildOutput(isHTML, "ddms.generator", "DDMSence " + PropertyReader.getProperty("version")));
 		text.append(buildOutput(isHTML, "ddms.version", getDDMSVersion().getVersion()));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -891,14 +894,14 @@ public final class Resource extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return (version.isAtLeast("4.0.1") ? "resource" : "Resource");
 	}
-	
+
 	/**
 	 * Accessor for the MetacardInfo component (exactly 1)
 	 */
 	public MetacardInfo getMetacardInfo() {
 		return (_metacardInfo);
 	}
-	
+
 	/**
 	 * Accessor for the identifier components. There will always be at least one.
 	 */
@@ -1038,14 +1041,14 @@ public final class Resource extends AbstractBaseComponent {
 	public ResourceManagement getResourceManagement() {
 		return (_resourceManagement);
 	}
-	
+
 	/**
 	 * Accessor for the security component (exactly 1). May return null but this cannot happen after instantiation.
 	 */
 	public Security getSecurity() {
 		return (_security);
 	}
-	
+
 	/**
 	 * Accessor for the extensible layer elements (0-many in 3.0, 0-1 in 2.0).
 	 */
@@ -1069,8 +1072,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * Accessor for the createDate date (optional). Returns a copy. This may be null for v2.0 Resource components.
 	 */
 	public XMLGregorianCalendar getCreateDate() {
-		return (_createDate == null ? null
-			: getFactory().newXMLGregorianCalendar(_createDate.toXMLFormat()));
+		return (_createDate == null ? null : getFactory().newXMLGregorianCalendar(_createDate.toXMLFormat()));
 	}
 
 	/**
@@ -1079,7 +1081,7 @@ public final class Resource extends AbstractBaseComponent {
 	public List<String> getCompliesWiths() {
 		return (Collections.unmodifiableList(_compliesWiths));
 	}
-	
+
 	/**
 	 * Accessor for the ISM DESVersion attribute. Because this attribute does not exist before DDMS 3.0, the accessor
 	 * will return null for v2.0 Resource elements.
@@ -1087,7 +1089,7 @@ public final class Resource extends AbstractBaseComponent {
 	public Integer getIsmDESVersion() {
 		return (_ismDESVersion);
 	}
-	
+
 	/**
 	 * Accessor for the NTK DESVersion attribute.
 	 */
@@ -1102,7 +1104,7 @@ public final class Resource extends AbstractBaseComponent {
 	public List<IDDMSComponent> getTopLevelComponents() {
 		return (Collections.unmodifiableList(_orderedList));
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -1116,28 +1118,28 @@ public final class Resource extends AbstractBaseComponent {
 	public SecurityAttributes getSecurityAttributes() {
 		return (_securityAttributes);
 	}
-	
+
 	/**
 	 * Accessor for the Notice Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public NoticeAttributes getNoticeAttributes() {
 		return (_noticeAttributes);
 	}
-	
+
 	/**
 	 * Accessor for the extensible attributes. Will always be non-null, even if not set.
 	 */
 	public ExtensibleAttributes getExtensibleAttributes() {
 		return (_extensibleAttributes);
 	}
-	
+
 	/**
 	 * Accesor for the datatype factory
 	 */
 	private static DatatypeFactory getFactory() {
 		return (Util.getDataTypeFactory());
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -1179,12 +1181,12 @@ public final class Resource extends AbstractBaseComponent {
 		private NoticeAttributes.Builder _noticeAttributes;
 		private SecurityAttributes.Builder _securityAttributes;
 		private ExtensibleAttributes.Builder _extensibleAttributes;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -1220,7 +1222,7 @@ public final class Resource extends AbstractBaseComponent {
 					getPublishers().add(new Publisher.Builder((Publisher) component));
 				else if (component instanceof PointOfContact)
 					getPointOfContacts().add(new PointOfContact.Builder((PointOfContact) component));
-					
+
 				// Format Set
 				else if (component instanceof Format)
 					setFormat(new Format.Builder((Format) component));
@@ -1238,7 +1240,7 @@ public final class Resource extends AbstractBaseComponent {
 				// Resource Set again
 				else if (component instanceof ResourceManagement)
 					setResourceManagement(new ResourceManagement.Builder((ResourceManagement) component));
-				
+
 				// Security Set
 				else if (component instanceof Security)
 					setSecurity(new Security.Builder((Security) component));
@@ -1256,7 +1258,7 @@ public final class Resource extends AbstractBaseComponent {
 			setNoticeAttributes(new NoticeAttributes.Builder(resource.getNoticeAttributes()));
 			setExtensibleAttributes(new ExtensibleAttributes.Builder(resource.getExtensibleAttributes()));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -1269,9 +1271,9 @@ public final class Resource extends AbstractBaseComponent {
 				if (component != null)
 					topLevelComponents.add(component);
 			}
-			return (new Resource(topLevelComponents, getResourceElement(), getCreateDate(), getCompliesWiths(), getIsmDESVersion(),
-				getNtkDESVersion(), getSecurityAttributes().commit(), getNoticeAttributes().commit(),
-				getExtensibleAttributes().commit()));
+			return (new Resource(topLevelComponents, getResourceElement(), getCreateDate(), getCompliesWiths(),
+				getIsmDESVersion(), getNtkDESVersion(), getSecurityAttributes().commit(),
+				getNoticeAttributes().commit(), getExtensibleAttributes().commit()));
 		}
 
 		/**
@@ -1291,7 +1293,7 @@ public final class Resource extends AbstractBaseComponent {
 				&& getNoticeAttributes().isEmpty()
 				&& getExtensibleAttributes().isEmpty());
 		}
-		
+
 		/**
 		 * Convenience method to get every child Builder in this Builder.
 		 * 
@@ -1324,7 +1326,7 @@ public final class Resource extends AbstractBaseComponent {
 			list.add(getSecurity());
 			return (list);
 		}
-		
+
 		/**
 		 * Builder accessor for the metacardInfo
 		 */
@@ -1333,14 +1335,14 @@ public final class Resource extends AbstractBaseComponent {
 				_metacardInfo = new MetacardInfo.Builder();
 			return _metacardInfo;
 		}
-		
+
 		/**
 		 * Builder accessor for the metacardInfo
 		 */
 		public void setMetacardInfo(MetacardInfo.Builder metacardInfo) {
 			_metacardInfo = metacardInfo;
 		}
-		
+
 		/**
 		 * Builder accessor for the identifiers
 		 */
@@ -1349,7 +1351,7 @@ public final class Resource extends AbstractBaseComponent {
 				_identifiers = new LazyList(Identifier.Builder.class);
 			return _identifiers;
 		}
-		
+
 		/**
 		 * Builder accessor for the titles
 		 */
@@ -1358,7 +1360,7 @@ public final class Resource extends AbstractBaseComponent {
 				_titles = new LazyList(Title.Builder.class);
 			return _titles;
 		}
-		
+
 		/**
 		 * Builder accessor for the subtitles
 		 */
@@ -1367,7 +1369,7 @@ public final class Resource extends AbstractBaseComponent {
 				_subtitles = new LazyList(Subtitle.Builder.class);
 			return _subtitles;
 		}
-		
+
 		/**
 		 * Builder accessor for the description
 		 */
@@ -1376,14 +1378,14 @@ public final class Resource extends AbstractBaseComponent {
 				_description = new Description.Builder();
 			return _description;
 		}
-		
+
 		/**
 		 * Builder accessor for the description
 		 */
 		public void setDescription(Description.Builder description) {
 			_description = description;
 		}
-		
+
 		/**
 		 * Builder accessor for the languages
 		 */
@@ -1392,7 +1394,7 @@ public final class Resource extends AbstractBaseComponent {
 				_languages = new LazyList(Language.Builder.class);
 			return _languages;
 		}
-		
+
 		/**
 		 * Builder accessor for the dates
 		 */
@@ -1401,14 +1403,14 @@ public final class Resource extends AbstractBaseComponent {
 				_dates = new Dates.Builder();
 			return _dates;
 		}
-		
+
 		/**
 		 * Builder accessor for the dates
 		 */
 		public void setDates(Dates.Builder dates) {
 			_dates = dates;
 		}
-		
+
 		/**
 		 * Builder accessor for the rights
 		 */
@@ -1417,14 +1419,14 @@ public final class Resource extends AbstractBaseComponent {
 				_rights = new Rights.Builder();
 			return _rights;
 		}
-		
+
 		/**
 		 * Builder accessor for the rights
 		 */
 		public void setRights(Rights.Builder rights) {
 			_rights = rights;
 		}
-		
+
 		/**
 		 * Builder accessor for the sources
 		 */
@@ -1433,7 +1435,7 @@ public final class Resource extends AbstractBaseComponent {
 				_sources = new LazyList(Source.Builder.class);
 			return _sources;
 		}
-		
+
 		/**
 		 * Builder accessor for the types
 		 */
@@ -1442,7 +1444,7 @@ public final class Resource extends AbstractBaseComponent {
 				_types = new LazyList(Type.Builder.class);
 			return _types;
 		}
-		
+
 		/**
 		 * Convenience accessor for all of the producers. This list does not grow dynamically.
 		 */
@@ -1454,7 +1456,7 @@ public final class Resource extends AbstractBaseComponent {
 			producers.addAll(getPointOfContacts());
 			return (producers);
 		}
-		
+
 		/**
 		 * Builder accessor for creators
 		 */
@@ -1463,7 +1465,7 @@ public final class Resource extends AbstractBaseComponent {
 				_creators = new LazyList(Creator.Builder.class);
 			return _creators;
 		}
-		
+
 		/**
 		 * Builder accessor for contributors
 		 */
@@ -1472,7 +1474,7 @@ public final class Resource extends AbstractBaseComponent {
 				_contributors = new LazyList(Contributor.Builder.class);
 			return _contributors;
 		}
-		
+
 		/**
 		 * Builder accessor for publishers
 		 */
@@ -1481,7 +1483,7 @@ public final class Resource extends AbstractBaseComponent {
 				_publishers = new LazyList(Publisher.Builder.class);
 			return _publishers;
 		}
-		
+
 		/**
 		 * Builder accessor for points of contact
 		 */
@@ -1490,7 +1492,7 @@ public final class Resource extends AbstractBaseComponent {
 				_pointOfContacts = new LazyList(PointOfContact.Builder.class);
 			return _pointOfContacts;
 		}
-				
+
 		/**
 		 * Builder accessor for the format
 		 */
@@ -1499,14 +1501,14 @@ public final class Resource extends AbstractBaseComponent {
 				_format = new Format.Builder();
 			return _format;
 		}
-		
+
 		/**
 		 * Builder accessor for the format
 		 */
 		public void setFormat(Format.Builder format) {
 			_format = format;
 		}
-		
+
 		/**
 		 * Builder accessor for the subjectCoverages
 		 */
@@ -1515,7 +1517,7 @@ public final class Resource extends AbstractBaseComponent {
 				_subjectCoverages = new LazyList(SubjectCoverage.Builder.class);
 			return _subjectCoverages;
 		}
-				
+
 		/**
 		 * Builder accessor for the virtualCoverages
 		 */
@@ -1524,7 +1526,7 @@ public final class Resource extends AbstractBaseComponent {
 				_virtualCoverages = new LazyList(VirtualCoverage.Builder.class);
 			return _virtualCoverages;
 		}
-		
+
 		/**
 		 * Builder accessor for the temporalCoverages
 		 */
@@ -1533,7 +1535,7 @@ public final class Resource extends AbstractBaseComponent {
 				_temporalCoverages = new LazyList(TemporalCoverage.Builder.class);
 			return _temporalCoverages;
 		}
-		
+
 		/**
 		 * Builder accessor for the geospatialCoverages
 		 */
@@ -1542,7 +1544,7 @@ public final class Resource extends AbstractBaseComponent {
 				_geospatialCoverages = new LazyList(GeospatialCoverage.Builder.class);
 			return _geospatialCoverages;
 		}
-		
+
 		/**
 		 * Builder accessor for the relatedResources
 		 */
@@ -1551,7 +1553,7 @@ public final class Resource extends AbstractBaseComponent {
 				_relatedResources = new LazyList(RelatedResource.Builder.class);
 			return _relatedResources;
 		}
-		
+
 		/**
 		 * Builder accessor for the resourceManagement
 		 */
@@ -1560,14 +1562,14 @@ public final class Resource extends AbstractBaseComponent {
 				_resourceManagement = new ResourceManagement.Builder();
 			return _resourceManagement;
 		}
-		
+
 		/**
 		 * Builder accessor for the resourceManagement
 		 */
 		public void setResourceManagement(ResourceManagement.Builder resourceManagement) {
 			_resourceManagement = resourceManagement;
 		}
-		
+
 		/**
 		 * Builder accessor for the security
 		 */
@@ -1576,14 +1578,14 @@ public final class Resource extends AbstractBaseComponent {
 				_security = new Security.Builder();
 			return _security;
 		}
-		
+
 		/**
 		 * Builder accessor for the security
 		 */
 		public void setSecurity(Security.Builder security) {
 			_security = security;
 		}
-		
+
 		/**
 		 * Builder accessor for the extensibleElements
 		 */
@@ -1592,14 +1594,14 @@ public final class Resource extends AbstractBaseComponent {
 				_extensibleElements = new LazyList(ExtensibleElement.Builder.class);
 			return _extensibleElements;
 		}
-		
+
 		/**
 		 * Builder accessor for the createDate attribute
 		 */
 		public String getCreateDate() {
 			return _createDate;
 		}
-		
+
 		/**
 		 * Builder accessor for the createDate attribute
 		 */
@@ -1620,7 +1622,7 @@ public final class Resource extends AbstractBaseComponent {
 		public void setResourceElement(Boolean resourceElement) {
 			_resourceElement = resourceElement;
 		}
-		
+
 		/**
 		 * Builder accessor for the compliesWith attribute
 		 */
@@ -1629,7 +1631,7 @@ public final class Resource extends AbstractBaseComponent {
 				_compliesWiths = new LazyList(String.class);
 			return _compliesWiths;
 		}
-		
+
 		/**
 		 * Builder accessor for the compliesWith attribute
 		 */
@@ -1637,35 +1639,34 @@ public final class Resource extends AbstractBaseComponent {
 			_compliesWiths = new LazyList(compliesWiths, String.class);
 		}
 
-		
 		/**
 		 * Builder accessor for the NTK DESVersion
 		 */
 		public Integer getNtkDESVersion() {
 			return _ntkDESVersion;
 		}
-		
+
 		/**
 		 * Builder accessor for the NTK DESVersion
 		 */
 		public void setNtkDESVersion(Integer desVersion) {
 			_ntkDESVersion = desVersion;
 		}
-		
+
 		/**
 		 * Builder accessor for the ISM DESVersion
 		 */
 		public Integer getIsmDESVersion() {
 			return _ismDESVersion;
 		}
-		
+
 		/**
 		 * Builder accessor for the ISM DESVersion
 		 */
 		public void setIsmDESVersion(Integer desVersion) {
 			_ismDESVersion = desVersion;
 		}
-		
+
 		/**
 		 * Builder accessor for the securityAttributes
 		 */
@@ -1674,14 +1675,14 @@ public final class Resource extends AbstractBaseComponent {
 				_securityAttributes = new SecurityAttributes.Builder();
 			return _securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the securityAttributes
 		 */
 		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
 			_securityAttributes = securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the noticeAttributes
 		 */
@@ -1690,14 +1691,14 @@ public final class Resource extends AbstractBaseComponent {
 				_noticeAttributes = new NoticeAttributes.Builder();
 			return _noticeAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the noticeAttributes
 		 */
 		public void setNoticeAttributes(NoticeAttributes.Builder noticeAttributes) {
 			_noticeAttributes = noticeAttributes;
-		}	
-		
+		}
+
 		/**
 		 * Builder accessor for the extensibleAttributes
 		 */
@@ -1706,12 +1707,12 @@ public final class Resource extends AbstractBaseComponent {
 				_extensibleAttributes = new ExtensibleAttributes.Builder();
 			return _extensibleAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the extensibleAttributes
 		 */
 		public void setExtensibleAttributes(ExtensibleAttributes.Builder extensibleAttributes) {
 			_extensibleAttributes = extensibleAttributes;
-		}		
+		}
 	}
 }

@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary;
 
 import nu.xom.Element;
@@ -39,27 +39,27 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public final class Description extends AbstractSimpleString {
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Description(Element element) throws InvalidDDMSException {
 		super(element, true);
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param description the value of the description child text
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -67,21 +67,21 @@ public final class Description extends AbstractSimpleString {
 	public Description(String description, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		super(Description.getName(DDMSVersion.getCurrentVersion()), description, securityAttributes, true);
 	}
-		
+
 	/**
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * </td></tr></table>
-	 *  
+	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Description.getName(getDDMSVersion()));
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -94,7 +94,7 @@ public final class Description extends AbstractSimpleString {
 			addWarning("A ddms:" + getName() + " element was found with no description value.");
 		super.validateWarnings();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -105,7 +105,7 @@ public final class Description extends AbstractSimpleString {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix + "."));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -116,7 +116,7 @@ public final class Description extends AbstractSimpleString {
 		Util.requireValue("version", version);
 		return ("description");
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -125,7 +125,7 @@ public final class Description extends AbstractSimpleString {
 			return (false);
 		return (true);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -135,21 +135,21 @@ public final class Description extends AbstractSimpleString {
 	 */
 	public static class Builder extends AbstractSimpleString.Builder {
 		private static final long serialVersionUID = 7750664735441105296L;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {
 			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(Description description) {
 			super(description);
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -157,4 +157,4 @@ public final class Description extends AbstractSimpleString {
 			return (isEmpty() ? null : new Description(getValue(), getSecurityAttributes().commit()));
 		}
 	}
-} 
+}

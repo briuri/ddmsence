@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms;
 
 /**
@@ -26,9 +26,9 @@ package buri.ddmsence.ddms;
  * @since 0.9.b
  */
 public class UnsupportedVersionException extends RuntimeException {
-	
+
 	private static final long serialVersionUID = -183915550465140589L;
-	
+
 	/**
 	 * @see Exception#Exception(String)
 	 */

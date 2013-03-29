@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
@@ -48,7 +48,8 @@ import buri.ddmsence.util.Util;
  * <u>ddms:address</u>: a computer or telecommunications network address, or a network name or locale. (optional).<br />
  * <u>ddms:protocol</u>: the type of rules for data transfer that apply to the Virtual Address (can stand alone, but
  * should be used if address is provided)<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS 3.0)
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS
+ * 3.0)
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -57,14 +58,14 @@ import buri.ddmsence.util.Util;
 public final class VirtualCoverage extends AbstractBaseComponent {
 
 	private SecurityAttributes _securityAttributes = null;
-	
+
 	private static final String ADDRESS_NAME = "address";
 	private static final String PROTOCOL_NAME = "protocol";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public VirtualCoverage(Element element) throws InvalidDDMSException {
@@ -77,10 +78,10 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param address the virtual address (optional)
 	 * @param protocol the network protocol (optional, should be used if address is provided)
 	 * @param securityAttributes any security attributes (optional)
@@ -125,7 +126,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -138,7 +139,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 			addWarning("A completely empty ddms:virtualCoverage element was found.");
 		super.validateWarnings();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -150,7 +151,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -171,7 +172,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 		result = 7 * result + getProtocol().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -182,28 +183,28 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("virtualCoverage");
 	}
-	
+
 	/**
 	 * Accessor for the address attribute (optional)
 	 */
 	public String getAddress() {
-		return (getAttributeValue(ADDRESS_NAME)); 
+		return (getAttributeValue(ADDRESS_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the protocol attribute (optional, should be used if address is supplied)
 	 */
 	public String getProtocol() {
-		return (getAttributeValue(PROTOCOL_NAME)); 
+		return (getAttributeValue(PROTOCOL_NAME));
 	}
-	
+
 	/**
-	 * Accessor for the Security Attributes.  Will always be non-null, even if it has no values set.
+	 * Accessor for the Security Attributes. Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_securityAttributes);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -216,12 +217,12 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 		private String _address;
 		private String _protocol;
 		private SecurityAttributes.Builder _securityAttributes;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -230,50 +231,50 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 			setProtocol(coverage.getProtocol());
 			setSecurityAttributes(new SecurityAttributes.Builder(coverage.getSecurityAttributes()));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
 		public VirtualCoverage commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new VirtualCoverage(getAddress(), getProtocol(), 
+			return (isEmpty() ? null : new VirtualCoverage(getAddress(), getProtocol(),
 				getSecurityAttributes().commit()));
 		}
-		
+
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
 			return (Util.isEmpty(getAddress()) && Util.isEmpty(getProtocol()) && getSecurityAttributes().isEmpty());
 		}
-		
+
 		/**
 		 * Builder accessor for the address attribute
 		 */
 		public String getAddress() {
 			return _address;
 		}
-		
+
 		/**
 		 * Builder accessor for the address attribute
 		 */
 		public void setAddress(String address) {
 			_address = address;
 		}
-		
+
 		/**
 		 * Builder accessor for the protocol attribute
 		 */
 		public String getProtocol() {
 			return _protocol;
 		}
-		
+
 		/**
 		 * Builder accessor for the protocol attribute
 		 */
 		public void setProtocol(String protocol) {
 			_protocol = protocol;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
@@ -282,7 +283,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 				_securityAttributes = new SecurityAttributes.Builder();
 			return _securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
@@ -290,4 +291,4 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 			_securityAttributes = securityAttributes;
 		}
 	}
-} 
+}

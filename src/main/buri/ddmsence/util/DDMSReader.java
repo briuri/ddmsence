@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.util;
 
 import java.io.File;
@@ -58,12 +58,11 @@ import buri.ddmsence.ddms.Resource;
 public class DDMSReader {
 
 	private XMLReader _reader;
-	
+
 	private static final String PROP_XERCES_VALIDATION = "http://xml.org/sax/features/validation";
 	private static final String PROP_XERCES_SCHEMA_VALIDATION = "http://apache.org/xml/features/validation/schema";
-	private static final String PROP_XERCES_EXTERNAL_LOCATION =
-		"http://apache.org/xml/properties/schema/external-schemaLocation";
-	
+	private static final String PROP_XERCES_EXTERNAL_LOCATION = "http://apache.org/xml/properties/schema/external-schemaLocation";
+
 	/**
 	 * Constructor
 	 * 
@@ -87,7 +86,7 @@ public class DDMSReader {
 		getReader().setFeature(PROP_XERCES_SCHEMA_VALIDATION, true);
 		getReader().setProperty(PROP_XERCES_EXTERNAL_LOCATION, schemas.toString().trim());
 	}
-	
+
 	/**
 	 * Helper method to load schemas into the property for the XML Reader
 	 * 
@@ -105,7 +104,7 @@ public class DDMSReader {
 			processedNamespaces.add(namespace);
 		}
 	}
-	
+
 	/**
 	 * Returns the full path to a local schema copy, based on the relative location from the
 	 * properties file. The full path will have spaces escaped as %20, to resolve Issue 50
@@ -119,7 +118,7 @@ public class DDMSReader {
 		URL xsd = getClass().getResource(schemaLocation);
 		if (xsd == null)
 			throw new IllegalArgumentException("Unable to load a local copy of the schema for validation.");
-		String fullPath = xsd.toExternalForm().replaceAll(" ", "%20");		
+		String fullPath = xsd.toExternalForm().replaceAll(" ", "%20");
 		return (fullPath);
 	}
 
@@ -143,7 +142,7 @@ public class DDMSReader {
 			throw new InvalidDDMSException(e);
 		}
 	}
-	
+
 	/**
 	 * Creates a XOM element representing the root XML element in the file.
 	 * 
@@ -156,33 +155,33 @@ public class DDMSReader {
 		Util.requireValue("file", file);
 		return (getElement(new FileReader(file)));
 	}
-	
+
 	/**
 	 * Creates a XOM element representing the root XML element in a string representation of an XML document.
 	 * 
 	 * <p>The implementation of this method delegates to the Reader-based overloaded method.</p>
 	 * 
 	 * @param xml a string containing the XML document
-	 * @return a XOM element representing the root node in the document 
+	 * @return a XOM element representing the root node in the document
 	 */
 	public Element getElement(String xml) throws IOException, InvalidDDMSException {
 		Util.requireValue("XML string", xml);
 		return (getElement(new StringReader(xml)));
 	}
-	
+
 	/**
 	 * Creates a XOM element representing the root XML element in an input stream.
 	 * 
 	 * <p>The implementation of this method delegates to the Reader-based overloaded method.</p>
 	 * 
 	 * @param inputStream a stream mapping to an XML document
-	 * @return a XOM element representing the root node in the document 
+	 * @return a XOM element representing the root node in the document
 	 */
 	public Element getElement(InputStream inputStream) throws IOException, InvalidDDMSException {
 		Util.requireValue("input stream", inputStream);
 		return (getElement(new InputStreamReader(inputStream)));
 	}
-		
+
 	/**
 	 * Creates a XOM element representing the root XML element in a reader.
 	 * 
@@ -200,7 +199,7 @@ public class DDMSReader {
 			throw new InvalidDDMSException(e);
 		}
 	}
-	
+
 	/**
 	 * Creates a DDMS resource based on the contents of a file, and also sets the DDMSVersion based on the namespace
 	 * URIs in the file.
@@ -212,7 +211,7 @@ public class DDMSReader {
 	public Resource getDDMSResource(File file) throws IOException, InvalidDDMSException {
 		return (buildResource(getElement(file)));
 	}
-	
+
 	/**
 	 * Creates a DDMS resource based on the contents of a string representation of an XML document, and also sets the
 	 * DDMSVersion based on the namespace URIs in the document.
@@ -224,7 +223,7 @@ public class DDMSReader {
 	public Resource getDDMSResource(String xml) throws IOException, InvalidDDMSException {
 		return (buildResource(getElement(xml)));
 	}
-	
+
 	/**
 	 * Creates a DDMS resource based on the contents of an input stream, and also sets the DDMSVersion based on the
 	 * namespace URIs in the document.
@@ -236,7 +235,7 @@ public class DDMSReader {
 	public Resource getDDMSResource(InputStream inputStream) throws IOException, InvalidDDMSException {
 		return (buildResource(getElement(inputStream)));
 	}
-	
+
 	/**
 	 * Creates a DDMS resource based on the contents of a reader, and also sets the DDMSVersion based on the namespace
 	 * URIs in the document.
@@ -248,7 +247,7 @@ public class DDMSReader {
 	public Resource getDDMSResource(Reader reader) throws IOException, InvalidDDMSException {
 		return (buildResource(getElement(reader)));
 	}
-	
+
 	/**
 	 * Shared helper method to build a DDMS Resource from a XOM Element
 	 * 
@@ -257,11 +256,10 @@ public class DDMSReader {
 	 * @throws InvalidDDMSException if the component could not be built
 	 */
 	protected Resource buildResource(Element xomElement) throws InvalidDDMSException {
-		DDMSVersion.setCurrentVersion(DDMSVersion.getVersionForNamespace(xomElement.getNamespaceURI())
-			.getVersion());
+		DDMSVersion.setCurrentVersion(DDMSVersion.getVersionForNamespace(xomElement.getNamespaceURI()).getVersion());
 		return (new Resource(xomElement));
 	}
-		
+
 	/**
 	 * Returns the external schema locations for debugging. The returned string will contain a space-delimited set
 	 * of XMLNamespace/SchemaLocation pairs.
@@ -277,7 +275,7 @@ public class DDMSReader {
 				+ " is not supported or recognized for this XMLReader.");
 		}
 	}
-	
+
 	/**
 	 * Accessor for the reader
 	 */

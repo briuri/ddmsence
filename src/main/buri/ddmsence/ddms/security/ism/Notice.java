@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.security.ism;
 
 import java.io.Serializable;
@@ -39,7 +39,8 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ISM:Notice.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ISM:NoticeText</u>: The text associated with this Notice (1-to-many required), implemented as a {@link NoticeText}<br />
+ * <u>ISM:NoticeText</u>: The text associated with this Notice (1-to-many required), implemented as a {@link NoticeText}
+ * <br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
@@ -51,23 +52,23 @@ import buri.ddmsence.util.Util;
  * @since 2.0.0
  */
 public final class Notice extends AbstractBaseComponent {
-	
+
 	private List<NoticeText> _noticeTexts = null;
 	private SecurityAttributes _securityAttributes = null;
 	private NoticeAttributes _noticeAttributes = null;
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Notice(Element element) throws InvalidDDMSException {
 		try {
 			setXOMElement(element, false);
 			_noticeTexts = new ArrayList<NoticeText>();
-			Elements noticeTexts = element.getChildElements(NoticeText.getName(getDDMSVersion()), getDDMSVersion()
-				.getIsmNamespace());
+			Elements noticeTexts = element.getChildElements(NoticeText.getName(getDDMSVersion()),
+				getDDMSVersion().getIsmNamespace());
 			for (int i = 0; i < noticeTexts.size(); i++) {
 				_noticeTexts.add(new NoticeText(noticeTexts.get(i)));
 			}
@@ -80,10 +81,10 @@ public final class Notice extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param noticeTexts the notice texts (at least 1 required)
 	 * @param securityAttributes any security attributes (classification and ownerProducer are optional)
 	 * @param noticeAttributes any notice attributes
@@ -95,8 +96,8 @@ public final class Notice extends AbstractBaseComponent {
 			if (noticeTexts == null)
 				noticeTexts = Collections.emptyList();
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			Element element = Util.buildElement(PropertyReader.getPrefix("ism"), Notice.getName(version), version
-				.getIsmNamespace(), null);
+			Element element = Util.buildElement(PropertyReader.getPrefix("ism"), Notice.getName(version),
+				version.getIsmNamespace(), null);
 			for (NoticeText noticeText : noticeTexts)
 				element.appendChild(noticeText.getXOMElementCopy());
 			_noticeTexts = noticeTexts;
@@ -111,7 +112,7 @@ public final class Notice extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-		
+
 	/**
 	 * Validates the component.
 	 * 
@@ -120,20 +121,20 @@ public final class Notice extends AbstractBaseComponent {
 	 * <li>At least 1 NoticeText exists.</li>
 	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
 	 * </td></tr></table>
-	 *  
+	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireQName(getXOMElement(), getDDMSVersion().getIsmNamespace(), Notice.getName(getDDMSVersion()));
 		if (getNoticeTexts().isEmpty())
 			throw new InvalidDDMSException("At least one ISM:NoticeText must exist within an ISM:Notice element.");
-		
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0.1");
-		
+
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -148,9 +149,9 @@ public final class Notice extends AbstractBaseComponent {
 			if (getNoticeAttributes().isExternalReference() != null)
 				addDdms40Warning("ISM:externalNotice attribute");
 		}
-		super.validateWarnings();		
+		super.validateWarnings();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -162,7 +163,7 @@ public final class Notice extends AbstractBaseComponent {
 		text.append(getNoticeAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -171,7 +172,7 @@ public final class Notice extends AbstractBaseComponent {
 		list.addAll(getNoticeTexts());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -179,9 +180,9 @@ public final class Notice extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof Notice))
 			return (false);
 		Notice test = (Notice) obj;
-		return (getNoticeAttributes().equals(test.getNoticeAttributes()));		
+		return (getNoticeAttributes().equals(test.getNoticeAttributes()));
 	}
-	
+
 	/**
 	 * @see Object#hashCode()
 	 */
@@ -190,7 +191,7 @@ public final class Notice extends AbstractBaseComponent {
 		result = 7 * result + getNoticeAttributes().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -201,28 +202,28 @@ public final class Notice extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("Notice");
 	}
-	
+
 	/**
 	 * Accessor for the list of NoticeTexts.
 	 */
 	public List<NoticeText> getNoticeTexts() {
 		return (Collections.unmodifiableList(_noticeTexts));
 	}
-	
+
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_securityAttributes);
 	}
-	
+
 	/**
 	 * Accessor for the Notice Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public NoticeAttributes getNoticeAttributes() {
 		return (_noticeAttributes);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -235,12 +236,12 @@ public final class Notice extends AbstractBaseComponent {
 		private List<NoticeText.Builder> _noticeTexts;
 		private SecurityAttributes.Builder _securityAttributes = null;
 		private NoticeAttributes.Builder _noticeAttributes = null;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -248,9 +249,9 @@ public final class Notice extends AbstractBaseComponent {
 			for (NoticeText noticeText : notice.getNoticeTexts())
 				getNoticeTexts().add(new NoticeText.Builder(noticeText));
 			setSecurityAttributes(new SecurityAttributes.Builder(notice.getSecurityAttributes()));
-			setNoticeAttributes(new NoticeAttributes.Builder(notice.getNoticeAttributes()));			
+			setNoticeAttributes(new NoticeAttributes.Builder(notice.getNoticeAttributes()));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -275,7 +276,7 @@ public final class Notice extends AbstractBaseComponent {
 				hasValueInList = hasValueInList || !builder.isEmpty();
 			return (!hasValueInList && getSecurityAttributes().isEmpty() && getNoticeAttributes().isEmpty());
 		}
-		
+
 		/**
 		 * Builder accessor for the noticeTexts
 		 */
@@ -284,7 +285,7 @@ public final class Notice extends AbstractBaseComponent {
 				_noticeTexts = new LazyList(NoticeText.Builder.class);
 			return _noticeTexts;
 		}
-		
+
 		/**
 		 * Builder accessor for the securityAttributes
 		 */
@@ -293,14 +294,14 @@ public final class Notice extends AbstractBaseComponent {
 				_securityAttributes = new SecurityAttributes.Builder();
 			return _securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the securityAttributes
 		 */
 		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
 			_securityAttributes = securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the noticeAttributes
 		 */
@@ -309,12 +310,12 @@ public final class Notice extends AbstractBaseComponent {
 				_noticeAttributes = new NoticeAttributes.Builder();
 			return _noticeAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the noticeAttributes
 		 */
 		public void setNoticeAttributes(NoticeAttributes.Builder noticeAttributes) {
 			_noticeAttributes = noticeAttributes;
-		}	
+		}
 	}
-} 
+}

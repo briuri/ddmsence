@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import java.io.Serializable;
@@ -55,23 +55,23 @@ import buri.ddmsence.util.Util;
 public final class TaskID extends AbstractBaseComponent {
 
 	private XLinkAttributes _xlinkAttributes = null;
-	
+
 	private static final String FIXED_TYPE = "simple";
-		
+
 	/** The prefix of the network attributes */
 	public static final String NO_PREFIX = "";
-	
+
 	/** The namespace of the network attributes */
 	public static final String NO_NAMESPACE = "";
-	
+
 	private static final String NETWORK_NAME = "network";
 	private static final String OTHER_NETWORK_NAME = "otherNetwork";
 	private static final String TASKING_SYSTEM_NAME = "taskingSystem";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public TaskID(Element element) throws InvalidDDMSException {
@@ -87,8 +87,8 @@ public final class TaskID extends AbstractBaseComponent {
 
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
-	 * @param value	the child text (optional)
+	 * 
+	 * @param value the child text (optional)
 	 * @param taskingSystem the tasking system (optional)
 	 * @param network the network (optional)
 	 * @param otherNetwork another network (optional)
@@ -102,7 +102,7 @@ public final class TaskID extends AbstractBaseComponent {
 			Util.addDDMSAttribute(element, TASKING_SYSTEM_NAME, taskingSystem);
 			Util.addAttribute(element, NO_PREFIX, NETWORK_NAME, NO_NAMESPACE, network);
 			Util.addAttribute(element, NO_PREFIX, OTHER_NETWORK_NAME, NO_NAMESPACE, otherNetwork);
-			
+
 			_xlinkAttributes = XLinkAttributes.getNonNullInstance(xlinkAttributes);
 			_xlinkAttributes.addTo(element);
 			setXOMElement(element, true);
@@ -112,7 +112,7 @@ public final class TaskID extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
@@ -134,7 +134,7 @@ public final class TaskID extends AbstractBaseComponent {
 			ISMVocabulary.requireValidNetwork(getNetwork());
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -147,7 +147,7 @@ public final class TaskID extends AbstractBaseComponent {
 			addWarnings(getXLinkAttributes().getValidationWarnings(), true);
 		super.validateWarnings();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -161,7 +161,7 @@ public final class TaskID extends AbstractBaseComponent {
 		text.append(getXLinkAttributes().getOutput(isHTML, localPrefix + "."));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -188,7 +188,7 @@ public final class TaskID extends AbstractBaseComponent {
 		result = 7 * result + getXLinkAttributes().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -199,42 +199,42 @@ public final class TaskID extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("taskID");
 	}
-		
+
 	/**
 	 * Accessor for the value of the child text.
 	 */
 	public String getValue() {
 		return (getXOMElement().getValue());
 	}
-	
+
 	/**
 	 * Accessor for the taskingSystem attribute.
 	 */
 	public String getTaskingSystem() {
 		return (getAttributeValue(TASKING_SYSTEM_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the network attribute.
 	 */
 	public String getNetwork() {
 		return (getAttributeValue(NETWORK_NAME, NO_NAMESPACE));
 	}
-	
+
 	/**
 	 * Accessor for the otherNetwork attribute.
 	 */
 	public String getOtherNetwork() {
 		return (getAttributeValue(OTHER_NETWORK_NAME, NO_NAMESPACE));
 	}
-	
+
 	/**
 	 * Accessor for the XLink Attributes. Will always be non-null, even if it has no values set.
 	 */
 	public XLinkAttributes getXLinkAttributes() {
 		return (_xlinkAttributes);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -249,12 +249,12 @@ public final class TaskID extends AbstractBaseComponent {
 		private String _network;
 		private String _otherNetwork;
 		private XLinkAttributes.Builder _xlinkAttributes;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -265,7 +265,7 @@ public final class TaskID extends AbstractBaseComponent {
 			setOtherNetwork(taskID.getOtherNetwork());
 			setXLinkAttributes(new XLinkAttributes.Builder(taskID.getXLinkAttributes()));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -284,7 +284,7 @@ public final class TaskID extends AbstractBaseComponent {
 				&& Util.isEmpty(getOtherNetwork())
 				&& getXLinkAttributes().isEmpty());				
 		}
-		
+
 		/**
 		 * Builder accessor for the value
 		 */
@@ -297,8 +297,8 @@ public final class TaskID extends AbstractBaseComponent {
 		 */
 		public void setValue(String value) {
 			_value = value;
-		}	
-		
+		}
+
 		/**
 		 * Builder accessor for the taskingSystem
 		 */
@@ -340,7 +340,7 @@ public final class TaskID extends AbstractBaseComponent {
 		public void setOtherNetwork(String otherNetwork) {
 			_otherNetwork = otherNetwork;
 		}
-		
+
 		/**
 		 * Builder accessor for the XLink Attributes
 		 */
@@ -349,7 +349,7 @@ public final class TaskID extends AbstractBaseComponent {
 				_xlinkAttributes = new XLinkAttributes.Builder();
 			return _xlinkAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the XLink Attributes
 		 */
@@ -357,4 +357,4 @@ public final class TaskID extends AbstractBaseComponent {
 			_xlinkAttributes = xlinkAttributes;
 		}
 	}
-} 
+}

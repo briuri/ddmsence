@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
@@ -43,28 +43,28 @@ import buri.ddmsence.util.Util;
  * <u>ddms:beNumber</u>: uniquely identifies the installation of the facility (required).<br />
  * <u>ddms:osuffix</u>: identifies a facility in conjunction with a beNumber (required if beNumber is set).<br />
  * </td></tr></table>
- *  
+ * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public final class FacilityIdentifier extends AbstractBaseComponent {
-	
+
 	private static final String BE_NUMBER_NAME = "beNumber";
 	private static final String OSUFFIX_NAME = "osuffix";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public FacilityIdentifier(Element element) throws InvalidDDMSException {
 		super(element);
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param beNumber the beNumber (required)
 	 * @param osuffix the Osuffix (required, because beNumber is required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -100,7 +100,7 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 		Util.requireDDMSValue(OSUFFIX_NAME, getOsuffix());
 		super.validate();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -132,7 +132,7 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 		result = 7 * result + getOsuffix().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -143,21 +143,21 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("facilityIdentifier");
 	}
-	
+
 	/**
 	 * Accessor for the beNumber attribute.
 	 */
 	public String getBeNumber() {
-		return (getAttributeValue(BE_NUMBER_NAME)); 
+		return (getAttributeValue(BE_NUMBER_NAME));
 	}
-	
+
 	/**
 	 * Accessor for the osuffix attribute.
 	 */
 	public String getOsuffix() {
-		return (getAttributeValue(OSUFFIX_NAME)); 
+		return (getAttributeValue(OSUFFIX_NAME));
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -169,12 +169,12 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 		private static final long serialVersionUID = 4781523669271343048L;
 		private String _beNumber;
 		private String _osuffix;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -182,7 +182,7 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 			setBeNumber(facilityIdentifier.getBeNumber());
 			setOsuffix(facilityIdentifier.getOsuffix());
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -194,9 +194,9 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
-			return (Util.isEmpty(getBeNumber()) && Util .isEmpty(getOsuffix()));
+			return (Util.isEmpty(getBeNumber()) && Util.isEmpty(getOsuffix()));
 		}
-		
+
 		/**
 		 * Builder accessor for the beNumber attribute.
 		 */
@@ -225,4 +225,4 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 			_osuffix = osuffix;
 		}
 	}
-} 
+}

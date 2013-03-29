@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms;
 
 import buri.ddmsence.util.Util;
@@ -44,13 +44,13 @@ public class ValidationMessage {
 	private String _type = null;
 	private String _text = null;
 	private String _locator = null;
-	
+
 	/** Constant type for a warning. */
 	public static final String WARNING_TYPE = "Warning";
 
 	/** Constant type for an error. */
 	public static final String ERROR_TYPE = "Error";
-	
+
 	/** XPath prefix to separate elements */
 	public static final String ELEMENT_PREFIX = "/";
 
@@ -60,7 +60,7 @@ public class ValidationMessage {
 	 * @param type the type of this message
 	 * @param text the description text'
 	 * @param locator a locator string, in XPath format. For attributes, use empty string. The parent element will claim
-	 * the attributes.
+	 *        the attributes.
 	 */
 	private ValidationMessage(String type, String text, String locator) {
 		Util.requireValue("text", text);
@@ -74,25 +74,25 @@ public class ValidationMessage {
 	 * 
 	 * @param text the description text
 	 * @param locator a locator string, in XPath format. For attributes, use empty string. The parent element will claim
-	 * the attributes.
+	 *        the attributes.
 	 * @return a new warning message
 	 */
 	public static ValidationMessage newWarning(String text, String locator) {
 		return (new ValidationMessage(WARNING_TYPE, text, locator));
 	}
-	
+
 	/**
 	 * Factory method to create an error
 	 * 
 	 * @param text the description text
 	 * @param locator a locator string, in XPath format. For attributes, use empty string. The parent element will claim
-	 * the attributes.
+	 *        the attributes.
 	 * @return a new error message
 	 */
 	public static ValidationMessage newError(String text, String locator) {
 		return (new ValidationMessage(ERROR_TYPE, text, locator));
 	}
-	
+
 	/**
 	 * @see Object#toString()
 	 */
@@ -101,6 +101,7 @@ public class ValidationMessage {
 		text.append(getType()).append(": ").append(getText());
 		return (text.toString());
 	}
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -124,7 +125,7 @@ public class ValidationMessage {
 		result = 7 * result + getLocator().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the type
 	 */
@@ -137,15 +138,15 @@ public class ValidationMessage {
 	 */
 	public String getText() {
 		return _text;
-	}	
-	
+	}
+
 	/**
 	 * Accessor for the locator
 	 */
 	public String getLocator() {
 		return _locator;
-	}	
-	
+	}
+
 	/**
 	 * Accessor for the locator.
 	 * 
@@ -154,5 +155,5 @@ public class ValidationMessage {
 	 */
 	public void setLocator(String locator) {
 		_locator = (locator == null ? "" : ELEMENT_PREFIX + locator);
-	}	
+	}
 }

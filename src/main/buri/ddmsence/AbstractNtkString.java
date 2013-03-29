@@ -30,7 +30,8 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * Base class for NTK elements which consist of simple child text decorated with NTK attributes, and security attributes.
+ * Base class for NTK elements which consist of simple child text decorated with NTK attributes, and security
+ * attributes.
  * 
  * <p> Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set
  * before the component is used. </p>
@@ -38,10 +39,9 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ntk:id</u>: A unique XML identifier (optional)<br />
  * <u>ntk:IDReference</u>: A cross-reference to a unique identifier (optional)<br />
- * <u>ntk:qualifier</u>: A user-defined property within an element for general purpose processing used with block 
+ * <u>ntk:qualifier</u>: A user-defined property within an element for general purpose processing used with block
  * objects to provide supplemental information over and above that conveyed by the element name (optional)<br />
- * <u>{@link SecurityAttributes}</u>:  The classification and
- * ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!

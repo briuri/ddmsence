@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence;
 
 import java.io.Serializable;
@@ -37,17 +37,16 @@ import buri.ddmsence.util.Util;
  * before the component is used. </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and
- * ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public abstract class AbstractSimpleString extends AbstractBaseComponent {
-	
+
 	private SecurityAttributes _securityAttributes = null;
-	
+
 	/**
 	 * Base constructor which works from a XOM element.
 	 * 
@@ -64,7 +63,7 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor which builds from raw data.
 	 * 
@@ -78,7 +77,7 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 		this(PropertyReader.getPrefix("ddms"), DDMSVersion.getCurrentVersion().getNamespace(), name, value, attributes,
 			validateNow);
 	}
-	
+
 	/**
 	 * Constructor which builds from raw data.
 	 * 
@@ -102,7 +101,7 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
@@ -118,7 +117,7 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 		getSecurityAttributes().requireClassification();
 		super.validate();
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -137,7 +136,7 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 		result = 7 * result + getValue().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the child text of the description. The underlying XOM method which retrieves the child text returns
 	 * an empty string if not found.
@@ -145,14 +144,14 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	public String getValue() {
 		return (getXOMElement().getValue());
 	}
-	
+
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_securityAttributes);
 	}
-	
+
 	/**
 	 * Abstract Builder for this DDMS component.
 	 * 
@@ -167,12 +166,12 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 		private static final long serialVersionUID = 7824644958681123708L;
 		private String _value;
 		private SecurityAttributes.Builder _securityAttributes;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		protected Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -180,7 +179,7 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 			setValue(simpleString.getValue());
 			setSecurityAttributes(new SecurityAttributes.Builder(simpleString.getSecurityAttributes()));
 		}
-		
+
 		/**
 		 * Helper method to determine if any values have been entered for this producer.
 		 * 
@@ -189,7 +188,7 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 		public boolean isEmpty() {
 			return (Util.isEmpty(getValue()) && getSecurityAttributes().isEmpty());
 		}
-		
+
 		/**
 		 * Builder accessor for the child text.
 		 */
@@ -203,7 +202,7 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 		public void setValue(String value) {
 			_value = value;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
@@ -212,7 +211,7 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 				_securityAttributes = new SecurityAttributes.Builder();
 			return _securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */

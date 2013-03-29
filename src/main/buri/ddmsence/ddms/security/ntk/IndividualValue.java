@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.security.ntk;
 
 import nu.xom.Element;
@@ -41,26 +41,26 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ntk:id</u>: A unique XML identifier (optional)<br />
  * <u>ntk:IDReference</u>: A cross-reference to a unique identifier (optional)<br />
- * <u>ntk:qualifier</u>: A user-defined property within an element for general purpose processing used with block 
+ * <u>ntk:qualifier</u>: A user-defined property within an element for general purpose processing used with block
  * objects to provide supplemental information over and above that conveyed by the element name (optional)<br />
- * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public final class IndividualValue extends AbstractNtkString {
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public IndividualValue(Element element) throws InvalidDDMSException {
 		super(false, element);
 	}
-	
+
 	/**
 	 * Constructor which builds from raw data.
 	 * 
@@ -75,21 +75,21 @@ public final class IndividualValue extends AbstractNtkString {
 		super(false, IndividualValue.getName(DDMSVersion.getCurrentVersion()), value, id, idReference, qualifier,
 			securityAttributes, true);
 	}
-		
+
 	/**
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * </td></tr></table>
-	 *  
+	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireQName(getXOMElement(), getNamespace(), IndividualValue.getName(getDDMSVersion()));
 		super.validate();
 	}
-		
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -102,7 +102,7 @@ public final class IndividualValue extends AbstractNtkString {
 			addWarning("A ntk:" + getName() + " element was found with no value.");
 		super.validateWarnings();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -116,7 +116,7 @@ public final class IndividualValue extends AbstractNtkString {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix + "."));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -127,7 +127,7 @@ public final class IndividualValue extends AbstractNtkString {
 		Util.requireValue("version", version);
 		return ("AccessIndividualValue");
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -136,7 +136,7 @@ public final class IndividualValue extends AbstractNtkString {
 			return (false);
 		return (true);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -146,21 +146,21 @@ public final class IndividualValue extends AbstractNtkString {
 	 */
 	public static class Builder extends AbstractNtkString.Builder {
 		private static final long serialVersionUID = 7750664735441105296L;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {
 			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(IndividualValue value) {
 			super(value);
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -169,4 +169,4 @@ public final class IndividualValue extends AbstractNtkString {
 				getSecurityAttributes().commit()));
 		}
 	}
-} 
+}

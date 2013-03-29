@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
@@ -39,28 +39,28 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
- * <li>No more than 1 countryCode, subDivisionCode, or facilityIdentifier can be used. The schema seems to support this 
+ * <li>No more than 1 countryCode, subDivisionCode, or facilityIdentifier can be used. The schema seems to support this
  * assertion with explicit restrictions on those elements, but the enclosing xs:choice element allows multiples.</li>
- * <li>At least 1 of name, region, countryCode, subDivisionCode, or facilityIdentifier must be present. Once again, the 
+ * <li>At least 1 of name, region, countryCode, subDivisionCode, or facilityIdentifier must be present. Once again, the
  * xs:choice restrictions create a loophole which could allow a completely empty geographicIdentifier to be valid.</li>
  * </ul>
  * </td></tr></table>
- * 				
+ * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:name</u>: geographic name (0-many optional)<br />
  * <u>ddms:region</u>: geographic region (0-many optional)<br />
  * <u>ddms:countryCode</u>: the country code (0-1 optional), implemented as a {@link CountryCode}<br />
- * <u>ddms:subDivisionCode</u>: the subdivision code (0-1 optional, starting in DDMS 4.0.1), implemented as a 
+ * <u>ddms:subDivisionCode</u>: the subdivision code (0-1 optional, starting in DDMS 4.0.1), implemented as a
  * {@link SubDivisionCode}<br />
- * <u>ddms:facilityIdentifier</u>: the facility identifier (0-1 optional), implemented as a 
- * {@link FacilityIdentifier}<br />
+ * <u>ddms:facilityIdentifier</u>: the facility identifier (0-1 optional), implemented as a {@link FacilityIdentifier}
+ * <br />
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public final class GeographicIdentifier extends AbstractBaseComponent {
-	
+
 	private List<String> _names = null;
 	private List<String> _regions = null;
 	private CountryCode _countryCode = null;
@@ -69,11 +69,11 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 
 	private static final String NAME_NAME = "name";
 	private static final String REGION_NAME = "region";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public GeographicIdentifier(Element element) throws InvalidDDMSException {
@@ -100,10 +100,10 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-		
+
 	/**
 	 * Constructor for creating a component from raw data. Note that the facilityIdentifier component cannot be used
-	 * with the components in this constructor. 
+	 * with the components in this constructor.
 	 * 
 	 * @param names the names (optional)
 	 * @param regions the region names (optional)
@@ -118,8 +118,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 				names = Collections.emptyList();
 			if (regions == null)
 				regions = Collections.emptyList();
-			Element element = Util
-				.buildDDMSElement(GeographicIdentifier.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(GeographicIdentifier.getName(DDMSVersion.getCurrentVersion()), null);
 			for (String name : names)
 				element.appendChild(Util.buildDDMSElement(NAME_NAME, name));
 			for (String region : regions)
@@ -142,7 +141,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param facilityIdentifier the facility identifier (required in this constructor)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
@@ -155,6 +154,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		_facilityIdentifier = facilityIdentifier;
 		setXOMElement(element, true);
 	}
+
 	/**
 	 * Validates the component.
 	 * 
@@ -185,7 +185,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		}
 		super.validate();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -202,7 +202,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 			text.append(getFacilityIdentifier().getOutput(isHTML, localPrefix, ""));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -213,7 +213,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		list.add(getFacilityIdentifier());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -234,7 +234,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		result = 7 * result + getRegions().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -245,49 +245,49 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("geographicIdentifier");
 	}
-	
+
 	/**
 	 * Accessor for the names
 	 */
 	public List<String> getNames() {
 		return (Collections.unmodifiableList(_names));
 	}
-	
+
 	/**
 	 * Accessor for the regions
 	 */
 	public List<String> getRegions() {
 		return (Collections.unmodifiableList(_regions));
 	}
-	
+
 	/**
 	 * Accessor for the country code. May return null if no code was used.
 	 */
 	public CountryCode getCountryCode() {
 		return (_countryCode);
 	}
-	
+
 	/**
 	 * Accessor for the subdivision code. May return null if no code was used.
 	 */
 	public SubDivisionCode getSubDivisionCode() {
 		return (_subDivisionCode);
 	}
-	
+
 	/**
 	 * Accessor for the facility identifier. May return null if no identifier was used.
 	 */
 	public FacilityIdentifier getFacilityIdentifier() {
 		return (_facilityIdentifier);
 	}
-	
+
 	/**
 	 * Accessor for whether this geographic identifier is using a facility identifier.
 	 */
 	public boolean hasFacilityIdentifier() {
 		return (getFacilityIdentifier() != null);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -302,12 +302,12 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		private CountryCode.Builder _countryCode = null;
 		private SubDivisionCode.Builder _subDivisionCode = null;
 		private FacilityIdentifier.Builder _facilityIdentifier = null;
-				
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -323,7 +323,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 					setSubDivisionCode(new SubDivisionCode.Builder(identifier.getSubDivisionCode()));
 			}
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -333,7 +333,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 			FacilityIdentifier identifier = getFacilityIdentifier().commit();
 			if (identifier != null)
 				return (new GeographicIdentifier(identifier));
-			return (new GeographicIdentifier(getNames(), getRegions(), getCountryCode().commit(), 
+			return (new GeographicIdentifier(getNames(), getRegions(), getCountryCode().commit(),
 				getSubDivisionCode().commit()));
 		}
 
@@ -347,7 +347,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 				&& getSubDivisionCode().isEmpty()
 				&& getFacilityIdentifier().isEmpty());
 		}
-		
+
 		/**
 		 * Builder accessor for the names
 		 */
@@ -413,7 +413,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		public void setSubDivisionCode(SubDivisionCode.Builder subDivisionCode) {
 			_subDivisionCode = subDivisionCode;
 		}
-		
+
 		/**
 		 * Builder accessor for the facility identifier
 		 */
@@ -430,4 +430,4 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 			_facilityIdentifier = facilityIdentifier;
 		}
 	}
-} 
+}

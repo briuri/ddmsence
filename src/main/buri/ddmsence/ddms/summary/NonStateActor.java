@@ -65,8 +65,8 @@ public final class NonStateActor extends AbstractSimpleString {
 	/**
 	 * Constructor for creating a component from raw data.
 	 * 
-	 * @deprecated A new constructor was added for DDMS 4.1 to support ddms:qualifier. This constructor is preserved for 
-	 * backwards compatibility, but may disappear in the next major release.
+	 * @deprecated A new constructor was added for DDMS 4.1 to support ddms:qualifier. This constructor is preserved for
+	 *             backwards compatibility, but may disappear in the next major release.
 	 * 
 	 * @param value the value of the description child text
 	 * @param order the order of this actor
@@ -77,7 +77,7 @@ public final class NonStateActor extends AbstractSimpleString {
 		throws InvalidDDMSException {
 		this(value, order, null, securityAttributes);
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
@@ -106,7 +106,7 @@ public final class NonStateActor extends AbstractSimpleString {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody"> 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If a qualifier exists, it is a valid URI.</li>
 	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>

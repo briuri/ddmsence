@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.security.ism;
 
 import java.io.IOException;
@@ -58,7 +58,7 @@ import buri.ddmsence.util.Util;
  * 
  * <ul>
  * <li>CVEnumISM25X.xml: tokens allowed in the "declassException" attribute</li>
- * <li>CVEnumISMAtomicEnergyMarkings.xml: tokens allowed in the "atomicEnergyMarkings" attribute (starting in DDMS 
+ * <li>CVEnumISMAtomicEnergyMarkings.xml: tokens allowed in the "atomicEnergyMarkings" attribute (starting in DDMS
  * 3.1)</li>
  * <li>CVEnumISMClassificationAll.xml: tokens allowed in the "classification" attribute</li>
  * <li>CVEnumISMClassificationUS.xml: subset of the tokens allowed in the "classification" attribute</li>
@@ -71,10 +71,12 @@ import buri.ddmsence.util.Util;
  * <li>CVEnumISMNotice.xml: tokens allowed in the "noticeType" attribute (starting in DDMS 4.0.1)</li>
  * <li>CVEnumISMOwnerProducer.xml: tokens allowed in the "ownerProducer" attribute</li>
  * <li>CVEnumISMPocType.xml: tokens allowed in the "pocType" attribute</li>
- * <li>CVEnumISMRelTo.xml: tokens allowed in the "displayOnlyTo" (starting in DDMS 3.1) and "releasableTo" attribute</li>
+ * <li>CVEnumISMRelTo.xml: tokens allowed in the "displayOnlyTo" (starting in DDMS 3.1) and "releasableTo"
+ * attribute</li>
  * <li>CVEnumISMSAR.xml: tokens allowed in the "SARIdentifier" attribute</li>
  * <li>CVEnumISMSCIControls.xml: tokens allowed in the "SCIcontrols" attribute</li>
- * <li>CVEnumISMSourceMarked.xml: tokens allowed in the "typeOfExemptedSource" attribute (DDMS 2.0 and DDMS 3.0 only)</li>
+ * <li>CVEnumISMSourceMarked.xml: tokens allowed in the "typeOfExemptedSource" attribute (DDMS 2.0 and DDMS 3.0
+ * only)</li>
  * </ul>
  * 
  * <p>Some of these vocabularies include regular expression patterns.</p>
@@ -83,61 +85,61 @@ import buri.ddmsence.util.Util;
  * @since 0.9.d
  */
 public class ISMVocabulary {
-	
+
 	/** Filename for the enumerations allowed in a declassException attribute */
 	public static final String CVE_DECLASS_EXCEPTION = "CVEnumISM25X.xml";
-	
+
 	/** Filename for the enumerations allowed in an atomicEnergyMarkings attribute */
 	public static final String CVE_ATOMIC_ENERGY_MARKINGS = "CVEnumISMAtomicEnergyMarkings.xml";
-	
-	/** Filename for the enumerations allowed in a classification attribute */	
+
+	/** Filename for the enumerations allowed in a classification attribute */
 	public static final String CVE_ALL_CLASSIFICATIONS = "CVEnumISMClassificationAll.xml";
-	
+
 	/** Filename for the enumerations allowed in a classification attribute (US only) */
 	public static final String CVE_US_CLASSIFICATIONS = "CVEnumISMClassificationUS.xml";
-	
+
 	/** Filename for the enumerations allowed in a compliesWith attribute */
 	public static final String CVE_COMPLIES_WITH = "CVEnumISMCompliesWith.xml";
-	
+
 	/** Filename for the enumerations allowed in a displayOnlyTo attribute */
 	public static final String CVE_DISPLAY_ONLY_TO = "CVEnumISMRelTo.xml";
-	
+
 	/** Filename for the enumerations allowed in a disseminationControls attribute */
 	public static final String CVE_DISSEMINATION_CONTROLS = "CVEnumISMDissem.xml";
-	
+
 	/** Filename for the enumerations allowed in a FGIsourceOpen attribute */
 	public static final String CVE_FGI_SOURCE_OPEN = "CVEnumISMFGIOpen.xml";
-	
+
 	/** Filename for the enumerations allowed in a FGIsourceProtected attribute */
 	public static final String CVE_FGI_SOURCE_PROTECTED = "CVEnumISMFGIProtected.xml";
-	
+
 	/** Filename for the enumerations allowed in a nonICmarkings attribute */
 	public static final String CVE_NON_IC_MARKINGS = "CVEnumISMNonIC.xml";
-	
+
 	/** Filename for the enumerations allowed in a nonUSControls attribute */
 	public static final String CVE_NON_US_CONTROLS = "CVEnumISMNonUSControls.xml";
-	
+
 	/** Filename for the enumerations allowed in a noticeType attribute */
 	public static final String CVE_NOTICE_TYPE = "CVEnumISMNotice.xml";
-	
+
 	/** Filename for the enumerations allowed in an ownerProducer attribute */
 	public static final String CVE_OWNER_PRODUCERS = "CVEnumISMOwnerProducer.xml";
-	
+
 	/** Filename for the enumerations allowed in a pocType attribute */
 	public static final String CVE_POC_TYPE = "CVEnumISMPocType.xml";
-	
+
 	/** Filename for the enumerations allowed in a releasableTo attribute */
 	public static final String CVE_RELEASABLE_TO = "CVEnumISMRelTo.xml";
-	
+
 	/** Filename for the enumerations allowed in a SARIdentifier attribute */
 	public static final String CVE_SAR_IDENTIFIER = "CVEnumISMSAR.xml";
-	
+
 	/** Filename for the enumerations allowed in a SCIcontrols attribute */
 	public static final String CVE_SCI_CONTROLS = "CVEnumISMSCIControls.xml";
-	
+
 	/** Filename for the enumerations allowed in a typeOfExemptedSource attribute */
 	public static final String CVE_TYPE_EXEMPTED_SOURCE = "CVEnumISMSourceMarked.xml";
-	
+
 	private static Set<String> COMMON_NETWORK_TYPES = new HashSet<String>();
 	static {
 		COMMON_NETWORK_TYPES.add("NIPRNet");
@@ -149,14 +151,14 @@ public class ISMVocabulary {
 		COMMON_NETWORK_TYPES.add("CRONOS");
 		COMMON_NETWORK_TYPES.add("other");
 	}
-	
+
 	private static final List<String> ALL_ENUMS = new ArrayList<String>();
 	static {
 		ALL_ENUMS.add(CVE_DECLASS_EXCEPTION);
 		ALL_ENUMS.add(CVE_ATOMIC_ENERGY_MARKINGS);
 		ALL_ENUMS.add(CVE_ALL_CLASSIFICATIONS);
 		ALL_ENUMS.add(CVE_US_CLASSIFICATIONS);
-		ALL_ENUMS.add(CVE_COMPLIES_WITH);		
+		ALL_ENUMS.add(CVE_COMPLIES_WITH);
 		ALL_ENUMS.add(CVE_DISSEMINATION_CONTROLS);
 		ALL_ENUMS.add(CVE_DISPLAY_ONLY_TO);
 		ALL_ENUMS.add(CVE_FGI_SOURCE_OPEN);
@@ -171,23 +173,21 @@ public class ISMVocabulary {
 		ALL_ENUMS.add(CVE_SCI_CONTROLS);
 		ALL_ENUMS.add(CVE_TYPE_EXEMPTED_SOURCE);
 	}
-	
-	private static final Map<String, Map<String, Set<String>>> LOCATION_TO_ENUM_TOKENS
-		= new HashMap<String, Map<String, Set<String>>>();
-	private static final Map<String, Map<String, Set<String>>> LOCATION_TO_ENUM_PATTERNS 
-		= new HashMap<String, Map<String, Set<String>>>();
-	
+
+	private static final Map<String, Map<String, Set<String>>> LOCATION_TO_ENUM_TOKENS = new HashMap<String, Map<String, Set<String>>>();
+	private static final Map<String, Map<String, Set<String>>> LOCATION_TO_ENUM_PATTERNS = new HashMap<String, Map<String, Set<String>>>();
+
 	private static final String ENUMERATION_NAME = "Enumeration";
 	private static final String TERM_NAME = "Term";
 	private static final String VALUE_NAME = "Value";
 	private static final String REG_EXP_NAME = "regularExpression";
-	
+
 	private static String _lastEnumLocation = null;
 	private static DDMSVersion _ddmsVersion;
 	static {
 		setDDMSVersion(DDMSVersion.getCurrentVersion());
 	}
-	
+
 	/**
 	 * Private to prevent instantiation
 	 */
@@ -201,7 +201,7 @@ public class ISMVocabulary {
 	public static synchronized void setDDMSVersion(DDMSVersion version) {
 		_ddmsVersion = version;
 	}
-	
+
 	/**
 	 * Reloads CVEs if necessary.
 	 */
@@ -230,7 +230,7 @@ public class ISMVocabulary {
 			}
 		}
 	}
-	
+
 	/**
 	 * Opens the enumeration file and extracts a Set of String token values based on the Term elements in the file.
 	 * Stores them in the ENUM_TOKENS map with the key. If a pattern is discovered, it is stored in a separate mapping.
@@ -261,7 +261,7 @@ public class ISMVocabulary {
 		LOCATION_TO_ENUM_TOKENS.get(getLastEnumLocation()).put(enumerationKey, tokens);
 		LOCATION_TO_ENUM_PATTERNS.get(getLastEnumLocation()).put(enumerationKey, patterns);
 	}
-	
+
 	/**
 	 * Returns an unmodifiable set of controlled vocabulary tokens. This method is publicly available
 	 * so that these tokens can be used as reference data (for example, a select box on a web form).
@@ -286,7 +286,7 @@ public class ISMVocabulary {
 		}
 		return (Collections.unmodifiableSet(vocabulary));
 	}
-	
+
 	/**
 	 * Returns an unmodifiable set of controlled vocabulary regular expression patterns.
 	 * 
@@ -298,7 +298,7 @@ public class ISMVocabulary {
 		Set<String> vocabulary = LOCATION_TO_ENUM_PATTERNS.get(getLastEnumLocation()).get(enumerationKey);
 		return (Collections.unmodifiableSet(vocabulary));
 	}
-	
+
 	/**
 	 * Helper method to validate a value from a controlled vocabulary.
 	 * 
@@ -313,7 +313,7 @@ public class ISMVocabulary {
 			throw new InvalidDDMSException(message);
 		}
 	}
-	
+
 	/**
 	 * Checks if a value exists in the controlled vocabulary identified by the key. If the value does not match the
 	 * tokens, but the CVE also contains patterns, the regular expression pattern is checked next. If neither tokens or
@@ -329,17 +329,17 @@ public class ISMVocabulary {
 		boolean isValidToken = getEnumerationTokens(enumerationKey).contains(value);
 		if (!isValidToken) {
 			for (String patternString : getEnumerationPatterns(enumerationKey)) {
-	            Pattern pattern = Pattern.compile(patternString);
-                Matcher matcher = pattern.matcher(value);
-                if (matcher.matches()) {
+				Pattern pattern = Pattern.compile(patternString);
+				Matcher matcher = pattern.matcher(value);
+				if (matcher.matches()) {
 					isValidToken = true;
 					break;
 				}
 			}
 		}
-		return (isValidToken);			
+		return (isValidToken);
 	}
-	
+
 	/**
 	 * Checks if one of the classifications that existed in DDMS 2.0 but was removed for DDMS 3.0 is being used.
 	 * 
@@ -349,7 +349,7 @@ public class ISMVocabulary {
 	public static boolean usingOldClassification(String classification) {
 		return ("NS-S".equals(classification) || "NS-A".equals(classification));
 	}
-	
+
 	/**
 	 * Generates a message for an invalid value.
 	 * 
@@ -360,7 +360,7 @@ public class ISMVocabulary {
 	public static String getInvalidMessage(String enumerationKey, String value) {
 		return (value + " is not a valid enumeration token for this attribute, as specified in " + enumerationKey + ".");
 	}
-	
+
 	/**
 	 * Validates the value of a network attribute from the IC-COMMON schema.
 	 * 
@@ -371,14 +371,14 @@ public class ISMVocabulary {
 		if (!COMMON_NETWORK_TYPES.contains(network))
 			throw new InvalidDDMSException("The network attribute must be one of " + COMMON_NETWORK_TYPES);
 	}
-	
+
 	/**
 	 * Accessor for the last enum location.
 	 */
 	private static String getLastEnumLocation() {
 		return (_lastEnumLocation);
 	}
-	
+
 	/**
 	 * Accessor for the currently set DDMS Version
 	 */

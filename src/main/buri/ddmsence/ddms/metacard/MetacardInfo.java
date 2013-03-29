@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.metacard;
 
 import java.io.Serializable;
@@ -75,14 +75,14 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are optional.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public final class MetacardInfo extends AbstractBaseComponent {
-	
+
 	private List<Identifier> _identifiers = new ArrayList<Identifier>();
 	private Dates _dates = null;
 	private List<Contributor> _contributors = new ArrayList<Contributor>();
@@ -95,19 +95,19 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	private RecordsManagementInfo _recordsManagementInfo = null;
 	private NoticeList _noticeList = null;
 	private Access _access = null;
-	private SecurityAttributes _securityAttributes = null;	
+	private SecurityAttributes _securityAttributes = null;
 	private List<IDDMSComponent> _orderedList = new ArrayList<IDDMSComponent>();
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public MetacardInfo(Element element) throws InvalidDDMSException {
 		try {
 			setXOMElement(element, false);
-			DDMSVersion version = getDDMSVersion(); 
+			DDMSVersion version = getDDMSVersion();
 			_identifiers = new ArrayList<Identifier>();
 			Elements components = element.getChildElements(Identifier.getName(version), getNamespace());
 			for (int i = 0; i < components.size(); i++) {
@@ -143,7 +143,8 @@ public final class MetacardInfo extends AbstractBaseComponent {
 			component = element.getFirstChildElement(NoticeList.getName(getDDMSVersion()), getNamespace());
 			if (component != null)
 				_noticeList = new NoticeList(component);
-			component = element.getFirstChildElement(Access.getName(getDDMSVersion()), getDDMSVersion().getNtkNamespace());
+			component = element.getFirstChildElement(Access.getName(getDDMSVersion()),
+				getDDMSVersion().getNtkNamespace());
 			if (component != null)
 				_access = new Access(component);
 			_securityAttributes = new SecurityAttributes(element);
@@ -155,17 +156,17 @@ public final class MetacardInfo extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * <p>Because there are so many possible components in a MetacardInfo instance, they are passed in as a collection, 
-	 * similar to the approach used for top-level components in a Resource. If any component does not belong in a 
+	 * <p>Because there are so many possible components in a MetacardInfo instance, they are passed in as a collection,
+	 * similar to the approach used for top-level components in a Resource. If any component does not belong in a
 	 * MetacardInfo instance, an InvalidDDMSException will be thrown.</p>
 	 * 
-	 * <p>The order of different types of components does not matter here. However, if multiple instances of the same 
-	 * component type exist in the list (such as multiple identifier components), those components will be stored and 
-	 * output in the order of the list. If only 1 instance can be supported, the last one in the list will be the 
+	 * <p>The order of different types of components does not matter here. However, if multiple instances of the same
+	 * component type exist in the list (such as multiple identifier components), those components will be stored and
+	 * output in the order of the list. If only 1 instance can be supported, the last one in the list will be the
 	 * one used.</p>
 	 * 
 	 * @param childComponents any components that belong in this MetacardInfo (required)
@@ -196,7 +197,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 				else if (component instanceof PointOfContact)
 					_pointOfContacts.add((PointOfContact) component);
 				else if (component instanceof Publisher)
-					_publishers.add((Publisher) component);				
+					_publishers.add((Publisher) component);
 				else if (component instanceof Description)
 					_description = (Description) component;
 				else if (component instanceof ProcessingInfo)
@@ -237,7 +238,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 		_orderedList.addAll(getPublishers());
 		_orderedList.addAll(getContributors());
 		_orderedList.addAll(getCreators());
-		_orderedList.addAll(getPointOfContacts());		
+		_orderedList.addAll(getPointOfContacts());
 		if (getDescription() != null)
 			_orderedList.add(getDescription());
 		_orderedList.addAll(getProcessingInfos());
@@ -250,14 +251,15 @@ public final class MetacardInfo extends AbstractBaseComponent {
 		if (getAccess() != null)
 			_orderedList.add(getAccess());
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>At least 1 identifier must exist.</li>
-	 * <li>At least 1 publisher must exist in DDMS 4.0.1 or 4.1. At least 1 of any kind of producer must exist starting in DDMS 5.0.</li>
+	 * <li>At least 1 publisher must exist in DDMS 4.0.1 or 4.1. At least 1 of any kind of producer must exist starting
+	 * in DDMS 5.0.</li>
 	 * <li>Only 1 dates can exist.</li>
 	 * <li>Only 0-1 descriptions, revisionRecalls, recordsManagementInfos, or noticeLists can exist.</li>
 	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
@@ -269,27 +271,30 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), MetacardInfo.getName(getDDMSVersion()));
 		if (getIdentifiers().isEmpty())
-			throw new InvalidDDMSException("At least one ddms:identifier must exist within a ddms:metacardInfo element.");
+			throw new InvalidDDMSException(
+				"At least one ddms:identifier must exist within a ddms:metacardInfo element.");
 		if (!getDDMSVersion().isAtLeast("5.0")) {
 			if (getPublishers().isEmpty())
-				throw new InvalidDDMSException("At least one ddms:publisher must exist within a ddms:metacardInfo element.");
+				throw new InvalidDDMSException(
+					"At least one ddms:publisher must exist within a ddms:metacardInfo element.");
 		}
 		else {
-			if (getContributors().isEmpty() && getCreators().isEmpty() && getPointOfContacts().isEmpty() && getPublishers().isEmpty())
+			if (getContributors().isEmpty() && getCreators().isEmpty() && getPointOfContacts().isEmpty()
+				&& getPublishers().isEmpty())
 				throw new InvalidDDMSException("At least one producer must exist within a ddms:metacardInfo element.");
 		}
 		Util.requireBoundedChildCount(getXOMElement(), Dates.getName(getDDMSVersion()), 1, 1);
 		Util.requireBoundedChildCount(getXOMElement(), Description.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), RevisionRecall.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), RecordsManagementInfo.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedChildCount(getXOMElement(), NoticeList.getName(getDDMSVersion()), 0, 1);		
-		
+		Util.requireBoundedChildCount(getXOMElement(), NoticeList.getName(getDDMSVersion()), 0, 1);
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0.1");
 
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -300,17 +305,17 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	protected void validateWarnings() {
 		if (getAccess() != null)
 			addDdms40Warning("ntk:Access element");
-		
+
 		super.validateWarnings();
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		
+
 		// Traverse child components, suppressing the resource prefix
 		text.append(buildOutput(isHTML, localPrefix, getIdentifiers()));
 		if (getDates() != null)
@@ -318,7 +323,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 		text.append(buildOutput(isHTML, localPrefix, getPublishers()));
 		text.append(buildOutput(isHTML, localPrefix, getContributors()));
 		text.append(buildOutput(isHTML, localPrefix, getCreators()));
-		text.append(buildOutput(isHTML, localPrefix, getPointOfContacts()));		
+		text.append(buildOutput(isHTML, localPrefix, getPointOfContacts()));
 		if (getDescription() != null)
 			text.append(getDescription().getOutput(isHTML, localPrefix, ""));
 		text.append(buildOutput(isHTML, localPrefix, getProcessingInfos()));
@@ -327,28 +332,28 @@ public final class MetacardInfo extends AbstractBaseComponent {
 		if (getRecordsManagementInfo() != null)
 			text.append(getRecordsManagementInfo().getOutput(isHTML, localPrefix, ""));
 		if (getNoticeList() != null)
-			text.append(getNoticeList().getOutput(isHTML, localPrefix, ""));		
+			text.append(getNoticeList().getOutput(isHTML, localPrefix, ""));
 		if (getAccess() != null)
 			text.append(getAccess().getOutput(isHTML, localPrefix, ""));
 
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
 	protected List<IDDMSComponent> getNestedComponents() {
 		return (getChildComponents());
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof MetacardInfo))
 			return (false);
-		return (true);		
+		return (true);
 	}
 
 	/**
@@ -361,15 +366,15 @@ public final class MetacardInfo extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("metacardInfo");
 	}
-	
+
 	/**
-	 * Accessor for an ordered list of the components in this metcardInfo. Components which are missing are not represented
-	 * in this list (no null entries).
+	 * Accessor for an ordered list of the components in this metcardInfo. Components which are missing are not
+	 * represented in this list (no null entries).
 	 */
 	public List<IDDMSComponent> getChildComponents() {
 		return (Collections.unmodifiableList(_orderedList));
 	}
-	
+
 	/**
 	 * Accessor for a list of all identifiers
 	 */
@@ -383,14 +388,14 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	public Dates getDates() {
 		return _dates;
 	}
-	
+
 	/**
 	 * Accessor for a list of all Contributor entities (0-many)
 	 */
 	public List<Contributor> getContributors() {
 		return (Collections.unmodifiableList(_contributors));
 	}
-	
+
 	/**
 	 * Accessor for a list of all Creator entities (0-many)
 	 */
@@ -411,56 +416,56 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	public List<Publisher> getPublishers() {
 		return (Collections.unmodifiableList(_publishers));
 	}
-	
+
 	/**
 	 * Accessor for the description
 	 */
 	public Description getDescription() {
 		return _description;
 	}
-	
+
 	/**
 	 * Accessor for the processing information
 	 */
 	public List<ProcessingInfo> getProcessingInfos() {
-		return (Collections.unmodifiableList(_processingInfos)); 
+		return (Collections.unmodifiableList(_processingInfos));
 	}
-	
+
 	/**
 	 * Accessor for the revisionRecall
 	 */
 	public RevisionRecall getRevisionRecall() {
 		return _revisionRecall;
 	}
-	
+
 	/**
 	 * Accessor for the recordsManagementInfo
 	 */
 	public RecordsManagementInfo getRecordsManagementInfo() {
 		return _recordsManagementInfo;
 	}
-	
+
 	/**
 	 * Accessor for the noticeList
 	 */
 	public NoticeList getNoticeList() {
 		return _noticeList;
 	}
-	
+
 	/**
 	 * Accessor for the Access. May be null.
 	 */
 	public Access getAccess() {
 		return (_access);
 	}
-	
+
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_securityAttributes);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -482,13 +487,13 @@ public final class MetacardInfo extends AbstractBaseComponent {
 		private RecordsManagementInfo.Builder _recordsManagementInfo;
 		private NoticeList.Builder _noticeList;
 		private Access.Builder _access;
-		private SecurityAttributes.Builder _securityAttributes;	
-		
+		private SecurityAttributes.Builder _securityAttributes;
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -509,19 +514,19 @@ public final class MetacardInfo extends AbstractBaseComponent {
 				else if (component instanceof Description)
 					setDescription(new Description.Builder((Description) component));
 				else if (component instanceof ProcessingInfo)
-					getProcessingInfos().add(new ProcessingInfo.Builder((ProcessingInfo) component));				
+					getProcessingInfos().add(new ProcessingInfo.Builder((ProcessingInfo) component));
 				else if (component instanceof RevisionRecall)
-					setRevisionRecall(new RevisionRecall.Builder((RevisionRecall) component));				
+					setRevisionRecall(new RevisionRecall.Builder((RevisionRecall) component));
 				else if (component instanceof RecordsManagementInfo)
 					setRecordsManagementInfo(new RecordsManagementInfo.Builder((RecordsManagementInfo) component));
 				else if (component instanceof NoticeList)
 					setNoticeList(new NoticeList.Builder((NoticeList) component));
 				else if (component instanceof Access)
 					setAccess(new Access.Builder((Access) component));
-			}			
+			}
 			setSecurityAttributes(new SecurityAttributes.Builder(metacardInfo.getSecurityAttributes()));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -560,7 +565,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 			list.addAll(getPublishers());
 			list.addAll(getContributors());
 			list.addAll(getCreators());
-			list.addAll(getPointOfContacts());		
+			list.addAll(getPointOfContacts());
 			list.addAll(getProcessingInfos());
 			list.add(getDates());
 			list.add(getDescription());
@@ -570,16 +575,16 @@ public final class MetacardInfo extends AbstractBaseComponent {
 			list.add(getAccess());
 			return (list);
 		}
-		
+
 		/**
 		 * Builder accessor for the taskingInfos
 		 */
 		public List<Identifier.Builder> getIdentifiers() {
 			if (_identifiers == null)
-				_identifiers = new LazyList(Identifier.Builder.class);					
+				_identifiers = new LazyList(Identifier.Builder.class);
 			return _identifiers;
 		}
-		
+
 		/**
 		 * Builder accessor for the dates
 		 */
@@ -595,7 +600,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 		public void setDates(Dates.Builder dates) {
 			_dates = dates;
 		}
-		
+
 		/**
 		 * Builder accessor for creators
 		 */
@@ -604,7 +609,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 				_creators = new LazyList(Creator.Builder.class);
 			return _creators;
 		}
-		
+
 		/**
 		 * Builder accessor for contributors
 		 */
@@ -613,7 +618,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 				_contributors = new LazyList(Contributor.Builder.class);
 			return _contributors;
 		}
-		
+
 		/**
 		 * Builder accessor for publishers
 		 */
@@ -622,7 +627,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 				_publishers = new LazyList(Publisher.Builder.class);
 			return _publishers;
 		}
-		
+
 		/**
 		 * Builder accessor for points of contact
 		 */
@@ -631,7 +636,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 				_pointOfContacts = new LazyList(PointOfContact.Builder.class);
 			return _pointOfContacts;
 		}
-		
+
 		/**
 		 * Builder accessor for the description
 		 */
@@ -640,7 +645,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 				_description = new Description.Builder();
 			return _description;
 		}
-		
+
 		/**
 		 * Builder accessor for the description
 		 */
@@ -653,10 +658,10 @@ public final class MetacardInfo extends AbstractBaseComponent {
 		 */
 		public List<ProcessingInfo.Builder> getProcessingInfos() {
 			if (_processingInfos == null)
-				_processingInfos = new LazyList(ProcessingInfo.Builder.class);					
+				_processingInfos = new LazyList(ProcessingInfo.Builder.class);
 			return _processingInfos;
 		}
-		
+
 		/**
 		 * Builder accessor for the revisionRecall
 		 */
@@ -672,7 +677,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 		public void setRevisionRecall(RevisionRecall.Builder revisionRecall) {
 			_revisionRecall = revisionRecall;
 		}
-		
+
 		/**
 		 * Builder accessor for the recordsManagementInfo
 		 */
@@ -704,7 +709,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 		public void setNoticeList(NoticeList.Builder noticeList) {
 			_noticeList = noticeList;
 		}
-		
+
 		/**
 		 * Builder accessor for the access
 		 */
@@ -720,7 +725,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 		public void setAccess(Access.Builder access) {
 			_access = access;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
@@ -729,7 +734,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 				_securityAttributes = new SecurityAttributes.Builder();
 			return _securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
@@ -737,4 +742,4 @@ public final class MetacardInfo extends AbstractBaseComponent {
 			_securityAttributes = securityAttributes;
 		}
 	}
-} 
+}

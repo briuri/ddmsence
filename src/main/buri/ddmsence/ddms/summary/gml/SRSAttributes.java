@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary.gml;
 
 import java.io.Serializable;
@@ -40,9 +40,10 @@ import buri.ddmsence.util.Util;
  * Because the GML-Profile defines these attributes locally inside of attribute groups, they are not in any namespace.
  * Some older examples on the DDMS website inaccurately display the attributes with the gml: prefix.
  * </p>
- *
- * <p>When validating this attribute group, the required/optional nature of the srsName attribute is not checked. Because
- * that limitation depends on the parent element (for example, gml:Point and gml:Polygon require an srsName, but gml:pos 
+ * 
+ * <p>When validating this attribute group, the required/optional nature of the srsName attribute is not checked.
+ * Because
+ * that limitation depends on the parent element (for example, gml:Point and gml:Polygon require an srsName, but gml:pos
  * does not), the parent element should be responsible for checking.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
@@ -62,18 +63,18 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	private Integer _srsDimension = null;
 	private List<String> _axisLabels = null;
 	private List<String> _uomLabels = null;
-	
+
 	/** The prefix of the shared attributes */
 	public static final String NO_PREFIX = "";
-	
+
 	/** The namespace of the shared attributes */
 	public static final String NO_NAMESPACE = "";
-		
+
 	private static final String SRS_NAME_NAME = "srsName";
 	private static final String SRS_DIMENSION_NAME = "srsDimension";
 	private static final String AXIS_LABELS_NAME = "axisLabels";
 	private static final String UOM_LABELS_NAME = "uomLabels";
-	
+
 	/**
 	 * Returns a non-null instance of SRS attributes. If the instance passed in is not null, it will be returned.
 	 * 
@@ -84,7 +85,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	public static SRSAttributes getNonNullInstance(SRSAttributes srsAttributes) throws InvalidDDMSException {
 		return (srsAttributes == null ? new SRSAttributes(null, null, null, null) : srsAttributes);
 	}
-	
+
 	/**
 	 * Base constructor
 	 * 
@@ -109,11 +110,11 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 		}
 		validate(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()));
 	}
-	
+
 	/**
 	 * Constructor which builds from raw data.
 	 * 
-	 * @param srsName	the srsName (required if the name is not "pos")
+	 * @param srsName the srsName (required if the name is not "pos")
 	 * @param srsDimension the srsDimension (optional)
 	 * @param axisLabels the axis labels (optional, but should be omitted if no srsName is set)
 	 * @param uomLabels the labels for UOM (required when axisLabels is set)
@@ -132,7 +133,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 		_uomLabels = uomLabels;
 		validate(DDMSVersion.getCurrentVersion());
 	}
-	
+
 	/**
 	 * Convenience method to add these attributes onto an existing XOM Element
 	 * 
@@ -147,7 +148,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 		Util.addAttribute(element, NO_PREFIX, AXIS_LABELS_NAME, NO_NAMESPACE, getAxisLabelsAsXsList());
 		Util.addAttribute(element, NO_PREFIX, UOM_LABELS_NAME, NO_NAMESPACE, getUomLabelsAsXsList());
 	}
-	
+
 	/**
 	 * Validates the attribute group.
 	 * 
@@ -157,11 +158,11 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 * <li>If the srsName is not set, the axisLabels must be not set or empty.</li>
 	 * <li>If the axisLabels are not set or empty, the uomLabels must be not set or empty.</li>
 	 * <li>Each axisLabel must be a NCName.</li>
-	 * <li>Each uomLabel must be a NCName.</li> 
+	 * <li>Each uomLabel must be a NCName.</li>
 	 * </td></tr></table>
 	 * 
 	 * @param version the DDMS version to validate against. This cannot be stored in the attribute group because some
-	 * DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).
+	 *        DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate(DDMSVersion version) throws InvalidDDMSException {
@@ -177,23 +178,22 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 		Util.requireValidNCNames(getUomLabels());
 		super.validate(version);
 	}
-	
+
 	/**
 	 * @see AbstractAttributeGroup#getOutput(boolean, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix) {
-		String localPrefix = Util.getNonNullString(prefix);	
+		String localPrefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer();
 		text.append(Resource.buildOutput(isHTML, localPrefix + "srsName", getSrsName()));
 		if (getSrsDimension() != null) {
-			text.append(Resource.buildOutput(isHTML, localPrefix + "srsDimension",
-				String.valueOf(getSrsDimension())));
+			text.append(Resource.buildOutput(isHTML, localPrefix + "srsDimension", String.valueOf(getSrsDimension())));
 		}
 		text.append(Resource.buildOutput(isHTML, localPrefix + "axisLabels", getAxisLabelsAsXsList()));
 		text.append(Resource.buildOutput(isHTML, localPrefix + "uomLabels", getUomLabelsAsXsList()));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -211,7 +211,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 * @see Object#hashCode()
 	 */
 	public int hashCode() {
-		int result = 0; 
+		int result = 0;
 		result = 7 * result + getSrsName().hashCode();
 		if (getSrsDimension() != null)
 			result = 7 * result + getSrsDimension().hashCode();
@@ -219,49 +219,49 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 		result = 7 * result + getUomLabels().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the srsName.
 	 */
 	public String getSrsName() {
 		return (Util.getNonNullString(_srsName));
 	}
-	
+
 	/**
 	 * Accessor for the srsDimension. May return null if not set.
 	 */
 	public Integer getSrsDimension() {
 		return (_srsDimension);
 	}
-	
+
 	/**
 	 * Accessor for the axisLabels. Will return an empty list if not set.
 	 */
 	public List<String> getAxisLabels() {
 		return (Collections.unmodifiableList(_axisLabels));
 	}
-	
+
 	/**
 	 * Accessor for the String representation of the axisLabels
 	 */
 	public String getAxisLabelsAsXsList() {
 		return (Util.getXsList(getAxisLabels()));
 	}
-	
+
 	/**
 	 * Accessor for the uomLabels. Will return an empty list if not set.
 	 */
 	public List<String> getUomLabels() {
 		return (Collections.unmodifiableList(_uomLabels));
 	}
-	
+
 	/**
 	 * Accessor for the String representation of the uomLabels
 	 */
 	public String getUomLabelsAsXsList() {
 		return (Util.getXsList(getUomLabels()));
 	}
-	
+
 	/**
 	 * Builder for these attributes.
 	 * 
@@ -279,12 +279,12 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 		private Integer _srsDimension;
 		private List<String> _axisLabels;
 		private List<String> _uomLabels;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -294,7 +294,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 			setAxisLabels(attributes.getAxisLabels());
 			setUomLabels(attributes.getUomLabels());
 		}
-		
+
 		/**
 		 * Finalizes the data gathered for this builder instance. Will always return an empty instance instead of
 		 * a null one.
@@ -304,7 +304,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 		public SRSAttributes commit() throws InvalidDDMSException {
 			return (new SRSAttributes(getSrsName(), getSrsDimension(), getAxisLabels(), getUomLabels()));
 		}
-		
+
 		/**
 		 * Checks if any values have been provided for this Builder.
 		 * 
@@ -315,35 +315,35 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 				&& Util.containsOnlyEmptyValues(getAxisLabels())
 				&& Util.containsOnlyEmptyValues(getUomLabels()));				
 		}
-		
+
 		/**
 		 * Builder accessor for the srsName
 		 */
 		public String getSrsName() {
 			return _srsName;
 		}
-		
+
 		/**
 		 * Builder accessor for the srsName
 		 */
 		public void setSrsName(String srsName) {
 			_srsName = srsName;
 		}
-		
+
 		/**
 		 * Builder accessor for the srsDimension
 		 */
 		public Integer getSrsDimension() {
 			return _srsDimension;
 		}
-		
+
 		/**
 		 * Builder accessor for the srsDimension
 		 */
 		public void setSrsDimension(Integer srsDimension) {
 			_srsDimension = srsDimension;
 		}
-		
+
 		/**
 		 * Builder accessor for the axisLabels
 		 */
@@ -352,14 +352,14 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 				_axisLabels = new LazyList(String.class);
 			return _axisLabels;
 		}
-		
+
 		/**
 		 * Builder accessor for the axisLabels
 		 */
 		public void setAxisLabels(List<String> axisLabels) {
 			_axisLabels = new LazyList(axisLabels, String.class);
 		}
-		
+
 		/**
 		 * Builder accessor for the uomLabels
 		 */
@@ -368,7 +368,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 				_uomLabels = new LazyList(String.class);
 			return _uomLabels;
 		}
-		
+
 		/**
 		 * Builder accessor for the uomLabels
 		 */

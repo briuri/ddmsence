@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
@@ -35,14 +35,14 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:postalAddress.
- *  
+ * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
  * <li>A postalAddress element can be used with no child elements.</li>
  * </ul>
  * </td></tr></table>
- * 	
+ * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:street</u>: the street address (0-6 optional)<br />
  * <u>ddms:city</u>: the city (0-1 optional)<br />
@@ -56,24 +56,24 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class PostalAddress extends AbstractBaseComponent {
-	
+
 	private List<String> _streets = null;
 	private String _city = null;
 	private String _state = null;
 	private String _province = null;
 	private String _postalCode = null;
 	private CountryCode _countryCode = null;
-	
+
 	private static final String STREET_NAME = "street";
 	private static final String CITY_NAME = "city";
 	private static final String STATE_NAME = "state";
 	private static final String PROVINCE_NAME = "province";
 	private static final String POSTAL_CODE_NAME = "postalCode";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public PostalAddress(Element element) throws InvalidDDMSException {
@@ -103,17 +103,17 @@ public final class PostalAddress extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param streets the street address lines (0-6)
 	 * @param city the city (optional)
 	 * @param stateOrProvince the state or province (optional)
 	 * @param postalCode the postal code (optional)
 	 * @param countryCode the country code (optional)
-	 * @param hasState true if the stateOrProvince is a state, false if it is a province (only 1 of state or province 
-	 * can exist in a postalAddress)
+	 * @param hasState true if the stateOrProvince is a state, false if it is a province (only 1 of state or province
+	 *        can exist in a postalAddress)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public PostalAddress(List<String> streets, String city, String stateOrProvince, String postalCode,
@@ -170,10 +170,10 @@ public final class PostalAddress extends AbstractBaseComponent {
 		Util.requireBoundedChildCount(getXOMElement(), PROVINCE_NAME, 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), POSTAL_CODE_NAME, 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), CountryCode.getName(getDDMSVersion()), 0, 1);
-		
+
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -188,7 +188,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 		}
 		super.validateWarnings();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -204,7 +204,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 			text.append(getCountryCode().getOutput(isHTML, localPrefix, ""));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -213,7 +213,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 		list.add(getCountryCode());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -240,7 +240,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 		result = 7 * result + getPostalCode().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -251,35 +251,35 @@ public final class PostalAddress extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("postalAddress");
 	}
-	
+
 	/**
 	 * Accessor for the street addresses (max 6)
 	 */
 	public List<String> getStreets() {
 		return (Collections.unmodifiableList(_streets));
 	}
-	
+
 	/**
 	 * Accessor for the city
 	 */
 	public String getCity() {
 		return (Util.getNonNullString(_city));
 	}
-	
+
 	/**
 	 * Accessor for the state
 	 */
 	public String getState() {
 		return (Util.getNonNullString(_state));
 	}
-	
+
 	/**
 	 * Accessor for the province
 	 */
 	public String getProvince() {
 		return (Util.getNonNullString(_province));
 	}
-	
+
 	/**
 	 * Accessor for the postalCode
 	 */
@@ -293,7 +293,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 	public CountryCode getCountryCode() {
 		return (_countryCode);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -309,12 +309,12 @@ public final class PostalAddress extends AbstractBaseComponent {
 		private String _province;
 		private String _postalCode;
 		private CountryCode.Builder _countryCode;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -327,7 +327,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 			if (address.getCountryCode() != null)
 				setCountryCode(new CountryCode.Builder(address.getCountryCode()));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -339,10 +339,10 @@ public final class PostalAddress extends AbstractBaseComponent {
 				throw new InvalidDDMSException("Only 1 of state or province can be used.");
 			boolean hasState = !Util.isEmpty(getState());
 			String stateOrProvince = hasState ? getState() : getProvince();
-			return (new PostalAddress(getStreets(), getCity(), stateOrProvince, getPostalCode(), 
+			return (new PostalAddress(getStreets(), getCity(), stateOrProvince, getPostalCode(),
 				getCountryCode().commit(), hasState));
 		}
-		
+
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
@@ -354,7 +354,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 				&& Util.isEmpty(getPostalCode())
 				&& getCountryCode().isEmpty());
 		}
-		
+
 		/**
 		 * Builder accessor for the streets
 		 */
@@ -363,70 +363,70 @@ public final class PostalAddress extends AbstractBaseComponent {
 				_streets = new LazyList(String.class);
 			return _streets;
 		}
-		
+
 		/**
 		 * Builder accessor for the streets
 		 */
 		public void setStreets(List<String> streets) {
 			_streets = new LazyList(streets, String.class);
 		}
-		
+
 		/**
 		 * Builder accessor for the city
 		 */
 		public String getCity() {
 			return _city;
 		}
-		
+
 		/**
 		 * Builder accessor for the city
 		 */
 		public void setCity(String city) {
 			_city = city;
 		}
-		
+
 		/**
 		 * Builder accessor for the state
 		 */
 		public String getState() {
 			return _state;
 		}
-		
+
 		/**
 		 * Builder accessor for the state
 		 */
 		public void setState(String state) {
 			_state = state;
 		}
-		
+
 		/**
 		 * Builder accessor for the province
 		 */
 		public String getProvince() {
 			return _province;
 		}
-		
+
 		/**
 		 * Builder accessor for the province
 		 */
 		public void setProvince(String province) {
 			_province = province;
 		}
-		
+
 		/**
 		 * Builder accessor for the postalCode
 		 */
 		public String getPostalCode() {
 			return _postalCode;
 		}
-		
+
 		/**
 		 * Builder accessor for the postalCode
 		 */
 		public void setPostalCode(String postalCode) {
 			_postalCode = postalCode;
 		}
-		
+
 		/**
 		 * Builder accessor for the countryCode
 		 */
@@ -436,12 +436,12 @@ public final class PostalAddress extends AbstractBaseComponent {
 			}
 			return _countryCode;
 		}
-		
+
 		/**
 		 * Builder accessor for the countryCode
 		 */
 		public void setCountryCode(CountryCode.Builder countryCode) {
 			_countryCode = countryCode;
-		}		
+		}
 	}
-} 
+}

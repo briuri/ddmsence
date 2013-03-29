@@ -29,7 +29,7 @@ import buri.ddmsence.ddms.security.ism.SecurityAttributes;
  * 
  * <p>
  * All DDMS components should be valid after instantiation and can output themselves in various formats. Implementation
- * classes are divided up into packages based on the five Core sets: Metacard Info, Security, Resource, Summary Content, 
+ * classes are divided up into packages based on the five Core sets: Metacard Info, Security, Resource, Summary Content,
  * and Format.
  * </p>
  * 
@@ -62,28 +62,28 @@ public interface IDDMSComponent {
 	 * @return the prefix
 	 */
 	public String getPrefix();
-	
+
 	/**
 	 * Accessor for the name of the component
 	 * 
 	 * @return the name, without prefix
 	 */
 	public String getName();
-	
+
 	/**
 	 * Accessor for the XML namespace of the component
 	 * 
 	 * @return the namespace
 	 */
 	public String getNamespace();
-	
+
 	/**
 	 * Accessor for the name of the component, including the prefix
 	 * 
 	 * @return the name, with prefix if available
 	 */
 	public String getQualifiedName();
-	
+
 	/**
 	 * Returns any security attributes attached to this component. If the component is not allowed to have attributes,
 	 * this will be null. Otherwise, a valid SecurityAttributes object will be returned, even if none of its properties
@@ -98,7 +98,7 @@ public interface IDDMSComponent {
 	 * @return a list of warnings
 	 */
 	public List<ValidationMessage> getValidationWarnings();
-	
+
 	/**
 	 * Renders this component as HTML.
 	 * 
@@ -112,7 +112,7 @@ public interface IDDMSComponent {
 	 * @return the text-based representation of this component
 	 */
 	public String toText();
-	
+
 	/**
 	 * Renders this component as XML.
 	 * 

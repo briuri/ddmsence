@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
@@ -30,13 +30,13 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:boundingBox.
- *
+ * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:westBL</u>: westbound longitude (required)<br />
  * <u>ddms:eastBL</u>: eastbound longitude (required)<br />
  * <u>ddms:southBL</u>: northbound latitude (required)<br />
  * <u>ddms:northBL</u>: southbound latitude (required)<br />
- * Please note that the case of the nested elements changed starting in DDMS 4.0.1. Previously, the first letter of 
+ * Please note that the case of the nested elements changed starting in DDMS 4.0.1. Previously, the first letter of
  * each element was capitalized (i.e. WestBL/EastBL/SouthBL/NorthBL).
  * </td></tr></table>
  * 
@@ -49,11 +49,11 @@ public final class BoundingBox extends AbstractBaseComponent {
 	private Double _eastBL = null;
 	private Double _southBL = null;
 	private Double _northBL = null;
-					
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public BoundingBox(Element element) throws InvalidDDMSException {
@@ -71,10 +71,10 @@ public final class BoundingBox extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param westBL the westbound longitude
 	 * @param eastBL the eastbound longitude
 	 * @param southBL the southbound latitude
@@ -100,7 +100,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-		
+
 	/**
 	 * Validates the component.
 	 * 
@@ -115,7 +115,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
-	 */	
+	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), BoundingBox.getName(getDDMSVersion()));
 		Util.requireDDMSValue("westbound longitude", getWestBL());
@@ -128,7 +128,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 		Util.requireValidLatitude(getNorthBL());
 		super.validate();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -141,7 +141,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 		text.append(buildOutput(isHTML, localPrefix + getNorthBLName(), String.valueOf(getNorthBL())));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -166,7 +166,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 		result = 7 * result + getNorthBL().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -177,63 +177,63 @@ public final class BoundingBox extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("boundingBox");
 	}
-	
+
 	/**
 	 * Accessor for the name of the westbound longitude element, which changed in DDMS 4.0.1.
 	 */
 	private String getWestBLName() {
 		return (getDDMSVersion().isAtLeast("4.0.1") ? "westBL" : "WestBL");
 	}
-	
+
 	/**
 	 * Accessor for the name of the eastbound longitude element, which changed in DDMS 4.0.1.
 	 */
 	private String getEastBLName() {
 		return (getDDMSVersion().isAtLeast("4.0.1") ? "eastBL" : "EastBL");
 	}
-	
+
 	/**
 	 * Accessor for the name of the southbound latitude element, which changed in DDMS 4.0.1.
 	 */
 	private String getSouthBLName() {
 		return (getDDMSVersion().isAtLeast("4.0.1") ? "southBL" : "SouthBL");
 	}
-	
+
 	/**
 	 * Accessor for the name of the northbound latitude element, which changed in DDMS 4.0.1.
 	 */
 	private String getNorthBLName() {
 		return (getDDMSVersion().isAtLeast("4.0.1") ? "northBL" : "NorthBL");
 	}
-	
+
 	/**
 	 * Accessor for the westbound longitude.
 	 */
 	public Double getWestBL() {
-		return (_westBL); 
+		return (_westBL);
 	}
-	
+
 	/**
 	 * Accessor for the eastbound longitude.
 	 */
 	public Double getEastBL() {
-		return (_eastBL); 
+		return (_eastBL);
 	}
-	
+
 	/**
 	 * Accessor for the southbound latitude.
 	 */
 	public Double getSouthBL() {
-		return (_southBL); 
+		return (_southBL);
 	}
-	
+
 	/**
 	 * Accessor for the northbound latitude.
 	 */
 	public Double getNorthBL() {
-		return (_northBL); 
+		return (_northBL);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -247,12 +247,12 @@ public final class BoundingBox extends AbstractBaseComponent {
 		private Double _eastBL;
 		private Double _southBL;
 		private Double _northBL;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -262,7 +262,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 			setSouthBL(box.getSouthBL());
 			setNorthBL(box.getNorthBL());
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -275,14 +275,14 @@ public final class BoundingBox extends AbstractBaseComponent {
 			return (new BoundingBox(getWestBL().doubleValue(), getEastBL().doubleValue(), getSouthBL().doubleValue(),
 				getNorthBL().doubleValue()));
 		}
-		
+
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
 			return (getWestBL() == null && getEastBL() == null && getSouthBL() == null && getNorthBL() == null);
 		}
-		
+
 		/**
 		 * Builder accessor for the westbound longitude
 		 */
@@ -339,4 +339,4 @@ public final class BoundingBox extends AbstractBaseComponent {
 			_northBL = northBL;
 		}
 	}
-} 
+}

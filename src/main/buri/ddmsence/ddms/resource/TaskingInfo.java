@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import java.io.Serializable;
@@ -40,33 +40,32 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:taskingInfo.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:requesterInfo</u>: Information about the requester of the production of this resource (0-many optional), 
+ * <u>ddms:requesterInfo</u>: Information about the requester of the production of this resource (0-many optional),
  * implemented as a {@link RequesterInfo}.<br />
- * <u>ddms:addressee</u>: The addressee for this tasking (0-many optional), implemented as a {@link Addressee}
- * <br />
+ * <u>ddms:addressee</u>: The addressee for this tasking (0-many optional), implemented as a {@link Addressee} <br />
  * <u>ddms:description</u>: A description of this tasking (0-1, optional), implemented as a {@link Description}<br />
- * <u>ddms:taskID</u>: The task ID for this tasking (required), implemented as a {@link TaskID}<br /> 
+ * <u>ddms:taskID</u>: The task ID for this tasking (required), implemented as a {@link TaskID}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- *  <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public final class TaskingInfo extends AbstractBaseComponent {
-	
+
 	private List<RequesterInfo> _requesterInfos = null;
 	private List<Addressee> _addressees = null;
 	private Description _description = null;
 	private TaskID _taskID = null;
 	private SecurityAttributes _securityAttributes = null;
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public TaskingInfo(Element element) throws InvalidDDMSException {
@@ -98,7 +97,7 @@ public final class TaskingInfo extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
@@ -127,7 +126,7 @@ public final class TaskingInfo extends AbstractBaseComponent {
 				element.appendChild(description.getXOMElementCopy());
 			if (taskID != null)
 				element.appendChild(taskID.getXOMElementCopy());
-			
+
 			_requesterInfos = requesterInfos;
 			_addressees = addressees;
 			_description = description;
@@ -141,7 +140,7 @@ public final class TaskingInfo extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-			
+
 	/**
 	 * Validates the component.
 	 * 
@@ -159,18 +158,18 @@ public final class TaskingInfo extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), TaskingInfo.getName(getDDMSVersion()));
-		Util.requireDDMSValue("taskID", getTaskID());		
+		Util.requireDDMSValue("taskID", getTaskID());
 		Util.requireBoundedChildCount(getXOMElement(), Description.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), TaskID.getName(getDDMSVersion()), 1, 1);
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
-		
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0.1");
 
 		super.validate();
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -184,7 +183,7 @@ public final class TaskingInfo extends AbstractBaseComponent {
 		text.append(getTaskID().getOutput(isHTML, localPrefix, ""));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -196,14 +195,14 @@ public final class TaskingInfo extends AbstractBaseComponent {
 		list.add(getTaskID());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof TaskingInfo))
 			return (false);
-		return (true);		
+		return (true);
 	}
 
 	/**
@@ -216,7 +215,7 @@ public final class TaskingInfo extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("taskingInfo");
 	}
-	
+
 	/**
 	 * Accessor for the requesterInfos
 	 */
@@ -244,14 +243,14 @@ public final class TaskingInfo extends AbstractBaseComponent {
 	public TaskID getTaskID() {
 		return _taskID;
 	}
-	
+
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_securityAttributes);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -266,13 +265,12 @@ public final class TaskingInfo extends AbstractBaseComponent {
 		private Description.Builder _description;
 		private TaskID.Builder _taskID;
 		private SecurityAttributes.Builder _securityAttributes;
-		
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -286,7 +284,7 @@ public final class TaskingInfo extends AbstractBaseComponent {
 			setTaskID(new TaskID.Builder(info.getTaskID()));
 			setSecurityAttributes(new SecurityAttributes.Builder(info.getSecurityAttributes()));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -320,7 +318,7 @@ public final class TaskingInfo extends AbstractBaseComponent {
 				hasValueInList = hasValueInList || !builder.isEmpty();
 			return (!hasValueInList && getDescription().isEmpty() && getTaskID().isEmpty() && getSecurityAttributes().isEmpty());
 		}
-		
+
 		/**
 		 * Builder accessor for the requesterInfos
 		 */
@@ -379,7 +377,7 @@ public final class TaskingInfo extends AbstractBaseComponent {
 				_securityAttributes = new SecurityAttributes.Builder();
 			return _securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
@@ -387,4 +385,4 @@ public final class TaskingInfo extends AbstractBaseComponent {
 			_securityAttributes = securityAttributes;
 		}
 	}
-} 
+}

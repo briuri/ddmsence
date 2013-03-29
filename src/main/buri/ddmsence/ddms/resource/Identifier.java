@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
@@ -47,28 +47,28 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class Identifier extends AbstractQualifierValue {
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Identifier(Element element) throws InvalidDDMSException {
 		super(element, true);
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
-	 * @param qualifier	the value of the qualifier attribute
-	 * @param value	the value of the value attribute 
+	 * 
+	 * @param qualifier the value of the qualifier attribute
+	 * @param value the value of the value attribute
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Identifier(String qualifier, String value) throws InvalidDDMSException {
 		super(Identifier.getName(DDMSVersion.getCurrentVersion()), qualifier, value, true, true);
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
@@ -90,7 +90,7 @@ public final class Identifier extends AbstractQualifierValue {
 		Util.requireDDMSValidURI(getQualifier());
 		super.validate();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -101,14 +101,14 @@ public final class Identifier extends AbstractQualifierValue {
 		text.append(buildOutput(isHTML, localPrefix + getValueName(), getValue()));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		return (super.equals(obj) && (obj instanceof Identifier));
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -119,7 +119,7 @@ public final class Identifier extends AbstractQualifierValue {
 		Util.requireValue("version", version);
 		return ("identifier");
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -136,14 +136,14 @@ public final class Identifier extends AbstractQualifierValue {
 		public Builder() {
 			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(Identifier identifier) {
 			super(identifier);
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -151,4 +151,4 @@ public final class Identifier extends AbstractQualifierValue {
 			return (isEmpty() ? null : new Identifier(getQualifier(), getValue()));
 		}
 	}
-} 
+}

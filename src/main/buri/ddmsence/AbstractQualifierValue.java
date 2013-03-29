@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence;
 
 import java.io.Serializable;
@@ -41,13 +41,13 @@ import buri.ddmsence.util.Util;
 public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 
 	private boolean _useClassicAttributeNames = true;
-	
+
 	private static final String QUALIFIER_NAME = "qualifier";
 	private static final String VALUE_NAME = "value";
 
 	private static final String CODESPACE_NAME = "codespace";
 	private static final String CODE_NAME = "code";
-	
+
 	/**
 	 * This implicit superconstructor does nothing.
 	 */
@@ -77,25 +77,25 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 	 * @param qualifier the value of the qualifier attribute
 	 * @param value the value of the value attribute
 	 * @param validateNow true to validate the component immediately. Because Source entities have additional fields
-	 * they should not be validated in the superconstructor.
+	 *        they should not be validated in the superconstructor.
 	 * @param useClassicAttributeNames true for "qualifier/value" and false for "codespace/code".
 	 */
-	protected AbstractQualifierValue(String name, String qualifier, String value, boolean validateNow, boolean useClassicAttributeNames)
-		throws InvalidDDMSException {
+	protected AbstractQualifierValue(String name, String qualifier, String value, boolean validateNow,
+		boolean useClassicAttributeNames) throws InvalidDDMSException {
 		_useClassicAttributeNames = useClassicAttributeNames;
 		try {
 			Element element = Util.buildDDMSElement(name, null);
 			Util.addDDMSAttribute(element, getQualifierName(), qualifier);
 			Util.addDDMSAttribute(element, getValueName(), value);
 			setXOMElement(element, validateNow);
-			
+
 		}
 		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -115,35 +115,35 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 		result = 7 * result + getValue().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the name of the qualifier attribute
 	 */
 	public String getQualifierName() {
 		return (_useClassicAttributeNames ? QUALIFIER_NAME : CODESPACE_NAME);
 	}
-	
+
 	/**
 	 * Accessor for the nameof the value attribute
 	 */
 	public String getValueName() {
 		return (_useClassicAttributeNames ? VALUE_NAME : CODE_NAME);
 	}
-	
+
 	/**
 	 * Accessor for the value of the qualifier attribute
 	 */
 	public String getQualifier() {
 		return (getAttributeValue(getQualifierName()));
 	}
-	
+
 	/**
 	 * Accessor for the value of the value attribute
 	 */
 	public String getValue() {
 		return (getAttributeValue(getValueName()));
 	}
-	
+
 	/**
 	 * Abstract Builder for this DDMS component.
 	 * 
@@ -158,12 +158,12 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 		private static final long serialVersionUID = 5630463057657652800L;
 		private String _qualifier;
 		private String _value;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		protected Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -171,7 +171,7 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 			setQualifier(qualifierValue.getQualifier());
 			setValue(qualifierValue.getValue());
 		}
-		
+
 		/**
 		 * Builder accessor for the qualifier attribute.
 		 */
@@ -185,7 +185,7 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 		public void setQualifier(String qualifier) {
 			_qualifier = qualifier;
 		}
-		
+
 		/**
 		 * Builder accessor for the value attribute.
 		 */
@@ -199,7 +199,7 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 		public void setValue(String value) {
 			_value = value;
 		}
-		
+
 		/**
 		 * @see IBuilder#isEmpty()
 		 */

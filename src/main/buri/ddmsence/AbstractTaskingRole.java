@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence;
 
 import java.io.Serializable;
@@ -43,32 +43,31 @@ import buri.ddmsence.util.Util;
  * </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:organization</u>: The organization who is the addressee (0-1, optional), implemented as an 
+ * <u>ddms:organization</u>: The organization who is the addressee (0-1, optional), implemented as an
  * {@link Organization}<br />
  * <u>ddms:person</u>: the person who is the addressee (0-1, optional), implemented as a {@link Person}<br />
  * Only one of the nested entities can appear.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and
- * ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public abstract class AbstractTaskingRole extends AbstractBaseComponent {
-	
+
 	private IRoleEntity _entity = null;
 	private SecurityAttributes _securityAttributes = null;
-	
+
 	/**
 	 * Base constructor
 	 * 
 	 * @param element the XOM element representing this component
 	 */
 	protected AbstractTaskingRole(Element element) throws InvalidDDMSException {
-		try {		
+		try {
 			setXOMElement(element, false);
 			if (element.getChildElements().size() > 0) {
 				Element entityElement = element.getChildElements().get(0);
@@ -86,7 +85,7 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor which builds from raw data.
 	 * 
@@ -110,7 +109,7 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-			
+
 	/**
 	 * Validates the component.
 	 * 
@@ -138,7 +137,7 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 
 		super.validate();
 	}
-			
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -147,7 +146,7 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 			return (false);
 		return (true);
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -158,8 +157,7 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
-	
-	
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -168,7 +166,7 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 		list.add(getEntity());
 		return (list);
 	}
-	
+
 	/**
 	 * Accessor for the producer entity
 	 */
@@ -182,12 +180,12 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 	public SecurityAttributes getSecurityAttributes() {
 		return (_securityAttributes);
 	}
-	
+
 	/**
 	 * Abstract Builder for this DDMS component.
 	 * 
-	 * <p>Builders which are based upon this abstract class should implement the commit() method, returning the appropriate
-	 * concrete object type.</p>
+	 * <p>Builders which are based upon this abstract class should implement the commit() method, returning the
+	 * appropriate concrete object type.</p>
 	 * 
 	 * @see IBuilder
 	 * @author Brian Uri!
@@ -199,12 +197,12 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 		private Organization.Builder _organization;
 		private Person.Builder _person;
 		private SecurityAttributes.Builder _securityAttributes;
-		
+
 		/**
 		 * Base constructor
 		 */
 		protected Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -217,9 +215,10 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 				setPerson(new Person.Builder((Person) role.getEntity()));
 			setSecurityAttributes(new SecurityAttributes.Builder(role.getSecurityAttributes()));
 		}
-		
+
 		/**
 		 * Commits the entity which is active in this builder, based on the entityType.
+		 * 
 		 * @return the entity
 		 */
 		protected IRoleEntity commitSelectedEntity() throws InvalidDDMSException {
@@ -228,18 +227,18 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 				return (getOrganization().commit());
 			return (getPerson().commit());
 		}
-		
+
 		/**
 		 * Helper method to determine if any values have been entered for this producer.
 		 * 
 		 * @return true if all values are empty
 		 */
-		public boolean isEmpty() {	
+		public boolean isEmpty() {
 			return (getOrganization().isEmpty()
 				&& getPerson().isEmpty()
 				&& getSecurityAttributes().isEmpty());
 		}
-				
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
@@ -248,7 +247,7 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 				_securityAttributes = new SecurityAttributes.Builder();
 			return _securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */

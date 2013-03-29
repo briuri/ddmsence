@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.util;
 
 import java.util.ArrayList;
@@ -32,15 +32,16 @@ import buri.ddmsence.ddms.security.ism.ISMVocabulary;
  * Manages the supported versions of DDMS.
  * 
  * <p>
- * This class is the extension point for supporting new DDMS versions in the future. DDMSVersion maintains a static 
- * currentVersion variable which can be set at runtime. All DDMS component constructors which build components from 
- * scratch can then call <code>DDMSVersion.getCurrentVersion()</code> to access various details such as schema 
- * locations and namespace URIs. If no currentVersion has been set, a default will be used, which maps to 
+ * This class is the extension point for supporting new DDMS versions in the future. DDMSVersion maintains a static
+ * currentVersion variable which can be set at runtime. All DDMS component constructors which build components from
+ * scratch can then call <code>DDMSVersion.getCurrentVersion()</code> to access various details such as schema
+ * locations and namespace URIs. If no currentVersion has been set, a default will be used, which maps to
  * <code>buri.ddmsence.ddms.defaultVersion</code> in the properties file. This defaults to 4.1 right now.</p>
  * 
  * <p>
- * The ddmsence.properties file has a property, <code>ddms.supportedVersions</code> which can be a comma-separated list of version
- * numbers. Each of these token values then has a set of properties which identify the namespace and schema locations 
+ * The ddmsence.properties file has a property, <code>ddms.supportedVersions</code> which can be a comma-separated list
+ * of version
+ * numbers. Each of these token values then has a set of properties which identify the namespace and schema locations
  * for each DDMS version:
  * </p>
  * 
@@ -78,11 +79,11 @@ import buri.ddmsence.ddms.security.ism.ISMVocabulary;
  * @since 0.9.b
  */
 public class DDMSVersion {
-	
+
 	private String _version;
 	private String _namespace;
 	private String _schema;
-	
+
 	private String _gmlNamespace;
 	private String _gmlSchema;
 	private String _ismCveLocation;
@@ -90,7 +91,7 @@ public class DDMSVersion {
 	private String _ntkNamespace;
 	private String _ntkSchema;
 	private String _xlinkNamespace;
-	
+
 	private static DDMSVersion _currentVersion;
 
 	private static final Map<String, DDMSVersion> VERSIONS_TO_DETAILS = new TreeMap<String, DDMSVersion>();
@@ -100,7 +101,7 @@ public class DDMSVersion {
 		}
 		_currentVersion = getVersionFor(PropertyReader.getProperty("ddms.defaultVersion"));
 	}
-			
+
 	/**
 	 * Private to prevent instantiation
 	 * 
@@ -119,8 +120,7 @@ public class DDMSVersion {
 		_ntkSchema = PropertyReader.getProperty(version + ".ntk.xsdLocation");
 		_xlinkNamespace = PropertyReader.getProperty(version + ".xlink.xmlNamespace");
 	}
-	
-	
+
 	/**
 	 * Convenience method to check if a DDMS version number is equal to or higher that some
 	 * test number. An example of where this might be used is to determine the capitalization
@@ -135,9 +135,9 @@ public class DDMSVersion {
 			throw new UnsupportedVersionException(version);
 		int index = getSupportedVersionsProperty().indexOf(this.getVersion());
 		int testIndex = getSupportedVersionsProperty().indexOf(version);
-		return (index >= testIndex);		
+		return (index >= testIndex);
 	}
-	
+
 	/**
 	 * Returns a list of supported DDMS versions
 	 * 
@@ -146,7 +146,7 @@ public class DDMSVersion {
 	public static List<String> getSupportedVersions() {
 		return Collections.unmodifiableList(getSupportedVersionsProperty());
 	}
-	
+
 	/**
 	 * Private accessor for the property containing the supported versions list
 	 * 
@@ -155,7 +155,7 @@ public class DDMSVersion {
 	private static List<String> getSupportedVersionsProperty() {
 		return (PropertyReader.getListProperty("ddms.supportedVersions"));
 	}
-	
+
 	/**
 	 * Private accessor for the property containing the supported DDMS XML namespace list
 	 * 
@@ -168,7 +168,7 @@ public class DDMSVersion {
 		}
 		return (supportedNamespaces);
 	}
-	
+
 	/**
 	 * Checks if an XML namespace is included in the list of supported XML namespaces for DDMS
 	 * 
@@ -178,7 +178,7 @@ public class DDMSVersion {
 	public static boolean isSupportedDDMSNamespace(String xmlNamespace) {
 		return (getSupportedDDMSNamespacesProperty().contains(xmlNamespace));
 	}
-	
+
 	/**
 	 * Returns the DDMSVersion instance mapped to a particular version number.
 	 * 
@@ -192,7 +192,7 @@ public class DDMSVersion {
 			throw new UnsupportedVersionException(version);
 		return (VERSIONS_TO_DETAILS.get(version));
 	}
-			
+
 	/**
 	 * Returns the DDMSVersion instance mapped to a particular XML namespace. If the
 	 * namespace is shared by multiple versions of DDMS, the most recent will be
@@ -214,7 +214,7 @@ public class DDMSVersion {
 		}
 		throw new UnsupportedVersionException("for XML namespace " + namespace);
 	}
-	
+
 	/**
 	 * Sets the currentVersion which will be used for by DDMS component constructors to determine the namespace and
 	 * schema to use. Also updates the ISMVersion on the ISMVocabulary class, which is used to determine
@@ -232,9 +232,9 @@ public class DDMSVersion {
 		ISMVocabulary.setDDMSVersion(getCurrentVersion());
 		return (getCurrentVersion());
 	}
-	
+
 	/**
-	 * Treats version 3.0.1 of DDMS as an alias for DDMS 3.0, and treats version 4.0.1 as an alias for DDMS 4.1. 
+	 * Treats version 3.0.1 of DDMS as an alias for DDMS 3.0, and treats version 4.0.1 as an alias for DDMS 4.1.
 	 * 3.0.1 is syntactically identical, and has the same namespaces and schemas. 4.0.1 shares the same
 	 * XML namespace as 4.1.
 	 * 
@@ -248,35 +248,35 @@ public class DDMSVersion {
 			return ("4.1");
 		return (version);
 	}
-	
+
 	/**
 	 * Accessor for the current version. If not set, returns the default from the properties file.
 	 */
 	public static DDMSVersion getCurrentVersion() {
 		return (_currentVersion);
 	}
-	
+
 	/**
 	 * Resets the current version to the default value.
 	 */
 	public static void clearCurrentVersion() {
 		setCurrentVersion(PropertyReader.getProperty("ddms.defaultVersion"));
 	}
-	
+
 	/**
 	 * @see Object#toString()
 	 */
 	public String toString() {
 		return (getVersion());
 	}
-	
+
 	/**
 	 * Accessor for the version number
 	 */
 	public String getVersion() {
 		return _version;
 	}
-	
+
 	/**
 	 * Accessor for the DDMS namespace
 	 */
@@ -290,7 +290,7 @@ public class DDMSVersion {
 	public String getSchema() {
 		return _schema;
 	}
-	
+
 	/**
 	 * Accessor for the gml namespace
 	 */
@@ -304,35 +304,35 @@ public class DDMSVersion {
 	public String getGmlSchema() {
 		return _gmlSchema;
 	}
-	
+
 	/**
 	 * Accessor for the ISM CVE location
 	 */
 	public String getIsmCveLocation() {
 		return _ismCveLocation;
 	}
-	
+
 	/**
 	 * Accessor for the ISM namespace
 	 */
 	public String getIsmNamespace() {
 		return _ismNamespace;
 	}
-	
+
 	/**
 	 * Accessor for the NTK namespace
 	 */
 	public String getNtkNamespace() {
 		return _ntkNamespace;
 	}
-	
+
 	/**
 	 * Accessor for the NTK schema location
 	 */
 	public String getNtkSchema() {
 		return _ntkSchema;
 	}
-	
+
 	/**
 	 * Accessor for the xlink namespace
 	 */

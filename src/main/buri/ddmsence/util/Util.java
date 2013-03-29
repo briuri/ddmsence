@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.util;
 
 import java.io.File;
@@ -59,18 +59,18 @@ import buri.ddmsence.ddms.security.ntk.Access;
 import buri.ddmsence.ddms.summary.gml.Point;
 import buri.ddmsence.ddms.summary.gml.Polygon;
 
-/** 
+/**
  * A collection of static utility methods.
- *
+ * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public class Util {
-	
+
 	private static XSLTransform _schematronIncludeTransform;
 	private static XSLTransform _schematronAbstractTransform;
 	private static Map<String, XSLTransform> _schematronSvrlTransforms = new HashMap<String, XSLTransform>();
-		
+
 	private static final String PROP_TRANSFORM_FACTORY = "javax.xml.transform.TransformerFactory";
 	private static final LinkedHashMap<String, String> XML_SPECIAL_CHARS = new LinkedHashMap<String, String>();
 	static {
@@ -82,7 +82,7 @@ public class Util {
 	}
 
 	private static final String DDMS_DATE_HOUR_MIN_PATTERN = "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}(Z|[\\-\\+][0-9]{2}:[0-9]{2})?";
-	
+
 	private static Set<QName> DATE_DATATYPES = new HashSet<QName>();
 	static {
 		DATE_DATATYPES.add(DatatypeConstants.DATE);
@@ -90,7 +90,7 @@ public class Util {
 		DATE_DATATYPES.add(DatatypeConstants.GYEARMONTH);
 		DATE_DATATYPES.add(DatatypeConstants.GYEAR);
 	}
-		
+
 	private static DatatypeFactory _factory;
 	static {
 		try {
@@ -100,19 +100,19 @@ public class Util {
 			throw new RuntimeException("Could not load DatatypeFactory for date conversion.", e);
 		}
 	}
-	
+
 	/**
 	 * Private to prevent instantiation.
 	 */
 	private Util() {}
-		
+
 	/**
 	 * Accesor for the datatype factory
 	 */
 	public static DatatypeFactory getDataTypeFactory() {
 		return (_factory);
 	}
-	
+
 	/**
 	 * Returns an empty string in place of a null one.
 	 * 
@@ -122,7 +122,7 @@ public class Util {
 	public static String getNonNullString(String string) {
 		return (string == null ? "" : string);
 	}
-	
+
 	/**
 	 * Helper method to convert an xs:NMTOKENS data type into a List of Strings.
 	 * 
@@ -142,10 +142,10 @@ public class Util {
 		for (int i = 0; i < tokens.length; i++) {
 			if (!isEmpty(tokens[i]))
 				list.add(tokens[i]);
-		}		
+		}
 		return (list);
 	}
-	
+
 	/**
 	 * Converts a list of objects into a space-delimited xs:list, using the object's toString() implementation
 	 * 
@@ -161,17 +161,17 @@ public class Util {
 		}
 		return (buffer.toString().trim());
 	}
-	
+
 	/**
 	 * Returns an int value for a boolean, for use in a hashCode function.
 	 * 
-	 * @param b	the boolean
+	 * @param b the boolean
 	 * @return 1 for true and 0 for false
 	 */
 	public static int booleanHashCode(boolean b) {
 		return (b ? 1 : 0);
 	}
-	
+
 	/**
 	 * Checks if a String value is empty. An empty string is defined as one that is null, contains only whitespace, or
 	 * has length 0.
@@ -182,7 +182,7 @@ public class Util {
 	public static boolean isEmpty(String value) {
 		return (value == null || value.trim().length() == 0);
 	}
-	
+
 	/**
 	 * Checks if all of the entries in a list of Strings is empty or null.
 	 * 
@@ -201,74 +201,74 @@ public class Util {
 		return (false);
 	}
 
-    /**
-     * Gets the child text of the first child element matching the name in the DDMS namespace.
-     * 
-     * @param parent the parent element
-     * @param name the name of the child element
-     * @return the child text of the first discovered child element
-     */
-    public static String getFirstDDMSChildValue(Element parent, String name) {
-    	Util.requireValue("parent element", parent);
-    	Util.requireValue("child name", name);
-    	if (!DDMSVersion.isSupportedDDMSNamespace(parent.getNamespaceURI()))
-    		throw new IllegalArgumentException("This method should only be called on an element in the DDMS namespace.");
-    	Element child = parent.getFirstChildElement(name, parent.getNamespaceURI());
-    	return (child == null ? "" : child.getValue());
-    }
-    
-    /**
-     * Gets the child text of any child elements in the DDMS namespace and returns them as a list.
-     * 
-     * @param parent the parent element
-     * @param name the name of the child element
-     * @return a List of strings, where each string is child text of matching elements
-     */
-    public static List<String> getDDMSChildValues(Element parent, String name) {
-    	Util.requireValue("parent element", parent);
-    	Util.requireValue("child name", name);
-    	if (!DDMSVersion.isSupportedDDMSNamespace(parent.getNamespaceURI()))
-    		throw new IllegalArgumentException("This method should only be called on an element in the DDMS namespace.");
-     	List<String> childTexts = new ArrayList<String>();
+	/**
+	 * Gets the child text of the first child element matching the name in the DDMS namespace.
+	 * 
+	 * @param parent the parent element
+	 * @param name the name of the child element
+	 * @return the child text of the first discovered child element
+	 */
+	public static String getFirstDDMSChildValue(Element parent, String name) {
+		Util.requireValue("parent element", parent);
+		Util.requireValue("child name", name);
+		if (!DDMSVersion.isSupportedDDMSNamespace(parent.getNamespaceURI()))
+			throw new IllegalArgumentException("This method should only be called on an element in the DDMS namespace.");
+		Element child = parent.getFirstChildElement(name, parent.getNamespaceURI());
+		return (child == null ? "" : child.getValue());
+	}
+
+	/**
+	 * Gets the child text of any child elements in the DDMS namespace and returns them as a list.
+	 * 
+	 * @param parent the parent element
+	 * @param name the name of the child element
+	 * @return a List of strings, where each string is child text of matching elements
+	 */
+	public static List<String> getDDMSChildValues(Element parent, String name) {
+		Util.requireValue("parent element", parent);
+		Util.requireValue("child name", name);
+		if (!DDMSVersion.isSupportedDDMSNamespace(parent.getNamespaceURI()))
+			throw new IllegalArgumentException("This method should only be called on an element in the DDMS namespace.");
+		List<String> childTexts = new ArrayList<String>();
 		Elements childElements = parent.getChildElements(name, parent.getNamespaceURI());
 		for (int i = 0; i < childElements.size(); i++) {
 			childTexts.add(childElements.get(i).getValue());
 		}
 		return (childTexts);
-    }
-    
+	}
+
 	/**
 	 * Asserts that a value required for DDMS is not null or empty.
 	 * 
-	 * @param description	a descriptive name of the value
-	 * @param value			the value to check
+	 * @param description a descriptive name of the value
+	 * @param value the value to check
 	 * @throws InvalidDDMSException if the value is null or empty
 	 */
 	public static void requireDDMSValue(String description, Object value) throws InvalidDDMSException {
 		if (value == null || (value instanceof String && isEmpty((String) value)))
 			throw new InvalidDDMSException(description + " is required.");
 	}
-	
+
 	/**
 	 * Asserts that a date format is one of the 5 types accepted by DDMS.
 	 * 
 	 * @param date the date in its raw XML format
-	 * @param ddmsNamespace the DDMS namespace of this date (DDM 4.0.1 and earlier only support 4 types). 
+	 * @param ddmsNamespace the DDMS namespace of this date (DDM 4.0.1 and earlier only support 4 types).
 	 * @throws InvalidDDMSException if the value is invalid. Does nothing if value is null.
 	 */
 	public static void requireDDMSDateFormat(String date, String ddmsNamespace) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getVersionForNamespace(ddmsNamespace);
-		
+
 		if (version.isAtLeast("4.1") && Pattern.matches(DDMS_DATE_HOUR_MIN_PATTERN, date))
 			return;
-		
+
 		boolean isXsdType = false;
 		try {
 			XMLGregorianCalendar calendar = getDataTypeFactory().newXMLGregorianCalendar(date);
 			isXsdType = DATE_DATATYPES.contains(calendar.getXMLSchemaType());
 		}
 		catch (IllegalArgumentException e) {
-			// Fall-through 
+			// Fall-through
 		}
 		if (!isXsdType) {
 			String message = "The date datatype must be one of " + DATE_DATATYPES;
@@ -277,9 +277,9 @@ public class Util {
 			throw new InvalidDDMSException(message);
 		}
 	}
-	
+
 	/**
-	 * Asserts that the qualified name of an element matches the expected name and a supported version of the 
+	 * Asserts that the qualified name of an element matches the expected name and a supported version of the
 	 * DDMS XML namespace
 	 * 
 	 * @param element the element to check
@@ -295,7 +295,7 @@ public class Util {
 				+ element.getQualifiedName());
 		}
 	}
-	
+
 	/**
 	 * Asserts that the qualified name of an element matches the expected name and namespace URI
 	 * 
@@ -314,26 +314,26 @@ public class Util {
 				+ element.getQualifiedName());
 		}
 	}
-		
+
 	/**
 	 * Asserts that a value required, for general cases.
 	 * 
-	 * @param description	a descriptive name of the value
-	 * @param value			the value to check
+	 * @param description a descriptive name of the value
+	 * @param value the value to check
 	 * @throws IllegalArgumentException if the value is null or empty
 	 */
 	public static void requireValue(String description, Object value) {
 		if (value == null || (value instanceof String && isEmpty((String) value)))
 			throw new IllegalArgumentException(description + " is required.");
 	}
-	
+
 	/**
 	 * Checks that the number of child elements with the given name in the same namespace as the parent are bounded.
 	 * 
-	 * @param parent		the parent element
-	 * @param childName		the local name of the child
-	 * @param lowBound		the lowest value the number can be
-	 * @param highBound		the highest value the number can be
+	 * @param parent the parent element
+	 * @param childName the local name of the child
+	 * @param lowBound the lowest value the number can be
+	 * @param highBound the highest value the number can be
 	 * @throws InvalidDDMSException if the number is out of bounds
 	 */
 	public static void requireBoundedChildCount(Element parent, String childName, int lowBound, int highBound)
@@ -348,19 +348,21 @@ public class Util {
 				if (highBound != 1)
 					error.append("s");
 				error.append(" must exist.");
-			} else if (lowBound == 0) {
+			}
+			else if (lowBound == 0) {
 				error.append("No more than ").append(highBound).append(" ").append(childName).append(" element");
 				if (highBound != 1)
 					error.append("s");
 				error.append(" can exist.");
-			} else {
-				error.append("The number of ").append(childName).append(" elements must be between ").append(lowBound)
-					.append(" and ").append(highBound).append(".");
+			}
+			else {
+				error.append("The number of ").append(childName).append(" elements must be between ").append(lowBound).append(
+					" and ").append(highBound).append(".");
 			}
 			throw new InvalidDDMSException(error.toString());
 		}
 	}
-	
+
 	/**
 	 * Validates that a list of strings contains NCNames. This method uses the built-in Verifier in XOM by attempting to
 	 * create a new Element with the test string as a local name (Local names must be NCNames).
@@ -375,15 +377,16 @@ public class Util {
 			requireValidNCName(name);
 		}
 	}
-	
+
 	/**
 	 * Validates that a child component has a compatible DDMS version as the parent.
 	 * 
 	 * @param parent the parent component
 	 * @param child the child component
-	 * @throws InvalidDDMSException if 
+	 * @throws InvalidDDMSException if
 	 */
-	public static void requireCompatibleVersion(IDDMSComponent parent, IDDMSComponent child) throws InvalidDDMSException {
+	public static void requireCompatibleVersion(IDDMSComponent parent, IDDMSComponent child)
+		throws InvalidDDMSException {
 		Util.requireValue("parent", parent);
 		Util.requireValue("child", child);
 		// Cover acceptable case where parent (e.g. BoundingGeometry) has different XML namespace than child.
@@ -403,7 +406,7 @@ public class Util {
 				+ ", is using a different version of DDMS from its parent.");
 		}
 	}
-	
+
 	/**
 	 * Validates that a string is an NCName. This method relies on Saxon's library
 	 * methods.
@@ -415,7 +418,7 @@ public class Util {
 		if (!(new Name10Checker().isValidNCName(getNonNullString(name))))
 			throw new InvalidDDMSException("\"" + name + "\" is not a valid NCName.");
 	}
-	
+
 	/**
 	 * Validates that a string is an NMTOKEN. This method relies on Saxon's library
 	 * methods.
@@ -427,11 +430,11 @@ public class Util {
 		if (!(new Name10Checker().isValidNmtoken(getNonNullString(name))))
 			throw new InvalidDDMSException("\"" + name + "\" is not a valid NMTOKEN.");
 	}
-	
+
 	/**
 	 * Checks that a string is a valid URI.
 	 * 
-	 * @param uri	the string to test
+	 * @param uri the string to test
 	 * @throws InvalidDDMSException if the string cannot be built into a URI
 	 */
 	public static void requireDDMSValidURI(String uri) throws InvalidDDMSException {
@@ -443,7 +446,7 @@ public class Util {
 			throw new InvalidDDMSException(e);
 		}
 	}
-		
+
 	/**
 	 * Validates a longitude value
 	 * 
@@ -454,7 +457,7 @@ public class Util {
 		if (value == null || (new Double(-180)).compareTo(value) > 0 || (new Double(180)).compareTo(value) < 0)
 			throw new InvalidDDMSException("A longitude value must be between -180 and 180 degrees: " + value);
 	}
-	
+
 	/**
 	 * Validates a latitude value
 	 * 
@@ -465,11 +468,11 @@ public class Util {
 		if (value == null || (new Double(-90)).compareTo(value) > 0 || (new Double(90)).compareTo(value) < 0)
 			throw new InvalidDDMSException("A latitude value must be between -90 and 90 degrees: " + value);
 	}
-	
+
 	/**
 	 * Checks that a number is between two values, inclusive
 	 * 
-	 * @param testCount	the number to evaluate
+	 * @param testCount the number to evaluate
 	 * @param lowBound the lowest value the number can be
 	 * @param highBound the highest value the number can be
 	 * @return true if the number is bounded, false otherwise
@@ -480,7 +483,7 @@ public class Util {
 			throw new IllegalArgumentException("Invalid number range: " + lowBound + " to " + highBound);
 		return (testCount >= lowBound && testCount <= highBound);
 	}
-	
+
 	/**
 	 * Checks if two lists of Objects are identical. Returns true if the lists are the same length and each indexed
 	 * string also exists at the same index in the other list.
@@ -505,7 +508,7 @@ public class Util {
 		}
 		return (true);
 	}
-	
+
 	/**
 	 * Checks object equality when the objects could possible be null.
 	 * 
@@ -516,9 +519,9 @@ public class Util {
 	public static boolean nullEquals(Object obj1, Object obj2) {
 		return (obj1 == null ? obj2 == null : obj1.equals(obj2));
 	}
-	
+
 	/**
-	 * Replaces XML special characters - '&', '<', '>', '\'', '"' 
+	 * Replaces XML special characters - '&', '<', '>', '\'', '"'
 	 * 
 	 * @param input the string to escape.
 	 * @return escaped String
@@ -532,11 +535,11 @@ public class Util {
 		}
 		return input;
 	}
-	
+
 	/**
 	 * Capitalizes the first letter of a String. Silently does nothing if the string is null, empty, or not a letter.
 	 * 
-	 * @param string	the string to capitalize
+	 * @param string the string to capitalize
 	 * @return the capitalized string
 	 */
 	public static String capitalize(String string) {
@@ -545,8 +548,8 @@ public class Util {
 		if (string.length() == 1)
 			return (string.toUpperCase());
 		return (string.substring(0, 1).toUpperCase() + string.substring(1, string.length()));
-	}	
-	
+	}
+
 	/**
 	 * Helper method to add a ddms attribute to an element. Will not add the attribute if the value
 	 * is empty or null. This method uses the DDMS namespace defined with DDMSVersion.getCurrentVersion().
@@ -556,10 +559,10 @@ public class Util {
 	 * @param attributeValue the value of the attribute
 	 */
 	public static void addDDMSAttribute(Element element, String attributeName, String attributeValue) {
-		addAttribute(element, PropertyReader.getPrefix("ddms"), attributeName, 
+		addAttribute(element, PropertyReader.getPrefix("ddms"), attributeName,
 			DDMSVersion.getCurrentVersion().getNamespace(), attributeValue);
 	}
-	
+
 	/**
 	 * Helper method to add an attribute to an element. Will not add the attribute if the value
 	 * is empty or null.
@@ -570,12 +573,12 @@ public class Util {
 	 * @param namespaceURI the namespace this attribute is in
 	 * @param attributeValue the value of the attribute
 	 */
-	public static void addAttribute(Element element, String prefix, String attributeName, String namespaceURI, 
+	public static void addAttribute(Element element, String prefix, String attributeName, String namespaceURI,
 		String attributeValue) {
 		if (!Util.isEmpty(attributeValue))
 			element.addAttribute(Util.buildAttribute(prefix, attributeName, namespaceURI, attributeValue));
 	}
-	
+
 	/**
 	 * Helper method to add a ddms child element to an element. Will not add if the value
 	 * is empty or null.
@@ -588,21 +591,21 @@ public class Util {
 		if (!Util.isEmpty(childValue))
 			element.appendChild(Util.buildDDMSElement(childName, childValue));
 	}
-	
+
 	/**
-	 * Convenience method to create an element in the default DDMS namespace with some child text. 
+	 * Convenience method to create an element in the default DDMS namespace with some child text.
 	 * The resultant element will use the DDMS prefix and have no attributes or children (yet).
 	 * 
 	 * @param name the local name of the element
 	 * @param childText the text of the element (optional)
 	 */
 	public static Element buildDDMSElement(String name, String childText) {
-		return (buildElement(PropertyReader.getPrefix("ddms"), name, 
-			DDMSVersion.getCurrentVersion().getNamespace(), childText));
+		return (buildElement(PropertyReader.getPrefix("ddms"), name, DDMSVersion.getCurrentVersion().getNamespace(),
+			childText));
 	}
-	
+
 	/**
-	 * Convenience method to create an element in a namespace with some child text. 
+	 * Convenience method to create an element in a namespace with some child text.
 	 * The resultant element will use a custom prefix and have no attributes or children (yet).
 	 * 
 	 * @param prefix the prefix to use (without a trailing colon)
@@ -618,7 +621,7 @@ public class Util {
 			element.appendChild(childText);
 		return (element);
 	}
-	
+
 	/**
 	 * Convenience method to create an attribute in the default DDMS namespace. The resultant attribute will use the
 	 * DDMS prefix and have the provided value.
@@ -627,12 +630,12 @@ public class Util {
 	 * @param value the value of the attribute
 	 */
 	public static Attribute buildDDMSAttribute(String name, String value) {
-		return (buildAttribute(PropertyReader.getPrefix("ddms"), name, 
-			DDMSVersion.getCurrentVersion().getNamespace(), value));
-	} 
-	
+		return (buildAttribute(PropertyReader.getPrefix("ddms"), name, DDMSVersion.getCurrentVersion().getNamespace(),
+			value));
+	}
+
 	/**
-	 * Convenience method to create an attribute in a namespace. 
+	 * Convenience method to create an attribute in a namespace.
 	 * 
 	 * @param prefix the prefix to use (without a trailing colon)
 	 * @param name the local name of the attribute
@@ -646,7 +649,7 @@ public class Util {
 		if (namespaceURI == null)
 			namespaceURI = "";
 		return (new Attribute(prefix + name, namespaceURI, value));
-	}   
+	}
 
 	/**
 	 * Loads a XOM object tree from an input stream. This method does no schema validation.
@@ -664,7 +667,7 @@ public class Util {
 			throw new IOException(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Locates the queryBinding attribute in an ISO Schematron file and returns it.
 	 * 
@@ -676,7 +679,7 @@ public class Util {
 		Attribute attr = schDocument.getRootElement().getAttribute("queryBinding");
 		return (attr == null ? "xslt" : attr.getValue());
 	}
-	
+
 	/**
 	 * Takes a Schematron file and transforms it with the ISO Schematron skeleton files.
 	 * 
@@ -700,30 +703,30 @@ public class Util {
 		if (Util.isEmpty(oldFactory) || !newFactory.equals(oldFactory)) {
 			clearTransformCaches();
 			System.setProperty(PROP_TRANSFORM_FACTORY, newFactory);
-		}		
+		}
 		Document schDocument = Util.buildXmlDocument(new FileInputStream(schematronFile));
 		String queryBinding = getSchematronQueryBinding(schDocument);
 
-//		long time = new Date().getTime();
+		// long time = new Date().getTime();
 		XSLTransform phase1 = getSchematronIncludeTransform();
-//		System.out.println((new Date().getTime() - time) + "ms (Include)");
+		// System.out.println((new Date().getTime() - time) + "ms (Include)");
 
-//		time = new Date().getTime();
+		// time = new Date().getTime();
 		XSLTransform phase2 = getSchematronAbstractTransform();
-//		System.out.println((new Date().getTime() - time) + "ms (Abstract)");
-		
-//		time = new Date().getTime();
+		// System.out.println((new Date().getTime() - time) + "ms (Abstract)");
+
+		// time = new Date().getTime();
 		XSLTransform phase3 = getSchematronSvrlTransform(queryBinding);
-//		System.out.println((new Date().getTime() - time) + "ms (SVRL)");
-		
-//		time = new Date().getTime();
+		// System.out.println((new Date().getTime() - time) + "ms (SVRL)");
+
+		// time = new Date().getTime();
 		Nodes nodes = phase3.transform(phase2.transform(phase1.transform(schDocument)));
-//		System.out.println((new Date().getTime() - time) + "ms (Base transformation 1, 2, 3)");
-		
-//		time = new Date().getTime();
+		// System.out.println((new Date().getTime() - time) + "ms (Base transformation 1, 2, 3)");
+
+		// time = new Date().getTime();
 		XSLTransform finalTransform = new XSLTransform(XSLTransform.toDocument(nodes));
-//		System.out.println((new Date().getTime() - time) + "ms (Schematron Validation)");
-		
+		// System.out.println((new Date().getTime() - time) + "ms (Schematron Validation)");
+
 		return (finalTransform);
 	}
 
@@ -735,7 +738,7 @@ public class Util {
 		_schematronAbstractTransform = null;
 		_schematronSvrlTransforms.clear();
 	}
-	
+
 	/**
 	 * Lazy instantiation / cached accessor for the first step of Schematron validation.
 	 * 
@@ -761,7 +764,7 @@ public class Util {
 		}
 		return (_schematronAbstractTransform);
 	}
-	
+
 	/**
 	 * Lazy instantiation / cached accessor for the third step of Schematron validation, using XSLT1 or XSLT2
 	 * 
@@ -796,7 +799,7 @@ public class Util {
 		}
 		return (_schematronSvrlTransforms.get(resourceName));
 	}
-	
+
 	/**
 	 * Generate a ClassLoader to be used to load resources
 	 * 
@@ -811,5 +814,5 @@ public class Util {
 	 */
 	private static class FindClassLoader {
 		public FindClassLoader() {}
-	} 
+	}
 }

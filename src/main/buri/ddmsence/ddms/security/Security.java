@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.security;
 
 import java.io.Serializable;
@@ -38,9 +38,9 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:security.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:noticeList</u>: A collection of IC notices (optional, starting in DDMS 4.0.1), implemented as a 
+ * <u>ddms:noticeList</u>: A collection of IC notices (optional, starting in DDMS 4.0.1), implemented as a
  * {@link NoticeList}<br />
- * <u>ntk:Access</u>: Need-To-Know access information (optional, starting in DDMS 4.0.1), implemented as an 
+ * <u>ntk:Access</u>: Need-To-Know access information (optional, starting in DDMS 4.0.1), implemented as an
  * {@link Access}<br />
  * </td></tr></table>
  * 
@@ -57,9 +57,9 @@ public final class Security extends AbstractBaseComponent {
 	private NoticeList _noticeList = null;
 	private Access _access = null;
 	private SecurityAttributes _securityAttributes = null;
-	
+
 	private static final String FIXED_ROLLUP = "true";
-	
+
 	/** Attribute name */
 	public static final String EXCLUDE_FROM_ROLLUP_NAME = "excludeFromRollup";
 
@@ -77,8 +77,8 @@ public final class Security extends AbstractBaseComponent {
 			if (noticeListElement != null)
 				_noticeList = new NoticeList(noticeListElement);
 
-			Element accessElement = element.getFirstChildElement(Access.getName(getDDMSVersion()), getDDMSVersion()
-				.getNtkNamespace());
+			Element accessElement = element.getFirstChildElement(Access.getName(getDDMSVersion()),
+				getDDMSVersion().getNtkNamespace());
 			if (accessElement != null)
 				_access = new Access(accessElement);
 			_securityAttributes = new SecurityAttributes(element);
@@ -89,10 +89,10 @@ public final class Security extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param noticeList notice list (optional)
 	 * @param access NTK access information (optional)
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
@@ -109,8 +109,8 @@ public final class Security extends AbstractBaseComponent {
 			if (access != null)
 				element.appendChild(access.getXOMElementCopy());
 			if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
-				Util.addAttribute(element, PropertyReader.getPrefix("ism"), EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion
-					.getCurrentVersion().getIsmNamespace(), FIXED_ROLLUP);
+				Util.addAttribute(element, PropertyReader.getPrefix("ism"), EXCLUDE_FROM_ROLLUP_NAME,
+					DDMSVersion.getCurrentVersion().getIsmNamespace(), FIXED_ROLLUP);
 			_noticeList = noticeList;
 			_access = access;
 			_securityAttributes = securityAttributes;
@@ -141,7 +141,7 @@ public final class Security extends AbstractBaseComponent {
 		Util.requireDDMSQName(getXOMElement(), Security.getName(getDDMSVersion()));
 		Util.requireBoundedChildCount(getXOMElement(), NoticeList.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), Access.getName(getDDMSVersion()), 0, 1);
-		
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (getDDMSVersion().isAtLeast("3.0")) {
 			if (getExcludeFromRollup() == null)
@@ -166,7 +166,8 @@ public final class Security extends AbstractBaseComponent {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		if (getExcludeFromRollup() != null)
-			text.append(buildOutput(isHTML, localPrefix + EXCLUDE_FROM_ROLLUP_NAME, String.valueOf(getExcludeFromRollup())));
+			text.append(buildOutput(isHTML, localPrefix + EXCLUDE_FROM_ROLLUP_NAME,
+				String.valueOf(getExcludeFromRollup())));
 		if (getNoticeList() != null)
 			text.append(getNoticeList().getOutput(isHTML, localPrefix, ""));
 		if (getAccess() != null)
@@ -174,7 +175,7 @@ public final class Security extends AbstractBaseComponent {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
@@ -184,7 +185,7 @@ public final class Security extends AbstractBaseComponent {
 		list.add(getAccess());
 		return (list);
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -194,7 +195,7 @@ public final class Security extends AbstractBaseComponent {
 		return (true);
 		// ExcludeFromRollup is not included in equality or hashCode, because it is fixed at TRUE.
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -205,7 +206,7 @@ public final class Security extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("security");
 	}
-	
+
 	/**
 	 * Accessor for the excludeFromRollup attribute. This may be null for DDMS 2.0 components.
 	 */
@@ -217,28 +218,28 @@ public final class Security extends AbstractBaseComponent {
 			return (Boolean.FALSE);
 		return (null);
 	}
-	
+
 	/**
 	 * Accessor for the NoticeList. May be null.
 	 */
 	public NoticeList getNoticeList() {
 		return (_noticeList);
 	}
-	
+
 	/**
 	 * Accessor for the Access. May be null.
 	 */
 	public Access getAccess() {
 		return (_access);
 	}
-	
+
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_securityAttributes);
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -251,12 +252,12 @@ public final class Security extends AbstractBaseComponent {
 		private NoticeList.Builder _noticeList;
 		private Access.Builder _access;
 		private SecurityAttributes.Builder _securityAttributes;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -267,7 +268,7 @@ public final class Security extends AbstractBaseComponent {
 				setAccess(new Access.Builder(security.getAccess()));
 			setSecurityAttributes(new SecurityAttributes.Builder(security.getSecurityAttributes()));
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -298,7 +299,7 @@ public final class Security extends AbstractBaseComponent {
 		public void setNoticeList(NoticeList.Builder noticeList) {
 			_noticeList = noticeList;
 		}
-		
+
 		/**
 		 * Builder accessor for the access
 		 */
@@ -314,7 +315,7 @@ public final class Security extends AbstractBaseComponent {
 		public void setAccess(Access.Builder access) {
 			_access = access;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
@@ -323,7 +324,7 @@ public final class Security extends AbstractBaseComponent {
 				_securityAttributes = new SecurityAttributes.Builder();
 			return _securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
@@ -331,4 +332,4 @@ public final class Security extends AbstractBaseComponent {
 			_securityAttributes = securityAttributes;
 		}
 	}
-} 
+}

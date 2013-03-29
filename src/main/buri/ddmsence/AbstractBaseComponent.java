@@ -52,8 +52,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	/**
 	 * Empty constructor
 	 */
-	protected AbstractBaseComponent() throws InvalidDDMSException {
-	}
+	protected AbstractBaseComponent() throws InvalidDDMSException {}
 
 	/**
 	 * Base constructor
@@ -156,7 +155,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	}
 
 	/**
-	 * Adds a warning about a component which is used in a valid manner, but may cause issuse with systems that only
+	 * Adds a warning about a component which is used in a valid manner, but may cause issues with systems that only
 	 * process an earlier DDMS version with the same namespace.
 	 * 
 	 * <p>DDMS 4.0 and 4.1 share the same XML namespace, so it is impossible to tell which DDMS version is employed from
@@ -166,8 +165,9 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @param component a text description of the component that is being warned about
 	 */
 	protected void addDdms40Warning(String component) {
-		addWarning("The " + component + " in this DDMS component was introduced in DDMS 4.1, and will prevent this XML instance" +
-				"from being understood by DDMS 4.0.1 systems.");
+		addWarning("The " + component
+			+ " in this DDMS component was introduced in DDMS 4.1, and will prevent this XML instance"
+			+ "from being understood by DDMS 4.0.1 systems.");
 	}
 
 	/**
@@ -236,9 +236,10 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 		StringBuffer values = new StringBuffer();
 		for (int i = 0; i < contents.size(); i++) {
 			Object object = contents.get(i);
-			if (object instanceof AbstractBaseComponent)
-				values.append(((AbstractBaseComponent) object)
-					.getOutput(isHTML, prefix, buildIndex(i, contents.size())));
+			if (object instanceof AbstractBaseComponent) {
+				AbstractBaseComponent component = (AbstractBaseComponent) object;
+				values.append(component.getOutput(isHTML, prefix, buildIndex(i, contents.size())));
+			}
 			else if (object instanceof String)
 				values.append(buildOutput(isHTML, prefix + buildIndex(i, contents.size()), (String) object));
 			else
@@ -463,8 +464,8 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * 
 	 * @param warnings the list of validation messages to add
 	 * @param forAttributes if true, the locator suffix is not used, because the attributes will be for the topmost
-	 * element (for example, warnings for gml:Polygon's security attributes should not end up with a locator of
-	 * /gml:Polygon/gml:exterior/gml:LinearRing).
+	 *        element (for example, warnings for gml:Polygon's security attributes should not end up with a locator of
+	 *        /gml:Polygon/gml:exterior/gml:LinearRing).
 	 */
 	protected void addWarnings(List<ValidationMessage> warnings, boolean forAttributes) {
 		for (ValidationMessage warning : warnings) {

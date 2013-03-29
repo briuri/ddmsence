@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary;
 
 import nu.xom.Element;
@@ -33,7 +33,7 @@ import buri.ddmsence.util.Util;
  * <p>
  * The Text/HTML output of this class depends on the enclosing element of this country code. For example,
  * if the country code is used in a geographicIdentifier, the HTML meta tags will prefix each field
- * with "geospatialCoverage.GeospatialExtent.geographicIdentifier.". 
+ * with "geospatialCoverage.GeospatialExtent.geographicIdentifier.".
  * </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
@@ -57,29 +57,29 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class CountryCode extends AbstractQualifierValue {
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 * 
-	 * @param element the XOM element representing this 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public CountryCode(Element element) throws InvalidDDMSException {
 		super(element, !DDMSVersion.getVersionForNamespace(element.getNamespaceURI()).isAtLeast("5.0"));
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
-	 * @param qualifier	the value of the qualifier attribute
-	 * @param value	the value of the value attribute 
+	 * 
+	 * @param qualifier the value of the qualifier attribute
+	 * @param value the value of the value attribute
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public CountryCode(String qualifier, String value) throws InvalidDDMSException {
-		super(CountryCode.getName(DDMSVersion.getCurrentVersion()), qualifier, value, true, 
+		super(CountryCode.getName(DDMSVersion.getCurrentVersion()), qualifier, value, true,
 			!DDMSVersion.getCurrentVersion().isAtLeast("5.0"));
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
@@ -99,7 +99,7 @@ public final class CountryCode extends AbstractQualifierValue {
 		Util.requireDDMSValue(getValueName() + " attribute", getValue());
 		super.validate();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -110,7 +110,7 @@ public final class CountryCode extends AbstractQualifierValue {
 		text.append(buildOutput(isHTML, localPrefix + getValueName(), getValue()));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -119,7 +119,7 @@ public final class CountryCode extends AbstractQualifierValue {
 			return (false);
 		return (true);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -130,7 +130,7 @@ public final class CountryCode extends AbstractQualifierValue {
 		Util.requireValue("version", version);
 		return ("countryCode");
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -140,21 +140,21 @@ public final class CountryCode extends AbstractQualifierValue {
 	 */
 	public static class Builder extends AbstractQualifierValue.Builder {
 		private static final long serialVersionUID = 2136329013144660166L;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {
 			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(CountryCode code) {
 			super(code);
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -162,4 +162,4 @@ public final class CountryCode extends AbstractQualifierValue {
 			return (isEmpty() ? null : new CountryCode(getQualifier(), getValue()));
 		}
 	}
-} 
+}

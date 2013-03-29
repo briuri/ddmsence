@@ -32,21 +32,21 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:addressee.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:organization</u>: The organization who is the addressee (0-1, optional), implemented as an 
+ * <u>ddms:organization</u>: The organization who is the addressee (0-1, optional), implemented as an
  * {@link Organization}<br />
  * <u>ddms:person</u>: the person who is the addressee (0-1, optional), implemented as a {@link Person}<br />
  * Only one of the nested entities can appear in an addressee element.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public class Addressee extends AbstractTaskingRole {
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 * 
@@ -56,18 +56,17 @@ public class Addressee extends AbstractTaskingRole {
 	public Addressee(Element element) throws InvalidDDMSException {
 		super(element);
 	}
-	
+
 	/**
 	 * Constructor which builds from raw data.
 	 * 
 	 * @param entity the actual entity who is the addressee (required)
 	 * @param securityAttributes any security attributes (required)
 	 */
-	public Addressee(IRoleEntity entity, SecurityAttributes securityAttributes)
-		throws InvalidDDMSException {
+	public Addressee(IRoleEntity entity, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		super(Addressee.getName(DDMSVersion.getCurrentVersion()), entity, securityAttributes);
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
@@ -85,7 +84,7 @@ public class Addressee extends AbstractTaskingRole {
 		Util.requireBoundedChildCount(getXOMElement(), Person.getName(getDDMSVersion()), 0, 1);
 		super.validate();
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -93,8 +92,8 @@ public class Addressee extends AbstractTaskingRole {
 		if (!super.equals(obj) || !(obj instanceof Addressee))
 			return (false);
 		return (true);
-	}	
-	
+	}
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -105,7 +104,7 @@ public class Addressee extends AbstractTaskingRole {
 		Util.requireValue("version", version);
 		return ("addressee");
 	}
-		
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -115,21 +114,21 @@ public class Addressee extends AbstractTaskingRole {
 	 */
 	public static class Builder extends AbstractTaskingRole.Builder {
 		private static final long serialVersionUID = 4565840434345629470L;
-			
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {
 			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(Addressee info) {
-			super(info);		
+			super(info);
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */

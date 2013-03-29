@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import java.util.Collections;
@@ -65,11 +65,11 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class Service extends AbstractRoleEntity {
-	
+
 	private List<String> _affiliations = null;
-	
+
 	private static final String AFFILIATION_NAME = "affiliation";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 * 
@@ -84,8 +84,8 @@ public final class Service extends AbstractRoleEntity {
 	/**
 	 * Constructor for creating a component from raw data.
 	 * 
-	 * @deprecated A new constructor was added for DDMS 5.0 to support ddms:affiliation. This constructor is preserved for 
-	 * backwards compatibility, but may disappear in the next major release.
+	 * @deprecated A new constructor was added for DDMS 5.0 to support ddms:affiliation. This constructor is preserved
+	 *             for backwards compatibility, but may disappear in the next major release.
 	 * 
 	 * @param names an ordered list of names
 	 * @param phones an ordered list of phone numbers
@@ -95,7 +95,7 @@ public final class Service extends AbstractRoleEntity {
 		throws InvalidDDMSException {
 		this(names, phones, emails, null, null);
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data.
 	 * 
@@ -120,9 +120,9 @@ public final class Service extends AbstractRoleEntity {
 		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
-		}			
+		}
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
@@ -137,7 +137,7 @@ public final class Service extends AbstractRoleEntity {
 		Util.requireDDMSQName(getXOMElement(), Service.getName(getDDMSVersion()));
 		super.validate();
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -147,7 +147,7 @@ public final class Service extends AbstractRoleEntity {
 		text.append(buildOutput(isHTML, localPrefix + AFFILIATION_NAME, getAffiliations()));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -157,7 +157,7 @@ public final class Service extends AbstractRoleEntity {
 		Service test = (Service) obj;
 		return (Util.listEquals(getAffiliations(), test.getAffiliations()));
 	}
-	
+
 	/**
 	 * @see Object#hashCode()
 	 */
@@ -166,14 +166,14 @@ public final class Service extends AbstractRoleEntity {
 		result = 7 * result + getAffiliations().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Accessor for the affiliations of the person
 	 */
 	public List<String> getAffiliations() {
 		return (Collections.unmodifiableList(_affiliations));
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -184,7 +184,7 @@ public final class Service extends AbstractRoleEntity {
 		Util.requireValue("version", version);
 		return (version.isAtLeast("4.0.1") ? "service" : "Service");
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -195,14 +195,14 @@ public final class Service extends AbstractRoleEntity {
 	public static class Builder extends AbstractRoleEntity.Builder {
 		private static final long serialVersionUID = 7653534173085296283L;
 		private List<String> _affiliations;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {
 			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -210,7 +210,7 @@ public final class Service extends AbstractRoleEntity {
 			super(service);
 			setAffiliations(service.getAffiliations());
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -218,17 +218,16 @@ public final class Service extends AbstractRoleEntity {
 			return (isEmpty() ? null : new Service(getNames(), getPhones(), getEmails(), getAffiliations(),
 				getExtensibleAttributes().commit()));
 		}
-		
+
 		/**
 		 * Helper method to determine if any values have been entered for this Person.
 		 * 
 		 * @return true if all values are empty
 		 */
 		public boolean isEmpty() {
-			return (super.isEmpty()
-				&& Util.containsOnlyEmptyValues(getAffiliations()));
+			return (super.isEmpty() && Util.containsOnlyEmptyValues(getAffiliations()));
 		}
-		
+
 		/**
 		 * Builder accessor for the affiliations
 		 */
@@ -245,4 +244,4 @@ public final class Service extends AbstractRoleEntity {
 			_affiliations = new LazyList(affiliations, String.class);
 		}
 	}
-} 
+}

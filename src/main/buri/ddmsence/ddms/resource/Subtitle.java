@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
@@ -39,27 +39,27 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public final class Subtitle extends AbstractSimpleString {
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Subtitle(Element element) throws InvalidDDMSException {
 		super(element, true);
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param subtitle the value of the subtitle child text
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -83,7 +83,7 @@ public final class Subtitle extends AbstractSimpleString {
 		Util.requireDDMSQName(getXOMElement(), Subtitle.getName(getDDMSVersion()));
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -96,7 +96,7 @@ public final class Subtitle extends AbstractSimpleString {
 			addWarning("A ddms:subtitle element was found with no subtitle value.");
 		super.validateWarnings();
 	}
-		
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -107,7 +107,7 @@ public final class Subtitle extends AbstractSimpleString {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix + "."));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -116,7 +116,7 @@ public final class Subtitle extends AbstractSimpleString {
 			return (false);
 		return (true);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -127,7 +127,7 @@ public final class Subtitle extends AbstractSimpleString {
 		Util.requireValue("version", version);
 		return ("subtitle");
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -137,21 +137,21 @@ public final class Subtitle extends AbstractSimpleString {
 	 */
 	public static class Builder extends AbstractSimpleString.Builder {
 		private static final long serialVersionUID = -4292523556431396882L;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {
 			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(Subtitle subtitle) {
 			super(subtitle);
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -159,4 +159,4 @@ public final class Subtitle extends AbstractSimpleString {
 			return (isEmpty() ? null : new Subtitle(getValue(), getSecurityAttributes().commit()));
 		}
 	}
-} 
+}

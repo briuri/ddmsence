@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
@@ -39,27 +39,27 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public final class ApplicationSoftware extends AbstractSimpleString {
-		
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ApplicationSoftware(Element element) throws InvalidDDMSException {
 		super(element, true);
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param value the value of the child text
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -67,7 +67,7 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	public ApplicationSoftware(String value, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		super(ApplicationSoftware.getName(DDMSVersion.getCurrentVersion()), value, securityAttributes, true);
 	}
-		
+
 	/**
 	 * Validates the component.
 	 * 
@@ -82,12 +82,12 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), ApplicationSoftware.getName(getDDMSVersion()));
-		
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0.1");
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -100,7 +100,7 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 			addWarning("A ddms:applicationSoftware element was found with no value.");
 		super.validateWarnings();
 	}
-			
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -111,7 +111,7 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix + "."));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -120,7 +120,7 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 			return (false);
 		return (true);
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -131,7 +131,7 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 		Util.requireValue("version", version);
 		return ("applicationSoftware");
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -141,21 +141,21 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	 */
 	public static class Builder extends AbstractSimpleString.Builder {
 		private static final long serialVersionUID = -7348511606867959470L;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {
 			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(ApplicationSoftware software) {
 			super(software);
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
@@ -163,4 +163,4 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 			return (isEmpty() ? null : new ApplicationSoftware(getValue(), getSecurityAttributes().commit()));
 		}
 	}
-} 
+}

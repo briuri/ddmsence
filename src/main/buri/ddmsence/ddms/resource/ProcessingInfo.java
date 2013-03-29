@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import javax.xml.datatype.DatatypeFactory;
@@ -43,29 +43,29 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:dateProcessed</u>: date when this processing occurred (required)<br />
- * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public final class ProcessingInfo extends AbstractSimpleString {
-	
+
 	private static final String DATE_PROCESSED_NAME = "dateProcessed";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ProcessingInfo(Element element) throws InvalidDDMSException {
 		super(element, true);
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param value the value of the child text
 	 * @param dateProcessed the processing date (required)
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
@@ -83,7 +83,7 @@ public final class ProcessingInfo extends AbstractSimpleString {
 			throw (e);
 		}
 	}
-		
+
 	/**
 	 * Validates the component.
 	 * 
@@ -101,13 +101,13 @@ public final class ProcessingInfo extends AbstractSimpleString {
 		Util.requireDDMSQName(getXOMElement(), ProcessingInfo.getName(getDDMSVersion()));
 		Util.requireDDMSValue(DATE_PROCESSED_NAME, getDateProcessedString());
 		Util.requireDDMSDateFormat(getDateProcessedString(), getNamespace());
-		
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0.1");
-		
+
 		super.validate();
 	}
-	
+
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
@@ -121,7 +121,7 @@ public final class ProcessingInfo extends AbstractSimpleString {
 			addWarning("A ddms:processingInfo element was found with no value.");
 		super.validateWarnings();
 	}
-			
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
@@ -133,7 +133,7 @@ public final class ProcessingInfo extends AbstractSimpleString {
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix + "."));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -143,7 +143,7 @@ public final class ProcessingInfo extends AbstractSimpleString {
 		ProcessingInfo test = (ProcessingInfo) obj;
 		return (Util.nullEquals(getDateProcessedString(), test.getDateProcessedString()));
 	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -154,14 +154,14 @@ public final class ProcessingInfo extends AbstractSimpleString {
 		Util.requireValue("version", version);
 		return ("processingInfo");
 	}
-	
+
 	/**
 	 * Accessor for the processing date (required). Returns a copy.
 	 * 
 	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
-	 * XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
-	 * null for dates in the new format. Use <code>getDateProcessedString()</code> to
-	 * access the raw XML format of the date instead.
+	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
+	 *             null for dates in the new format. Use <code>getDateProcessedString()</code> to
+	 *             access the raw XML format of the date instead.
 	 */
 	public XMLGregorianCalendar getDateProcessed() {
 		try {
@@ -171,21 +171,21 @@ public final class ProcessingInfo extends AbstractSimpleString {
 			return (null);
 		}
 	}
-	
+
 	/**
 	 * Accessor for the processing date (required).
 	 */
 	public String getDateProcessedString() {
 		return (getAttributeValue(DATE_PROCESSED_NAME));
 	}
-	
+
 	/**
 	 * Accesor for the datatype factory
 	 */
 	private static DatatypeFactory getFactory() {
 		return (Util.getDataTypeFactory());
 	}
-	
+
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -196,14 +196,14 @@ public final class ProcessingInfo extends AbstractSimpleString {
 	public static class Builder extends AbstractSimpleString.Builder {
 		private static final long serialVersionUID = -7348511606867959470L;
 		private String _dateProcessed;
-		
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {
 			super();
 		}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -211,13 +211,13 @@ public final class ProcessingInfo extends AbstractSimpleString {
 			super(info);
 			setDateProcessed(info.getDateProcessedString());
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
 		public ProcessingInfo commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new ProcessingInfo(getValue(), getDateProcessed(), getSecurityAttributes()
-				.commit()));
+			return (isEmpty() ? null : new ProcessingInfo(getValue(), getDateProcessed(),
+				getSecurityAttributes().commit()));
 		}
 
 		/**
@@ -226,7 +226,7 @@ public final class ProcessingInfo extends AbstractSimpleString {
 		public boolean isEmpty() {
 			return (super.isEmpty() && Util.isEmpty(getDateProcessed()));
 		}
-		
+
 		/**
 		 * Builder accessor for the dateProcessed
 		 */
@@ -241,4 +241,4 @@ public final class ProcessingInfo extends AbstractSimpleString {
 			_dateProcessed = dateProcessed;
 		}
 	}
-} 
+}
