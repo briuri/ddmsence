@@ -231,7 +231,6 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			System.out.println("Running test in version " + version);
 			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				MetacardInfo.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());

@@ -435,11 +435,8 @@
          <xs:element ref="geospatialCoverage" minOccurs="0" maxOccurs="unbounded" />
          <xs:element ref="relatedResource" minOccurs="0" maxOccurs="unbounded" />
          <xs:element ref="resourceManagement" minOccurs="0" maxOccurs="1" />
-         <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" /> 
       </xs:sequence>
-      <xs:attributeGroup ref="RootSecurityAttributesGroup" />
-      <xs:attributeGroup ref="MetacardSecurityAttributesGroup" />
-      <xs:anyAttribute namespace="##other" processContents="lax" />
+      <xs:attribute name="compliesWith" type="xs:NMTOKENS"/>
    </xs:complexType>
    <xs:complexType name="RevisionRecallType" mixed="true">
       <xs:sequence minOccurs="0">
@@ -565,19 +562,12 @@
       <xs:attributeGroup ref="SecurityAttributesOptionGroup" />
    </xs:complexType>
    
-   <xs:attributeGroup name="MetacardSecurityAttributesGroup">
-      <xs:attributeGroup ref="ICISM:ResourceNodeAttributeGroup" />
-   </xs:attributeGroup>
    <xs:attributeGroup name="OptionalResourceLinkAttributesGroup">
       <xs:attributeGroup ref="common:OptionalResourceLinkAttributesGroup" />
    </xs:attributeGroup>
    <xs:attributeGroup name="POCAttributesGroup">
       <xs:attributeGroup ref="ICISM:POCAttributeGroup" /> 
       <xs:attributeGroup ref="SecurityAttributesOptionGroup" />
-   </xs:attributeGroup>
-   <xs:attributeGroup name="RootSecurityAttributesGroup">
-      <xs:attributeGroup ref="ICISM:ISMRootNodeAttributeGroup" />
-      <xs:attributeGroup ref="ntk:NTKRootNodeAttributeGroup" />
    </xs:attributeGroup>
    <xs:attributeGroup name="SecurityAttributesGroup">
       <xs:attributeGroup ref="ICISM:SecurityAttributesGroup" />

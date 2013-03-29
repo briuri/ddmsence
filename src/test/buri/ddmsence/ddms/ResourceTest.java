@@ -97,9 +97,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 	private List<IDDMSComponent> TEST_TOP_LEVEL_COMPONENTS;
 	private List<IDDMSComponent> TEST_NO_OPTIONAL_COMPONENTS;
 
-	private static final Boolean TEST_RESOURCE_ELEMENT = Boolean.TRUE;
-	private static final String TEST_CREATE_DATE = "2010-01-21";
-	private static final List<String> TEST_COMPLIES_WITH = Util.getXsListAsList("DoD5230.24");
+	private static final List<String> TEST_ISM_COMPLIES_WITH = Util.getXsListAsList("DoD5230.24");
 
 	/**
 	 * Constructor
@@ -108,6 +106,34 @@ public class ResourceTest extends AbstractBaseTestCase {
 		super("resource.xml");
 	}
 
+	/**
+	 * Returns a test resource element value for DDMSVersions that support it.
+	 */
+	private List<String> getDdmsCompliesWith() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? Util.getXsListAsList("DDMSRules") : null);
+	}
+	
+	/**
+	 * Returns a test resource element value for DDMSVersions that support it.
+	 */
+	private Boolean getResourceElement() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? null : Boolean.TRUE);
+	}
+	
+	/**
+	 * Returns a test resource element value for DDMSVersions that support it.
+	 */
+	private String getResourceElementString() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? "" : "true");
+	}
+	
+	/**
+	 * Returns a create date element value for DDMSVersions that support it.
+	 */
+	private String getCreateDate() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? null : "2010-01-21");
+	}
+	
 	/**
 	 * Regenerates all the components needed in a Resource
 	 */
@@ -178,15 +204,17 @@ public class ResourceTest extends AbstractBaseTestCase {
 		String ntkNamespace = version.getNtkNamespace();
 
 		Element element = Util.buildDDMSElement(Resource.getName(version), null);
-		Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace,
-			String.valueOf(TEST_RESOURCE_ELEMENT));
-		Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, TEST_CREATE_DATE);
-		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace,
-			String.valueOf(getIsmDESVersion()));
-		if (version.isAtLeast("4.0.1"))
-			Util.addAttribute(element, ntkPrefix, Resource.DES_VERSION_NAME, ntkNamespace,
-				String.valueOf(getNtkDESVersion()));
-		SecurityAttributesTest.getFixture().addTo(element);
+		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
+			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace,
+				getResourceElementString());
+			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, getCreateDate());
+			Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace,
+				String.valueOf(getIsmDESVersion()));
+			if (version.isAtLeast("4.0.1"))
+				Util.addAttribute(element, ntkPrefix, Resource.DES_VERSION_NAME, ntkNamespace,
+					String.valueOf(getNtkDESVersion()));
+			SecurityAttributesTest.getFixture().addTo(element);
+		}
 		return (element);
 	}
 
@@ -206,8 +234,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 
 		Element element = Util.buildDDMSElement(Resource.getName(version), null);
 		Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace,
-			String.valueOf(TEST_RESOURCE_ELEMENT));
-		Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, TEST_CREATE_DATE);
+			getResourceElementString());
+		Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, getCreateDate());
 		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace,
 			String.valueOf(getIsmDESVersion()));
 		SecurityAttributesTest.getFixture().addTo(element);
@@ -262,7 +290,9 @@ public class ResourceTest extends AbstractBaseTestCase {
 			return (Integer.valueOf(2));
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0.1"))
 			return (Integer.valueOf(5));
-		return (Integer.valueOf(9));
+		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
+			return (Integer.valueOf(9));
+		return (null);
 	}
 
 	/**
@@ -273,7 +303,9 @@ public class ResourceTest extends AbstractBaseTestCase {
 	private Integer getNtkDESVersion() {
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0.1"))
 			return (null);
-		return (Integer.valueOf(7));
+		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
+			return (Integer.valueOf(7));
+		return (null);
 	}
 
 	/**
@@ -317,7 +349,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		Resource component = null;
 		try {
 			NoticeAttributes notice = (!"4.1".equals(version.getVersion()) ? null : NoticeAttributesTest.getFixture());
-			SecurityAttributes attr = (!version.isAtLeast("3.0") ? null : SecurityAttributesTest.getFixture());
+			SecurityAttributes attr = (!version.isAtLeast("3.0") || version.isAtLeast("5.0") ? null : SecurityAttributesTest.getFixture());
 			component = new Resource(topLevelComponents, resourceElement, createDate, compliesWiths, ismDESVersion,
 				ntkDESVersion, attr, notice, null);
 			checkConstructorSuccess(expectFailure);
@@ -336,17 +368,22 @@ public class ResourceTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
 		String resourcePrefix = Resource.getName(version);
-		if (version.isAtLeast("3.0")) {
-			text.append(buildOutput(isHTML, resourcePrefix + ".resourceElement", "true"));
-			text.append(buildOutput(isHTML, resourcePrefix + ".createDate", "2010-01-21"));
+		if (version.isAtLeast("5.0")) {
+			text.append(buildOutput(isHTML, resourcePrefix + ".compliesWith", "DDMSRules"));
 		}
-		text.append(buildOutput(isHTML, resourcePrefix + ".ism.DESVersion", String.valueOf(getIsmDESVersion())));
-		if (version.isAtLeast("4.0.1")) {
-			text.append(buildOutput(isHTML, resourcePrefix + ".ntk.DESVersion", String.valueOf(getNtkDESVersion())));
-		}
-		if (version.isAtLeast("3.0")) {
-			text.append(buildOutput(isHTML, resourcePrefix + ".classification", "U"));
-			text.append(buildOutput(isHTML, resourcePrefix + ".ownerProducer", "USA"));
+		if (!version.isAtLeast("5.0")) {
+			if (version.isAtLeast("3.0")) {
+				text.append(buildOutput(isHTML, resourcePrefix + ".resourceElement", "true"));
+				text.append(buildOutput(isHTML, resourcePrefix + ".createDate", "2010-01-21"));
+			}
+			text.append(buildOutput(isHTML, resourcePrefix + ".ism.DESVersion", String.valueOf(getIsmDESVersion())));
+			if (version.isAtLeast("4.0.1")) {
+				text.append(buildOutput(isHTML, resourcePrefix + ".ntk.DESVersion", String.valueOf(getNtkDESVersion())));
+			}
+			if (version.isAtLeast("3.0")) {
+				text.append(buildOutput(isHTML, resourcePrefix + ".classification", "U"));
+				text.append(buildOutput(isHTML, resourcePrefix + ".ownerProducer", "USA"));
+			}
 		}
 		if ("4.1".equals(version.getVersion())) {
 			text.append(buildOutput(isHTML, resourcePrefix + ".noticeType", "DoD-Dist-B"));
@@ -466,21 +503,26 @@ public class ResourceTest extends AbstractBaseTestCase {
 		if (version.isAtLeast("4.0.1"))
 			xml.append(" ").append(getXmlnsNTK());
 		xml.append(" ").append(getXmlnsISM());
-		if (version.isAtLeast("4.0.1"))
-			xml.append(" ntk:DESVersion=\"").append(getNtkDESVersion()).append("\"");
-		if (version.isAtLeast("3.0"))
-			xml.append(" ISM:resourceElement=\"true\"");
-		// Adding DESVersion in DDMS 2.0 allows the namespace declaration to definitely be in the Resource element.
-		xml.append(" ISM:DESVersion=\"").append(getIsmDESVersion()).append("\"");
-		if (version.isAtLeast("3.0"))
-			xml.append(" ISM:createDate=\"2010-01-21\"");
-		if ("4.1".equals(version.getVersion())) {
-			xml.append(" ISM:noticeType=\"DoD-Dist-B\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
-			xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\"");
-			xml.append(" ISM:externalNotice=\"false\"");
+		if (version.isAtLeast("5.0")) {
+			xml.append(" ").append("ddms:compliesWith=\"DDMSRules\"");
 		}
-		if (version.isAtLeast("3.0"))
-			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
+		if (!version.isAtLeast("5.0")) {
+			if (version.isAtLeast("4.0.1"))
+				xml.append(" ntk:DESVersion=\"").append(getNtkDESVersion()).append("\"");
+			if (version.isAtLeast("3.0"))
+				xml.append(" ISM:resourceElement=\"true\"");
+			// Adding DESVersion in DDMS 2.0 allows the namespace declaration to definitely be in the Resource element.
+			xml.append(" ISM:DESVersion=\"").append(getIsmDESVersion()).append("\"");
+			if (version.isAtLeast("3.0"))
+				xml.append(" ISM:createDate=\"2010-01-21\"");
+			if ("4.1".equals(version.getVersion())) {
+				xml.append(" ISM:noticeType=\"DoD-Dist-B\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
+				xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\"");
+				xml.append(" ISM:externalNotice=\"false\"");
+			}
+			if (version.isAtLeast("3.0"))
+				xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
+		}
 		xml.append(">\n");
 		if (version.isAtLeast("4.0.1")) {
 			xml.append("\t<ddms:metacardInfo ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
@@ -670,11 +712,11 @@ public class ResourceTest extends AbstractBaseTestCase {
 			createComponents();
 
 			// All fields
-			getInstance(SUCCESS, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null,
+			getInstance(SUCCESS, TEST_TOP_LEVEL_COMPONENTS, getResourceElement(), getCreateDate(), null,
 				getIsmDESVersion(), getNtkDESVersion());
 
 			// No optional fields
-			getInstance(SUCCESS, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null,
+			getInstance(SUCCESS, TEST_NO_OPTIONAL_COMPONENTS, getResourceElement(), getCreateDate(), null,
 				getIsmDESVersion(), getNtkDESVersion());
 		}
 	}
@@ -688,10 +730,10 @@ public class ResourceTest extends AbstractBaseTestCase {
 			String ntkPrefix = PropertyReader.getPrefix("ntk");
 			String ntkNamespace = version.getNtkNamespace();
 
-			if (version.isAtLeast("3.0")) {
+			if (version.isAtLeast("3.0") && !version.isAtLeast("5.0")) {
 				// Missing resourceElement
 				Element element = getResourceWithoutHeaderElement();
-				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, TEST_CREATE_DATE);
+				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, getCreateDate());
 				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace,
 					String.valueOf(getIsmDESVersion()));
 				if (version.isAtLeast("4.0.1")) {
@@ -704,7 +746,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 				// Empty resourceElement
 				element = getResourceWithoutHeaderElement();
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace, "");
-				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, TEST_CREATE_DATE);
+				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, getCreateDate());
 				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace,
 					String.valueOf(getIsmDESVersion()));
 				if (version.isAtLeast("4.0.1")) {
@@ -717,7 +759,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 				// Invalid resourceElement
 				element = getResourceWithoutHeaderElement();
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace, "aardvark");
-				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, TEST_CREATE_DATE);
+				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, getCreateDate());
 				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace,
 					String.valueOf(getIsmDESVersion()));
 				if (version.isAtLeast("4.0.1")) {
@@ -730,7 +772,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 				// Missing createDate
 				element = getResourceWithoutHeaderElement();
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace,
-					String.valueOf(TEST_RESOURCE_ELEMENT));
+					getResourceElementString());
 				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace,
 					String.valueOf(getIsmDESVersion()));
 				if (version.isAtLeast("4.0.1")) {
@@ -743,7 +785,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 				// Invalid createDate
 				element = getResourceWithoutHeaderElement();
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace,
-					String.valueOf(TEST_RESOURCE_ELEMENT));
+					getResourceElementString());
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, "2004");
 				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace,
 					String.valueOf(getIsmDESVersion()));
@@ -757,8 +799,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 				// Missing desVersion
 				element = getResourceWithoutHeaderElement();
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace,
-					String.valueOf(TEST_RESOURCE_ELEMENT));
-				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, TEST_CREATE_DATE);
+					getResourceElementString());
+				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, getCreateDate());
 				if (version.isAtLeast("4.0.1")) {
 					Util.addAttribute(element, ntkPrefix, Resource.DES_VERSION_NAME, ntkNamespace,
 						String.valueOf(getNtkDESVersion()));
@@ -769,8 +811,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 				// desVersion not an integer
 				element = getResourceWithoutHeaderElement();
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace,
-					String.valueOf(TEST_RESOURCE_ELEMENT));
-				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, TEST_CREATE_DATE);
+					getResourceElementString());
+				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, getCreateDate());
 				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace, "one");
 				if (version.isAtLeast("4.0.1")) {
 					Util.addAttribute(element, ntkPrefix, Resource.DES_VERSION_NAME, ntkNamespace,
@@ -779,14 +821,14 @@ public class ResourceTest extends AbstractBaseTestCase {
 				SecurityAttributesTest.getFixture().addTo(element);
 				getInstance("ISM:DESVersion is required", element);
 			}
-			if (version.isAtLeast("4.0.1")) {
+			if (version.isAtLeast("4.0.1") && !version.isAtLeast("5.0")) {
 				// NTK desVersion not an integer
 				Element element = getResourceWithoutHeaderElement();
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace,
-					String.valueOf(TEST_RESOURCE_ELEMENT));
+					getResourceElementString());
 				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace,
 					String.valueOf(getIsmDESVersion()));
-				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, TEST_CREATE_DATE);
+				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, getCreateDate());
 				Util.addAttribute(element, ntkPrefix, Resource.DES_VERSION_NAME, ntkNamespace, "one");
 				SecurityAttributesTest.getFixture().addTo(element);
 				getInstance("ntk:DESVersion is required.", element);
@@ -937,45 +979,59 @@ public class ResourceTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			createComponents();
 
-			if (version.isAtLeast("3.0")) {
+			if (version.isAtLeast("5.0")) {
+				// resourceElement
+				getInstance("The resource cannot have ISM", TEST_NO_OPTIONAL_COMPONENTS, Boolean.TRUE, null, null, null, null);
+				
+				// createDate
+				getInstance("The resource cannot have ISM", TEST_NO_OPTIONAL_COMPONENTS, null, "2013-10-20", null, null, null);
+
+				// ism DES Version
+				getInstance("The resource cannot have ISM", TEST_NO_OPTIONAL_COMPONENTS, null, null, null, Integer.valueOf("9"), null);
+				
+				// ntk DES Version
+				getInstance("The resource cannot have ISM", TEST_NO_OPTIONAL_COMPONENTS, null, null, null, null, Integer.valueOf("7"));
+
+			}
+			if (version.isAtLeast("3.0") && !version.isAtLeast("5.0")) {
 				// Missing createDate
-				getInstance("createDate is required.", TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, null, null,
+				getInstance("createDate is required.", TEST_NO_OPTIONAL_COMPONENTS, getResourceElement(), null, null,
 					getIsmDESVersion(), getNtkDESVersion());
 
 				// Invalid createDate
 				getInstance("The createDate must be in the xs:date format", TEST_NO_OPTIONAL_COMPONENTS,
-					TEST_RESOURCE_ELEMENT, "2001", null, getIsmDESVersion(), getNtkDESVersion());
+					getResourceElement(), "2001", null, getIsmDESVersion(), getNtkDESVersion());
 
 				// Nonsensical createDate
 				getInstance("The ISM:createDate attribute is not in a valid date format.", TEST_NO_OPTIONAL_COMPONENTS,
-					TEST_RESOURCE_ELEMENT, "notAnXmlDate", null, getIsmDESVersion(), getNtkDESVersion());
+					getResourceElement(), "notAnXmlDate", null, getIsmDESVersion(), getNtkDESVersion());
 
 				// Missing desVersion
-				getInstance("ISM:DESVersion is required.", TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT,
-					TEST_CREATE_DATE, null, null, getNtkDESVersion());
+				getInstance("ISM:DESVersion is required.", TEST_NO_OPTIONAL_COMPONENTS, getResourceElement(),
+					getCreateDate(), null, null, getNtkDESVersion());
 			}
-			if (version.isAtLeast("4.0.1")) {
+			if (version.isAtLeast("4.0.1") && !version.isAtLeast("5.0")) {
 				// Missing desVersion
-				getInstance("ntk:DESVersion is required", TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT,
-					TEST_CREATE_DATE, null, getIsmDESVersion(), null);
+				getInstance("ntk:DESVersion is required", TEST_NO_OPTIONAL_COMPONENTS, getResourceElement(),
+					getCreateDate(), null, getIsmDESVersion(), null);
 			}
 
 			// At least 1 producer
 			List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.remove(CreatorTest.getFixture());
-			getInstance("At least 1 producer", components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null,
+			getInstance("At least 1 producer", components, getResourceElement(), getCreateDate(), null,
 				getIsmDESVersion(), getNtkDESVersion());
 
 			// At least 1 identifier
 			components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.remove(IdentifierTest.getFixture());
-			getInstance("At least 1 identifier is required.", components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
+			getInstance("At least 1 identifier is required.", components, getResourceElement(), getCreateDate(),
 				null, getIsmDESVersion(), getNtkDESVersion());
 
 			// At least 1 title
 			components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.remove(TitleTest.getFixture());
-			getInstance("At least 1 title is required.", components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null,
+			getInstance("At least 1 title is required.", components, getResourceElement(), getCreateDate(), null,
 				getIsmDESVersion(), getNtkDESVersion());
 
 			// At least 1 subjectCoverage
@@ -983,26 +1039,26 @@ public class ResourceTest extends AbstractBaseTestCase {
 				: "Exactly 1 subjectCoverage element must exist.";
 			components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.remove(SubjectCoverageTest.getFixture());
-			getInstance(message, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null, getIsmDESVersion(),
+			getInstance(message, components, getResourceElement(), getCreateDate(), null, getIsmDESVersion(),
 				getNtkDESVersion());
 
 			// At least 1 security
 			if (!version.isAtLeast("5.0")) {
 				components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 				components.remove(SecurityTest.getFixture());
-				getInstance("Exactly 1 security element must exist.", components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
+				getInstance("Exactly 1 security element must exist.", components, getResourceElement(), getCreateDate(),
 					null, getIsmDESVersion(), getNtkDESVersion());
 			}
 
 			// No top level components
-			getInstance("At least 1 identifier is required.", null, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null,
+			getInstance("At least 1 identifier is required.", null, getResourceElement(), getCreateDate(), null,
 				getIsmDESVersion(), getNtkDESVersion());
 
 			// Non-top-level component
 			components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.add(new Keyword("test", null));
-			getInstance("keyword is not a valid top-level component in a resource.", components, TEST_RESOURCE_ELEMENT,
-				TEST_CREATE_DATE, null, getIsmDESVersion(), getNtkDESVersion());
+			getInstance("keyword is not a valid top-level component in a resource.", components, getResourceElement(),
+				getCreateDate(), null, getIsmDESVersion(), getNtkDESVersion());
 		}
 	}
 
@@ -1030,7 +1086,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			// Nested warnings
 			List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.add(new Format("test", new Extent("test", ""), "test"));
-			component = getInstance(SUCCESS, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null,
+			component = getInstance(SUCCESS, components, getResourceElement(), getCreateDate(), null,
 				getIsmDESVersion(), getNtkDESVersion());
 			assertEquals(countIndex + 1, component.getValidationWarnings().size());
 
@@ -1050,7 +1106,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			PostalAddress address = new PostalAddress(element);
 			components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.add(new GeospatialCoverage(null, null, null, address, null, null, null, null));
-			component = getInstance(SUCCESS, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null,
+			component = getInstance(SUCCESS, components, getResourceElement(), getCreateDate(), null,
 				getIsmDESVersion(), getNtkDESVersion());
 			assertEquals(countIndex + 1, component.getValidationWarnings().size());
 
@@ -1075,7 +1131,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			Resource elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 			Resource dataComponent = (!version.isAtLeast("3.0") ? getInstance(SUCCESS, TEST_TOP_LEVEL_COMPONENTS, null,
 				null, null, getIsmDESVersion(), getNtkDESVersion()) : getInstance(SUCCESS, TEST_TOP_LEVEL_COMPONENTS,
-				TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null, getIsmDESVersion(), getNtkDESVersion()));
+				getResourceElement(), getCreateDate(), getDdmsCompliesWith(), getIsmDESVersion(), getNtkDESVersion()));
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -1090,23 +1146,25 @@ public class ResourceTest extends AbstractBaseTestCase {
 			Resource dataComponent;
 			// resourceElement is fixed starting in 3.1.
 			if (!version.isAtLeast("3.1")) {
-				dataComponent = getInstance(SUCCESS, TEST_TOP_LEVEL_COMPONENTS, false, TEST_CREATE_DATE, null,
+				dataComponent = getInstance(SUCCESS, TEST_TOP_LEVEL_COMPONENTS, false, getCreateDate(), null,
+					getIsmDESVersion(), getNtkDESVersion());
+				assertFalse(elementComponent.equals(dataComponent));
+			}
+			
+			if (!version.isAtLeast("5.0")) {
+				dataComponent = getInstance(SUCCESS, TEST_TOP_LEVEL_COMPONENTS, getResourceElement(), "1999-10-10", null,
 					getIsmDESVersion(), getNtkDESVersion());
 				assertFalse(elementComponent.equals(dataComponent));
 			}
 
-			dataComponent = getInstance(SUCCESS, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, "1999-10-10", null,
-				getIsmDESVersion(), getNtkDESVersion());
-			assertFalse(elementComponent.equals(dataComponent));
-
 			// Can only use alternate DESVersions in early DDMS versions
 			if (!version.isAtLeast("3.1")) {
-				dataComponent = getInstance(SUCCESS, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
-					TEST_CREATE_DATE, null, Integer.valueOf(1), getNtkDESVersion());
+				dataComponent = getInstance(SUCCESS, TEST_TOP_LEVEL_COMPONENTS, getResourceElement(),
+					getCreateDate(), null, Integer.valueOf(1), getNtkDESVersion());
 				assertFalse(elementComponent.equals(dataComponent));
 			}
 
-			dataComponent = getInstance(SUCCESS, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
+			dataComponent = getInstance(SUCCESS, TEST_NO_OPTIONAL_COMPONENTS, getResourceElement(), getCreateDate(),
 				null, getIsmDESVersion(), getNtkDESVersion());
 			assertFalse(elementComponent.equals(dataComponent));
 		}
@@ -1122,7 +1180,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 
 			component = (!version.isAtLeast("3.0") ? getInstance(SUCCESS, TEST_TOP_LEVEL_COMPONENTS, null, null, null,
 				getIsmDESVersion(), getNtkDESVersion()) : getInstance(SUCCESS, TEST_TOP_LEVEL_COMPONENTS,
-				TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null, getIsmDESVersion(), getNtkDESVersion()));
+				getResourceElement(), getCreateDate(), getDdmsCompliesWith(), getIsmDESVersion(), getNtkDESVersion()));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -1139,7 +1197,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 
 			component = (!version.isAtLeast("3.0") ? getInstance(SUCCESS, TEST_TOP_LEVEL_COMPONENTS, null, null, null,
 				getIsmDESVersion(), getNtkDESVersion()) : getInstance(SUCCESS, TEST_TOP_LEVEL_COMPONENTS,
-				TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null, getIsmDESVersion(), getNtkDESVersion()));
+				getResourceElement(), getCreateDate(), getDdmsCompliesWith(), getIsmDESVersion(), getNtkDESVersion()));
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -1148,8 +1206,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 		DDMSVersion.setCurrentVersion("3.0");
 		createComponents();
 
-		getInstance("The compliesWith attribute cannot be used", TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
-			TEST_CREATE_DATE, TEST_COMPLIES_WITH, getIsmDESVersion(), getNtkDESVersion());
+		getInstance("The compliesWith attribute cannot be used", TEST_TOP_LEVEL_COMPONENTS, getResourceElement(),
+			getCreateDate(), TEST_ISM_COMPLIES_WITH, getIsmDESVersion(), getNtkDESVersion());
 	}
 
 	public void testWrongVersionSecurityAttributes() throws InvalidDDMSException {
@@ -1159,22 +1217,32 @@ public class ResourceTest extends AbstractBaseTestCase {
 		new Resource(TEST_TOP_LEVEL_COMPONENTS, null);
 
 		// But attributes can still be used.
-		new Resource(TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null, getIsmDESVersion(),
+		new Resource(TEST_TOP_LEVEL_COMPONENTS, getResourceElement(), getCreateDate(), null, getIsmDESVersion(),
 			null, SecurityAttributesTest.getFixture(), null, null);
 	}
 
-	public void testExtensibleSuccess() throws InvalidDDMSException {
+	public void testExtensibleAttributes() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			createComponents();
 
-			// Extensible attribute added
+			// Extensible attribute added				
 			ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
-			if (!version.isAtLeast("3.0"))
-				new Resource(TEST_TOP_LEVEL_COMPONENTS, attr);
-			else
-				new Resource(TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null,
-					getIsmDESVersion(), getNtkDESVersion(), SecurityAttributesTest.getFixture(), null, attr);
+			if (!version.isAtLeast("5.0")) {
+				if (!version.isAtLeast("3.0"))
+					new Resource(TEST_TOP_LEVEL_COMPONENTS, attr);
+				else
+					new Resource(TEST_TOP_LEVEL_COMPONENTS, getResourceElement(), getCreateDate(), null,
+						getIsmDESVersion(), getNtkDESVersion(), SecurityAttributesTest.getFixture(), null, attr);
+			}
+			else {
+				try {
+					new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, null, null, null, null, attr);
+				}
+				catch (InvalidDDMSException e) {
+					expectMessage(e, "The resource cannot have extensible");
+				}
+			}
 		}
 	}
 
@@ -1306,6 +1374,9 @@ public class ResourceTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			createComponents();
 
+			if (version.isAtLeast("5.0"))
+				continue;
+			
 			// IsmDESVersion in parameter AND extensible.
 			try {
 				List<Attribute> exAttr = new ArrayList<Attribute>();
@@ -1366,6 +1437,24 @@ public class ResourceTest extends AbstractBaseTestCase {
 		}
 	}
 
+	public void testExtensibleElementDataConstructor() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			createComponents();
+
+			ExtensibleElement component = new ExtensibleElement(ExtensibleElementTest.getFixtureElement());
+			TEST_TOP_LEVEL_COMPONENTS.add(component);
+			if (version.isAtLeast("5.0")) {
+				getInstance("The resource cannot have", TEST_TOP_LEVEL_COMPONENTS, getResourceElement(), getCreateDate(), null,
+					getIsmDESVersion(), getNtkDESVersion());
+			}
+			else {
+				getInstance(SUCCESS, TEST_TOP_LEVEL_COMPONENTS, getResourceElement(), getCreateDate(), null,
+					getIsmDESVersion(), getNtkDESVersion());
+			}
+		}
+	}
+	
 	public void testExtensibleElementOutput() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
 		createComponents();
@@ -1373,7 +1462,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 
 		List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 		components.add(component);
-		Resource resource = getInstance(SUCCESS, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null,
+		Resource resource = getInstance(SUCCESS, components, getResourceElement(), getCreateDate(), null,
 			getIsmDESVersion(), getNtkDESVersion());
 		assertTrue(resource.toHTML().indexOf(buildOutput(true, "extensible.layer", "true")) != -1);
 		assertTrue(resource.toText().indexOf(buildOutput(false, "extensible.layer", "true")) != -1);
@@ -1387,7 +1476,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 
 		List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 		components.add(component);
-		getInstance(SUCCESS, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null, getIsmDESVersion(),
+		getInstance(SUCCESS, components, getResourceElement(), getCreateDate(), null, getIsmDESVersion(),
 			getNtkDESVersion());
 	}
 
@@ -1408,7 +1497,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 		components.add(new ExtensibleElement(ExtensibleElementTest.getFixtureElement()));
 		components.add(new ExtensibleElement(ExtensibleElementTest.getFixtureElement()));
-		getInstance(SUCCESS, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null, getIsmDESVersion(),
+		getInstance(SUCCESS, components, getResourceElement(), getCreateDate(), null, getIsmDESVersion(),
 			getNtkDESVersion());
 	}
 
@@ -1445,37 +1534,32 @@ public class ResourceTest extends AbstractBaseTestCase {
 	}
 
 	public void testOrderConstraints() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			createComponents();
-			if (!version.isAtLeast("4.0.1"))
-				continue;
+		DDMSVersion.setCurrentVersion("4.1");
+		createComponents();
 
-			// Valid orders
-			List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_TOP_LEVEL_COMPONENTS);
-			components.add(SubjectCoverageTest.getFixture(1));
-			components.add(GeospatialCoverageTest.getFixture(2));
-			components.add(SubjectCoverageTest.getFixture(3));
-			getInstance(SUCCESS, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null, getIsmDESVersion(),
-				getNtkDESVersion());
+		// Valid orders
+		List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_TOP_LEVEL_COMPONENTS);
+		components.add(SubjectCoverageTest.getFixture(1));
+		components.add(GeospatialCoverageTest.getFixture(2));
+		components.add(SubjectCoverageTest.getFixture(3));
+		getInstance(SUCCESS, components, getResourceElement(), getCreateDate(), null, getIsmDESVersion(),
+			getNtkDESVersion());
 
-			// Duplicate orders
-			components = new ArrayList<IDDMSComponent>(TEST_TOP_LEVEL_COMPONENTS);
-			components.add(SubjectCoverageTest.getFixture(1));
-			components.add(GeospatialCoverageTest.getFixture(1));
-			components.add(SubjectCoverageTest.getFixture(3));
-			getInstance("The ddms:order attributes throughout this resource", components, TEST_RESOURCE_ELEMENT,
-				TEST_CREATE_DATE, null, getIsmDESVersion(), getNtkDESVersion());
+		// Duplicate orders
+		components = new ArrayList<IDDMSComponent>(TEST_TOP_LEVEL_COMPONENTS);
+		components.add(SubjectCoverageTest.getFixture(1));
+		components.add(GeospatialCoverageTest.getFixture(1));
+		components.add(SubjectCoverageTest.getFixture(3));
+		getInstance("The ddms:order attributes throughout this resource", components, getResourceElement(),
+			getCreateDate(), null, getIsmDESVersion(), getNtkDESVersion());
 
-			// Skipped orders
-			components = new ArrayList<IDDMSComponent>(TEST_TOP_LEVEL_COMPONENTS);
-			components.add(SubjectCoverageTest.getFixture(1));
-			components.add(GeospatialCoverageTest.getFixture(3));
-			components.add(SubjectCoverageTest.getFixture(4));
-			getInstance("The ddms:order attributes throughout this resource", components, TEST_RESOURCE_ELEMENT,
-				TEST_CREATE_DATE, null, getIsmDESVersion(), getNtkDESVersion());
-		}
-
+		// Skipped orders
+		components = new ArrayList<IDDMSComponent>(TEST_TOP_LEVEL_COMPONENTS);
+		components.add(SubjectCoverageTest.getFixture(1));
+		components.add(GeospatialCoverageTest.getFixture(3));
+		components.add(SubjectCoverageTest.getFixture(4));
+		getInstance("The ddms:order attributes throughout this resource", components, getResourceElement(),
+			getCreateDate(), null, getIsmDESVersion(), getNtkDESVersion());
 	}
 
 	public void testConstructorChaining() throws InvalidDDMSException {
@@ -1489,38 +1573,40 @@ public class ResourceTest extends AbstractBaseTestCase {
 		// DDMS 3.0
 		DDMSVersion.setCurrentVersion("3.0");
 		createComponents();
-		resource = new Resource(TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, getIsmDESVersion(),
+		resource = new Resource(TEST_TOP_LEVEL_COMPONENTS, getResourceElement(), getCreateDate(), getIsmDESVersion(),
 			SecurityAttributesTest.getFixture(), null);
-		fullResource = new Resource(TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null,
+		fullResource = new Resource(TEST_TOP_LEVEL_COMPONENTS, getResourceElement(), getCreateDate(), null,
 			getIsmDESVersion(), null, SecurityAttributesTest.getFixture(), null, null);
 		assertEquals(resource, fullResource);
 
 		// DDMS 3.1
 		DDMSVersion.setCurrentVersion("3.1");
 		createComponents();
-		resource = new Resource(TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_COMPLIES_WITH,
+		resource = new Resource(TEST_TOP_LEVEL_COMPONENTS, getResourceElement(), getCreateDate(), TEST_ISM_COMPLIES_WITH,
 			getIsmDESVersion(), SecurityAttributesTest.getFixture(), null);
-		fullResource = new Resource(TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
-			TEST_COMPLIES_WITH, getIsmDESVersion(), null, SecurityAttributesTest.getFixture(), null, null);
+		fullResource = new Resource(TEST_TOP_LEVEL_COMPONENTS, getResourceElement(), getCreateDate(),
+			TEST_ISM_COMPLIES_WITH, getIsmDESVersion(), null, SecurityAttributesTest.getFixture(), null, null);
 		assertEquals(resource, fullResource);
 	}
 
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			Resource component = getInstance(SUCCESS, getValidElement(sVersion));
 			Resource.Builder builder = new Resource.Builder(component);
 			assertEquals(component, builder.commit());
 
-			// Equality with ExtensibleElement
-			builder.getExtensibleElements().add(new ExtensibleElement.Builder());
-			builder.getExtensibleElements().get(0).setXml(
-				"<ddmsence:extension xmlns:ddmsence=\"http://ddmsence.urizone.net/\">"
-					+ "This is an extensible element.</ddmsence:extension>");
-			component = builder.commit();
-			builder = new Resource.Builder(component);
-			assertEquals(component, builder.commit());
+			if (!version.isAtLeast("5.0")) {
+				// Equality with ExtensibleElement
+				builder.getExtensibleElements().add(new ExtensibleElement.Builder());
+				builder.getExtensibleElements().get(0).setXml(
+					"<ddmsence:extension xmlns:ddmsence=\"http://ddmsence.urizone.net/\">"
+						+ "This is an extensible element.</ddmsence:extension>");
+				component = builder.commit();
+				builder = new Resource.Builder(component);
+				assertEquals(component, builder.commit());
+			}
 		}
 	}
 
@@ -1571,9 +1657,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 	public void testBuilderValidation() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-
 			Resource.Builder builder = new Resource.Builder();
-			builder.setCreateDate(TEST_CREATE_DATE);
+			builder.getRights().setCopyright(Boolean.TRUE);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
@@ -1611,8 +1696,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 		// Version during building should be 100% irrelevant
 		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		Resource.Builder builder = new Resource.Builder();
-		builder.setResourceElement(TEST_RESOURCE_ELEMENT);
-		builder.setCreateDate(TEST_CREATE_DATE);
+		builder.setResourceElement(getResourceElement());
+		builder.setCreateDate(getCreateDate());
 		builder.setIsmDESVersion(getIsmDESVersion());
 		builder.getSecurityAttributes().setClassification("U");
 		builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
@@ -1645,7 +1730,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		// Version during building should be 100% irrelevant
 		DDMSVersion version = DDMSVersion.setCurrentVersion("3.0");
 		Resource.Builder builder = new Resource.Builder();
-		builder.setResourceElement(TEST_RESOURCE_ELEMENT);
+		builder.setResourceElement(getResourceElement());
 		builder.setIsmDESVersion(getIsmDESVersion());
 		builder.getSecurityAttributes().setClassification("U");
 		builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
@@ -1716,8 +1801,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 		}
 
 		// Adding 3.0-specific fields works
-		builder.setResourceElement(TEST_RESOURCE_ELEMENT);
-		builder.setCreateDate(TEST_CREATE_DATE);
+		builder.setResourceElement(getResourceElement());
+		builder.setCreateDate(getCreateDate());
 		builder.setIsmDESVersion(getIsmDESVersion());
 		builder.getSecurityAttributes().setClassification("U");
 		builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
