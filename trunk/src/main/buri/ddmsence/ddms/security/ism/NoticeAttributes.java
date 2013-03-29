@@ -221,6 +221,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 * <li>The unregisteredNoticeType must be shorter than 2048 characters.</li>
 	 * <li>If set, the noticeDate attribute is a valid xs:date value.</li>
 	 * <li>These attributes cannot be used until DDMS 4.0.1 or later.</li>
+	 * <li>These attributes cannot be used after DDMS 4.1.</li>
 	 * <li>The externalNotice attribute cannot be used until DDMS 4.1 or later.</li>
 	 * <li>Does NOT do any validation on the constraints described in the DES ISM specification.</li>
 	 * </td></tr></table>
@@ -243,7 +244,6 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 			throw new InvalidDDMSException("The noticeDate attribute must be in the xs:date format (YYYY-MM-DD).");
 		if (!version.isAtLeast("4.0.1") && !isEmpty())
 			throw new InvalidDDMSException("Notice attributes cannot be used until DDMS 4.0.1 or later.");
-		// Test for 4.1 externalNotice is implicit, since 4.0.1 and 4.1 have same XML namespace.
 
 		super.validate(version);
 	}
