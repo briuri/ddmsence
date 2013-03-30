@@ -34,22 +34,27 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of gml:Point.
+ * <br /><br />
+ * {@ddms.versions 11110}
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>The srsName must also be non-empty.</li>
- * </ul>
+ * <p></p>
+ * 
+ *  {@table.header History}
+ * 		The GML profile was removed in favour of TSPI in DDMS 5.0.
  * {@table.footer}
- * 
- * 
  * {@table.header Nested Elements}
- * <u>gml:pos</u>: the position (exactly 1 required), implemented as a {@link Position}<br />
+ * 		{@child.info gml:pos|1|11110}
  * {@table.footer}
- * 
  * {@table.header Attributes}
- * <u>gml:id</u>: unique ID (required)<br />
- * <u>{@link SRSAttributes}</u>
+ * 		{@child.info gml:id|1|11110}
+ * 		{@child.info &lt;<i>srsAttributes</i>&gt;|0..1|11110}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule The srsName is required.|Error|11111}
+ * 		{@ddms.rule The gml:id is required, and must be a valid NCName.|Error|11111}
+ * 		{@ddms.rule If the gml:pos has an srsName, it matches the srsName of this Point.|Error|11111}
+ * 		{@ddms.rule Warnings from any SRS attributes are claimed by this component.|Warning|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -115,16 +120,6 @@ public final class Point extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>The srsName is required.</li>
-	 * <li>The ID is required, and must be a valid NCName.</li>
-	 * <li>If the position has an srsName, it matches the srsName of this Point.</li>
-	 * <li>Does not perform any special validation on the third coordinate (height above ellipsoid).</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
@@ -137,16 +132,11 @@ public final class Point extends AbstractBaseComponent {
 		String srsName = getPosition().getSRSAttributes().getSrsName();
 		if (!Util.isEmpty(srsName) && !srsName.equals(getSRSAttributes().getSrsName()))
 			throw new InvalidDDMSException("The srsName of the position must match the srsName of the Point.");
-
 		super.validate();
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>Include any validation warnings from the SRS attributes.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		addWarnings(getSRSAttributes().getValidationWarnings(), true);

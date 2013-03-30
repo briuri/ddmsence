@@ -24,6 +24,8 @@ import java.io.Serializable;
 import nu.xom.Element;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.summary.CountryCode;
+import buri.ddmsence.ddms.summary.SubDivisionCode;
 import buri.ddmsence.util.Util;
 
 /**

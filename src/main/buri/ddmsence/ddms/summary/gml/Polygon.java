@@ -39,27 +39,32 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of gml:Polygon.
  * 
+ * <br /><br />
+ * {@ddms.versions 11110}
+ * 
  * <p>
  * A Polygon element contains a nested gml:exterior element, which itself contains a nested gml:LinearRing element.
  * The points which mark the boundaries of the polygon should be provided in counter-clockwise order.
  * Because DDMS does not decorate these elements with any special attributes, they are not implemented as Java objects.
  * </p>
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>The srsName must also be non-empty.</li>
- * </ul>
+ *  {@table.header History}
+ * 		The GML profile was removed in favour of TSPI in DDMS 5.0.
  * {@table.footer}
- * 
  * {@table.header Nested Elements}
- * <u>gml:pos</u>: the positions which comprise the LinearRing in this Polygon (at least 4 required), implemented as
- * a {@link Position}<br />
+ * 		{@child.info gml:pos|4..*|11110}
  * {@table.footer}
- * 
  * {@table.header Attributes}
- * <u>gml:id</u>: unique ID (required)<br />
- * <u>{@link SRSAttributes}</u>
+ * 		{@child.info gml:id|1|11110}
+ * 		{@child.info &lt;<i>srsAttributes</i>&gt;|0..1|11110}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule The srsName is required.|Error|11111}
+ * 		{@ddms.rule The gml:id is required, and must be a valid NCName.|Error|11111}
+ * 		{@ddms.rule If a gml:pos has an srsName, it matches the srsName of this Polygon.|Error|11111}
+ * 		{@ddms.rule The first and last position coordinates must be identical (a closed polygon).|Error|11111}
+ * 		{@ddms.rule Warnings from any SRS attributes are claimed by this component.|Warning|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -143,22 +148,10 @@ public final class Polygon extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>The srsName is required.</li>
-	 * <li>If the position has an srsName, it matches the srsName of this Polygon.</li>
-	 * <li>The ID is required, and must be a valid NCName.</li>
-	 * <li>The first and last position coordinates must be identical (a closed polygon).</li>
-	 * <li>Does not perform any special validation on the third coordinate (height above ellipsoid).</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireQName(getXOMElement(), getNamespace(), Polygon.getName(getDDMSVersion()));
-		Util.requireDDMSValue("srsAttributes", getSRSAttributes());
 		Util.requireDDMSValue("srsName", getSRSAttributes().getSrsName());
 		Util.requireDDMSValue(ID_NAME, getId());
 		Util.requireValidNCName(getId());
@@ -183,16 +176,11 @@ public final class Polygon extends AbstractBaseComponent {
 		if (!positions.isEmpty() && !positions.get(0).equals(positions.get(positions.size() - 1))) {
 			throw new InvalidDDMSException("The first and last position in the Polygon must be the same.");
 		}
-
 		super.validate();
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>Include any validation warnings from the SRS attributes.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		addWarnings(getSRSAttributes().getValidationWarnings(), true);

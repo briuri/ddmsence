@@ -50,13 +50,19 @@ public class TableHeaderTaglet extends AbstractInlineTaglet {
 		StringBuffer b = new StringBuffer();
 		b.append("<table class=\"info\" cellspacing=\"0\"><tr class=\"infoHeader\"><th>");
 		b.append(title).append("</th></tr><tr><td>\n");
-		if (CHILD_INFO_TABLES.contains(title)) {
-			b.append("<table class=\"childInfo\" cellspacing=\"0\"><tr class=\"childInfoHeader\">");
-			b.append("<td class=\"name\">Name</td><td class=\"cardinality\">Cardinality</td><td class=\"versions\">Availability</td></tr></table>\n");
+		for (String testTitle : CHILD_INFO_TABLES) {
+			if (title.startsWith(testTitle)) {
+				b.append("<table class=\"childInfo\" cellspacing=\"0\"><tr class=\"childInfoHeader\">");
+				b.append("<td class=\"name\">Name</td><td class=\"cardinality\">Cardinality</td>");
+				b.append("<td class=\"versions\">Availability</td></tr></table>\n");				
+			}
 		}
-		else if (RULE_TABLES.contains(title)) {
-			b.append("<table class=\"rules\" cellspacing=\"0\"><tr class=\"rulesHeader\">");
-			b.append("<td class=\"rule\">Rule</td><td class=\"type\">Type</td><td class=\"versions\">Applicability</td></tr></table>\n");
+		for (String testTitle : RULE_TABLES) {
+			if (title.startsWith(testTitle)) {
+				b.append("<table class=\"rules\" cellspacing=\"0\"><tr class=\"rulesHeader\">");
+				b.append("<td class=\"rule\">Rule</td><td class=\"type\">Type</td>");
+				b.append("<td class=\"versions\">Applicability</td></tr></table>\n");				
+			}
 		}
 		return (b.toString());
 	}

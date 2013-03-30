@@ -35,26 +35,37 @@ import buri.ddmsence.util.Util;
 
 /**
  * Attribute group for the four SRS attributes used in the GML profile.
+ * <br /><br />
+ * {@ddms.versions 11110}
  * 
  * <p>
  * Because the GML-Profile defines these attributes locally inside of attribute groups, they are not in any namespace.
  * Some older examples on the DDMS website inaccurately display the attributes with the gml: prefix.
  * </p>
  * 
- * <p>When validating this attribute group, the required/optional nature of the srsName attribute is not checked.
- * Because
- * that limitation depends on the parent element (for example, gml:Point and gml:Polygon require an srsName, but gml:pos
- * does not), the parent element should be responsible for checking.</p>
- * 
- * {@table.header Attributes}
- * <u>srsName</u>: A URI-based name (optional on gml:pos, required everywhere else)<br />
- * <u>srsDimension</u>: A positive integer dimension (optional)<br />
- * <u>axisLabels</u>: Ordered list of labels for the axes, as a space-delimited list of NCNames (valid XML names without
- * colons) (optional, but if no srsName is set, this should be omitted too)<br />
- * <u>uomLabels</u>: Ordered list of unit of measure (uom) labels for all the axes, as a space-delimited list of NCNames
- * (valid XML names without colons) (required when axisLabels is set)<br />
+ * {@table.header History}
+ * 		The GML profile was removed in favour of TSPI in DDMS 5.0.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
+ * {@table.header Attributes}
+ * 		{@child.info srsName|0..1|11110}
+ * 		{@child.info srsDimension|0..1|11110}
+ * 		{@child.info uomLabels|0..1|11110}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule If set, srsName is a valid URI.|Error|11111}
+ * 		{@ddms.rule If set, srsDimension is positive.|Error|11111}
+ * 		{@ddms.rule If srsName is not set, axisLabels must not be set.|Error|11111}
+ * 		{@ddms.rule If axisLabels is not set, uomLabels must not be set.|Error|11111}
+ * 		{@ddms.rule If set, each axisLabels value must be a NCName.|Error|11111}
+ * 		{@ddms.rule If set, each uomLabel value must be a NCName.|Error|11111}
+ * <p>When validating this attribute group, the required/optional nature of the srsName attribute is not checked.
+ * Because that limitation depends on the parent element (for example, gml:Point and gml:Polygon require an srsName, but gml:pos
+ * does not), the parent element should be responsible for checking.</p>
+ * {@table.footer}
+ *  
  * @author Brian Uri!
  * @since 0.9.b
  */
@@ -150,17 +161,6 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	}
 
 	/**
-	 * Validates the attribute group.
-	 * 
-	 * {@table.header Rules}
-	 * <li>If the srsName is set, it must be a valid URI.</li>
-	 * <li>If the srsDimension is set, it must be positive.</li>
-	 * <li>If the srsName is not set, the axisLabels must be not set or empty.</li>
-	 * <li>If the axisLabels are not set or empty, the uomLabels must be not set or empty.</li>
-	 * <li>Each axisLabel must be a NCName.</li>
-	 * <li>Each uomLabel must be a NCName.</li>
-	 * {@table.footer}
-	 * 
 	 * @param version the DDMS version to validate against. This cannot be stored in the attribute group because some
 	 *        DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).
 	 * @throws InvalidDDMSException if any required information is missing or malformed

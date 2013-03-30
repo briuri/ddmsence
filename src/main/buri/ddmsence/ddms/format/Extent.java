@@ -29,23 +29,28 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:extent.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>A non-empty qualifier value is required when the value attribute is set.</li>
- * </ul>
+ * <p></p>
  * 
- * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
- * <ul>
- * <li>A qualifier can be set with no value.</li>
- * <li>An extent can be set without a qualifier or value.</li>
- * </ul>
+ * {@table.header History}
+ * 		None.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ddms:qualifier</u>: a URI-based vocabulary (required if value is set)<br />
- * <u>ddms:value</u>: a related data size, compression rate, or pixel size (optional)<br />
+ * 		{@child.info ddms:qualifier|0..1|11111}
+ * 		{@child.info ddms:value|0..1|11111}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule ddms:qualifier is required if ddms:value is set.|Error|11111}
+ * 		{@ddms.rule If set, the ddms:qualifier is a valid URI.|Error|11111}
+ * 		{@ddms.rule A ddms:qualifier can be set with no ddms:value.|Warning|11111}
+ * 		{@ddms.rule This component can be used with no values set.|Warning|11111}
+ * 		<p>Note: The ddms:value is not validated against the qualifier's vocabulary.</p>
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -77,12 +82,7 @@ public final class Extent extends AbstractQualifierValue {
 	/**
 	 * Validates the component.
 	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>If set, the qualifier is a valid URI.</li>
-	 * <li>If the value is set, a non-empty qualifier is required.</li>
-	 * <li>Does NOT validate that the value is valid against the qualifier's vocabulary.</li>
-	 * {@table.footer}
+
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -98,12 +98,7 @@ public final class Extent extends AbstractQualifierValue {
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>A qualifier has been set without an accompanying value attribute.</li>
-	 * <li>A completely empty ddms:extent element was found.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		if (!Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()))

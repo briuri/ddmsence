@@ -262,19 +262,6 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 			String text = "A completely empty ddms:acquiredOn";
 			String locator = "ddms:acquiredOn";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-
-			// Description element with no child text
-			if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
-				Element element = Util.buildDDMSElement(TEST_NAME, null);
-				element.appendChild(Util.buildDDMSElement("description", null));
-				Util.addDDMSChildElement(element, "description", null);
-				Util.addDDMSChildElement(element, "approximableDate", TEST_APPROXIMABLE_DATE);
-				component = getInstance(SUCCESS, element);
-				assertEquals(1, component.getValidationWarnings().size());
-				text = "A completely empty ddms:description";
-				locator = "ddms:acquiredOn";
-				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-			}
 		}
 	}
 

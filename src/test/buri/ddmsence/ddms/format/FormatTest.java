@@ -204,26 +204,6 @@ public class FormatTest extends AbstractBaseTestCase {
 			mediaElement.appendChild(Util.buildDDMSElement("mimeType", ""));
 			getInstance("mimeType is required.", wrapInnerElement(mediaElement));
 
-			// Too many mimeTypes
-			mediaElement = Util.buildDDMSElement("Media", null);
-			mediaElement.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
-			mediaElement.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
-			getInstance("Exactly 1 mimeType element must exist.", wrapInnerElement(mediaElement));
-
-			// Too many extents
-			mediaElement = Util.buildDDMSElement("Media", null);
-			mediaElement.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
-			mediaElement.appendChild(Util.buildDDMSElement(extentName, null));
-			mediaElement.appendChild(Util.buildDDMSElement(extentName, null));
-			getInstance("No more than 1 extent element can exist.", wrapInnerElement(mediaElement));
-
-			// Too many mediums
-			mediaElement = Util.buildDDMSElement("Media", null);
-			mediaElement.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
-			mediaElement.appendChild(Util.buildDDMSElement("medium", TEST_MEDIUM));
-			mediaElement.appendChild(Util.buildDDMSElement("medium", TEST_MEDIUM));
-			getInstance("No more than 1 medium element can exist.", wrapInnerElement(mediaElement));
-
 			// Invalid Extent
 			Element extentElement = Util.buildDDMSElement(extentName, null);
 			Util.addDDMSAttribute(extentElement, "value", "test");
@@ -247,30 +227,11 @@ public class FormatTest extends AbstractBaseTestCase {
 
 	public void testWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
 			Format component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
-
-			// Medium element with no value or empty value
-			if (!version.isAtLeast("5.0")) {
-				Element mediaElement = Util.buildDDMSElement("Media", null);
-				mediaElement.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
-				mediaElement.appendChild(Util.buildDDMSElement("medium", null));
-				component = getInstance(SUCCESS, wrapInnerElement(mediaElement));
-				assertEquals(1, component.getValidationWarnings().size());
-				String text = "A ddms:medium element was found with no value.";
-				String locator = version.isAtLeast("4.0.1") ? "ddms:format" : "ddms:format/ddms:Media";
-				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-			}
-			// Nested warnings
-			component = getInstance(SUCCESS, TEST_MIME_TYPE, new Extent("sizeBytes", ""), TEST_MEDIUM);
-			assertEquals(1, component.getValidationWarnings().size());
-			String text = "A qualifier has been set without an accompanying value attribute.";
-			String locator = (version.isAtLeast("4.0.1")) ? "ddms:format/ddms:extent"
-				: "ddms:format/ddms:Media/ddms:extent";
-			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
 

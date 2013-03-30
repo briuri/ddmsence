@@ -37,6 +37,8 @@ import buri.ddmsence.util.Util;
 
 /**
  * Attribute group for the XLINK attributes.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
  * <p>
  * This class only models the subset of attributes and values that are employed by the DDMS specification.
@@ -44,34 +46,41 @@ import buri.ddmsence.util.Util;
  * ({@link Link}, {@link RevisionRecall}, or {@link TaskID}).
  * </p>
  * 
- * {@table.header Locator Attributes (for ddms:link)}
- * <u>xlink:type</u>: the type of link (optional, but fixed as "locator" if set)<br />
- * <u>xlink:href</u>: A target URL (optional)<br />
- * <u>xlink:role</u>: The URI reference identifies some resource that describes the intended property. (optional)<br />
- * <u>xlink:title</u>: Used to describe the meaning of a link or resource in a human-readable fashion, along the same
- * lines as the role or arcrole attribute. (optional)<br />
- * <u>xlink:label</u>: The label attribute provides a name for the link (optional)<br />
+ * {@table.header History}
+ * 		None.
  * {@table.footer}
- * 
- * {@table.header Resource Attributes (for ddms:revisionRecall)}
- * <u>xlink:type</u>: (optional, but fixed as "resource" if set)<br />
- * <u>xlink:role</u>: The URI reference identifies some resource that describes the intended property. When no value is
- * supplied, no particular role value is to be inferred. (optional, but must be non-empty if set)<br />
- * <u>xlink:title</u>: Used to describe the meaning of a link or resource in a human-readable fashion, along the same
- * lines as the role or arcrole attribute. (optional)<br />
- * <u>xlink:label</u>: The label attribute provides a name for the link (optional)<br />
+ * {@table.header Nested Elements}
+ * 		None.
  * {@table.footer}
- * 
- * {@table.header Simple Attributes (for ddms:taskID)}
- * <u>xlink:type</u>: (optional, but fixed as "simple" if set)<br />
- * <u>xlink:href</u>: A URL (optional, must be a URI)<br />
- * <u>xlink:role</u>: The URI reference identifies some resource that describes the intended property. When no value is
- * supplied, no particular role value is to be inferred. (optional, but must be non-empty if set)<br />
- * <u>xlink:title</u>: Used to describe the meaning of a link or resource in a human-readable fashion, along the same
- * lines as the role or arcrole attribute. (optional)<br />
- * <u>xlink:arcrole</u>: A URI reference describing an arc role (optional)<br />
- * <u>xlink:show</u>: A token which signifies the behavior intentions for traversal (optional)<br />
- * <u>xlink:actuate</u>: A token which signifies the behavior intentions for traversal (optional)<br />
+ * {@table.header Attributes (in a ddms:link)}
+ * 		{@child.info xlink:type|0..1|11111}
+ * 		{@child.info xlink:href|0..1|11111}
+ * 		{@child.info xlink:role|0..1|11111}
+ * 		{@child.info xlink:title|0..1|11111}
+ * 		{@child.info xlink:label|0..1|11111}
+ * {@table.footer}
+ * {@table.header Attributes (in a ddms:revisionRecall)}
+ * 		{@child.info xlink:type|0..1|00011}
+ * 		{@child.info xlink:role|0..1|00011}
+ * 		{@child.info xlink:title|0..1|00011}
+ * 		{@child.info xlink:label|0..1|00011}
+ * {@table.footer}
+ * {@table.header Attributes (in a ddms:taskID)}
+ * 		{@child.info xlink:type|0..1|00011}
+ * 		{@child.info xlink:href|0..1|00011}
+ * 		{@child.info xlink:role|0..1|00011}
+ * 		{@child.info xlink:title|0..1|00011}
+ * 		{@child.info xlink:arcrole|0..1|00011}
+ * 		{@child.info xlink:show|0..1|00011}
+ * 		{@child.info xlink:actuate|0..1|00011}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule If set, xlink:href is a valid URI.|Error|11111}
+ * 		{@ddms.rule If set, xlink:arcrole is a valid URI.|Error|11111}
+ * 		{@ddms.rule If set, xlink:show is a valid token.|Error|11111}
+ * 		{@ddms.rule If set, xlink:actuate is a valid token.|Error|11111}
+ * 		{@ddms.rule If set, xlink:role is a valid URI.|Error|00011}
+ * 		{@ddms.rule If set, xlink:label is a valid NCName.|Error|00011}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -259,17 +268,6 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	/**
 	 * Validates the attribute group.
 	 * 
-	 * {@table.header Rules}
-	 * <li>If the href attribute is set, it is a valid URI.</li>
-	 * <li>If the role attribute is set, it is a valid URI, starting in DDMS 4.0.1.</li>
-	 * <li>If the label attribute is set, it is a valid NCName, starting in DDMS 4.0.1.</li>
-	 * <li>If the arcrole attribute is set, it is a valid URI.</li>
-	 * <li>If the show attribute is set, it is a valid token.</li>
-	 * <li>If the actuate attribute is set, it is a valid token.</li>
-	 * <li>Does not validate the required nature of any attribute. It is the parent class'
-	 * responsibility to do that.</li>
-	 * {@table.footer}
-	 * 
 	 * @param version the DDMS version to validate against. This cannot be stored in the attribute group because some
 	 *        DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -277,20 +275,18 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	protected void validate(DDMSVersion version) throws InvalidDDMSException {
 		if (!Util.isEmpty(getHref()))
 			Util.requireDDMSValidURI(getHref());
-
-		// Should be reviewed as additional versions of DDMS are supported.
-		if (version.isAtLeast("4.0.1")) {
-			if (!Util.isEmpty(getRole()))
-				Util.requireDDMSValidURI(getRole());
-			if (!Util.isEmpty(getLabel()))
-				Util.requireValidNCName(getLabel());
-		}
 		if (!Util.isEmpty(getArcrole()))
 			Util.requireDDMSValidURI(getArcrole());
 		if (!Util.isEmpty(getShow()) && !SHOW_TYPES.contains(getShow()))
 			throw new InvalidDDMSException("The show attribute must be one of " + SHOW_TYPES);
 		if (!Util.isEmpty(getActuate()) && !ACTUATE_TYPES.contains(getActuate()))
 			throw new InvalidDDMSException("The actuate attribute must be one of " + ACTUATE_TYPES);
+		if (version.isAtLeast("4.0.1")) {
+			if (!Util.isEmpty(getRole()))
+				Util.requireDDMSValidURI(getRole());
+			if (!Util.isEmpty(getLabel()))
+				Util.requireValidNCName(getLabel());
+		}
 		super.validate(version);
 	}
 

@@ -34,30 +34,28 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:format.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * <p>
- * Before DDMS 4.0.1, a format element contains a locally defined Media construct.
- * This Media construct is a container for the mimeType,extent, and medium of a resource.
- * It exists only inside of a ddms:format parent, so it is not implemented as a Java
- * object. Starting in DDMS 4.0.1, the Media wrapper has been removed.
- * </p>
+ * <p></p>
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>A non-empty mimeType value is required. This rule is codified in the schema, starting in DDMS 5.0.</li>
- * </ul>
- * 
- * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
- * <ul>
- * <li>A medium element can be used with no child text. This loophole goes away in DDMS 5.0.</li>
- * </ul>
+ * {@table.header History}
+ * 		Before DDMS 4.0.1, a format element contains a locally defined Media construct.
+ * 		This Media construct is a container for the mimeType,extent, and medium of a resource.
+ * 		It exists only inside of a ddms:format parent, so it is not implemented as a Java
+ * 		object. Starting in DDMS 4.0.1, the Media wrapper has been removed.
  * {@table.footer}
- * 
  * {@table.header Nested Elements}
- * <u>ddms:mimeType</u>: the MIME type (exactly 1 required)<br />
- * <u>ddms:extent</u>: the format extent (0-1 optional), implemented as a {@link Extent}<br />
- * <u>ddms:medium</u>: the physical medium (0-1 optional)<br />
+ * 		{@child.info ddms:extent|0..1|11111}
+ * 		{@child.info ddms:medium|0..1|11111}
+ * 		{@child.info ddms:mimeType|1|11111}
+ * {@table.footer}
+ * {@table.header Attributes}
+ * 		None.
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule A ddms:mimeType is required.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -136,42 +134,14 @@ public final class Format extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>A mimeType exists, and is not empty.</li>
-	 * <li>Exactly 1 mimeType, 0-1 extents, and 0-1 mediums exist.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Format.getName(getDDMSVersion()));
 		Element mediaElement = getMediaElement();
 		Util.requireDDMSValue("Media element", mediaElement);
 		Util.requireDDMSValue(MIME_TYPE_NAME, getMimeType());
-		Util.requireBoundedChildCount(mediaElement, MIME_TYPE_NAME, 1, 1);
-		Util.requireBoundedChildCount(mediaElement, Extent.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedChildCount(mediaElement, MEDIUM_NAME, 0, 1);
-
 		super.validate();
-	}
-
-	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>A ddms:medium element was found with no value, through DDMS 4.1.</li>
-	 * {@table.footer}
-	 */
-	protected void validateWarnings() {
-		Element mediaElement = getMediaElement();
-		if (!getDDMSVersion().isAtLeast("5.0") && Util.isEmpty(getMedium())
-			&& mediaElement.getChildElements(MEDIUM_NAME, mediaElement.getNamespaceURI()).size() == 1)
-			addWarning("A ddms:medium element was found with no value.");
-		super.validateWarnings();
 	}
 
 	/**

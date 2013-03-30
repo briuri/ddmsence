@@ -29,6 +29,8 @@ import buri.ddmsence.util.Util;
 
 /**
  * Base class for DDMS elements which are an approximable date, such as ddms:dates/ddms:acquiredOn.
+ * <br /><br />
+ * {@ddms.versions 00011}
  * 
  * <p>
  * The structure of this class diverges from the usual DDMSence approach of selecting which DDMS components are
@@ -43,27 +45,26 @@ import buri.ddmsence.util.Util;
  * class.
  * </p>
  * 
- * {@table.header Strictness}
- * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
- * <ul>
- * <li>This component can be used with no description, approximableDate, or searchableDate values.</li>
- * <li>A ddms:description element can be used without child text. This loophole goes away in DDMS 5.0.</li>
- * </ul>
+ * {@table.header History}
+ * 		None.
  * {@table.footer}
- * 
  * {@table.header Nested Elements}
- * <u>ddms:description</u>: A description of this date (0-1, optional)<br />
- * <u>ddms:approximableDate</u>: The value of this date, associated with an optional approximation decorator (0-1,
- * optional)<br />
- * <u>ddms:searchableDate/ddms:start</u>: The exact date which is the lower bound for this approximable date in searches
- * (0-1, optional)<br />
- * <u>ddms:searchableDate/ddms:end</u>: The exact date which is the upper bound for this approximable date in searches
- * (0-1, optional)<br />
+ * 		{@child.info ddms:description|0..1|00011}
+ * 		{@child.info ddms:approximableDate|0..1|00011}
+ * 		{@child.info ddms:searchableDate/ddms:start|0..1|00011}
+ * 		{@child.info ddms:searchableDate/ddms:end|0..1|00011}
  * {@table.footer}
- * 
  * {@table.header Attributes}
- * <u>ddms:approximableDate/ddms:approximation</u>: An attribute that decorates the approximableDate with terms such as
- * "early" or "late" (0-1, optional)<br />
+ * 		{@child.info ddms:approximableDate/@ddms:approximation|0..1|00011}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule If set, the ddms:approximableDate has a valid date format.|Error|11111}
+ * 		{@ddms.rule If set, the ddms:approximableDate/@ddms:approximation is a valid token.|Error|11111}
+ * 		{@ddms.rule If set, the ddms:searchableDate/ddms:start has a valid date format.|Error|11111}
+ * 		{@ddms.rule If set, the ddms:searchableDate/ddms:end has a valid date format.|Error|11111}
+ * 		{@ddms.rule This component can be used with no values set.|Warning|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -169,22 +170,12 @@ public final class ApproximableDate extends AbstractBaseComponent {
 		if (!NAME_TYPES.contains(name))
 			throw new InvalidDDMSException("The element name must be one of " + NAME_TYPES);
 	}
-
+	 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The name of the element has an appropriate value.</li>
-	 * <li>If the approximableDate exists, it is an acceptable date format.</li>
-	 * <li>If an approximation exists, it has an appropriate value.</li>
-	 * <li>If start exists, it is a valid date format.</li>
-	 * <li>If end exists, it is a valid date format.</li>
-	 * <li>This component cannot be used until DDMS 4.1 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
+		requireAtLeastVersion("4.1");
 		validateElementName(getName());
 		if (!Util.isEmpty(getApproximableDateString()))
 			Util.requireDDMSDateFormat(getApproximableDateString(), getNamespace());
@@ -195,20 +186,11 @@ public final class ApproximableDate extends AbstractBaseComponent {
 			Util.requireDDMSDateFormat(getSearchableStartString(), getNamespace());
 		if (!Util.isEmpty(getSearchableEndString()))
 			Util.requireDDMSDateFormat(getSearchableEndString(), getNamespace());
-
-		// Should be reviewed as additional versions of DDMS are supported.
-		requireAtLeastVersion("4.1");
-
 		super.validate();
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>A completely empty element was found.</li>
-	 * <li>A description element can be used without any child text, through DDMS 4.1.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getDescription())
@@ -218,8 +200,6 @@ public final class ApproximableDate extends AbstractBaseComponent {
 			&& Util.isEmpty(getSearchableEndString())) {
 			addWarning("A completely empty " + getQualifiedName() + " element was found.");
 		}
-		if (!getDDMSVersion().isAtLeast("5.0") && getChild(DESCRIPTION_NAME) != null && Util.isEmpty(getDescription()))
-			addWarning("A completely empty ddms:description element was found.");
 		super.validateWarnings();
 	}
 

@@ -35,18 +35,30 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of gml:pos.
+ * <br /><br />
+ * {@ddms.versions 11110}
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>A position must either have 2 coordinates (to comply with WGS84E_2D) or 3 coordinates (to comply with WGS84E_3D).
- * </li>
- * </ul>
+ * <p></p>
+ * 
+ *  {@table.header History}
+ * 		The GML profile was removed in favour of TSPI in DDMS 5.0.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>{@link SRSAttributes}</u>
+ * 		{@child.info &lt;<i>srsAttributes</i>&gt;|0..1|11110}
  * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule Each coordinate is a valid Double.|Error|11111}
+ * 		{@ddms.rule The position is represented by 2 or 3 coordinates (to comply with WGS84E_2D or WGS84E_3D).|Error|11111}
+ * 		{@ddms.rule The first coordinate is a valid latitude.|Error|11111}
+ * 		{@ddms.rule The second coordinate is a valid longitude.|Error|11111}
+ * 		{@ddms.rule Warnings from any SRS attributes are claimed by this component.|Warning|11111}
+ * 		<p>Does not perform any special validation on the third coordinate (height above ellipsoid).</p>
+ * {@table.footer}
+ * 
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -107,17 +119,6 @@ public final class Position extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>Each coordinate is a valid Double value.</li>
-	 * <li>The position is represented by 2 or 3 coordinates.</li>
-	 * <li>The first coordinate is a valid latitude.</li>
-	 * <li>The second coordinate is a valid longitude.</li>
-	 * <li>Does not perform any special validation on the third coordinate (height above ellipsoid).</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
@@ -128,16 +129,11 @@ public final class Position extends AbstractBaseComponent {
 			throw new InvalidDDMSException("A position must be represented by either 2 or 3 coordinates.");
 		Util.requireValidLatitude(getCoordinates().get(0));
 		Util.requireValidLongitude(getCoordinates().get(1));
-
 		super.validate();
-	}
+	} 
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>Include any validation warnings from the SRS attributes.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		addWarnings(getSRSAttributes().getValidationWarnings(), true);
