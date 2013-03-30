@@ -234,21 +234,6 @@ public class PersonTest extends AbstractBaseTestCase {
 			entityElement.appendChild(Util.buildDDMSElement("surname", ""));
 			getInstance("surname is required.", entityElement);
 
-			// Too many surnames
-			entityElement = Util.buildDDMSElement(personName, null);
-			entityElement.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
-			entityElement.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
-			entityElement.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
-			getInstance("Exactly 1 surname element must exist.", entityElement);
-
-			// Too many userIds
-			entityElement = Util.buildDDMSElement(personName, null);
-			entityElement.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
-			entityElement.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
-			entityElement.appendChild(Util.buildDDMSElement("userID", TEST_USERID));
-			entityElement.appendChild(Util.buildDDMSElement("userID", TEST_USERID));
-			getInstance("No more than 1 userID", entityElement);
-
 			// Too many affiliations
 			entityElement = Util.buildDDMSElement(personName, null);
 			entityElement.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
@@ -290,34 +275,11 @@ public class PersonTest extends AbstractBaseTestCase {
 
 	public void testWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion.setCurrentVersion(sVersion);
+			
 			// No warnings
 			Person component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
-
-			// Empty userID
-			if (!version.isAtLeast("5.0")) {
-				Element entityElement = Util.buildDDMSElement(Person.getName(version), null);
-				entityElement.appendChild(Util.buildDDMSElement("name", "name"));
-				entityElement.appendChild(Util.buildDDMSElement("surname", "name"));
-				entityElement.appendChild(Util.buildDDMSElement("userID", ""));
-				component = new Person(entityElement);
-				assertEquals(1, component.getValidationWarnings().size());
-				String text = "A ddms:userID element was found with no value.";
-				String locator = "ddms:" + Person.getName(version);
-				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-
-				// Empty affiliation
-				entityElement = Util.buildDDMSElement(Person.getName(version), null);
-				entityElement.appendChild(Util.buildDDMSElement("name", "name"));
-				entityElement.appendChild(Util.buildDDMSElement("surname", "name"));
-				entityElement.appendChild(Util.buildDDMSElement("affiliation", ""));
-				component = new Person(entityElement);
-				assertEquals(1, component.getValidationWarnings().size());
-				text = "A ddms:affiliation element was found with no value.";
-				locator = "ddms:" + Person.getName(version);
-				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-			}
 		}
 	}
 

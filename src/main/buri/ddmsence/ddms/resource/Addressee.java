@@ -30,16 +30,28 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:addressee.
+ * <br /><br />
+ * {@ddms.versions 00011}
  * 
- * {@table.header Nested Elements}
- * <u>ddms:organization</u>: The organization who is the addressee (0-1, optional), implemented as an
- * {@link Organization}<br />
- * <u>ddms:person</u>: the person who is the addressee (0-1, optional), implemented as a {@link Person}<br />
- * Only one of the nested entities can appear in an addressee element.
+ * <p></p>
+ * 
+ * {@table.header History}
+ * 		None.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		{@child.info ddms:organization|0..1|00011}
+ * 		{@child.info ddms:person|0..1|00011}
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
+ * 		{@child.info ism:classification|1|00011}
+ * 		{@child.info ism:ownerProducer|1..*|00011}
+ * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..*|00011}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule Exactly 1 producer entity fills this role.|Error|11111}
+ * 		{@ddms.rule ism:classification is required.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -68,20 +80,10 @@ public class Addressee extends AbstractTaskingRole {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>Only 0-1 persons or organizations exist.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractTaskingRole#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Addressee.getName(getDDMSVersion()));
-		Util.requireBoundedChildCount(getXOMElement(), Organization.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedChildCount(getXOMElement(), Person.getName(getDDMSVersion()), 0, 1);
 		super.validate();
 	}
 

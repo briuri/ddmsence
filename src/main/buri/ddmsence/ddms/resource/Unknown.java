@@ -34,32 +34,27 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of a ddms:unknown element.
+ * <br /><br />
+ * {@ddms.versions 01111}
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>At least 1 name value must be non-empty. A competing rule and loophole were established in DDMS 5.0.</li>
- * </ul>
+ * <p></p>
  * 
- * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
- * <ul>
- * <li>A phone number can be set with no value. This loophole goes away in DDMS 5.0.</li>
- * <li>An email can be set with no value. This loophole goes away in DDMS 5.0.</li>
- * </ul>
+ * {@table.header History}
+ * 		The name of this element was made lowercase in DDMS 4.0.1.
  * {@table.footer}
- * 
- * <p>The ddms:unknown element is new in DDMS 3.0. Attempts to use it with DDMS 2.0 will result in an
- * UnsupportedVersionException. Its name was changed from "Unknown" to "unknown" in DDMS 4.0.1.</p>
- * 
  * {@table.header Nested Elements}
- * <u>ddms:name</u>: names of the producer (1-many, at least 1 required)<br />
- * <u>ddms:phone</u>: phone numbers of the producer (0-many optional)<br />
- * <u>ddms:email</u>: email addresses of the producer (0-many optional)<br />
- * <u>ddms:affiliation</u>: organizational affiliation (0-many optional starting in DDMS 5.0)<br />
+ * 		{@child.info ddms:name|1..*|01111}
+ * 		{@child.info ddms:phone|0..*|01111}
+ * 		{@child.info ddms:email|0..*|01111}
+ * 		{@child.info ddms:affiliation|0..*|00001}
  * {@table.footer}
- * 
  * {@table.header Attributes}
- * <u>{@link ExtensibleAttributes}</u>: Custom attributes.
+ * 		{@child.info any:&lt;<i>otherAttributes</i>&gt;|0..*|01111}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ *  	{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule At least 1 ddms:name is required.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -124,22 +119,11 @@ public final class Unknown extends AbstractRoleEntity {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>This component cannot be used until DDMS 3.0 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractRoleEntity#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		Util.requireDDMSQName(getXOMElement(), Unknown.getName(getDDMSVersion()));
-
-		// Should be reviewed as additional versions of DDMS are supported.
 		requireAtLeastVersion("3.0");
-
+		Util.requireDDMSQName(getXOMElement(), Unknown.getName(getDDMSVersion()));
 		super.validate();
 	}
 

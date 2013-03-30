@@ -37,33 +37,29 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:organization.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>At least 1 name value must be non-empty. A competing rule and loophole were established in DDMS 5.0.</li>
- * </ul>
+ * <p></p>
  * 
- * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
- * <ul>
- * <li>A phone number can be set with no value. This loophole goes away in DDMS 5.0.</li>
- * <li>An email can be set with no value. This loophole goes away in DDMS 5.0.</li>
- * </ul>
+ * {@table.header History}
+ * 		The name of this element was made lowercase in DDMS 4.0.1.
  * {@table.footer}
- * 
- * <p>The name of this component was changed from "Organization" to "organization" in DDMS 4.0.1.</p>
- * 
  * {@table.header Nested Elements}
- * <u>ddms:name</u>: names of the producer entity (1-many, at least 1 required)<br />
- * <u>ddms:phone</u>: phone numbers of the producer entity (0-many optional)<br />
- * <u>ddms:email</u>: email addresses of the producer entity (0-many optional)<br />
- * <u>ddms:subOrganization</u>: suborganization (0-many optional, starting in DDMS 4.0.1), implemented as a
- * {@link SubOrganization}<br />
+ * 		{@child.info ddms:name|1..*|11111}
+ * 		{@child.info ddms:phone|0..*|11111}
+ * 		{@child.info ddms:email|0..*|11111}
+ * 		{@child.info ddms:subOrganization|0..*|00011}
  * {@table.footer}
- * 
  * {@table.header Attributes}
- * <u>ddms:acronym</u>: an acronym for the organization (optional, starting in DDMS 4.0.1)<br />
- * <u>{@link ExtensibleAttributes}</u>: Custom attributes (through DDMS 4.1)
+ * 		{@child.info ddms:acronym|0..1|00011}
+ * 		{@child.info any:&lt;<i>otherAttributes</i>&gt;|0..*|11110}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule At least 1 ddms:name is required.|Error|11111}
+ * 		{@ddms.rule ddms:acronym is not used before the DDMS version in which it was introduced.|Error|11111}
+ *		{@ddms.rule Extensible attributes not used after the DDMS version in which they were removed.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -141,29 +137,14 @@ public final class Organization extends AbstractRoleEntity {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>Acronyms cannot exist until DDMS 4.0.1 or later.</li>
-	 * <li>Extensible attributes cannot be used after DDMS 4.1.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractRoleEntity#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Organization.getName(getDDMSVersion()));
-
-		// Should be reviewed as additional versions of DDMS are supported.
-		if (!getDDMSVersion().isAtLeast("4.0.1")) {
-			if (!Util.isEmpty(getAcronym()))
-				throw new InvalidDDMSException("An organization cannot have an acronym until DDMS 4.0.1 or later.");
-		}
-
+		if (!getDDMSVersion().isAtLeast("4.0.1") && !Util.isEmpty(getAcronym()))
+			throw new InvalidDDMSException("An organization cannot have an acronym until DDMS 4.0.1 or later.");
 		if (getDDMSVersion().isAtLeast("5.0") && !getExtensibleAttributes().isEmpty())
 			throw new InvalidDDMSException("ddms:" + getName() + " cannot have extensible attributes after DDMS 4.1.");
-
 		super.validate();
 	}
 

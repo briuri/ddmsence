@@ -32,18 +32,26 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:pointOfContact.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * {@table.header Nested Elements}
- * <u>ddms:organization</u>: The organization who is in this role (0-1, optional), implemented as an
- * {@link Organization}<br />
- * <u>ddms:person</u>: the person who is in this role (0-1, optional), implemented as a {@link Person}<br />
- * <u>ddms:service</u>: The web service who is in this role (0-1, optional), implemented as a {@link Service}<br />
- * <u>ddms:unknown</u>: The unknown entity who is in this role (0-1, optional), implemented as an {@link Unknown}<br />
- * Only one of the nested entities can appear in this element.
+ * <p></p>
+ * 
+ * {@table.header History}
+ *  	None.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		{@child.info ddms:organization|0..1|11111}
+ * 		{@child.info ddms:person|0..1|11111}
+ * 		{@child.info ddms:service|0..1|11111}
+ * 		{@child.info ddms:unknown|0..1|01111}
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
+ * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..*|11111}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule Exactly 1 producer entity fills this role.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -74,14 +82,7 @@ public class PointOfContact extends AbstractProducerRole {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractProducerRole#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), PointOfContact.getName(getDDMSVersion()));

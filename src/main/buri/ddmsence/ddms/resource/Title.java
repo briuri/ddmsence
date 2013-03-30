@@ -30,16 +30,27 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:title.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>The title child text must not be empty. This rule is codified in the schema, starting in DDMS 5.0.</li>
- * </ul>
+ * <p></p>
+ * 
+ * {@table.header History}
+ *  	None.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
+ * 		{@child.info ism:classification|1|11111}
+ * 		{@child.info ism:ownerProducer|1..*|11111}
+ * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..*|11111}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule A title is required.|Error|11111}
+ * 		{@ddms.rule ism:classification is required.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -69,15 +80,6 @@ public final class Title extends AbstractSimpleString {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>The title exists and is not empty.</li>
-	 * <li>A classification is required.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {

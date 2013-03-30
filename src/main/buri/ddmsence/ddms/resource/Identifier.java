@@ -29,18 +29,26 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:identifier.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>A non-empty qualifier value is required.</li>
- * <li>A non-empty value attribute is required. This rule is codified in the schema, starting in DDMS 5.0.</li>
- * </ul>
+ * <p></p>
+ * 
+ *  {@table.header History}
+ * 		<p>Beginning in DDMS 4.0.1, a ddms:type element can contain child text. The intent of this text is to provide 
+ * 		further context when the ddms:type element references an IC activity.</p>
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ddms:qualifier</u>: a URI-based qualifier (required)<br />
- * <u>ddms:value</u>: an unambiguous reference to the resource (required)<br />
+ * 		{@child.info ddms:qualifier|1|11111}
+ * 		{@child.info ddms:value|1|11111}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule ddms:qualifier is required and must be a valid URI.|Error|11111}
+ * 		{@ddms.rule ddms:value is required.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -70,24 +78,13 @@ public final class Identifier extends AbstractQualifierValue {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>The qualifier exists and is not empty.</li>
-	 * <li>The value exists and is not empty.</li>
-	 * <li>The qualifier is a valid URI.</li>
-	 * <li>Does NOT validate that the value is valid against the qualifier's vocabulary.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Identifier.getName(getDDMSVersion()));
 		Util.requireDDMSValue("qualifier attribute", getQualifier());
-		Util.requireDDMSValue("value attribute", getValue());
 		Util.requireDDMSValidURI(getQualifier());
+		Util.requireDDMSValue("value attribute", getValue());
 		super.validate();
 	}
 

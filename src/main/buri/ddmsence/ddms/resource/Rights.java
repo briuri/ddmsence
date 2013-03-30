@@ -30,11 +30,24 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:rights.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
+ * <p></p>
+ * 
+ * {@table.header History}
+ * 		None.
+ * {@table.footer}
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ddms:privacyAct</u>: protected by the Privacy Act (optional, default=false).<br />
- * <u>ddms:intellectualProperty</u>: has an intellectual property rights owner (optional, default=false)<br />
- * <u>ddms:copyright</u>: has a copyright owner (optional, default=false)<br />
+ * 		{@child.info ddms:privacyAct|0..1|11111}
+ * 		{@child.info ddms:intellectualProperty|0..1|11111}
+ * 		{@child.info ddms:copyright|0..1|11111}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -74,14 +87,7 @@ public final class Rights extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Rights.getName(getDDMSVersion()));
