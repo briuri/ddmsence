@@ -42,24 +42,31 @@ import buri.ddmsence.util.Util;
 
 /**
  * Base class for DDMS producer elements, such as ddms:creator and ddms:contributor.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
  * <p>
  * Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set before
  * the component is used.
  * </p>
  * 
- * {@table.header Nested Elements}
- * <u>ddms:organization</u>: The organization who is in this role (0-1, optional)<br />
- * <u>ddms:person</u>: the person who is in this role (0-1, optional)<br />
- * <u>ddms:service</u>: The web service who is in this role (0-1, optional)<br />
- * <u>ddms:unknown</u>: The unknown entity who is in this role (0-1, optional)<br />
- * Only one of the nested entities can appear in this element.
+ * {@table.header History}
+ *  	None.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		{@child.info ddms:organization|0..1|11111}
+ * 		{@child.info ddms:person|0..1|11111}
+ * 		{@child.info ddms:service|0..1|11111}
+ * 		{@child.info ddms:unknown|0..1|01111}
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ISM:pocType</u>: Indicates that the element specifies a point-of-contact (POC) and the methods with which
- * to contact them (optional, starting in DDMS 4.0.1.1).<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
+ * 		{@child.info ism:pocType|0..*|00011}
+ * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..1|11111}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Exactly 1 producer entity fills this role.|Error|11111}
+ * 		{@ddms.rule ism:pocType is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule If set, ism:pocType contains valid tokens.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -137,17 +144,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>A producer entity exists.</li>
-	 * <li>Only 0-1 persons, organizations, services, or unknowns exist.</li>
-	 * <li>The pocType cannot be used before DDMS 4.0.1.</li>
-	 * <li>If set, the pocTypes must each be a valid token.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSValue("entity", getEntity());
@@ -155,16 +152,11 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		Util.requireBoundedChildCount(getXOMElement(), Person.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), Service.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), Unknown.getName(getDDMSVersion()), 0, 1);
-
-		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0.1") && !getPocTypes().isEmpty()) {
 			throw new InvalidDDMSException("This component cannot have a pocType until DDMS 4.0.1 or later.");
 		}
-		if (getDDMSVersion().isAtLeast("4.0.1")) {
-			for (String pocType : getPocTypes())
-				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_POC_TYPE, pocType);
-		}
-
+		for (String pocType : getPocTypes())
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_POC_TYPE, pocType);
 		super.validate();
 	}
 

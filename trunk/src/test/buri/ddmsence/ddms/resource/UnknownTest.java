@@ -196,12 +196,12 @@ public class UnknownTest extends AbstractBaseTestCase {
 
 			// Missing name
 			Element element = Util.buildDDMSElement(Unknown.getName(version), null);
-			getInstance("At least 1 name element must exist.", element);
+			getInstance("At least 1 name element must", element);
 
 			// Empty name
 			element = Util.buildDDMSElement(Unknown.getName(version), null);
 			element.appendChild(Util.buildDDMSElement("name", ""));
-			getInstance("At least 1 name element must have a non-empty value.", element);
+			getInstance("At least 1 name element must", element);
 		}
 	}
 
@@ -210,12 +210,12 @@ public class UnknownTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing name
-			getInstance("At least 1 name element must exist.", null, TEST_PHONES, TEST_EMAILS, getAffiliations());
+			getInstance("At least 1 name element must", null, TEST_PHONES, TEST_EMAILS, getAffiliations());
 
 			// Empty name
 			List<String> names = new ArrayList<String>();
 			names.add("");
-			getInstance("At least 1 name element must have a non-empty value.", names, TEST_PHONES, TEST_EMAILS,
+			getInstance("At least 1 name element must", names, TEST_PHONES, TEST_EMAILS,
 				getAffiliations());
 		}
 	}
@@ -341,7 +341,7 @@ public class UnknownTest extends AbstractBaseTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "At least 1 name element must exist.");
+				expectMessage(e, "At least 1 name element must");
 			}
 			builder.setNames(TEST_NAMES);
 			builder.commit();

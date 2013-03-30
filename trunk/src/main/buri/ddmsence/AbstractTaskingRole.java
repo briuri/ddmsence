@@ -35,22 +35,32 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * Base class for DDMS tasking role elements, including ddms:requesterInfo and ddms:addressee.
+ * Base class for DDMS tasking role elements, including {@link RequesterInfo} and {@link Addressee}.
+ * <br /><br />
+ * {@ddms.versions 00011}
  * 
  * <p>
  * Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set before
  * the component is used.
  * </p>
  * 
- * {@table.header Nested Elements}
- * <u>ddms:organization</u>: The organization who is the addressee (0-1, optional), implemented as an
- * {@link Organization}<br />
- * <u>ddms:person</u>: the person who is the addressee (0-1, optional), implemented as a {@link Person}<br />
- * Only one of the nested entities can appear.
+ *  {@table.header History}
+ * 		None.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		{@child.info ddms:organization|0..1|00011}
+ * 		{@child.info ddms:person|0..1|00011}
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
+ * 		{@child.info ism:classification|1|00011}
+ * 		{@child.info ism:ownerProducer|1|00011}
+ * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..1|00011}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule Exactly 1 producer entity fills this role.|Error|11111}
+ * 		{@ddms.rule ism:classification is required.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -111,30 +121,17 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The entity exists and is either a Person or an Organization.</li>
-	 * <li>A classification is required.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
-	 * {@table.footer}
-	 * 
-	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
+		requireAtLeastVersion("4.0.1");
 		Util.requireDDMSValue("entity", getEntity());
 		if (!(getEntity() instanceof Organization) && !(getEntity() instanceof Person)) {
 			throw new InvalidDDMSException("The entity must be a person or an organization.");
 		}
 		Util.requireBoundedChildCount(getXOMElement(), Organization.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), Person.getName(getDDMSVersion()), 0, 1);
-		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
-
-		// Should be reviewed as additional versions of DDMS are supported.
-		requireAtLeastVersion("4.0.1");
-
 		super.validate();
 	}
 

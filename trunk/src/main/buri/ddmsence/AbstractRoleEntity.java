@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.List;
 
 import nu.xom.Element;
-import nu.xom.Elements;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IRoleEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -34,14 +33,29 @@ import buri.ddmsence.util.Util;
 
 /**
  * Base class for entities which fulfill some role, such as ddms:person and ddms:organization.
- * 
- * <p> The HTML output of this class depends on the role type which the entity is associated with. For
- * example, if this entity's role is a "pointOfContact", the HTML meta tags will prefix each
- * field with "pointOfContact."</p>
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
  * <p>Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set
  * before the component is used. </p>
  * 
+ * {@table.header History}
+ *  	None.
+ * {@table.footer}
+ * {@table.header Nested Elements}
+ * 		{@child.info ddms:name|1..*|11111}
+ * 		{@child.info ddms:phone|0..*|11111}
+ * 		{@child.info ddms:email|0..*|11111}
+ * {@table.footer}
+ * {@table.header Attributes}
+ * 		{@child.info any:&lt;<i>otherAttributes</i>&gt;|0..*|11111}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule At least 1 name is required.|Error|11111}
+ * 		{@ddms.rule A phone is empty.|Warning|11111}
+ * 		{@ddms.rule An email is empty.|Warning|11111}
+ * {@table.footer}
+ *  
  * @author Brian Uri!
  * @since 2.0.0
  */
@@ -113,50 +127,22 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The entity has at least 1 non-empty name.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		if (getXOMElement().getChildElements(NAME_NAME, getNamespace()).size() == 0)
-			throw new InvalidDDMSException("At least 1 name element must exist.");
-
 		if (Util.containsOnlyEmptyValues(getNames()))
 			throw new InvalidDDMSException("At least 1 name element must have a non-empty value.");
-
 		super.validate();
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>A ddms:phone element was found with no value, through DDMS 4.1.</li>
-	 * <li>A ddms:email element was found with no value, through DDMS 4.1.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
-		if (!getDDMSVersion().isAtLeast("5.0")) {
-			Elements phoneElements = getXOMElement().getChildElements(PHONE_NAME, getNamespace());
-			for (int i = 0; i < phoneElements.size(); i++) {
-				if (Util.isEmpty(phoneElements.get(i).getValue())) {
-					addWarning("A ddms:phone element was found with no value.");
-					break;
-				}
-			}
-			Elements emailElements = getXOMElement().getChildElements(EMAIL_NAME, getNamespace());
-			for (int i = 0; i < emailElements.size(); i++) {
-				if (Util.isEmpty(emailElements.get(i).getValue())) {
-					addWarning("A ddms:email element was found with no value.");
-					break;
-				}
-			}
-		}
+		if (!getPhones().isEmpty() && Util.containsOnlyEmptyValues(getPhones()))
+			addWarning("A ddms:phone element was found with no value.");
+		if (!getEmails().isEmpty() && Util.containsOnlyEmptyValues(getEmails()))
+			addWarning("A ddms:email element was found with no value.");
 		super.validateWarnings();
 	}
 

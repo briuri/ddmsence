@@ -28,12 +28,29 @@ import buri.ddmsence.util.Util;
 
 /**
  * Base class for DDMS elements which have a qualifier/value attribute, such as ddms:Identifier and ddms:source.
- * 
- * <p>In DDMS 5.0, ddms:countryCode and ddms:subdivisionCode have new attribute names, codespace/code. These are
- * treated as aliases to qualifier/value.</p>
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
  * <p> Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set
  * before the component is used. </p>
+ * 
+ *  {@table.header History}
+ * 		<p>In DDMS 5.0, {@link CountryCode} and {@link SubDivisionCode} have different attribute names (codespace
+ * 		instead of qualifier, and code instead of value). This class was updated to allow either pairing of 
+ * 		attribute names. while maintaining the same accessor names.</p>
+ * {@table.footer}
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
+ * {@table.header Attributes}
+ * 		{@child.info ddms:qualifier|0..1|11111}
+ * 		{@child.info ddms:value|0..1|11111}
+ * 		{@child.info ddms:codespace|0..1|00001}
+ * 		{@child.info ddms:code|0..1|00001}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		No rules are validated at this level. Extending classes may have additional rules.
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
