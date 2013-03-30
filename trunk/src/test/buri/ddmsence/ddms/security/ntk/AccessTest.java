@@ -144,23 +144,23 @@ public class AccessTest extends AbstractBaseTestCase {
 		if (version.isAtLeast("4.1")) {
 			xml.append("ntk:externalReference=\"true\" ");
 		}
-		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
+		xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">\n");
 		xml.append("\t<ntk:AccessIndividualList>\n");
-		xml.append("\t\t<ntk:AccessIndividual ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-		xml.append("\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
-		xml.append("\t\t\t<ntk:AccessIndividualValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">user_2321889:Doe_John_H</ntk:AccessIndividualValue>\n");
+		xml.append("\t\t<ntk:AccessIndividual ism:classification=\"U\" ism:ownerProducer=\"USA\">\n");
+		xml.append("\t\t\t<ntk:AccessSystemName ism:classification=\"U\" ism:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
+		xml.append("\t\t\t<ntk:AccessIndividualValue ism:classification=\"U\" ism:ownerProducer=\"USA\">user_2321889:Doe_John_H</ntk:AccessIndividualValue>\n");
 		xml.append("\t\t</ntk:AccessIndividual>\n");
 		xml.append("\t</ntk:AccessIndividualList>\n");
 		xml.append("\t<ntk:AccessGroupList>\n");
-		xml.append("\t\t<ntk:AccessGroup ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-		xml.append("\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
-		xml.append("\t\t\t<ntk:AccessGroupValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">WISE/RODCA</ntk:AccessGroupValue>\n");
+		xml.append("\t\t<ntk:AccessGroup ism:classification=\"U\" ism:ownerProducer=\"USA\">\n");
+		xml.append("\t\t\t<ntk:AccessSystemName ism:classification=\"U\" ism:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
+		xml.append("\t\t\t<ntk:AccessGroupValue ism:classification=\"U\" ism:ownerProducer=\"USA\">WISE/RODCA</ntk:AccessGroupValue>\n");
 		xml.append("\t\t</ntk:AccessGroup>\n");
 		xml.append("\t</ntk:AccessGroupList>\n");
-		xml.append("\t<ntk:AccessProfileList ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-		xml.append("\t\t<ntk:AccessProfile ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-		xml.append("\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
-		xml.append("\t\t\t<ntk:AccessProfileValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ntk:vocabulary=\"vocabulary\">profile</ntk:AccessProfileValue>\n");
+		xml.append("\t<ntk:AccessProfileList ism:classification=\"U\" ism:ownerProducer=\"USA\">\n");
+		xml.append("\t\t<ntk:AccessProfile ism:classification=\"U\" ism:ownerProducer=\"USA\">\n");
+		xml.append("\t\t\t<ntk:AccessSystemName ism:classification=\"U\" ism:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
+		xml.append("\t\t\t<ntk:AccessProfileValue ism:classification=\"U\" ism:ownerProducer=\"USA\" ntk:vocabulary=\"vocabulary\">profile</ntk:AccessProfileValue>\n");
 		xml.append("\t\t</ntk:AccessProfile>\n");
 		xml.append("\t</ntk:AccessProfileList>\n");
 		xml.append("</ntk:Access>");

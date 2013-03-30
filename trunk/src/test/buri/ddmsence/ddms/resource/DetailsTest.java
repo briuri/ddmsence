@@ -152,7 +152,7 @@ public class DetailsTest extends AbstractBaseTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:details ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(
-			" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+			" ism:classification=\"U\" ism:ownerProducer=\"USA\">");
 		xml.append(TEST_VALUE).append("</ddms:details>");
 		return (xml.toString());
 	}

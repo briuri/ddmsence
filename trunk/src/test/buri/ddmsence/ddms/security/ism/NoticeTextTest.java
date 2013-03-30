@@ -30,9 +30,9 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p> Tests related to ISM:NoticeText elements </p>
+ * <p> Tests related to ism:NoticeText elements </p>
  * 
- * <p> The valid instance of ISM:NoticeText is generated, rather than relying on the ISM schemas to validate an XML
+ * <p> The valid instance of ism:NoticeText is generated, rather than relying on the ISM schemas to validate an XML
  * file. </p>
  * 
  * @author Brian Uri!
@@ -148,9 +148,9 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ISM:NoticeText ").append(getXmlnsISM()).append(" ");
-		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"DoD-Dist-B\"");
-		xml.append(">").append(TEST_VALUE).append("</ISM:NoticeText>");
+		xml.append("<ism:NoticeText ").append(getXmlnsISM()).append(" ");
+		xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\" ism:pocType=\"DoD-Dist-B\"");
+		xml.append(">").append(TEST_VALUE).append("</ism:NoticeText>");
 		return (xml.toString());
 	}
 
@@ -235,8 +235,8 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 			SecurityAttributesTest.getFixture().addTo(element);
 			component = getInstance(SUCCESS, element);
 			assertEquals(1, component.getValidationWarnings().size());
-			String text = "An ISM:NoticeText element was found with no value.";
-			String locator = "ISM:NoticeText";
+			String text = "An ism:NoticeText element was found with no value.";
+			String locator = "ism:NoticeText";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}

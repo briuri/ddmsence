@@ -56,7 +56,7 @@ import buri.ddmsence.util.Util;
  * {@table.footer}
  * {@table.header Attributes}
  * 		{@child.info gml:id|1|11110}
- * 		{@child.info &lt;<i>srsAttributes</i>&gt;|0..1|11110}
+ * 		{@child.info &lt;<i>srsAttributes</i>&gt;|0..*|11110}
  * {@table.footer}
  * {@table.header Validation Rules}
  * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}

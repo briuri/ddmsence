@@ -18,7 +18,7 @@ import com.sun.tools.doclets.Taglet;
  * </p>
  * 
  * <p>
- * If there are fewer inputs than supported versions, the default for remaining slots will be 1.
+ * If there are fewer inputs than supported versions, the default for remaining slots will be the most recent value.
  * </p>
  * 
  * @author Brian Uri!
@@ -47,8 +47,8 @@ public class DDMSVersionTaglet extends AbstractInlineTaglet {
 		b.append("<table cellspacing=\"0\" class=\"versionChart\"><tr>\n");
 		b.append("<td class=\"versionChartHeader\">In DDMS</td>");
 		List<String> versions = DDMSVersion.getSupportedVersions();
+		char value = DEFAULT_VALUE;
 		for (int i = 0; i < versions.size(); i++) {
-			char value = DEFAULT_VALUE;
 			if (i < input.length())
 				value = input.charAt(i);
 			b.append("<td class=\"versionChart").append(value).append("\">");

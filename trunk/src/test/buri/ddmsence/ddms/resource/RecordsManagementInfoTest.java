@@ -130,7 +130,7 @@ public class RecordsManagementInfoTest extends AbstractBaseTestCase {
 		xml.append("\t\t</ddms:organization>\n");
 		xml.append("\t</ddms:recordKeeper>\n");
 		xml.append("\t<ddms:applicationSoftware ").append(getXmlnsISM());
-		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">IRM Generator 2L-9</ddms:applicationSoftware>\n");
+		xml.append(" ism:classification=\"U\" ism:ownerProducer=\"USA\">IRM Generator 2L-9</ddms:applicationSoftware>\n");
 		xml.append("</ddms:recordsManagementInfo>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}

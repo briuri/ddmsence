@@ -146,7 +146,7 @@ public class SubOrganizationTest extends AbstractBaseTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:subOrganization ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(
-			" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+			" ism:classification=\"U\" ism:ownerProducer=\"USA\">");
 		xml.append(TEST_VALUE);
 		xml.append("</ddms:subOrganization>");
 		return (xml.toString());

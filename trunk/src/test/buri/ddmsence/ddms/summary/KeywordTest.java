@@ -135,7 +135,7 @@ public class KeywordTest extends AbstractBaseTestCase {
 			xml.append(getXmlnsISM()).append(" ");
 		xml.append("ddms:value=\"").append(TEST_VALUE).append("\"");
 		if (version.isAtLeast("4.0.1"))
-			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
+			xml.append(" ism:classification=\"U\" ism:ownerProducer=\"USA\"");
 		xml.append(" />");
 		return (xml.toString());
 	}

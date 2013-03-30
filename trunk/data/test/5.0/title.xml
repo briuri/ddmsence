@@ -2,6 +2,6 @@
 <!-- Represents a single ddms:title element, for unit testing -->
 <ddms:title 
 	xmlns:ddms="urn:us:mil:ces:metadata:ddms:5"
-	xmlns:ISM="urn:us:gov:ic:ism"
-	ISM:classification="U"
-	ISM:ownerProducer="USA">DDMSence</ddms:title>
+	xmlns:ism="urn:us:gov:ic:ism"
+	ism:classification="U"
+	ism:ownerProducer="USA">DDMSence</ddms:title>

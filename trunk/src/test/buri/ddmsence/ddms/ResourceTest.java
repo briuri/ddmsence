@@ -511,30 +511,30 @@ public class ResourceTest extends AbstractBaseTestCase {
 			if (version.isAtLeast("4.0.1"))
 				xml.append(" ntk:DESVersion=\"").append(getNtkDESVersion()).append("\"");
 			if (version.isAtLeast("3.0"))
-				xml.append(" ISM:resourceElement=\"true\"");
+				xml.append(" ism:resourceElement=\"true\"");
 			// Adding DESVersion in DDMS 2.0 allows the namespace declaration to definitely be in the Resource element.
-			xml.append(" ISM:DESVersion=\"").append(getIsmDESVersion()).append("\"");
+			xml.append(" ism:DESVersion=\"").append(getIsmDESVersion()).append("\"");
 			if (version.isAtLeast("3.0"))
-				xml.append(" ISM:createDate=\"2010-01-21\"");
+				xml.append(" ism:createDate=\"2010-01-21\"");
 			if ("4.1".equals(version.getVersion())) {
-				xml.append(" ISM:noticeType=\"DoD-Dist-B\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
-				xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\"");
-				xml.append(" ISM:externalNotice=\"false\"");
+				xml.append(" ism:noticeType=\"DoD-Dist-B\" ism:noticeReason=\"noticeReason\" ism:noticeDate=\"2011-09-15\" ");
+				xml.append("ism:unregisteredNoticeType=\"unregisteredNoticeType\"");
+				xml.append(" ism:externalNotice=\"false\"");
 			}
 			if (version.isAtLeast("3.0"))
-				xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
+				xml.append(" ism:classification=\"U\" ism:ownerProducer=\"USA\"");
 		}
 		xml.append(">\n");
 		if (version.isAtLeast("4.0.1")) {
-			xml.append("\t<ddms:metacardInfo ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+			xml.append("\t<ddms:metacardInfo ism:classification=\"U\" ism:ownerProducer=\"USA\">");
 			xml.append("<ddms:identifier ddms:qualifier=\"URI\" ddms:value=\"urn:buri:ddmsence:testIdentifier\" />");
 			xml.append("<ddms:dates ddms:created=\"2003\" /><ddms:publisher><ddms:person><ddms:name>Brian</ddms:name>");
 			xml.append("<ddms:surname>Uri</ddms:surname></ddms:person></ddms:publisher></ddms:metacardInfo>\n");
 		}
 		xml.append("\t<ddms:identifier ddms:qualifier=\"URI\" ddms:value=\"urn:buri:ddmsence:testIdentifier\" />\n");
-		xml.append("\t<ddms:title ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DDMSence</ddms:title>\n");
-		xml.append("\t<ddms:subtitle ISM:classification=\"U\" ISM:ownerProducer=\"USA\">Version 0.1</ddms:subtitle>\n");
-		xml.append("\t<ddms:description ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("\t<ddms:title ism:classification=\"U\" ism:ownerProducer=\"USA\">DDMSence</ddms:title>\n");
+		xml.append("\t<ddms:subtitle ism:classification=\"U\" ism:ownerProducer=\"USA\">Version 0.1</ddms:subtitle>\n");
+		xml.append("\t<ddms:description ism:classification=\"U\" ism:ownerProducer=\"USA\">");
 		xml.append("A transformation service.</ddms:description>\n");
 		xml.append("\t<ddms:language ddms:qualifier=\"http://purl.org/dc/elements/1.1/language\" ");
 		xml.append("ddms:value=\"en\" />\n");
@@ -647,8 +647,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 			xml.append("\t</ddms:relatedResources>\n");
 		}
 		if (version.isAtLeast("4.0.1")) {
-			xml.append("\t<ddms:resourceManagement ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-			xml.append("<ddms:processingInfo ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ");
+			xml.append("\t<ddms:resourceManagement ism:classification=\"U\" ism:ownerProducer=\"USA\">");
+			xml.append("<ddms:processingInfo ism:classification=\"U\" ism:ownerProducer=\"USA\" ");
 			xml.append("ddms:dateProcessed=\"2011-08-19\">");
 			xml.append("XSLT Transformation to convert DDMS 2.0 to DDMS 3.1.</ddms:processingInfo>");
 			xml.append("</ddms:resourceManagement>\n");
@@ -656,8 +656,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 		if (!version.isAtLeast("5.0")) {
 			xml.append("\t<ddms:security ");
 			if (version.isAtLeast("3.0"))
-				xml.append("ISM:excludeFromRollup=\"true\" ");
-			xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\" />\n");
+				xml.append("ism:excludeFromRollup=\"true\" ");
+			xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\" />\n");
 		}
 		xml.append("</ddms:").append(Resource.getName(version)).append(">");
 		return (formatXml(xml.toString(), preserveFormatting));
@@ -808,7 +808,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 						String.valueOf(getNtkDESVersion()));
 				}
 				SecurityAttributesTest.getFixture().addTo(element);
-				getInstance("ISM:DESVersion is required.", element);
+				getInstance("ism:DESVersion is required.", element);
 
 				// desVersion not an integer
 				element = getResourceWithoutHeaderElement();
@@ -821,7 +821,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 						String.valueOf(getNtkDESVersion()));
 				}
 				SecurityAttributesTest.getFixture().addTo(element);
-				getInstance("ISM:DESVersion is required", element);
+				getInstance("ism:DESVersion is required", element);
 			}
 			if (version.isAtLeast("4.0.1") && !version.isAtLeast("5.0")) {
 				// NTK desVersion not an integer
@@ -1005,11 +1005,11 @@ public class ResourceTest extends AbstractBaseTestCase {
 					getResourceElement(), "2001", null, getIsmDESVersion(), getNtkDESVersion());
 
 				// Nonsensical createDate
-				getInstance("The ISM:createDate attribute is not in a valid date format.", TEST_NO_OPTIONAL_COMPONENTS,
+				getInstance("The ism:createDate attribute is not in a valid date format.", TEST_NO_OPTIONAL_COMPONENTS,
 					getResourceElement(), "notAnXmlDate", null, getIsmDESVersion(), getNtkDESVersion());
 
 				// Missing desVersion
-				getInstance("ISM:DESVersion is required.", TEST_NO_OPTIONAL_COMPONENTS, getResourceElement(),
+				getInstance("ism:DESVersion is required.", TEST_NO_OPTIONAL_COMPONENTS, getResourceElement(),
 					getCreateDate(), null, null, getNtkDESVersion());
 			}
 			if (version.isAtLeast("4.0.1") && !version.isAtLeast("5.0")) {
@@ -1074,7 +1074,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			// 4.1 ism:Notice used
 			if ("4.1".equals(sVersion)) {
 				assertEquals(1, component.getValidationWarnings().size());
-				String text = "The ISM:externalNotice attribute in this DDMS component";
+				String text = "The ism:externalNotice attribute in this DDMS component";
 				String locator = "ddms:resource";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
@@ -1093,7 +1093,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			assertEquals(countIndex + 1, component.getValidationWarnings().size());
 
 			if ("4.1".equals(sVersion)) {
-				String text = "The ISM:externalNotice attribute";
+				String text = "The ism:externalNotice attribute";
 				String locator = "ddms:resource";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
@@ -1113,7 +1113,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			assertEquals(countIndex + 1, component.getValidationWarnings().size());
 
 			if ("4.1".equals(sVersion)) {
-				text = "The ISM:externalNotice attribute";
+				text = "The ism:externalNotice attribute";
 				locator = "ddms:resource";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
@@ -1253,7 +1253,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		createComponents();
 		String ismPrefix = PropertyReader.getPrefix("ism");
 
-		// ISM:DESVersion in element
+		// ism:DESVersion in element
 		Element element = getResourceWithoutHeaderElement();
 		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, version.getIsmNamespace(),
 			String.valueOf(getIsmDESVersion()));
@@ -1262,7 +1262,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		assertTrue(component.getSecurityAttributes().isEmpty());
 		assertEquals(0, component.getExtensibleAttributes().getAttributes().size());
 
-		// ISM:classification in element
+		// ism:classification in element
 		element = getResourceWithoutHeaderElement();
 		Util.addAttribute(element, ismPrefix, SecurityAttributes.CLASSIFICATION_NAME, version.getIsmNamespace(), "U");
 		component = new Resource(element);
@@ -1282,9 +1282,9 @@ public class ResourceTest extends AbstractBaseTestCase {
 		createComponents();
 
 		// This can be a parameter or an extensible.
-		Attribute icAttribute = new Attribute("ISM:DESVersion", version.getIsmNamespace(), "2");
+		Attribute icAttribute = new Attribute("ism:DESVersion", version.getIsmNamespace(), "2");
 		// This can be a securityAttribute or an extensible.
-		Attribute secAttribute = new Attribute("ISM:classification", version.getIsmNamespace(), "U");
+		Attribute secAttribute = new Attribute("ism:classification", version.getIsmNamespace(), "U");
 		// This can be an extensible.
 		Attribute uniqueAttribute = new Attribute("ddmsence:confidence", "http://ddmsence.urizone.net/", "95");
 		List<Attribute> exAttr = new ArrayList<Attribute>();
@@ -1382,13 +1382,13 @@ public class ResourceTest extends AbstractBaseTestCase {
 			// IsmDESVersion in parameter AND extensible.
 			try {
 				List<Attribute> exAttr = new ArrayList<Attribute>();
-				exAttr.add(new Attribute("ISM:DESVersion", version.getIsmNamespace(), "2"));
+				exAttr.add(new Attribute("ism:DESVersion", version.getIsmNamespace(), "2"));
 				new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, getIsmDESVersion(), getNtkDESVersion(),
 					SecurityAttributesTest.getFixture(), null, new ExtensibleAttributes(exAttr));
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "The extensible attribute with the name, ISM:DESVersion");
+				expectMessage(e, "The extensible attribute with the name, ism:DESVersion");
 			}
 
 			// NtkDESVersion in parameter AND extensible.
@@ -1408,13 +1408,13 @@ public class ResourceTest extends AbstractBaseTestCase {
 			// classification in securityAttributes AND extensible.
 			try {
 				List<Attribute> exAttr = new ArrayList<Attribute>();
-				exAttr.add(new Attribute("ISM:classification", version.getIsmNamespace(), "U"));
+				exAttr.add(new Attribute("ism:classification", version.getIsmNamespace(), "U"));
 				new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, null, null,
 					SecurityAttributesTest.getFixture(), null, new ExtensibleAttributes(exAttr));
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "The extensible attribute with the name, ISM:classification");
+				expectMessage(e, "The extensible attribute with the name, ism:classification");
 			}
 		}
 	}
@@ -1514,7 +1514,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		SecurityAttributesTest.getFixture().addTo(element);
 		Resource resource = getInstance(SUCCESS, element);
 
-		// ISM:declassManualReview should not get picked up as an extensible attribute
+		// ism:declassManualReview should not get picked up as an extensible attribute
 		assertEquals(0, resource.getExtensibleAttributes().getAttributes().size());
 	}
 
@@ -1825,7 +1825,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			fail("Builder allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "nu.xom.ValidityException: cvc-attribute.4: The value '2' of attribute 'ISM:DESVersion'");
+			expectMessage(e, "nu.xom.ValidityException: cvc-attribute.4: The value '2' of attribute 'ism:DESVersion'");
 		}
 
 		// Adding 3.1-specific fields works

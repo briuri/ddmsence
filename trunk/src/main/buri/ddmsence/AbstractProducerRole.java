@@ -61,7 +61,7 @@ import buri.ddmsence.util.Util;
  * {@table.footer}
  * {@table.header Attributes}
  * 		{@child.info ism:pocType|0..*|00011}
- * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..1|11111}
+ * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..*|11111}
  * {@table.footer}
  * {@table.header Validation Rules}
  * 		{@ddms.rule Exactly 1 producer entity fills this role.|Error|11111}

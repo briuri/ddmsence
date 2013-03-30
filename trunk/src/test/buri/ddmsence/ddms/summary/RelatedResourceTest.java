@@ -148,7 +148,7 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			xml.append("<ddms:relatedResource ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
 			xml.append("ddms:relationship=\"http://purl.org/dc/terms/references\" ddms:direction=\"outbound\" ");
 			xml.append("ddms:qualifier=\"http://purl.org/dc/terms/URI\" ddms:value=\"http://en.wikipedia.org/wiki/Tank\" ");
-			xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
+			xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">\n");
 			xml.append("\t<ddms:link xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"locator\" ");
 			xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:label=\"tank\" />\n");
 			xml.append("</ddms:relatedResource>");
@@ -156,7 +156,7 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 		else {
 			xml.append("<ddms:relatedResources ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
 			xml.append("ddms:relationship=\"http://purl.org/dc/terms/references\" ddms:direction=\"outbound\" ");
-			xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
+			xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">\n");
 			xml.append("\t<ddms:RelatedResource ddms:qualifier=\"http://purl.org/dc/terms/URI\" ");
 			xml.append("ddms:value=\"http://en.wikipedia.org/wiki/Tank\">\n");
 			xml.append("\t\t<ddms:link xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"locator\" ");

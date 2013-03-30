@@ -147,7 +147,7 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:requesterInfo ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
-		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">");
 		xml.append("<ddms:organization><ddms:name>DISA</ddms:name></ddms:organization>");
 		xml.append("</ddms:requesterInfo>");
 		return (xml.toString());

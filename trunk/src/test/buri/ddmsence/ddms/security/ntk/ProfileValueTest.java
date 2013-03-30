@@ -147,7 +147,7 @@ public class ProfileValueTest extends AbstractBaseTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ntk:AccessProfileValue ").append(getXmlnsNTK()).append(" ").append(getXmlnsISM());
 		xml.append(" ntk:id=\"ID\" ntk:IDReference=\"ID\" ntk:qualifier=\"qualifier\"");
-		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ntk:vocabulary=\"vocabulary\">");
+		xml.append(" ism:classification=\"U\" ism:ownerProducer=\"USA\" ntk:vocabulary=\"vocabulary\">");
 		xml.append(TEST_VALUE).append("</ntk:AccessProfileValue>");
 		return (xml.toString());
 	}

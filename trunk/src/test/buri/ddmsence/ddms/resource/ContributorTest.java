@@ -127,8 +127,8 @@ public class ContributorTest extends AbstractBaseTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:contributor ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM());
 		if (version.isAtLeast("4.0.1"))
-			xml.append(" ISM:pocType=\"DoD-Dist-B\"");
-		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:").append(
+			xml.append(" ism:pocType=\"DoD-Dist-B\"");
+		xml.append(" ism:classification=\"U\" ism:ownerProducer=\"USA\">\n\t<ddms:").append(
 			Organization.getName(version)).append(">\n");
 		xml.append("\t\t<ddms:name>DISA</ddms:name>\n");
 		xml.append("\t</ddms:").append(Organization.getName(version)).append(">\n</ddms:contributor>");

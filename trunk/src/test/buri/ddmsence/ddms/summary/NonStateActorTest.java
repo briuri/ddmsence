@@ -158,7 +158,7 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:nonStateActor ").append(getXmlnsDDMS()).append(" ");
-		xml.append(getXmlnsISM()).append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ");
+		xml.append(getXmlnsISM()).append(" ism:classification=\"U\" ism:ownerProducer=\"USA\" ");
 		xml.append("ddms:order=\"").append(TEST_ORDER).append("\"");
 		if (version.isAtLeast("4.1"))
 			xml.append(" ddms:qualifier=\"").append(TEST_QUALIFIER).append("\"");

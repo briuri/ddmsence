@@ -191,7 +191,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:temporalCoverage ").append(getXmlnsDDMS());
 		if (version.isAtLeast("3.0"))
-			xml.append(" ").append(getXmlnsISM()).append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
+			xml.append(" ").append(getXmlnsISM()).append(" ism:classification=\"U\" ism:ownerProducer=\"USA\"");
 		xml.append(">");
 		if (!version.isAtLeast("4.0.1"))
 			xml.append("<ddms:TimePeriod>");

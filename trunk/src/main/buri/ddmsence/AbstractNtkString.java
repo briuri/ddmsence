@@ -50,8 +50,8 @@ import buri.ddmsence.util.Util;
  * 		{@child.info nkt:IDReference|0..1|00010}
  * 		{@child.info nkt:qualifier|0..1|00010}
  * 		{@child.info ism:classification|1|00010}
- * 		{@child.info ism:ownerProducer|1|00010}
- * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..1|00010}
+ * 		{@child.info ism:ownerProducer|1..*|00010}
+ * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..*|00010}
  * {@table.footer}
  * {@table.header Validation Rules}
  * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}

@@ -116,7 +116,7 @@ public class TitleTest extends AbstractBaseTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:title ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(
-			" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+			" ism:classification=\"U\" ism:ownerProducer=\"USA\">");
 		xml.append(TEST_VALUE).append("</ddms:title>");
 		return (xml.toString());
 	}

@@ -146,27 +146,27 @@ public class SecurityTest extends AbstractBaseTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:security ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
 		if (version.isAtLeast("3.0"))
-			xml.append("ISM:excludeFromRollup=\"true\" ");
-		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
+			xml.append("ism:excludeFromRollup=\"true\" ");
+		xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\"");
 		if (!version.isAtLeast("4.0.1"))
 			xml.append(" />");
 		else {
 			xml.append(">\n");
-			xml.append("\t<ddms:noticeList ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-			xml.append("\t\t<ISM:Notice ISM:noticeType=\"DoD-Dist-B\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ISM:unregisteredNoticeType=\"unregisteredNoticeType\"");
+			xml.append("\t<ddms:noticeList ism:classification=\"U\" ism:ownerProducer=\"USA\">\n");
+			xml.append("\t\t<ism:Notice ism:noticeType=\"DoD-Dist-B\" ism:noticeReason=\"noticeReason\" ism:noticeDate=\"2011-09-15\" ism:unregisteredNoticeType=\"unregisteredNoticeType\"");
 			if (version.isAtLeast("4.1")) {
-				xml.append(" ISM:externalNotice=\"false\"");
+				xml.append(" ism:externalNotice=\"false\"");
 			}
-			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-			xml.append("\t\t\t<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"DoD-Dist-B\">noticeText</ISM:NoticeText>\n");
-			xml.append("\t\t</ISM:Notice>\n");
+			xml.append(" ism:classification=\"U\" ism:ownerProducer=\"USA\">\n");
+			xml.append("\t\t\t<ism:NoticeText ism:classification=\"U\" ism:ownerProducer=\"USA\" ism:pocType=\"DoD-Dist-B\">noticeText</ism:NoticeText>\n");
+			xml.append("\t\t</ism:Notice>\n");
 			xml.append("\t</ddms:noticeList>\n");
 			if (!version.isAtLeast("5.0")) {
-				xml.append("\t<ntk:Access xmlns:ntk=\"urn:us:gov:ic:ntk\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
+				xml.append("\t<ntk:Access xmlns:ntk=\"urn:us:gov:ic:ntk\" ism:classification=\"U\" ism:ownerProducer=\"USA\">\n");
 				xml.append("\t\t<ntk:AccessIndividualList>\n");
-				xml.append("\t\t\t<ntk:AccessIndividual ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-				xml.append("\t\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
-				xml.append("\t\t\t\t<ntk:AccessIndividualValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+				xml.append("\t\t\t<ntk:AccessIndividual ism:classification=\"U\" ism:ownerProducer=\"USA\">\n");
+				xml.append("\t\t\t\t<ntk:AccessSystemName ism:classification=\"U\" ism:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
+				xml.append("\t\t\t\t<ntk:AccessIndividualValue ism:classification=\"U\" ism:ownerProducer=\"USA\">");
 				xml.append("user_2321889:Doe_John_H</ntk:AccessIndividualValue>\n");
 				xml.append("\t\t\t</ntk:AccessIndividual>\n");
 				xml.append("\t\t</ntk:AccessIndividualList>\n");
@@ -219,23 +219,23 @@ public class SecurityTest extends AbstractBaseTestCase {
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			// Missing excludeFromRollup
 			if (version.isAtLeast("3.0")) {
+				// Missing excludeFromRollup
 				Element element = Util.buildDDMSElement(Security.getName(version), null);
 				SecurityAttributesTest.getFixture().addTo(element);
-				getInstance("The excludeFromRollup attribute is required.", element);
+				getInstance("The excludeFromRollup attribute", element);
 
 				// Incorrect excludeFromRollup
 				element = Util.buildDDMSElement(Security.getName(version), null);
 				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup",
 					version.getIsmNamespace(), "false");
-				getInstance("The excludeFromRollup attribute must have a fixed value", element);
+				getInstance("The excludeFromRollup attribute", element);
 
 				// Invalid excludeFromRollup
 				element = Util.buildDDMSElement(Security.getName(version), null);
 				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup",
 					version.getIsmNamespace(), "aardvark");
-				getInstance("The excludeFromRollup attribute is required.", element);
+				getInstance("The excludeFromRollup attribute", element);
 			}
 		}
 	}
@@ -243,14 +243,8 @@ public class SecurityTest extends AbstractBaseTestCase {
 	public void testDataConstructorInvalid() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			// Bad security attributes
-			try {
-				new Security(null, null, null);
-				fail("Allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "security attributes is required.");
-			}
+
+			// No invalid cases.
 		}
 	}
 
@@ -260,11 +254,11 @@ public class SecurityTest extends AbstractBaseTestCase {
 
 			Security component = getInstance(SUCCESS, getValidElement(sVersion));
 
-			// 4.1 ISM:externalNotice used
+			// 4.1 ism:externalNotice used
 			if (version.isAtLeast("4.1")) {
 				assertEquals(1, component.getValidationWarnings().size());
-				String text = "The ISM:externalNotice attribute in this DDMS component";
-				String locator = "ddms:security/ddms:noticeList/ISM:Notice";
+				String text = "The ism:externalNotice attribute in this DDMS component";
+				String locator = "ddms:security/ddms:noticeList/ism:Notice";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
 			// No warnings

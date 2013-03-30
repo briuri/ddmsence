@@ -195,7 +195,7 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 				TEST_UNREGISTERED_NOTICE_TYPE, getExternalNotice());
 
 			// horribly invalid noticeDate
-			getInstance("The ISM:noticeDate attribute is not in a valid date format.", TEST_NOTICE_TYPE,
+			getInstance("The ism:noticeDate attribute is not in a valid date format.", TEST_NOTICE_TYPE,
 				TEST_NOTICE_REASON, "baboon", TEST_UNREGISTERED_NOTICE_TYPE, getExternalNotice());
 
 			// invalid noticeDate

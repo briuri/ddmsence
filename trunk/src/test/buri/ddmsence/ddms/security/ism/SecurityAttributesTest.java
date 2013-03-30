@@ -164,7 +164,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			return (new SecurityAttributes(TEST_CLASS, TEST_OWNERS, getOtherAttributes()));
 		}
 		catch (InvalidDDMSException e) {
-			fail("Could not create fixture: " + e.getMessage());
+			fail(DDMSVersion.getCurrentVersion() + "Could not create fixture: " + e.getMessage());
 		}
 		return (null);
 	}
@@ -332,7 +332,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 				SecurityAttributes.DECLASS_DATE_NAME, "2004"));
 
 			// nonsensical declassDate
-			getInstance("The ISM:declassDate attribute is not in a valid date format.", TEST_CLASS, TEST_OWNERS,
+			getInstance("The ism:declassDate attribute is not in a valid date format.", TEST_CLASS, TEST_OWNERS,
 				getOtherAttributes(SecurityAttributes.DECLASS_DATE_NAME, "notAnXmlDate"));
 
 			// invalid dateOfExemptedSource
@@ -342,7 +342,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 				SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2004"));
 
 			// nonsensical dateOfExemptedSource
-			getInstance("The ISM:dateOfExemptedSource attribute is not in a valid date format.", TEST_CLASS,
+			getInstance("The ism:dateOfExemptedSource attribute is not in a valid date format.", TEST_CLASS,
 				TEST_OWNERS, getOtherAttributes(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "notAnXmlDate"));
 		}
 	}

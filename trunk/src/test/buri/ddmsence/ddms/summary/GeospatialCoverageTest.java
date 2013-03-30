@@ -191,7 +191,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			xml.append(" ").append(getXmlnsISM()).append(" ");
 			if (version.isAtLeast("4.0.1"))
 				xml.append("ddms:precedence=\"Primary\" ddms:order=\"1\" ");
-			xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
+			xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\"");
 		}
 		xml.append(">\n\t");
 		if (version.isAtLeast("5.0")) {

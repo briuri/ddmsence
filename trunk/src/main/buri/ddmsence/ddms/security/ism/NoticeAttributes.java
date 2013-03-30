@@ -40,14 +40,33 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * Attribute group for the ISM notice markings used on a ddms:resource and ISM:Notice, starting in DDMS 4.0.1.
+ * Attribute group for the ISM notice markings used on a {@link Resource} and {@link Notice}.
+ * <br /><br />
+ * {@ddms.versions 00010}
  * 
+ * <p></p>
+ * 
+ * {@table.header History}
+ * 		<p>This class was introduced to support ISM notices in DDMS 4.1. Those components are
+ * 		no longer a part of DDMS 5.0.</p>
+ * {@table.footer}
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ISM:noticeType</u>: (optional)<br />
- * <u>ISM:noticeReason</u>: (optional)<br />
- * <u>ISM:noticeDate</u>: (optional)<br />
- * <u>ISM:unregisteredNoticeType</u>: (optional)<br />
- * <u>ISM:externalNotice</u>: (optional, starting in DDMS 4.1)<br />
+ * 		{@child.info ism:noticeType|0..1|00010}
+ * 		{@child.info ism:noticeReason|0..1|00010}
+ * 		{@child.info ism:noticeDate|0..1|00010}
+ * 		{@child.info ism:unregisteredNoticeType|0..1|00010}
+ * 		{@child.info ism:externalNotice|0..1|00010}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Attribute group is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule If set, ism:noticeType is a valid token.|Error|11111}
+ * 		{@ddms.rule If set, ism:noticeReason must be shorter than 2048 characters.|Error|11111}
+ * 		{@ddms.rule If set, ism:unregisteredNoticeType must be shorter than 2048 characters.|Error|11111}
+ * 		{@ddms.rule If set, ism:noticeDate is in a valid date format.|Error|11111}
+ * 		<p>Does NOT do any validation on the constraints described in the DES ISM specification.</p>
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -160,7 +179,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 				_noticeDate = getFactory().newXMLGregorianCalendar(noticeDate);
 			}
 			catch (IllegalArgumentException e) {
-				throw new InvalidDDMSException("The ISM:noticeDate attribute is not in a valid date format.");
+				throw new InvalidDDMSException("The ism:noticeDate attribute is not in a valid date format.");
 			}
 		}
 		_externalNotice = externalNotice;
@@ -215,24 +234,14 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	/**
 	 * Validates the attribute group. Where appropriate the {@link ISMVocabulary} enumerations are validated.
 	 * 
-	 * {@table.header Rules}
-	 * <li>If set, the noticeType attribute must be a valid token.</li>
-	 * <li>The noticeReason must be shorter than 2048 characters.</li>
-	 * <li>The unregisteredNoticeType must be shorter than 2048 characters.</li>
-	 * <li>If set, the noticeDate attribute is a valid xs:date value.</li>
-	 * <li>These attributes cannot be used until DDMS 4.0.1 or later.</li>
-	 * <li>These attributes cannot be used after DDMS 4.1.</li>
-	 * <li>The externalNotice attribute cannot be used until DDMS 4.1 or later.</li>
-	 * <li>Does NOT do any validation on the constraints described in the DES ISM specification.</li>
-	 * {@table.footer}
-	 * 
 	 * @param version the DDMS version to validate against. This cannot be stored in the attribute group because some
 	 *        DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate(DDMSVersion version) throws InvalidDDMSException {
-		// Should be reviewed as additional versions of DDMS are supported.
-		if (version.isAtLeast("4.0.1") && !Util.isEmpty(getNoticeType()))
+		if (!version.isAtLeast("4.0.1") && !isEmpty())
+			throw new InvalidDDMSException("Notice attributes cannot be used until DDMS 4.0.1 or later.");
+		if (!Util.isEmpty(getNoticeType()))
 			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_NOTICE_TYPE, getNoticeType());
 		if (!Util.isEmpty(getNoticeReason()) && getNoticeReason().length() > MAX_LENGTH)
 			throw new InvalidDDMSException("The noticeReason attribute must be shorter than " + MAX_LENGTH
@@ -242,9 +251,6 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 				+ " characters.");
 		if (getNoticeDate() != null && !getNoticeDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
 			throw new InvalidDDMSException("The noticeDate attribute must be in the xs:date format (YYYY-MM-DD).");
-		if (!version.isAtLeast("4.0.1") && !isEmpty())
-			throw new InvalidDDMSException("Notice attributes cannot be used until DDMS 4.0.1 or later.");
-
 		super.validate(version);
 	}
 

@@ -131,15 +131,15 @@ import buri.ddmsence.util.Util;
  * {@table.footer}
  * 
  * {@table.header Attributes}
- * <u>ISM:resourceElement</u>: Identifies whether this tag sets the classification for the xml file as a whole
+ * <u>ism:resourceElement</u>: Identifies whether this tag sets the classification for the xml file as a whole
  * (required, starting in DDMS 3.0, ending in DDMS 4.1)<br />
- * <u>ISM:createDate</u>: Specifies the creation or latest modification date (YYYY-MM-DD) (required, starting in
+ * <u>ism:createDate</u>: Specifies the creation or latest modification date (YYYY-MM-DD) (required, starting in
  * DDMS 3.0, ending in DDMS 4.1)<br />
- * <u>ISM:DESVersion</u>: Specifies the version of the Data Encoding Specification used for the security
+ * <u>ism:DESVersion</u>: Specifies the version of the Data Encoding Specification used for the security
  * markings on this record. (required, starting in DDMS 3.0, ending in DDMS 4.1)<br />
  * <u>ntk:DESVersion</u>: Specifies the version of the Data Encoding Specification used for Need-To-Know markings
  * on this record. (required, starting in DDMS 4.0.1 with a fixed value, ending in DDMS 4.1)<br />
- * <u>ISM:compliesWith</u>: Specifies the rulesets for this document (optional, starting in DDMS 3.1 and ending in DDMS 4.1)<br />
+ * <u>ism:compliesWith</u>: Specifies the rulesets for this document (optional, starting in DDMS 3.1 and ending in DDMS 4.1)<br />
  * <u>ddms:compliesWith</u>: Specifies the rulesets for this document (optional, starting in DDMS 5.0)<br />  
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required. (starting in DDMS
  * 3.0, ending in DDMS 4.1)<br />
@@ -520,7 +520,7 @@ public final class Resource extends AbstractBaseComponent {
 					_createDate = getFactory().newXMLGregorianCalendar(createDate);
 				}
 				catch (IllegalArgumentException e) {
-					throw new InvalidDDMSException("The ISM:createDate attribute is not in a valid date format.");
+					throw new InvalidDDMSException("The ism:createDate attribute is not in a valid date format.");
 				}
 				Util.addAttribute(element, ismPrefix, CREATE_DATE_NAME, version.getIsmNamespace(),
 					getCreateDate().toXMLFormat());
@@ -758,7 +758,7 @@ public final class Resource extends AbstractBaseComponent {
 		if (getDDMSVersion().isAtLeast("3.0") && !getDDMSVersion().isAtLeast("5.0")) {
 			Util.requireDDMSValue(RESOURCE_ELEMENT_NAME, isResourceElement());
 			Util.requireDDMSValue(CREATE_DATE_NAME, getCreateDate());
-			Util.requireDDMSValue("ISM:" + DES_VERSION_NAME, getIsmDESVersion());
+			Util.requireDDMSValue("ism:" + DES_VERSION_NAME, getIsmDESVersion());
 			Util.requireDDMSValue("security attributes", getSecurityAttributes());
 			getSecurityAttributes().requireClassification();
 			if (!getCreateDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
@@ -816,7 +816,7 @@ public final class Resource extends AbstractBaseComponent {
 		if (!getDDMSVersion().isAtLeast("5.0") && !getNoticeAttributes().isEmpty()) {
 			addWarnings(getNoticeAttributes().getValidationWarnings(), true);
 			if (getNoticeAttributes().isExternalReference() != null)
-				addDdms40Warning("ISM:externalNotice attribute");
+				addDdms40Warning("ism:externalNotice attribute");
 		}
 		super.validateWarnings();
 	}
