@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.List;
 
 import nu.xom.Element;
-import nu.xom.Elements;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractRoleEntity;
 import buri.ddmsence.ddms.IBuilder;
@@ -35,37 +34,32 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:person.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>At least 1 name value must be non-empty. A competing rule and loophole were established in DDMS 5.0.</li>
- * <li>The surname must be non-empty. A competing rule and loophole were established in DDMS 5.0.</li>
- * </ul>
+ * <p></p>
  * 
- * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
- * <ul>
- * <li>A phone number can be set with no value. This loophole goes away in DDMS 5.0.</li>
- * <li>An email can be set with no value. This loophole goes away in DDMS 5.0.</li>
- * <li>A userID can be set with no value. This loophole goes away in DDMS 5.0.</li>
- * <li>An affiliation can be set with no value. This loophole goes away in DDMS 5.0.</li>
- * </ul>
+ * {@table.header History}
+ * 		The name of this element was made lowercase in DDMS 4.0.1.
  * {@table.footer}
- * 
- * <p>The name of this component was changed from "Person" to "person" in DDMS 4.0.1.</p>
- * 
  * {@table.header Nested Elements}
- * <u>ddms:name</u>: names of the producer (1-many, at least 1 required)<br />
- * <u>ddms:surname</u>: surname of the producer (exactly 1 required)<br />
- * <u>ddms:userID</u>: userId of the producer (0-1 optional)<br />
- * <u>ddms:affiliation</u>: organizational affiliation (0-1 optional through DDMS 4.x, 0-many optional starting
- * in DDMS 5.0)<br />
- * <u>ddms:phone</u>: phone numbers of the producer (0-many optional)<br />
- * <u>ddms:email</u>: email addresses of the producer (0-many optional)<br />
+ * 		{@child.info ddms:name|1..*|11111}
+ * 		{@child.info ddms:phone|0..*|11111}
+ * 		{@child.info ddms:email|0..*|11111}
+ * 		{@child.info ddms:affiliation|0..1|11110}
+ * 		{@child.info ddms:affiliation|0..*|00001}
+ * 		{@child.info ddms:surname|1|11111}
+ * 		{@child.info ddms:userId|0..1|11111}
  * {@table.footer}
- * 
  * {@table.header Attributes}
- * <u>{@link ExtensibleAttributes}</u>: Custom attributes (through DDMS 3.1).
+ * 		{@child.info any:&lt;<i>otherAttributes</i>&gt;|0..*|11100}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule At least 1 ddms:name is required.|Error|11111}
+ * 		{@ddms.rule A ddms:surname is required.|Error|11111}
+ * 		{@ddms.rule ddms:affiliation cannot have multiple values before DDMS 5.0.|Error|11111}
+ *		{@ddms.rule Extensible attributes not used after the DDMS version in which they were removed.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -165,56 +159,16 @@ public final class Person extends AbstractRoleEntity {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>Surname exists and is not empty.</li>
-	 * <li>Exactly 1 surname, and 0-1 userIDs exist.</li>
-	 * <li>Exactly 0-1 affiliations exist, through DDMS 4.1.</li>
-	 * <li>Extensible attributes cannot be used after DDMS 3.1.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractRoleEntity#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Person.getName(getDDMSVersion()));
 		Util.requireDDMSValue(SURNAME_NAME, getSurname());
-		Util.requireBoundedChildCount(getXOMElement(), SURNAME_NAME, 1, 1);
-		Util.requireBoundedChildCount(getXOMElement(), USERID_NAME, 0, 1);
 		if (!getDDMSVersion().isAtLeast("5.0"))
 			Util.requireBoundedChildCount(getXOMElement(), AFFILIATION_NAME, 0, 1);
-
 		if (getDDMSVersion().isAtLeast("4.0.1") && !getExtensibleAttributes().isEmpty())
 			throw new InvalidDDMSException("ddms:" + getName() + " cannot have extensible attributes after DDMS 3.1.");
-
 		super.validate();
-	}
-
-	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>A ddms:userID element was found with no value, through DDMS 4.1.</li>
-	 * <li>A ddms:affiliation element was found with no value, through DDMS 4.1.</li>
-	 * {@table.footer}
-	 */
-	protected void validateWarnings() {
-		if (!getDDMSVersion().isAtLeast("5.0") && Util.isEmpty(getUserID())
-			&& getXOMElement().getChildElements(USERID_NAME, getNamespace()).size() == 1)
-			addWarning("A ddms:userID element was found with no value.");
-		if (!getDDMSVersion().isAtLeast("5.0")) {
-			Elements affiliationElements = getXOMElement().getChildElements(AFFILIATION_NAME, getNamespace());
-			for (int i = 0; i < affiliationElements.size(); i++) {
-				if (Util.isEmpty(affiliationElements.get(i).getValue())) {
-					addWarning("A ddms:affiliation element was found with no value.");
-					break;
-				}
-			}
-		}
-
-		super.validateWarnings();
 	}
 
 	/**

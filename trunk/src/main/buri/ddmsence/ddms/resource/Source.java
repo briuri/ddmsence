@@ -30,22 +30,31 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:source.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * {@table.header Strictness}
- * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
- * <ul>
- * <li>A source element can be used with none of the attributes set.</li>
- * </ul>
+ * <p></p>
+ * 
+ * {@table.header History}
+ * 		None.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ddms:qualifier</u>: specifies the source of the type vocabulary (optional)<br />
- * <u>ddms:value</u>: includes terms describing general categories, functions, genres, or aggregation levels
- * (optional)<br />
- * <u>ddms:schemaQualifier</u>: the schema type (optional)<br />
- * <u>ddms:schemaHref</u>: a resolvable reference to the schema (optional)<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting
- * in DDMS 3.0)
+ * 		{@child.info ddms:qualifier|0..1|11111}
+ * 		{@child.info ddms:value|0..1|11111}
+ * 		{@child.info ddms:schemaQualifier|0..1|11111}
+ * 		{@child.info ddms:schemaHref|0..1|11111}
+ * 		{@child.info ddms:value|0..1|11111}
+ * 		{@child.info ddms:value|0..1|11111}
+ * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..*|01111}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule If set, ddms:schemaHref is a valid URI.|Error|11111}
+ * 		{@ddms.rule ISM attributes are not used before the DDMS version in which they were introduced.|Error|11111}
+ * 		{@ddms.rule This component can be used with no values set.|Warning|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -104,37 +113,22 @@ public final class Source extends AbstractQualifierValue {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>If a schemaHref is present, it is a valid URI.</li>
-	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Source.getName(getDDMSVersion()));
 		if (!Util.isEmpty(getSchemaHref())) {
 			Util.requireDDMSValidURI(getSchemaHref());
 		}
-		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException(
 				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
-
 		super.validate();
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>A completely empty ddms:source element was found.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()) && Util.isEmpty(getSchemaQualifier())

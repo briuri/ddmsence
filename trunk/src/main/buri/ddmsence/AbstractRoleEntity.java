@@ -51,9 +51,7 @@ import buri.ddmsence.util.Util;
  * 		{@child.info any:&lt;<i>otherAttributes</i>&gt;|0..*|11111}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule At least 1 name is required.|Error|11111}
- * 		{@ddms.rule A phone is empty.|Warning|11111}
- * 		{@ddms.rule An email is empty.|Warning|11111}
+ * 		{@ddms.rule At least 1 ddms:name is required.|Error|11111}
  * {@table.footer}
  *  
  * @author Brian Uri!
@@ -133,17 +131,6 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 		if (Util.containsOnlyEmptyValues(getNames()))
 			throw new InvalidDDMSException("At least 1 name element must have a non-empty value.");
 		super.validate();
-	}
-
-	/**
-	 * @see AbstractBaseComponent#validateWarnings()
-	 */
-	protected void validateWarnings() {
-		if (!getPhones().isEmpty() && Util.containsOnlyEmptyValues(getPhones()))
-			addWarning("A ddms:phone element was found with no value.");
-		if (!getEmails().isEmpty() && Util.containsOnlyEmptyValues(getEmails()))
-			addWarning("A ddms:email element was found with no value.");
-		super.validateWarnings();
 	}
 
 	/**

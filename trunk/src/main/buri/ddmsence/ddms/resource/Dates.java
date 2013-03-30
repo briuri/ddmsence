@@ -40,26 +40,33 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:dates.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * {@table.header Strictness}
- * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
- * <ul>
- * <li>A dates element can be used with none of the seven date values set.</li>
- * </ul>
+ * <p></p>
+ * 
+ * {@table.header History}
+ * 		None.
  * {@table.footer}
- * 
  * {@table.header Nested Elements}
- * <u>ddms:acquiredOn</u>: the acquisition date (0-many, starting in DDMS 4.1), implemented as an
- * {@link ApproximableDate}<br />
+ * 		{@child.info ddms:acquiredOn|0..*|00011}
  * {@table.footer}
- * 
  * {@table.header Attributes}
- * <u>ddms:created</u>: creation date (optional)<br />
- * <u>ddms:posted</u>: posting date (optional)<br />
- * <u>ddms:validTil</u>: expiration date (optional)<br />
- * <u>ddms:infoCutOff</u>: info cutoff date (optional)<br />
- * <u>ddms:approvedOn</u>: approved for posting date (optional, starting in DDMS 3.1)<br />
- * <u>ddms:receivedOn</u>: received date (optional, starting in DDMS 4.0.1)<br />
+ * 		{@child.info ddms:created|0..1|11111}
+ *  	{@child.info ddms:posted|0..1|11111}
+ *  	{@child.info ddms:validTil|0..1|11111}
+ *   	{@child.info ddms:infoCutOff|0..1|11111}
+ *     	{@child.info ddms:approvedOn|0..1|00111}
+ *      {@child.info ddms:receivedOn|0..1|00011}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule ddms:approvedOn is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule ddms:receivedOn is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule ddms:acquiredOn is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule If set, each date attribute adheres to an acceptable date format.|Error|11111}
+ * 		{@ddms.rule This component can be used with no values set.|Warning|11111}
+ * 		{@ddms.rule ddms:acquiredOn may cause issues for DDMS 4.0.1 systems.|Warning|00010}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -156,20 +163,19 @@ public final class Dates extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>If set, each date attribute adheres to an acceptable date format.</li>
-	 * <li>The approvedOn date cannot be used until DDMS 3.1 or later.</li>
-	 * <li>The receivedOn date cannot be used until DDMS 4.0.1 or later.</li>
-	 * <li>An acquiredOn date cannot be used until DDMS 4.1 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Dates.getName(getDDMSVersion()));
+		if (!getDDMSVersion().isAtLeast("3.1") && !Util.isEmpty(getApprovedOnString())) {
+			throw new InvalidDDMSException("This component cannot have an approvedOn date until DDMS 3.1 or later.");
+		}
+		if (!getDDMSVersion().isAtLeast("4.0.1") && !Util.isEmpty(getReceivedOnString())) {
+			throw new InvalidDDMSException("This component cannot have a receivedOn date until DDMS 4.0.1 or later.");
+		}
+		if (!getDDMSVersion().isAtLeast("4.1") && !getAcquiredOns().isEmpty()) {
+			throw new InvalidDDMSException("This component cannot have an acquiredOn date until DDMS 4.1 or later.");
+		}
 		if (!Util.isEmpty(getCreatedString()))
 			Util.requireDDMSDateFormat(getCreatedString(), getNamespace());
 		if (!Util.isEmpty(getPostedString()))
@@ -182,28 +188,11 @@ public final class Dates extends AbstractBaseComponent {
 			Util.requireDDMSDateFormat(getApprovedOnString(), getNamespace());
 		if (!Util.isEmpty(getReceivedOnString()))
 			Util.requireDDMSDateFormat(getReceivedOnString(), getNamespace());
-
-		// Should be reviewed as additional versions of DDMS are supported.
-		if (!getDDMSVersion().isAtLeast("3.1") && !Util.isEmpty(getApprovedOnString())) {
-			throw new InvalidDDMSException("This component cannot have an approvedOn date until DDMS 3.1 or later.");
-		}
-		if (!getDDMSVersion().isAtLeast("4.0.1") && !Util.isEmpty(getReceivedOnString())) {
-			throw new InvalidDDMSException("This component cannot have a receivedOn date until DDMS 4.0.1 or later.");
-		}
-		if (!getDDMSVersion().isAtLeast("4.1") && !getAcquiredOns().isEmpty()) {
-			throw new InvalidDDMSException("This component cannot have an acquiredOn date until DDMS 4.1 or later.");
-		}
-
 		super.validate();
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>A completely empty ddms:dates element was found.</li>
-	 * <li>A ddms:acquiredOn element may cause issues for DDMS 4.0 records.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getCreatedString())

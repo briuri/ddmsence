@@ -29,23 +29,27 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:language.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>A non-empty qualifier value is required when the value attribute is set.</li>
- * </ul>
+ * <p></p>
  * 
- * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
- * <ul>
- * <li>A qualifier can be set with no value.</li>
- * <li>A language can be set without a qualifier or value.</li>
- * </ul>
+ * {@table.header History}
+ * 		<p>Beginning in DDMS 4.0.1, a ddms:type element can contain child text. The intent of this text is to provide 
+ * 		further context when the ddms:type element references an IC activity.</p>
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ddms:qualifier</u>: a URI-based vocabulary (required if value is set)<br />
- * <u>ddms:value</u>: the identification of the content language (optional)<br />
+ * 		{@child.info ddms:qualifier|0..1|11111}
+ * 		{@child.info ddms:value|0..1|11111}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule ddms:qualifier is required if ddms:value is set.|Error|11111}
+ * 		{@ddms.rule A ddms:qualifier can be set with no ddms:value.|Warning|11111}
+ * 		{@ddms.rule This component can be used with no values set.|Warning|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -75,32 +79,17 @@ public final class Language extends AbstractQualifierValue {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>If a value is set, a qualifier must exist and be non-empty.</li>
-	 * <li>Does not validate that the value is valid against the qualifier's vocabulary.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Language.getName(getDDMSVersion()));
 		if (!Util.isEmpty(getValue()))
 			Util.requireDDMSValue("qualifier attribute", getQualifier());
-
 		super.validate();
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>A qualifier has been set without an accompanying value attribute.</li>
-	 * <li>Neither a qualifier nor a value was set on this language.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		if (!Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()))
