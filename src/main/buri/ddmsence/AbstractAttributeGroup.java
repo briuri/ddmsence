@@ -30,9 +30,24 @@ import buri.ddmsence.util.DDMSVersion;
 
 /**
  * Top-level base class for attribute groups, such as {@link SecurityAttributes}.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
  * <p>Extensions of this class are generally expected to be immutable. It is assumed that after the constructor on
  * a component has been called, the component will be well-formed and valid.</p>
+ * 
+ * {@table.header History}
+ * 		None.
+ * {@table.footer}
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
+ * {@table.header Attributes}
+ * 		None. Extending classes will have additional attributes.
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		No rules are validated at this level. Extending classes may have additional rules.
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 1.1.0
@@ -51,10 +66,6 @@ public abstract class AbstractAttributeGroup {
 
 	/**
 	 * Base validation case for attribute groups.
-	 * 
-	 * {@table.header Rules}
-	 * <li>No rules are validated at this level. Extending classes may have additional rules.</li>
-	 * {@table.footer}
 	 * 
 	 * @param version the DDMS version to validate against. This cannot be stored in the attribute group because some
 	 *        DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).

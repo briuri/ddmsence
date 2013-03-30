@@ -31,13 +31,27 @@ import buri.ddmsence.util.Util;
 
 /**
  * Base class for DDMS elements which consist of simple child text, possibly decorated with attributes, such as
- * ddms:description, ddms:title, and ddms:subtitle.
+ * {@link Description}, {@link Title}, and {@link Subtitle}.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
  * <p> Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set
  * before the component is used. </p>
  * 
+ * {@table.header History}
+ *  	None.
+ * {@table.footer}
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
+ * 		{@child.info ism:classification|1|11111}
+ * 		{@child.info ism:ownerProducer|1|11111}
+ * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..1|11111}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule ism:classification is required.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -103,17 +117,9 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>A classification is required.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
 		super.validate();
 	}

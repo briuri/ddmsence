@@ -46,7 +46,8 @@ import buri.ddmsence.util.Util;
  * before the component is used. </p>
  * 
  * {@table.header History}
- * <p>This abstract class was introduced to support NTK Access components in DDMS 4.1. Those components were removed</p>
+ * 		<p>This abstract class was introduced to support NTK Access components in DDMS 4.1. Those components are
+ * 		no longer a part of DDMS 5.0.</p>
  * {@table.footer}
  * {@table.header Nested Elements}
  * 		{@child.info ntk:AccessSystemName|1|00010}
@@ -105,10 +106,7 @@ public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		requireAtLeastVersion("4.0.1");

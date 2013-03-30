@@ -36,11 +36,29 @@ import buri.ddmsence.util.Util;
 
 /**
  * Top-level base class for all DDMS elements and attributes modeled as Java objects.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
  * <p>Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set before
  * the component is used. It is assumed that after the constructor on a component has been called, the component will be
  * well-formed and valid.</p>
  * 
+ * {@table.header History}
+ * 		None.
+ * {@table.footer}
+ * {@table.header Nested Elements}
+ * 		None. Extending classes may have additional elements.
+ * {@table.footer}
+ * {@table.header Attributes}
+ * 		None. Extending classes may have additional attributes.
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The component has a name.|Error|11111}
+ * 		{@ddms.rule All child components use the same version of DDMS as this component.|Error|11111}
+ * 		{@ddms.rule Warnings from any child components are claimed by this compoment.|Warning|11111}
+ * 		{@ddms.rule Warnings from any security attributes are claimed by this compoment.|Warning|11111}
+ * {@table.footer}
+ * 	
  * @author Brian Uri!
  * @since 0.9.b
  */
@@ -123,9 +141,6 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	/**
 	 * Base case for validation. This method can be overridden for more in-depth validation. It is always assumed that
 	 * the subcomponents of a component are already valid.
-	 * 
-	 * {@table.header Rules} <li>A name exists and is
-	 * not empty.</li> <li>All child components use the same version of DDMS as this component.</li> {@table.footer}
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSValue("name", getName());
@@ -140,9 +155,6 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	/**
 	 * Base case for warnings. This method can be overridden for more in-depth validation. It is always assumed that the
 	 * subcomponents of a component are already valid.
-	 * 
-	 * {@table.header Rules} <li>Adds any warnings
-	 * from any nested components.</li> <li>Adds any warnings from any security attributes.</li> {@table.footer}
 	 */
 	protected void validateWarnings() {
 		for (IDDMSComponent nested : getNestedComponents()) {

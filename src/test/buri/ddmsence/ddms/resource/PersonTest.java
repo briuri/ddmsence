@@ -216,13 +216,13 @@ public class PersonTest extends AbstractBaseTestCase {
 			// Missing name
 			Element entityElement = Util.buildDDMSElement(personName, null);
 			entityElement.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
-			getInstance("At least 1 name element must exist.", entityElement);
+			getInstance("At least 1 name element must", entityElement);
 
 			// Empty name
 			entityElement = Util.buildDDMSElement(personName, null);
 			entityElement.appendChild(Util.buildDDMSElement("name", ""));
 			entityElement.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
-			getInstance("At least 1 name element must have a non-empty value.", entityElement);
+			getInstance("At least 1 name element must", entityElement);
 
 			// Missing surname
 			entityElement = Util.buildDDMSElement(personName, null);
@@ -269,13 +269,13 @@ public class PersonTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing name
-			getInstance("At least 1 name element must exist.", TEST_SURNAME, null, TEST_USERID, TEST_AFFILIATIONS,
+			getInstance("At least 1 name element must", TEST_SURNAME, null, TEST_USERID, TEST_AFFILIATIONS,
 				TEST_PHONES, TEST_EMAILS);
 
 			// Empty name
 			List<String> names = new ArrayList<String>();
 			names.add("");
-			getInstance("At least 1 name element must have a non-empty value.", TEST_SURNAME, names, TEST_USERID,
+			getInstance("At least 1 name element must", TEST_SURNAME, names, TEST_USERID,
 				TEST_AFFILIATIONS, TEST_PHONES, TEST_EMAILS);
 
 			// Missing surname

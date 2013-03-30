@@ -32,18 +32,34 @@ import buri.ddmsence.util.Util;
 /**
  * Base class for NTK elements which consist of simple child text decorated with NTK attributes, and security
  * attributes.
+ * <br /><br />
+ * {@ddms.versions 00010}
  * 
  * <p> Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set
  * before the component is used. </p>
  * 
- * {@table.header Attributes}
- * <u>ntk:id</u>: A unique XML identifier (optional)<br />
- * <u>ntk:IDReference</u>: A cross-reference to a unique identifier (optional)<br />
- * <u>ntk:qualifier</u>: A user-defined property within an element for general purpose processing used with block
- * objects to provide supplemental information over and above that conveyed by the element name (optional)<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
+ * {@table.header History}
+ * <p>This abstract class was introduced to support NTK Access components in DDMS 4.1. Those components are
+ * no longer a part of DDMS 5.0.</p>
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
+ * {@table.header Attributes}
+ * 		{@child.info ntk:id|0..1|00010}
+ * 		{@child.info nkt:IDReference|0..1|00010}
+ * 		{@child.info nkt:qualifier|0..1|00010}
+ * 		{@child.info ism:classification|1|00010}
+ * 		{@child.info ism:ownerProducer|1|00010}
+ * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..1|00010}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule If this is an NMTOKEN-based string, and the child text is not empty, the child text is an NMTOKEN.|Error|11111}
+ * 		{@ddms.rule ism:classification is required.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
+ * {@table.footer}
+ *  
  * @author Brian Uri!
  * @since 2.0.0
  */
@@ -106,28 +122,15 @@ public abstract class AbstractNtkString extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>If this is an NMTOKEN-based string, and the child text is not empty, the child text is an NMTOKEN.</li>
-	 * <li>A classification is required.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
+		requireAtLeastVersion("4.0.1");
 		if (isTokenBased())
 			Util.requireValidNMToken(getValue());
-		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
-		
-		// Should be reviewed as additional versions of DDMS are supported.
-		requireAtLeastVersion("4.0.1");
-		
 		super.validate();
 	}
 	
