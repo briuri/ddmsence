@@ -42,13 +42,13 @@ import buri.ddmsence.util.Util;
 /**
  * Attribute group for the ISM notice markings used on a ddms:resource and ISM:Notice, starting in DDMS 4.0.1.
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ISM:noticeType</u>: (optional)<br />
  * <u>ISM:noticeReason</u>: (optional)<br />
  * <u>ISM:noticeDate</u>: (optional)<br />
  * <u>ISM:unregisteredNoticeType</u>: (optional)<br />
  * <u>ISM:externalNotice</u>: (optional, starting in DDMS 4.1)<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -215,7 +215,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	/**
 	 * Validates the attribute group. Where appropriate the {@link ISMVocabulary} enumerations are validated.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>If set, the noticeType attribute must be a valid token.</li>
 	 * <li>The noticeReason must be shorter than 2048 characters.</li>
 	 * <li>The unregisteredNoticeType must be shorter than 2048 characters.</li>
@@ -224,7 +224,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 * <li>These attributes cannot be used after DDMS 4.1.</li>
 	 * <li>The externalNotice attribute cannot be used until DDMS 4.1 or later.</li>
 	 * <li>Does NOT do any validation on the constraints described in the DES ISM specification.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @param version the DDMS version to validate against. This cannot be stored in the attribute group because some
 	 *        DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).

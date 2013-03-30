@@ -36,7 +36,7 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:person.
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>At least 1 name value must be non-empty. A competing rule and loophole were established in DDMS 5.0.</li>
@@ -50,11 +50,11 @@ import buri.ddmsence.util.Util;
  * <li>A userID can be set with no value. This loophole goes away in DDMS 5.0.</li>
  * <li>An affiliation can be set with no value. This loophole goes away in DDMS 5.0.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
  * <p>The name of this component was changed from "Person" to "person" in DDMS 4.0.1.</p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:name</u>: names of the producer (1-many, at least 1 required)<br />
  * <u>ddms:surname</u>: surname of the producer (exactly 1 required)<br />
  * <u>ddms:userID</u>: userId of the producer (0-1 optional)<br />
@@ -62,11 +62,11 @@ import buri.ddmsence.util.Util;
  * in DDMS 5.0)<br />
  * <u>ddms:phone</u>: phone numbers of the producer (0-many optional)<br />
  * <u>ddms:email</u>: email addresses of the producer (0-many optional)<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>{@link ExtensibleAttributes}</u>: Custom attributes (through DDMS 3.1).
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -167,13 +167,13 @@ public final class Person extends AbstractRoleEntity {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>Surname exists and is not empty.</li>
 	 * <li>Exactly 1 surname, and 0-1 userIDs exist.</li>
 	 * <li>Exactly 0-1 affiliations exist, through DDMS 4.1.</li>
 	 * <li>Extensible attributes cannot be used after DDMS 3.1.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractRoleEntity#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -195,10 +195,10 @@ public final class Person extends AbstractRoleEntity {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>A ddms:userID element was found with no value, through DDMS 4.1.</li>
 	 * <li>A ddms:affiliation element was found with no value, through DDMS 4.1.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		if (!getDDMSVersion().isAtLeast("5.0") && Util.isEmpty(getUserID())

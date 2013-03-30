@@ -35,7 +35,7 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of a ddms:unknown element.
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>At least 1 name value must be non-empty. A competing rule and loophole were established in DDMS 5.0.</li>
@@ -46,21 +46,21 @@ import buri.ddmsence.util.Util;
  * <li>A phone number can be set with no value. This loophole goes away in DDMS 5.0.</li>
  * <li>An email can be set with no value. This loophole goes away in DDMS 5.0.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
  * <p>The ddms:unknown element is new in DDMS 3.0. Attempts to use it with DDMS 2.0 will result in an
  * UnsupportedVersionException. Its name was changed from "Unknown" to "unknown" in DDMS 4.0.1.</p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:name</u>: names of the producer (1-many, at least 1 required)<br />
  * <u>ddms:phone</u>: phone numbers of the producer (0-many optional)<br />
  * <u>ddms:email</u>: email addresses of the producer (0-many optional)<br />
  * <u>ddms:affiliation</u>: organizational affiliation (0-many optional starting in DDMS 5.0)<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>{@link ExtensibleAttributes}</u>: Custom attributes.
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -126,10 +126,10 @@ public final class Unknown extends AbstractRoleEntity {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>This component cannot be used until DDMS 3.0 or later.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractRoleEntity#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed

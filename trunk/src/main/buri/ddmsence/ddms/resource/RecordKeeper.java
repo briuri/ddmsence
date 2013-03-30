@@ -35,19 +35,19 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:recordKeeper.
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>The recordKeeperID must not be empty. A competing rule and loophole were established in DDMS 5.0.</li>
  * <li>The organization must not be empty. This loophole opened up in DDMS 5.0.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:recordKeeperID</u>: A unique identifier for the Record Keeper (exactly 1 required)<br />
  * <u>ddms:organization</u>: The organization which acts as the record keeper (exactly 1 required), implemented as an
  * {@link Organization}<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -105,13 +105,13 @@ public class RecordKeeper extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>The recordKeeperID exists.</li>
 	 * <li>The organization exists.</li>
 	 * <li>Exactly 1 organization exists.</li>
 	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractProducerRole#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed

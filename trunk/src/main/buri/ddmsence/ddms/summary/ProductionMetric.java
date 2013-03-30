@@ -32,21 +32,21 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:productionMetric.
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>The subject and coverage attributes must be non-empty. This rule is codified in the schema, starting in DDMS
  * 5.0.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ddms:subject</u>: A method of categorizing the subject of a document in a fashion understandable by DDNI-A.
  * (required)<br />
  * <u>ddms:coverage</u>: A method of categorizing the coverage of a document in a fashion understandable by DDNI-A
  * (required)<br />
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -103,12 +103,12 @@ public final class ProductionMetric extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A subject exists and is not empty.</li>
 	 * <li>A coverage exists and is not empty.</li>
 	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */

@@ -28,25 +28,40 @@ import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.ddms.security.ntk.Group;
+import buri.ddmsence.ddms.security.ntk.Individual;
+import buri.ddmsence.ddms.security.ntk.Profile;
 import buri.ddmsence.ddms.security.ntk.SystemName;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * Base class for NTK elements which describe system access rules for an individual, group, or profile.
+ * Base class for NTK elements which describe system access rules for an {@link Individual}, {@link Group}, or 
+ * {@link Profile}.
+ * <br /><br />
+ * {@ddms.versions 00010}
  * 
  * <p> Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set
  * before the component is used. </p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ntk:AccessSystemName</u>: The system described by this access record (exactly 1 required), implemented as a
- * {@link SystemName}<br />
- * </td></tr></table>
- * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
- * </td></tr></table>
+ * {@table.header History}
+ * <p>This abstract class was introduced to support NTK Access components in DDMS 4.1. Those components were removed</p>
+ * {@table.footer}
+ * {@table.header Nested Elements}
+ * 		{@child.info ntk:AccessSystemName|1|00010}
+ * {@table.footer}
+ * {@table.header Attributes}
+ * 		{@child.info ism:classification|1|00010}
+ * 		{@child.info ism:ownerProducer|1|00010}
+ * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..1|00010}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule ntk:AccessSystemName is required.|Error|11111}
+ * 		{@ddms.rule ism:classification is required.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -92,26 +107,13 @@ public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>A systemName is required.</li>
-	 * <li>Exactly 1 systemName exists.</li>
-	 * <li>A classification is required.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
-	 * </td></tr></table>
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		Util.requireDDMSValue("systemName", getSystemName());
-		Util.requireBoundedChildCount(getXOMElement(), SystemName.getName(getDDMSVersion()), 1, 1);
-		Util.requireDDMSValue("security attributes", getSecurityAttributes());
-		getSecurityAttributes().requireClassification();
-
-		// Should be reviewed as additional versions of DDMS are supported.
 		requireAtLeastVersion("4.0.1");
-
+		Util.requireDDMSValue("systemName", getSystemName());
+		getSecurityAttributes().requireClassification();
 		super.validate();
 	}
 

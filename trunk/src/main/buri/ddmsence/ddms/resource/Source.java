@@ -31,14 +31,14 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:source.
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
  * <li>A source element can be used with none of the attributes set.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ddms:qualifier</u>: specifies the source of the type vocabulary (optional)<br />
  * <u>ddms:value</u>: includes terms describing general categories, functions, genres, or aggregation levels
  * (optional)<br />
@@ -46,7 +46,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:schemaHref</u>: a resolvable reference to the schema (optional)<br />
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting
  * in DDMS 3.0)
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -106,11 +106,11 @@ public final class Source extends AbstractQualifierValue {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If a schemaHref is present, it is a valid URI.</li>
 	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -132,9 +132,9 @@ public final class Source extends AbstractQualifierValue {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>A completely empty ddms:source element was found.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()) && Util.isEmpty(getSchemaQualifier())

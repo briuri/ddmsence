@@ -46,18 +46,18 @@ import buri.ddmsence.util.Util;
  * <p>The above design decision dictates that VerticalDistance (the type behind minVerticalExtent and maxVerticalExtent)
  * does not need to be implemented as a Java class.</p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:minVerticalExtent</u>: minimum extent (required)<br />
  * <u>ddms:maxVerticalExtent</u>: maximum extent (required)<br />
  * Please note that the case of the nested elements changed starting in DDMS 4.0.1. Previously, the first letter
  * of each element was capitalized (i.e. MinVerticalExtent/MaxVerticalExtent).
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ddms:unitOfMeasure</u>: unit of measure (Meter, Kilometer, Foot, StatuteMile, NauticalMile, Fathom, Inch)
  * (required) <br />
  * <u>ddms:datum</u>: vertical datum (MSL, AGL, HAE) (required)<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -163,7 +163,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A minVerticalExtent exists.</li>
 	 * <li>A maxVerticalExtent exists.</li>
@@ -173,7 +173,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 * <li>If a maxVerticalExtent has unitOfMeasure or datum set, its values match the parent attribute values.</li>
 	 * <li>The minVerticalExtent is less than the MaxVerticalExtent.</li>
 	 * <li>This component cannot be used after DDMS 4.1.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */

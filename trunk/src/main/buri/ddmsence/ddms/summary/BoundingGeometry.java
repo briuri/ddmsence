@@ -42,11 +42,11 @@ import buri.ddmsence.util.Util;
  * <p>The DDMS documentation has no Text/HTML examples for the output of this component. However, the component has no
  * additional attributes or elements besides the nested Polygon/Point components, so no additional output is needed.</p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>gml:Polygon</u>: a polygon (0-many optional), implemented as a {@link Polygon}<br />
  * <u>gml:Point</u>: a point (0-many optional), implemented as a {@link Point}<br />
  * <p>At least 1 of Polygon or Point must be used.</p>
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -116,10 +116,10 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>At least 1 polygon or point exists.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */

@@ -36,13 +36,13 @@ import buri.ddmsence.util.Util;
  * <p> Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set
  * before the component is used. </p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ntk:id</u>: A unique XML identifier (optional)<br />
  * <u>ntk:IDReference</u>: A cross-reference to a unique identifier (optional)<br />
  * <u>ntk:qualifier</u>: A user-defined property within an element for general purpose processing used with block
  * objects to provide supplemental information over and above that conveyed by the element name (optional)<br />
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -110,12 +110,12 @@ public abstract class AbstractNtkString extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>If this is an NMTOKEN-based string, and the child text is not empty, the child text is an NMTOKEN.</li>
 	 * <li>A classification is required.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
 	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */

@@ -124,8 +124,8 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * Base case for validation. This method can be overridden for more in-depth validation. It is always assumed that
 	 * the subcomponents of a component are already valid.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody"> <li>A name exists and is
-	 * not empty.</li> <li>All child components use the same version of DDMS as this component.</li> </td></tr></table>
+	 * {@table.header Rules} <li>A name exists and is
+	 * not empty.</li> <li>All child components use the same version of DDMS as this component.</li> {@table.footer}
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSValue("name", getName());
@@ -141,8 +141,8 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * Base case for warnings. This method can be overridden for more in-depth validation. It is always assumed that the
 	 * subcomponents of a component are already valid.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody"> <li>Adds any warnings
-	 * from any nested components.</li> <li>Adds any warnings from any security attributes.</li> </td></tr></table>
+	 * {@table.header Rules} <li>Adds any warnings
+	 * from any nested components.</li> <li>Adds any warnings from any security attributes.</li> {@table.footer}
 	 */
 	protected void validateWarnings() {
 		for (IDDMSComponent nested : getNestedComponents()) {

@@ -42,7 +42,7 @@ import buri.ddmsence.util.Util;
  * Starting in DDMS 4.0.1, the GeospatialExtent wrapper has been removed.
  * </p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>No more than 1 each of geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent can
@@ -52,9 +52,9 @@ import buri.ddmsence.util.Util;
  * using Geospatial Coverage from expressing information in a meaningful manner. Users should ensure that combinations
  * of elements are appropriately relatable, consistent, meaningful, and useful for enterprise discovery."</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:geographicIdentifier</u>: an identifier (0-1 optional) implemented as a {@link GeographicIdentifier}<br />
  * <u>ddms:boundingBox</u>: a bounding box (0-1 optional) implemented as a {@link BoundingBox} (cannot be used after
  * DDMS 4.1)<br />
@@ -62,16 +62,16 @@ import buri.ddmsence.util.Util;
  * />
  * <u>ddms:postalAddress</u>: an address (0-1 optional), implemented as a (@link PostalAddress)<br />
  * <u>ddms:verticalExtent</u>: an extent (0-1 optional), implemented as a (@link VerticalExtent)<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ddms:precedence</u>: priority claimed or received as a result of preeminence. Used with country codes (optional,
  * starting in DDMS 4.0.1)
  * <u>ddms:order</u>: specifies a user-defined order of an element within the given document (optional, starting in
  * DDMS 4.0.1)<br />
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS
  * 3.0)
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -195,7 +195,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>At least 1 of geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent must
 	 * be used.</li>
@@ -207,7 +207,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * <li>If a precedence is set, this coverage must contain a geographicIdentifier with a countryCode.</li>
 	 * <li>Does not validate the value of the order attribute (this is done at the Resource level).</li>
 	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed

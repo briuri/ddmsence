@@ -33,7 +33,7 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:virtualCoverage.
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p><ul>
  * <li>If address is specified, protocol must not be empty.</li>
  * </ul>
@@ -43,11 +43,11 @@ import buri.ddmsence.util.Util;
  * <ul>
  * <li>A virtualCoverage element can be used with no attributes.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
  * <p>Starting in DDMS 5.0, the ddms attributes have moved into the virt namespace.</p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ddms:address</u>: a computer or telecommunications network address, or a network name or locale. (optional).<br />
  * <u>ddms:protocol</u>: the type of rules for data transfer that apply to the Virtual Address (can stand alone, but
  * should be used if address is provided)<br />
@@ -55,7 +55,7 @@ import buri.ddmsence.util.Util;
  * <u>ntk:access</u>
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS
  * 3.0)
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -144,12 +144,12 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If an address is provided, the protocol is required and must not be empty.</li>
 	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
 	 * <li>The access and network attributes cannot be used until DDMS 5.0.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
@@ -177,9 +177,9 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>A completely empty ddms:virtualCoverage element was found.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getAddress()) && Util.isEmpty(getProtocol()) && Util.isEmpty(getAccess())

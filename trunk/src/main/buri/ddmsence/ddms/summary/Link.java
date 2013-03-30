@@ -36,19 +36,19 @@ import buri.ddmsence.util.Util;
  * 
  * <p>This element is not a global component, but is being implemented because it has attributes.</p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>The href value must not be empty.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>{@link XLinkAttributes}</u>: The xlink:type attribute is required and must have a fixed
  * value of "locator". The xlink:href attribute is also required.<br />
  * <u>{@link SecurityAttributes}</u>: Only allowed when used in the context of a {@link RevisionRecall} (starting in
  * DDMS 4.0.1). The classification and ownerProducer attributes are required.
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -113,13 +113,13 @@ public final class Link extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>The xlink:type is set and has a value of "locator".</li>
 	 * <li>The xlink:href is set and non-empty.</li>
 	 * <li>Does not validate the security attributes. It is the parent class' responsibility
 	 * to do that.
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
@@ -137,9 +137,9 @@ public final class Link extends AbstractBaseComponent {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>Include any warnings from the XLink attributes.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		if (getXLinkAttributes() != null)

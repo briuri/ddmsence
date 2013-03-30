@@ -34,7 +34,7 @@ import buri.ddmsence.util.Util;
  * <p>Beginning in DDMS 4.0.1, a ddms:type element can contain child text. The intent of this text is to provide further
  * context when the ddms:type element references an IC activity.</p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>A non-empty qualifier value is required when the value attribute is set.</li>
@@ -45,15 +45,15 @@ import buri.ddmsence.util.Util;
  * <li>A qualifier can be set with no value.</li>
  * <li>A type can be set without a qualifier or value.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ddms:qualifier</u>: a URI-based qualifier (required if value is set)<br />
  * <u>ddms:value</u>: includes terms describing general categories, functions, genres, or aggregation levels
  * (optional)<br />
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
  * (starting in DDMS 4.0.1)
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -110,13 +110,13 @@ public final class Type extends AbstractQualifierValue {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>The description child text cannot exist until DDMS 4.0.1 or later.</li>
 	 * <li>If a value is set, a qualifier must exist and be non-empty.</li>
 	 * <li>Does NOT validate that the value is valid against the qualifier's vocabulary.</li>
 	 * <li>The SecurityAttributes do not exist until DDMS 4.0.1 or later.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -142,10 +142,10 @@ public final class Type extends AbstractQualifierValue {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>A qualifier has been set without an accompanying value attribute.</li>
 	 * <li>Neither a qualifier nor a value was set on this type.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		if (!Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()))

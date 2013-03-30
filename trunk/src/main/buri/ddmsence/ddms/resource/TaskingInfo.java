@@ -39,17 +39,17 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:taskingInfo.
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:requesterInfo</u>: Information about the requester of the production of this resource (0-many optional),
  * implemented as a {@link RequesterInfo}.<br />
  * <u>ddms:addressee</u>: The addressee for this tasking (0-many optional), implemented as a {@link Addressee} <br />
  * <u>ddms:description</u>: A description of this tasking (0-1, optional), implemented as a {@link Description}<br />
  * <u>ddms:taskID</u>: The task ID for this tasking (required), implemented as a {@link TaskID}<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -144,14 +144,14 @@ public final class TaskingInfo extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A TaskID exists.</li>
 	 * <li>Exactly 1 taskID, and 0-1 descriptions exist.</li>
 	 * <li>A classification is required.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
 	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed

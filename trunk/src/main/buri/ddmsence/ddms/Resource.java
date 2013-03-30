@@ -76,6 +76,8 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:resource (the top-level element of a DDMS record).
+ * <br />
+ * {@ddms.versions 11111}
  * 
  * <p>
  * Starting in DDMS 3.0, resources have additional ISM attributes which did not exist in 2.0. However, the 2.0 schema
@@ -95,14 +97,14 @@ import buri.ddmsence.util.Util;
  * 
  * <p>The name of this component was changed from "Resource" to "resource" in DDMS 4.0.1.</p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>A metacardInfo component is required. This loophole opened up in DDMS 5.0.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:metacardInfo</u>: (exactly 1 required, starting in DDMS 4.0.1), implemented as a {@link MetacardInfo}<br />
  * <u>ddms:identifier</u>: (1-many required), implemented as an {@link Identifier}<br />
  * <u>ddms:title</u>: (1-many required), implemented as a {@link Title}<br />
@@ -126,9 +128,9 @@ import buri.ddmsence.util.Util;
  * <u>ddms:resourceManagement</u>: (0-1 optional, starting in DDMS 4.0.1), implemented as a {@link ResourceManagement}<br />
  * <u>ddms:security</u>: (exactly 1 required), implemented as a {@link Security}, removed in DDMS 5.0<br />
  * <u>Extensible Layer</u>: (0-many optional), implemented as a {@link ExtensibleElement}, removed in DDMS 5.0<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ISM:resourceElement</u>: Identifies whether this tag sets the classification for the xml file as a whole
  * (required, starting in DDMS 3.0, ending in DDMS 4.1)<br />
  * <u>ISM:createDate</u>: Specifies the creation or latest modification date (YYYY-MM-DD) (required, starting in
@@ -149,7 +151,7 @@ import buri.ddmsence.util.Util;
  * In DDMS 2.0, there are no ISM attributes explicitly defined in the schema, so you can load them in any way you
  * want. It is recommended that you load them as SecurityAttributes anyhow, for consistency with newer DDMS resources.
  * Please see the "Power Tips" on the Extensible Layer (on the DDMSence home page) for details.
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -683,7 +685,7 @@ public final class Resource extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>Exactly 1 metacardInfo, 1-many identifiers, 1-many titles, 0-1 descriptions, 0-1 dates, 0-1 rights,
 	 * 0-1 formats, exactly 1 subjectCoverage, and 0-1 resourceManagement must exist.</li>
@@ -706,7 +708,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>At least 1 ownerProducer exists and is non-empty, starting in DDMS 3.0, ending in DDMS 4.1.</li>
 	 * <li>Only 1 extensible element can exist in DDMS 2.0.</li>
 	 * <li>No extensible elements can exist, starting in DDMS 5.0.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -805,10 +807,10 @@ public final class Resource extends AbstractBaseComponent {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>An externalNotice attribute may cause issues for DDMS 4.0 records.</li>
 	 * <li>Add any warnings from the notice attributes.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		if (!getDDMSVersion().isAtLeast("5.0") && !getNoticeAttributes().isEmpty()) {

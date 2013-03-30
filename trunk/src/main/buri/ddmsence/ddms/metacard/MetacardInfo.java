@@ -50,16 +50,16 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:metacardInfo.
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>At least one identifier is required. This loophole opened up in DDMS 5.0.</li>
  * <li>A dates component is required. This loophole opened up in DDMS 5.0.</li>
  * <li>At least one producer is requried. This loophole opened up in DDMS 5.0.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:identifier</u>: (1-many required), implemented as an {@link Identifier}<br />
  * <u>ddms:dates</u>: (exactly 1 required), implemented as an {@link Dates}<br />
  * <u>ddms:contributor</u>: (0-many optional), implemented as a {@link Contributor}<br />
@@ -72,11 +72,11 @@ import buri.ddmsence.util.Util;
  * <u>ddms:recordsManagementInfo</u>: (0-1 optional), implemented as a {@link RecordsManagementInfo}<br />
  * <u>ddms:noticeList</u>: (0-1 optional), implemented as a {@link NoticeList} (optional, only in DDMS 4.1)<br />
  * <u>ntk:Access</u>: Need-To-Know access information (optional, only in DDMS 4.1)<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -256,7 +256,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>At least 1 identifier must exist.</li>
 	 * <li>At least 1 publisher must exist in DDMS 4.0.1 or 4.1. At least 1 of any kind of producer must exist starting
@@ -266,7 +266,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
 	 * <li>ddms:noticeList can only exist in DDMS 4.0.1 or 4.1.</li>
 	 * <li>ntk:Access can only exist in DDMS 4.0.1 or 4.1.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -303,9 +303,9 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>An ntk:Access element may cause issues for DDMS 4.0 records.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		if (!getDDMSVersion().isAtLeast("5.0") && getAccess() != null)

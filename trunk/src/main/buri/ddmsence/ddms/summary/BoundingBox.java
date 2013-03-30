@@ -31,14 +31,14 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:boundingBox.
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:westBL</u>: westbound longitude (required)<br />
  * <u>ddms:eastBL</u>: eastbound longitude (required)<br />
  * <u>ddms:southBL</u>: northbound latitude (required)<br />
  * <u>ddms:northBL</u>: southbound latitude (required)<br />
  * Please note that the case of the nested elements changed starting in DDMS 4.0.1. Previously, the first letter of
  * each element was capitalized (i.e. WestBL/EastBL/SouthBL/NorthBL).
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -104,7 +104,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A westBL exists.</li>
 	 * <li>An eastBL exists.</li>
@@ -113,7 +113,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 * <li>westBL and eastBL must be between -180 and 180 degrees.</li>
 	 * <li>southBL and northBL must be between -90 and 90 degrees.</li>
 	 * <li>This component cannot be used after DDMS 4.1.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */

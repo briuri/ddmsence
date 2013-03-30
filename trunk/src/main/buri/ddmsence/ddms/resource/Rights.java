@@ -31,11 +31,11 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:rights.
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ddms:privacyAct</u>: protected by the Privacy Act (optional, default=false).<br />
  * <u>ddms:intellectualProperty</u>: has an intellectual property rights owner (optional, default=false)<br />
  * <u>ddms:copyright</u>: has a copyright owner (optional, default=false)<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -76,9 +76,9 @@ public final class Rights extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed

@@ -41,26 +41,26 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:dates.
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
  * <li>A dates element can be used with none of the seven date values set.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:acquiredOn</u>: the acquisition date (0-many, starting in DDMS 4.1), implemented as an
  * {@link ApproximableDate}<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ddms:created</u>: creation date (optional)<br />
  * <u>ddms:posted</u>: posting date (optional)<br />
  * <u>ddms:validTil</u>: expiration date (optional)<br />
  * <u>ddms:infoCutOff</u>: info cutoff date (optional)<br />
  * <u>ddms:approvedOn</u>: approved for posting date (optional, starting in DDMS 3.1)<br />
  * <u>ddms:receivedOn</u>: received date (optional, starting in DDMS 4.0.1)<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -158,13 +158,13 @@ public final class Dates extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If set, each date attribute adheres to an acceptable date format.</li>
 	 * <li>The approvedOn date cannot be used until DDMS 3.1 or later.</li>
 	 * <li>The receivedOn date cannot be used until DDMS 4.0.1 or later.</li>
 	 * <li>An acquiredOn date cannot be used until DDMS 4.1 or later.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
@@ -200,10 +200,10 @@ public final class Dates extends AbstractBaseComponent {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>A completely empty ddms:dates element was found.</li>
 	 * <li>A ddms:acquiredOn element may cause issues for DDMS 4.0 records.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getCreatedString())

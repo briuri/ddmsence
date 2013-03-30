@@ -53,7 +53,7 @@ import buri.ddmsence.util.Util;
  * vocabulary enumerations behind some of the attributes. Any further validation would require integration
  * with ISM Schematron files as discussed in the Schematron Validation Power Tip on the website.</p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ISM:atomicEnergyMarkings</u>: (optional, starting in DDMS 3.1)<br />
  * <u>ISM:classification</u>: (optional)<br />
  * <u>ISM:classificationReason</u>: (optional)<br />
@@ -77,7 +77,7 @@ import buri.ddmsence.util.Util;
  * <u>ISM:SARIdentifier</u>: (optional)<br />
  * <u>ISM:SCIcontrols</u>: (optional)<br />
  * <u>ISM:typeOfExemptedSource</u>: (optional, DDMS 2.0 and 3.0 only)<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -407,7 +407,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	/**
 	 * Validates the attribute group. Where appropriate the {@link ISMVocabulary} enumerations are validated.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The atomicEnergyMarkings cannot be used until DDMS 3.1 or later.</li>
 	 * <li>If set, the atomicEnergyMarkings attribute must be valid tokens.</li>
 	 * <li>If set, the classification attribute must be a valid token.</li>
@@ -432,7 +432,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * <li>The typeOfExemptedSource attribute can only be used in DDMS 2.0 or DDMS 3.0.</li>
 	 * <li>If set, the typeOfExemptedSource attribute must be a valid token.</li>
 	 * <li>Does NOT do any validation on the constraints described in the DES ISM specification.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @param version the DDMS version to validate against. This cannot be stored in the attribute group because some
 	 *        DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).

@@ -52,9 +52,9 @@ public abstract class AbstractAttributeGroup {
 	/**
 	 * Base validation case for attribute groups.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>No rules are validated at this level. Extending classes may have additional rules.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @param version the DDMS version to validate against. This cannot be stored in the attribute group because some
 	 *        DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).

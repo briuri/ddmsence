@@ -49,27 +49,27 @@ import buri.ddmsence.util.Util;
  * <p>A revisionRecall element will either contain free child text describing the recall, or a set of link and details
  * elements.</p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>A valid component cannot have both non-empty child text and nested elements.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:link</u>: Links to further information about the recall (0-many optional), implemented as a {@link Link}<br
  * />
  * <u>ddms:details</u>: Further details about the recall (0-many optional), implemented as a {@link Details}<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ddms:revisionID</u>: a sequential integer for the recall (required)<br />
  * <u>ddms:revisionType</u>: an enumerated type for the recall (required)<br />
  * <u>network</u>: the name of the network, taken from a token list (optional)<br /> (becomes virt: in DDMS 5.0)
  * <u>otherNetwork</u>: an alternate network name (optional)<br /> (goes away in DDMS 5.0)
  * <u>{@link XLinkAttributes}</u>: If set, the xlink:type attribute must have a fixed value of "resource".<br />
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -237,7 +237,7 @@ public final class RevisionRecall extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A valid component cannot have both non-empty child text and nested elements.</li>
 	 * <li>Any links should have security attributes.</li>
@@ -246,7 +246,7 @@ public final class RevisionRecall extends AbstractBaseComponent {
 	 * <li>If set, the xlink:type attribute has a value of "resource".</li>
 	 * <li>If set, the network attribute must be a valid network token.</li>
 	 * <li>The otherNetwork cannot be used after DDMS 4.1.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
@@ -283,9 +283,9 @@ public final class RevisionRecall extends AbstractBaseComponent {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>Include any warnings from the XLink attributes.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		if (getXLinkAttributes() != null)

@@ -34,17 +34,17 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:recordsManagementInfo.
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:recordKeeper</u>: The organization responsible for the custody and ongoing management of the records
  * (0-1 optional), implemented as a {@link RecordKeeper}<br />
  * <u>ddms:applicationSoftware</u>: The software used to create the object to which this metadata applies (0-1
  * optional), implemented as an {@link ApplicationSoftware}<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ddms:vitalRecordIndicator</u>: An indication that a publication is categorized a vital record by the originating
  * agency (defaults to false)<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -112,11 +112,11 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>Only 0-1 record keepers or applicationSoftwares exist.</li>
 	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed

@@ -38,7 +38,7 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:organization.
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>At least 1 name value must be non-empty. A competing rule and loophole were established in DDMS 5.0.</li>
@@ -49,22 +49,22 @@ import buri.ddmsence.util.Util;
  * <li>A phone number can be set with no value. This loophole goes away in DDMS 5.0.</li>
  * <li>An email can be set with no value. This loophole goes away in DDMS 5.0.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
  * <p>The name of this component was changed from "Organization" to "organization" in DDMS 4.0.1.</p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:name</u>: names of the producer entity (1-many, at least 1 required)<br />
  * <u>ddms:phone</u>: phone numbers of the producer entity (0-many optional)<br />
  * <u>ddms:email</u>: email addresses of the producer entity (0-many optional)<br />
  * <u>ddms:subOrganization</u>: suborganization (0-many optional, starting in DDMS 4.0.1), implemented as a
  * {@link SubOrganization}<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ddms:acronym</u>: an acronym for the organization (optional, starting in DDMS 4.0.1)<br />
  * <u>{@link ExtensibleAttributes}</u>: Custom attributes (through DDMS 4.1)
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -143,11 +143,11 @@ public final class Organization extends AbstractRoleEntity {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>Acronyms cannot exist until DDMS 4.0.1 or later.</li>
 	 * <li>Extensible attributes cannot be used after DDMS 4.1.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractRoleEntity#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed

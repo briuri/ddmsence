@@ -31,18 +31,18 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:facilityIdentifier.
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>The beNumber value must be non-empty. This rule is codified in the schema, starting in DDMS 5.0.</li>
  * <li>The osuffix value must be non-empty. This rule is codified in the schema, starting in DDMS 5.0.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ddms:beNumber</u>: uniquely identifies the installation of the facility (required).<br />
  * <u>ddms:osuffix</u>: identifies a facility in conjunction with a beNumber (required if beNumber is set).<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -85,12 +85,12 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A beNumber exists and is non-empty.</li>
 	 * <li>An osuffix exists and is non-empty.</li>
 	 * <li>Does not validate whether the attributes have logical values.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */

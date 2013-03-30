@@ -60,26 +60,26 @@ import buri.ddmsence.util.Util;
  * If not "Not Applicable" or "Unknown", date formats must adhere to one of the DDMS-allowed date formats.
  * </p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
  * <li>A time period name element can be used with no child text. This loophole goes away in DDMS 5.0.</li>
  * <li>A completely empty approximableStart or approximableEnd date can be used.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:name</u>: An interval of time, which can be expressed as a named era (0-1 optional, default=Unknown).<br />
  * <u>ddms:start</u>: The start date of a period of time (exactly 1 optional, default=Unknown).<br />
  * <u>ddms:end</u>: The end date of a period of time (exactly 1 optional, default=Unknown).<br />
  * <u>ddms:approximableStart</u>: The approximable start date (exactly 1 optional)<br />
  * <u>ddms:approximableEnd</u>: The approximable end date (exactly 1 optional)<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS
  * 3.0)
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -255,14 +255,14 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If start exists, it is a valid date format.</li>
 	 * <li>If end exists, it is a valid date format.</li>
 	 * <li>0-1 names, start, end, approximableStart, approximableEnd exist.</li>
 	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
 	 * <li>approximableStart and approximableEnd do not exist until DDMS 4.1 or later.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -302,10 +302,10 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>A ddms:name element was found with no value, through DDMS 4.1.</li>
 	 * <li>A ddms:approximableStart or ddms:approximableEnd element may cause issues for DDMS 4.0 records.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		Element periodElement = getTimePeriodElement();
