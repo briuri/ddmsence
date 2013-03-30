@@ -38,18 +38,14 @@ import buri.ddmsence.ddms.resource.PointOfContactTest;
 import buri.ddmsence.ddms.resource.ProcessingInfoTest;
 import buri.ddmsence.ddms.resource.Publisher;
 import buri.ddmsence.ddms.resource.PublisherTest;
-import buri.ddmsence.ddms.resource.RecordsManagementInfo;
 import buri.ddmsence.ddms.resource.RecordsManagementInfoTest;
-import buri.ddmsence.ddms.resource.RevisionRecall;
 import buri.ddmsence.ddms.resource.RevisionRecallTest;
-import buri.ddmsence.ddms.security.NoticeList;
 import buri.ddmsence.ddms.security.NoticeListTest;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.ddms.security.ntk.Access;
 import buri.ddmsence.ddms.security.ntk.AccessTest;
 import buri.ddmsence.ddms.security.ntk.IndividualTest;
-import buri.ddmsence.ddms.summary.Description;
 import buri.ddmsence.ddms.summary.DescriptionTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -299,53 +295,6 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 				element.appendChild(component.getXOMElementCopy());
 			}
 			getInstance("Exactly 1 dates element must exist.", element);
-
-			// Too many dates
-			element = Util.buildDDMSElement(MetacardInfo.getName(version), null);
-			for (IDDMSComponent component : getRequiredChildComponents()) {
-				element.appendChild(component.getXOMElementCopy());
-				if (component instanceof Dates)
-					element.appendChild(component.getXOMElementCopy());
-			}
-			getInstance("Exactly 1 dates element must exist.", element);
-
-			// Too many descriptions
-			element = Util.buildDDMSElement(MetacardInfo.getName(version), null);
-			for (IDDMSComponent component : getChildComponents()) {
-				element.appendChild(component.getXOMElementCopy());
-				if (component instanceof Description)
-					element.appendChild(component.getXOMElementCopy());
-			}
-			getInstance("No more than 1 description element can exist.", element);
-
-			// Too many revisionRecalls
-			element = Util.buildDDMSElement(MetacardInfo.getName(version), null);
-			for (IDDMSComponent component : getChildComponents()) {
-				element.appendChild(component.getXOMElementCopy());
-				if (component instanceof RevisionRecall)
-					element.appendChild(component.getXOMElementCopy());
-			}
-			getInstance("No more than 1 revisionRecall element can exist.", element);
-
-			// Too many recordsManagementInfos
-			element = Util.buildDDMSElement(MetacardInfo.getName(version), null);
-			for (IDDMSComponent component : getChildComponents()) {
-				element.appendChild(component.getXOMElementCopy());
-				if (component instanceof RecordsManagementInfo)
-					element.appendChild(component.getXOMElementCopy());
-			}
-			getInstance("No more than 1 recordsManagementInfo", element);
-
-			// Too many noticeLists
-			if (!version.isAtLeast("5.0")) {
-				element = Util.buildDDMSElement(MetacardInfo.getName(version), null);
-				for (IDDMSComponent component : getChildComponents()) {
-					element.appendChild(component.getXOMElementCopy());
-					if (component instanceof NoticeList)
-						element.appendChild(component.getXOMElementCopy());
-				}
-				getInstance("No more than 1 noticeList element can exist.", element);
-			}
 		}
 	}
 
@@ -525,7 +474,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 		DDMSVersion.setCurrentVersion("5.0");
 		List<IDDMSComponent> components = getRequiredChildComponents();
 		components.add(new Access(IndividualTest.getFixtureList(), null, null, SecurityAttributesTest.getFixture()));
-		getInstance("The Access element", components);
+		getInstance("The ntk:Access element", components);
 	}
 	
 	public void testBuilderEquality() throws InvalidDDMSException {

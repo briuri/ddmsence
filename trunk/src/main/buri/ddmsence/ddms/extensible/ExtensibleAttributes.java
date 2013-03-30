@@ -45,13 +45,9 @@ import buri.ddmsence.util.Util;
 
 /**
  * Attribute group representing the xs:anyAttribute tag which appears on various DDMS components.
- * 
- * <p>Starting in DDMS 3.0, this attribute group can decorate {@link buri.ddmsence.ddms.resource.Organization},
- * {@link buri.ddmsence.ddms.resource.Person}, {@link buri.ddmsence.ddms.resource.Service},
- * {@link buri.ddmsence.ddms.resource.Unknown}, {@link Keyword}, {@link Category}, or the {@link Resource} itself.
- * In DDMS 2.0, this attribute group can only decorate {@link buri.ddmsence.ddms.resource.Organization},
- * {@link buri.ddmsence.ddms.resource.Person}, {@link buri.ddmsence.ddms.resource.Service}, or the {@link Resource}.</p>
- * 
+ * <br /><br />
+ * {@ddms.versions 11111}
+ *  
  * <p>No validation or processing of any kind is performed by DDMSence on extensible attributes, other than the base
  * validation used when loading attributes from an XML file, and a check to confirm that extensible attributes do not
  * collide with existing attributes. This class merely exposes a <code>getAttributes()</code> method which returns a
@@ -78,6 +74,27 @@ import buri.ddmsence.util.Util;
  * 
  * <p>Details about the XOM Attribute class can be found at:
  * <i>http://www.xom.nu/apidocs/index.html?nu/xom/Attribute.html</i></p>
+ * 
+ * {@table.header History}
+ * 		<p>In DDMS 2.0, this attribute group can only decorate {@link buri.ddmsence.ddms.resource.Organization},
+ * 		{@link buri.ddmsence.ddms.resource.Person}, {@link buri.ddmsence.ddms.resource.Service}, or the {@link Resource}.</p>
+ * 		<p>In DDMS 3.0 and 3.1, this attribute group can decorate {@link buri.ddmsence.ddms.resource.Organization},
+ * 		{@link buri.ddmsence.ddms.resource.Person}, {@link buri.ddmsence.ddms.resource.Service},
+ * 		{@link buri.ddmsence.ddms.resource.Unknown}, {@link Keyword}, {@link Category}, or the {@link Resource} itself.</p>
+ * 		<p>In DDMS 4.0.1 and 4.1, this attribute group was removed from {@link buri.ddmsence.ddms.resource.Person}.</p>
+ * 		<p>In DDMS 5.0, this attribute group was also removed from {@link buri.ddmsence.ddms.resource.Organization} and
+ * 		{@link Resource}. It is anticipated that all remaining extension points will be deprecated in the next release.</p>
+ * {@table.footer}
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
+ * {@table.header Attributes}
+ * 		{@child.info any:&lt;<i>otherAttributes</i>&gt;|0..*|11111}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		Extensible attributes are not validated by DDMSence.
+ * {@table.footer}
+
  * 
  * @author Brian Uri!
  * @since 1.1.0

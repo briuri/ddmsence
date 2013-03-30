@@ -37,9 +37,10 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of an element which might fulfill the xs:any space in the Extensible Layer.
+ * <br /><br />
+ * {@ddms.versions 11110}
  * 
- * <p>Starting in DDMS 3.0, zero to many of these elements may appear in a ddms:resource and can live in any other
- * namespace besides the DDMS namespace. In DDMS 2.0, only one of these is allowed.</p>
+ * <p>Extensible elements must live in any other namespace besides the DDMS XML namespace.</p>
  * 
  * <p>No validation or processing of any kind is performed by DDMSence on extensible attributes, other than the base
  * validation used when loading attributes from an XML file. This class merely exposes a
@@ -62,6 +63,21 @@ import buri.ddmsence.util.Util;
  * 
  * <p>Details about the XOM Element class can be found at:
  * <i>http://www.xom.nu/apidocs/index.html?nu/xom/Element.html</i></p>
+ *
+ * {@table.header History}
+ * 		<p>In DDMS 2.0, only one element is allowed on the resource. In DDMS 3.0 - 4.1, zero to many may appear. The
+ * 		ExtensibleElement extension point was removed in DDMS 5.0.</p>
+ * {@table.footer}
+ * {@table.header Nested Elements}
+ * 		{@child.info any:&lt;<i>otherElements</i>&gt;|0..1|10000}
+ * 		{@child.info any:&lt;<i>otherElements</i>&gt;|0..*|01110}
+ * {@table.footer}
+ * {@table.header Attributes}
+ * 		None.
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule An element cannot be in the DDMS namespace.|Error|11111}
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 1.1.0
@@ -79,14 +95,7 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The namespace cannot be the DDMS namespace.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		if (DDMSVersion.isSupportedDDMSNamespace(getNamespace()))

@@ -49,33 +49,41 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:metacardInfo.
+ * <br /><br />
+ * {@ddms.versions 00011}
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>At least one identifier is required. This loophole opened up in DDMS 5.0.</li>
- * <li>A dates component is required. This loophole opened up in DDMS 5.0.</li>
- * <li>At least one producer is requried. This loophole opened up in DDMS 5.0.</li>
- * </ul>
+ * <p></p>
+ * 
+ * {@table.header History}
+ * 		None.
  * {@table.footer}
- * 
  * {@table.header Nested Elements}
- * <u>ddms:identifier</u>: (1-many required), implemented as an {@link Identifier}<br />
- * <u>ddms:dates</u>: (exactly 1 required), implemented as an {@link Dates}<br />
- * <u>ddms:contributor</u>: (0-many optional), implemented as a {@link Contributor}<br />
- * <u>ddms:creator</u>: (0-many optional), implemented as a {@link Creator}<br />
- * <u>ddms:pointOfContact</u>: (0-many optional), implemented as a {@link PointOfContact}<br />
- * <u>ddms:publisher</u>: (1-many required), implemented as a {@link Publisher}<br />
- * <u>ddms:description</u>: (0-1 optional), implemented as a {@link Description}<br />
- * <u>ddms:processingInfo</u>: (0-many optional), implemented as a {@link ProcessingInfo}<br />
- * <u>ddms:revisionRecall</u>: (0-1 optional), implemented as a {@link RevisionRecall}<br />
- * <u>ddms:recordsManagementInfo</u>: (0-1 optional), implemented as a {@link RecordsManagementInfo}<br />
- * <u>ddms:noticeList</u>: (0-1 optional), implemented as a {@link NoticeList} (optional, only in DDMS 4.1)<br />
- * <u>ntk:Access</u>: Need-To-Know access information (optional, only in DDMS 4.1)<br />
+ * 		{@child.info ddms:identifier|1..*|00011}
+ * 		{@child.info ddms:dates|1|00011}
+ * 		{@child.info ddms:contributor|0..*|00011}
+ * 		{@child.info ddms:creator|0..*|00011}
+ * 		{@child.info ddms:pointOfContact|0..*|00011}
+ * 		{@child.info ddms:publisher|0..*|00011}
+ *  	{@child.info ddms:description|0..1|00011}
+ *  	{@child.info ddms:processingInfo|0..*|00011}
+ *  	{@child.info ddms:revisionRecall|0..1|00011}
+ *  	{@child.info ddms:recordsManagementInfo|0..1|00011}
+ *  	{@child.info ddms:noticeList|0..1|00010}
+ *  	{@child.info ntk:Access|0..1|00010}
  * {@table.footer}
- * 
  * {@table.header Attributes}
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
+ * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..1|11111}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule At least 1 ddms:identifier is required.|Error|11111}
+ * 		{@ddms.rule A ddms:dates is required.|Error|11111}
+ * 		{@ddms.rule At least 1 ddms:publisher is required.|Error|11110}
+ * 		{@ddms.rule At least 1 producer of any kind is required.|Error|00001}
+ * 		{@ddms.rule ddms:noticeList can only be used in DDMS 4.x.|Error|11111}
+ * 		{@ddms.rule ntk:Access can only be used in DDMS 4.x.|Error|11111}
+ * 		{@ddms.rule ntk:Access may cause issues for DDMS 4.0.1 systems|Warning|00010}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -254,63 +262,37 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>At least 1 identifier must exist.</li>
-	 * <li>At least 1 publisher must exist in DDMS 4.0.1 or 4.1. At least 1 of any kind of producer must exist starting
-	 * in DDMS 5.0.</li>
-	 * <li>Only 1 dates can exist.</li>
-	 * <li>Only 0-1 descriptions, revisionRecalls, recordsManagementInfos, or noticeLists can exist.</li>
-	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
-	 * <li>ddms:noticeList can only exist in DDMS 4.0.1 or 4.1.</li>
-	 * <li>ntk:Access can only exist in DDMS 4.0.1 or 4.1.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
+		requireAtLeastVersion("4.0.1");
 		Util.requireDDMSQName(getXOMElement(), MetacardInfo.getName(getDDMSVersion()));
 		if (getIdentifiers().isEmpty())
 			throw new InvalidDDMSException(
 				"At least one ddms:identifier must exist within a ddms:metacardInfo element.");
+		Util.requireBoundedChildCount(getXOMElement(), Dates.getName(getDDMSVersion()), 1, 1);
 		if (!getDDMSVersion().isAtLeast("5.0")) {
 			if (getPublishers().isEmpty())
 				throw new InvalidDDMSException(
 					"At least one ddms:publisher must exist within a ddms:metacardInfo element.");
 		}
 		else {
-			if (getAccess() != null)
-				throw new InvalidDDMSException("The Access element cannot be used after DDMS 4.1");
 			if (getContributors().isEmpty() && getCreators().isEmpty() && getPointOfContacts().isEmpty()
 				&& getPublishers().isEmpty())
 				throw new InvalidDDMSException("At least one producer must exist within a ddms:metacardInfo element.");
+			// NoticeList check is implicit, since the class cannot be instantiated after DDMS 4.1.
+			if (getAccess() != null)
+				throw new InvalidDDMSException("The ntk:Access element cannot be used after DDMS 4.1.");
 		}
-		Util.requireBoundedChildCount(getXOMElement(), Dates.getName(getDDMSVersion()), 1, 1);
-		Util.requireBoundedChildCount(getXOMElement(), Description.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedChildCount(getXOMElement(), RevisionRecall.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedChildCount(getXOMElement(), RecordsManagementInfo.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedChildCount(getXOMElement(), NoticeList.getName(getDDMSVersion()), 0, 1);
-
-		// Should be reviewed as additional versions of DDMS are supported.
-		requireAtLeastVersion("4.0.1");
-
 		super.validate();
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>An ntk:Access element may cause issues for DDMS 4.0 records.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		if (!getDDMSVersion().isAtLeast("5.0") && getAccess() != null)
 			addDdms40Warning("ntk:Access element");
-
 		super.validateWarnings();
 	}
 

@@ -55,8 +55,8 @@ import buri.ddmsence.util.Util;
  * {@table.header Validation Rules}
  * 		{@ddms.rule The component has a name.|Error|11111}
  * 		{@ddms.rule All child components use the same version of DDMS as this component.|Error|11111}
- * 		{@ddms.rule Warnings from any child components are claimed by this compoment.|Warning|11111}
- * 		{@ddms.rule Warnings from any security attributes are claimed by this compoment.|Warning|11111}
+ * 		{@ddms.rule Warnings from any child components are claimed by this component.|Warning|11111}
+ * 		{@ddms.rule Warnings from any security attributes are claimed by this component.|Warning|11111}
  * {@table.footer}
  * 	
  * @author Brian Uri!
