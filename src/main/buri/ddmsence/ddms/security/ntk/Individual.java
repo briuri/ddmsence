@@ -37,18 +37,33 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ntk:AccessIndividual.
+ * <br /><br />
+ * {@ddms.versions 00010}
  * 
+ * <p></p>
+ * 
+ * {@table.header History}
+ * 		<p>This class was introduced to support NTK components in DDMS 4.1. Those components are
+ * 		no longer a part of DDMS 5.0.</p>
+ * {@table.footer}
  * {@table.header Nested Elements}
- * <u>ntk:AccessSystemName</u>: The system described by this access record (exactly 1 required), implemented as a
- * {@link SystemName}<br />
- * <u>ntk:AccessIndividualValue</u>: The value used to describe the individual (1-to-many required), implemented as an
- * {@link IndividualValue}<br />
+ * 		{@child.info ntk:AccessSystemName|1|00010}
+ * 		{@child.info ntk:AccessIndividualValue|1..*|00010}
  * {@table.footer}
- * 
  * {@table.header Attributes}
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
+ * 		{@child.info ism:classification|1|00010}
+ * 		{@child.info ism:ownerProducer|1..*|00010}
+ * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..*|00010}
  * {@table.footer}
- * 
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule ntk:AccessSystemName is required.|Error|11111}
+ * 		{@ddms.rule At least 1 ntk:AccessIndividualValue is required.|Error|11111}
+ * 		{@ddms.rule ism:classification is required.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
+ * {@table.footer}
+ *  
  * @author Brian Uri!
  * @since 2.0.0
  */
@@ -105,21 +120,12 @@ public final class Individual extends AbstractAccessEntity {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>At least 1 individual value is required.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireQName(getXOMElement(), getNamespace(), Individual.getName(getDDMSVersion()));
 		if (getIndividualValues().isEmpty())
 			throw new InvalidDDMSException("At least one individual value is required.");
-
 		super.validate();
 	}
 

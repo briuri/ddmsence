@@ -38,29 +38,33 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ntk:Access.
+ * <br /><br />
+ * {@ddms.versions 00010}
  * 
- * {@table.header Strictness}
- * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
- * <ul>
- * <li>An Access element with no individual, group, or profile information can be used.</li>
- * </ul>
+ * <p></p>
+ * 
+ * {@table.header History}
+ * 		<p>This class was introduced to support NTK components in DDMS 4.1. Those components are
+ * 		no longer a part of DDMS 5.0.</p>
  * {@table.footer}
- * 
  * {@table.header Nested Elements}
- * <u>ntk:AccessIndividualList/ntk:AccessIndividual</u>: A list system access info for individuals, implemented
- * as a list of {@link Individual}<br />
- * <u>ntk:AccessGroupList/ntk:AccessGroup</u>: A list system access info for groups, implemented as a list of
- * {@link Group}<br />
- * <u>ntk:AccessProfileList</u>: A list system access info for profiles, implemented as a {@link ProfileList}<br />
- * The list of profiles is a full-fledged object because the list might have security attributes. The other two lists
- * are merely Java lists containing the real data.
+ * 		{@child.info ntk:AccessIndividualList/ntk:AccessIndividual|0..*|00010}
+ * 		{@child.info ntk:AccessGroupList/ntk:AccessGroup|0..*|00010}
+ * 		{@child.info ntk:AccessProfileList|0..1|00010}
  * {@table.footer}
- * 
  * {@table.header Attributes}
- * <u>ntk:externalReference</u>: A boolean attribute, true if this Access element describes an external resource
- * (optional,
- * starting in DDMS 4.1)<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
+ * 		{@child.info ntk:externalReference|0..1|00010}
+ * 		{@child.info ism:classification|1|00010}
+ * 		{@child.info ism:ownerProducer|1..*|00010}
+ * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..*|00010}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule ism:classification is required.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
+ * 		{@ddms.rule This component can be used with no values set.|Warning|11111}
+ * 		{@ddms.rule ntk:externalReference may cause issues for DDMS 4.0.1 systems.|Warning|00010}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -190,36 +194,17 @@ public final class Access extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>A classification is required.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		Util.requireQName(getXOMElement(), getNamespace(), Access.getName(getDDMSVersion()));
-		Util.requireDDMSValue("security attributes", getSecurityAttributes());
-		getSecurityAttributes().requireClassification();
-
-		// Should be reviewed as additional versions of DDMS are supported.
 		requireAtLeastVersion("4.0.1");
-
+		Util.requireQName(getXOMElement(), getNamespace(), Access.getName(getDDMSVersion()));
+		getSecurityAttributes().requireClassification();
 		super.validate();
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>No individuals, groups, or profiles are described in this Access element.</li>
-	 * <li>An externalReference attribute may cause issues for DDMS 4.0 records.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		if (getIndividuals().isEmpty() && getGroups().isEmpty() && getProfileList() == null)
