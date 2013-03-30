@@ -133,7 +133,7 @@ public class ProductionMetricTest extends AbstractBaseTestCase {
 		xml.append("<ddms:productionMetric ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
 		xml.append("ddms:subject=\"").append(TEST_SUBJECT).append("\" ").append("ddms:coverage=\"").append(
 			TEST_COVERAGE).append("\" ");
-		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
+		xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\"");
 		xml.append(" />");
 		return (xml.toString());
 	}

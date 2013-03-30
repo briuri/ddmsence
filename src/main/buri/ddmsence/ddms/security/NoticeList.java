@@ -38,14 +38,32 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:noticeList.
- * 
+ * <br /><br />
+ * {@ddms.versions 00010}
+ *  
+ *  <p></p>
+ *  
+ *  {@table.header History}
+ * 		<p>This class was introduced to support ISM notices in DDMS 4.1. Those components are
+ * 		no longer a part of DDMS 5.0.</p>
+ * {@table.footer}
  * {@table.header Nested Elements}
- * <u>ISM:Notice</u>: A collection of IC notices (1-to-many required), implemented as {@link Notice}s<br />
+ * 		{@child.info ism:Notice|1..*|00010}
+ * {@table.footer}
+ * {@table.header Attributes}
+ * 		{@child.info ism:classification|1|00010}
+ * 		{@child.info ism:ownerProducer|1..*|00010}
+ * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..*|00010}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule Component is not used after the DDMS version in which it was removed.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule At least 1 ism:Notice is required.|Error|11111}
+ * 		{@ddms.rule ism:classification is required.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
  * {@table.footer}
  * 
- * {@table.header Attributes}
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
- * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -108,31 +126,15 @@ public final class NoticeList extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>At least 1 Notice exists.</li>
-	 * <li>A classification is required.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
-	 * <li>This component cannot be used after DDMS 4.1.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		Util.requireDDMSQName(getXOMElement(), NoticeList.getName(getDDMSVersion()));
-
-		if (getNotices().isEmpty())
-			throw new InvalidDDMSException("At least one ISM:Notice must exist within a ddms:noticeList element.");
-		Util.requireDDMSValue("security attributes", getSecurityAttributes());
-		getSecurityAttributes().requireClassification();
-
-		// Should be reviewed as additional versions of DDMS are supported.
 		requireAtLeastVersion("4.0.1");
 		requireAtMostVersion("4.1");
-
+		Util.requireDDMSQName(getXOMElement(), NoticeList.getName(getDDMSVersion()));
+		if (getNotices().isEmpty())
+			throw new InvalidDDMSException("At least one ism:Notice must exist within a ddms:noticeList element.");
+		getSecurityAttributes().requireClassification();
 		super.validate();
 	}
 

@@ -153,7 +153,7 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 		if (DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
 			xml.append(" ntk:access=\"namespace1|key1^value1|key2^value1|key2^value2\" virt:network=\"NIPRNet\""); 
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
-			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
+			xml.append(" ism:classification=\"U\" ism:ownerProducer=\"USA\"");
 		xml.append(" />");
 		return (xml.toString());
 	}

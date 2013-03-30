@@ -7,5 +7,5 @@
 			<ddms:name>DISA</ddms:name>
 		</ddms:organization>
 	</ddms:recordKeeper>
-	<ddms:applicationSoftware xmlns:ISM="urn:us:gov:ic:ism" ISM:classification="U" ISM:ownerProducer="USA">IRM Generator 2L-9</ddms:applicationSoftware>
+	<ddms:applicationSoftware xmlns:ism="urn:us:gov:ic:ism" ism:classification="U" ism:ownerProducer="USA">IRM Generator 2L-9</ddms:applicationSoftware>
 </ddms:recordsManagementInfo>

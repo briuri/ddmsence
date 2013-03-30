@@ -33,18 +33,31 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * An immutable implementation of ISM:NoticeText.
- * 
- * {@table.header Strictness}
- * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
- * <ul>
- * <li>A NoticeText element can be used without any child text.</li>
- * </ul>
+ * An immutable implementation of ism:NoticeText.
+ *  * <br /><br />
+ * {@ddms.versions 00010}
+ *  
+ *  <p></p>
+ *  
+ *  {@table.header History}
+ * 		<p>This class was introduced to support ISM notices in DDMS 4.1. Those components are
+ * 		no longer a part of DDMS 5.0.</p>
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ISM:pocType</u>: indicates that the element specifies a POC for particular notice type. (optional)<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
+ * 		{@child.info ism:pocType|0..*|00010}
+ * 		{@child.info ism:classification|1|00010}
+ * 		{@child.info ism:ownerProducer|1..*|00010}
+ * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..*|00010}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule If set, each ism:pocType is a valid token.|Error|11111}
+ * 		{@ddms.rule Warnings from any notice attributes are claimed by this component.|Warning|11111}
+ * 		{@ddms.rule This component can be used with no value set.|Warning|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -103,21 +116,11 @@ public final class NoticeText extends AbstractSimpleString {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
-	 * <li>If set, the pocTypes must each be a valid token.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		Util.requireQName(getXOMElement(), getDDMSVersion().getIsmNamespace(), NoticeText.getName(getDDMSVersion()));
-
-		// Should be reviewed as additional versions of DDMS are supported.
 		requireAtLeastVersion("4.0.1");
+		Util.requireQName(getXOMElement(), getDDMSVersion().getIsmNamespace(), NoticeText.getName(getDDMSVersion()));
 		if (getDDMSVersion().isAtLeast("4.0.1")) {
 			for (String pocType : getPocTypes())
 				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_POC_TYPE, pocType);
@@ -126,16 +129,11 @@ public final class NoticeText extends AbstractSimpleString {
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>An ISM:NoticeText element was found with no value.</li>
-	 * <li>Include any validation warnings from the security attributes.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getValue()))
-			addWarning("An ISM:" + getName() + " element was found with no value.");
+			addWarning("An ism:" + getName() + " element was found with no value.");
 		super.validateWarnings();
 	}
 

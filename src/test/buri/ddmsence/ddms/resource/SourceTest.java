@@ -139,7 +139,7 @@ public class SourceTest extends AbstractBaseTestCase {
 		xml.append("ddms:schemaQualifier=\"").append(TEST_SCHEMA_QUALIFIER).append("\" ");
 		xml.append("ddms:schemaHref=\"").append(TEST_SCHEMA_HREF).append("\" ");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
-			xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ");
+			xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\" ");
 		xml.append("/>");
 		return (xml.toString());
 	}

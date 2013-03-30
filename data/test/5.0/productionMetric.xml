@@ -2,6 +2,6 @@
 <!--  Represents a single ddms:productionMetric element, for unit testing -->
 <ddms:productionMetric
 	xmlns:ddms="urn:us:mil:ces:metadata:ddms:5"
-	xmlns:ISM="urn:us:gov:ic:ism"
+	xmlns:ism="urn:us:gov:ic:ism"
 	ddms:subject="FOOD" ddms:coverage="AFG"
-	ISM:classification="U" ISM:ownerProducer="USA" />
+	ism:classification="U" ism:ownerProducer="USA" />

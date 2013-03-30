@@ -36,18 +36,31 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * An immutable implementation of ISM:Notice.
- * 
+ * An immutable implementation of ism:Notice.
+ * <br /><br />
+ * {@ddms.versions 00010}
+ *  
+ *  <p></p>
+ *  
+ *  {@table.header History}
+ * 		<p>This class was introduced to support ISM notices in DDMS 4.1. Those components are
+ * 		no longer a part of DDMS 5.0.</p>
+ * {@table.footer}
  * {@table.header Nested Elements}
- * <u>ISM:NoticeText</u>: The text associated with this Notice (1-to-many required), implemented as a {@link NoticeText}
- * <br />
+ * 		{@child.info ism:NoticeText|1..*|00010}
  * {@table.footer}
- * 
  * {@table.header Attributes}
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.<br />
- * <u>{@link NoticeAttributes}</u>
+ * 		{@child.info ism:&lt;<i>noticeAttributes</i>&gt;|0..*|00010}
+ * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..*|00010}
  * {@table.footer}
- * 
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule At least 1 ism:NoticeText is required.|Error|11111}
+ * 		{@ddms.rule Warnings from any notice attributes are claimed by this component.|Warning|11111}
+ * 		{@ddms.rule ism:externalNotice may cause issues for DDMS 4.0.1 systems.|Warning|00010}
+ * {@table.footer}
+ *  
  * @author Brian Uri!
  * @since 2.0.0
  */
@@ -114,40 +127,25 @@ public final class Notice extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>At least 1 NoticeText exists.</li>
-	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
+		requireAtLeastVersion("4.0.1");
 		Util.requireQName(getXOMElement(), getDDMSVersion().getIsmNamespace(), Notice.getName(getDDMSVersion()));
 		if (getNoticeTexts().isEmpty())
-			throw new InvalidDDMSException("At least one ISM:NoticeText must exist within an ISM:Notice element.");
-
-		// Should be reviewed as additional versions of DDMS are supported.
-		requireAtLeastVersion("4.0.1");
-
+			throw new InvalidDDMSException("At least one ism:NoticeText must exist within an ism:Notice element.");
 		super.validate();
 	}
 
+
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>An externalNotice attribute may cause issues for DDMS 4.0 records.</li>
-	 * <li>Include any validation warnings from the notice attributes.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		if (!getNoticeAttributes().isEmpty()) {
 			addWarnings(getNoticeAttributes().getValidationWarnings(), true);
 			if (getNoticeAttributes().isExternalReference() != null)
-				addDdms40Warning("ISM:externalNotice attribute");
+				addDdms40Warning("ism:externalNotice attribute");
 		}
 		super.validateWarnings();
 	}

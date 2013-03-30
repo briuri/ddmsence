@@ -2,10 +2,10 @@
 <!--  Represents a single ddms:publisher element, for unit testing -->
 <ddms:publisher
 	xmlns:ddms="urn:us:mil:ces:metadata:ddms:4"
-	xmlns:ISM="urn:us:gov:ic:ism"
-	ISM:classification="U"
-	ISM:ownerProducer="USA"
-	ISM:pocType="DoD-Dist-B">
+	xmlns:ism="urn:us:gov:ic:ism"
+	ism:classification="U"
+	ism:ownerProducer="USA"
+	ism:pocType="DoD-Dist-B">
 	<ddms:service>
 		<ddms:name>https://metadata.dod.mil/ebxmlquery/soap</ddms:name>
 	</ddms:service>

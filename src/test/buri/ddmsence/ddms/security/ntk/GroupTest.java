@@ -132,9 +132,9 @@ public class GroupTest extends AbstractBaseTestCase {
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ntk:AccessGroup ").append(getXmlnsNTK()).append(" ").append(getXmlnsISM()).append(" ");
-		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-		xml.append("\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
-		xml.append("\t<ntk:AccessGroupValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">WISE/RODCA</ntk:AccessGroupValue>\n");
+		xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">\n");
+		xml.append("\t<ntk:AccessSystemName ism:classification=\"U\" ism:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
+		xml.append("\t<ntk:AccessGroupValue ism:classification=\"U\" ism:ownerProducer=\"USA\">WISE/RODCA</ntk:AccessGroupValue>\n");
 		xml.append("</ntk:AccessGroup>\n");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}

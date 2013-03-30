@@ -2,9 +2,9 @@
 <!--  Represents a single ddms:publisher element, for unit testing -->
 <ddms:publisher
 	xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/2.0/"
-	xmlns:ISM="urn:us:gov:ic:ism:v2"
-	ISM:classification="U"
-	ISM:ownerProducer="USA">
+	xmlns:ism="urn:us:gov:ic:ism:v2"
+	ism:classification="U"
+	ism:ownerProducer="USA">
 	<ddms:Service>
 		<ddms:name>https://metadata.dod.mil/ebxmlquery/soap</ddms:name>
 	</ddms:Service>

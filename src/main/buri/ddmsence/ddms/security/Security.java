@@ -36,17 +36,31 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:security.
+ * <br /><br />
+ * {@ddms.versions 11110}
  * 
- * {@table.header Nested Elements}
- * <u>ddms:noticeList</u>: A collection of IC notices (optional, starting in DDMS 4.0.1), implemented as a
- * {@link NoticeList}<br />
- * <u>ntk:Access</u>: Need-To-Know access information (optional, starting in DDMS 4.0.1), implemented as an
- * {@link Access}<br />
+ *  <p></p>
+ *  
+ *  {@table.header History}
+ * 		<p>This class was removed in DDMS 5.0, as part of the migrartion to the IC Trusted Data Format.</p>
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		{@child.info ddms:noticeList|0..1|00010}
+ * 		{@child.info ntk:Access|0..1|00010}
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ISM:excludeFromRollup</u>: (required, fixed as "true", starting in DDMS 3.0)<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
+ * 		{@child.info ism:excludeFromRollup|1|11110}
+ * 		{@child.info ism:classification|1|11110}
+ * 		{@child.info ism:ownerProducer|1..*|11110}
+ * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..*|11110}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used after the DDMS version in which it was removed.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule ism:excludeFromRollup is not used before the DDMS version in which it was introduced.|Error|10000}
+ * 		{@ddms.rule ism:excludeFromRollup is required and is "true".|Error|01111}
+ * 		{@ddms.rule ism:classification is required.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -113,7 +127,7 @@ public final class Security extends AbstractBaseComponent {
 					DDMSVersion.getCurrentVersion().getIsmNamespace(), FIXED_ROLLUP);
 			_noticeList = noticeList;
 			_access = access;
-			_securityAttributes = securityAttributes;
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			if (securityAttributes != null)
 				securityAttributes.addTo(element);
 			setXOMElement(element, true);
@@ -125,39 +139,19 @@ public final class Security extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>A classification is required.</li>
-	 * <li>Only 0-1 noticeLists or Access elements exist.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>The excludeFromRollup is set and has a value of "true", starting in DDMS 3.0.</li>
-	 * <li>This component cannot be used after DDMS 4.1.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
+		requireAtMostVersion("4.1");
 		Util.requireDDMSQName(getXOMElement(), Security.getName(getDDMSVersion()));
-		Util.requireBoundedChildCount(getXOMElement(), NoticeList.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedChildCount(getXOMElement(), Access.getName(getDDMSVersion()), 0, 1);
-
-		// Should be reviewed as additional versions of DDMS are supported.
 		if (getDDMSVersion().isAtLeast("3.0")) {
-			if (getExcludeFromRollup() == null)
-				throw new InvalidDDMSException("The excludeFromRollup attribute is required.");
-			if (!FIXED_ROLLUP.equals(String.valueOf(getExcludeFromRollup())))
+			if (getExcludeFromRollup() == null ||!FIXED_ROLLUP.equals(String.valueOf(getExcludeFromRollup())))
 				throw new InvalidDDMSException("The excludeFromRollup attribute must have a fixed value of \""
 					+ FIXED_ROLLUP + "\".");
 		}
 		else if (getExcludeFromRollup() != null)
 			throw new InvalidDDMSException("The excludeFromRollup attribute cannot be used until DDMS 3.0 or later.");
-
-		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
-
-		requireAtMostVersion("4.1");
 		super.validate();
 	}
 

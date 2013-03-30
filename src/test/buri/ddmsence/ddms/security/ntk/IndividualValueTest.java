@@ -140,7 +140,7 @@ public class IndividualValueTest extends AbstractBaseTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ntk:AccessIndividualValue ").append(getXmlnsNTK()).append(" ").append(getXmlnsISM());
 		xml.append(" ntk:id=\"ID\" ntk:IDReference=\"ID\" ntk:qualifier=\"qualifier\"");
-		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append(" ism:classification=\"U\" ism:ownerProducer=\"USA\">");
 		xml.append(TEST_VALUE).append("</ntk:AccessIndividualValue>");
 		return (xml.toString());
 	}

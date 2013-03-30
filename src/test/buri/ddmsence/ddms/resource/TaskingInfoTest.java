@@ -170,14 +170,14 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:taskingInfo ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
-		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml.append("<ddms:requesterInfo ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">");
+		xml.append("<ddms:requesterInfo ism:classification=\"U\" ism:ownerProducer=\"USA\">");
 		xml.append("<ddms:organization><ddms:name>DISA</ddms:name></ddms:organization>");
 		xml.append("</ddms:requesterInfo>");
-		xml.append("<ddms:addressee ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("<ddms:addressee ism:classification=\"U\" ism:ownerProducer=\"USA\">");
 		xml.append("<ddms:organization><ddms:name>DISA</ddms:name></ddms:organization>");
 		xml.append("</ddms:addressee>");
-		xml.append("<ddms:description ISM:classification=\"U\" ISM:ownerProducer=\"USA\">A transformation service.</ddms:description>");
+		xml.append("<ddms:description ism:classification=\"U\" ism:ownerProducer=\"USA\">A transformation service.</ddms:description>");
 		xml.append("<ddms:taskID ");
 		xml.append("xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
 		xml.append("ddms:taskingSystem=\"MDR\" ");

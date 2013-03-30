@@ -238,7 +238,7 @@ public abstract class AbstractBaseTestCase extends TestCase {
 	 * Returns a namespace declaration for ISM
 	 */
 	protected static String getXmlnsISM() {
-		return ("xmlns:ISM=\"" + DDMSVersion.getCurrentVersion().getIsmNamespace() + "\"");
+		return ("xmlns:ism=\"" + DDMSVersion.getCurrentVersion().getIsmNamespace() + "\"");
 	}
 
 	/**

@@ -30,9 +30,9 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p> Tests related to ISM:Notice elements </p>
+ * <p> Tests related to ism:Notice elements </p>
  * 
- * <p> The valid instance of ISM:Notice is generated, rather than relying on the ISM schemas to validate an XML file.
+ * <p> The valid instance of ism:Notice is generated, rather than relying on the ISM schemas to validate an XML file.
  * </p>
  * 
  * @author Brian Uri!
@@ -154,14 +154,14 @@ public class NoticeTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ISM:Notice ").append(getXmlnsISM()).append(" ");
-		xml.append("ISM:noticeType=\"DoD-Dist-B\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
-		xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\"");
+		xml.append("<ism:Notice ").append(getXmlnsISM()).append(" ");
+		xml.append("ism:noticeType=\"DoD-Dist-B\" ism:noticeReason=\"noticeReason\" ism:noticeDate=\"2011-09-15\" ");
+		xml.append("ism:unregisteredNoticeType=\"unregisteredNoticeType\"");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("4.1")) {
-			xml.append(" ISM:externalNotice=\"false\"");
+			xml.append(" ism:externalNotice=\"false\"");
 		}
-		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"DoD-Dist-B\">noticeText</ISM:NoticeText></ISM:Notice>");
+		xml.append(" ism:classification=\"U\" ism:ownerProducer=\"USA\">");
+		xml.append("<ism:NoticeText ism:classification=\"U\" ism:ownerProducer=\"USA\" ism:pocType=\"DoD-Dist-B\">noticeText</ism:NoticeText></ism:Notice>");
 		return (xml.toString());
 	}
 
@@ -208,7 +208,7 @@ public class NoticeTest extends AbstractBaseTestCase {
 			// No NoticeTexts
 			Element element = new Element(getFixtureElement());
 			element.removeChildren();
-			getInstance("At least one ISM:NoticeText", element);
+			getInstance("At least one ism:NoticeText", element);
 		}
 	}
 
@@ -217,7 +217,7 @@ public class NoticeTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No NoticeTexts
-			getInstance("At least one ISM:NoticeText", (List) null);
+			getInstance("At least one ism:NoticeText", (List) null);
 		}
 	}
 
@@ -230,8 +230,8 @@ public class NoticeTest extends AbstractBaseTestCase {
 			// 4.1 ism:Notice used
 			if (version.isAtLeast("4.1")) {
 				assertEquals(1, component.getValidationWarnings().size());
-				String text = "The ISM:externalNotice attribute in this DDMS component";
-				String locator = "ISM:Notice";
+				String text = "The ism:externalNotice attribute in this DDMS component";
+				String locator = "ism:Notice";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
 			// No warnings
@@ -329,7 +329,7 @@ public class NoticeTest extends AbstractBaseTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "At least one ISM:NoticeText");
+				expectMessage(e, "At least one ism:NoticeText");
 			}
 			builder.getNoticeTexts().get(0).setValue("TEST");
 			builder.getNoticeTexts().get(0).getSecurityAttributes().setClassification("U");

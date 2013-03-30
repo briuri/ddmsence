@@ -127,8 +127,8 @@ public class CreatorTest extends AbstractBaseTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:creator ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM());
 		if (version.isAtLeast("4.0.1"))
-			xml.append(" ISM:pocType=\"DoD-Dist-B\"");
-		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:").append(Person.getName(version)).append(
+			xml.append(" ism:pocType=\"DoD-Dist-B\"");
+		xml.append(" ism:classification=\"U\" ism:ownerProducer=\"USA\">\n\t<ddms:").append(Person.getName(version)).append(
 			">\n");
 		xml.append("\t\t<ddms:name>Brian</ddms:name>\n");
 		xml.append("\t\t<ddms:surname>Uri</ddms:surname>\n");

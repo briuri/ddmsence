@@ -170,9 +170,9 @@ public class OrganizationTest extends AbstractBaseTestCase {
 			xml.append("\t<ddms:email>").append(email).append("</ddms:email>\n");
 		if (version.isAtLeast("4.0.1")) {
 			xml.append("\t<ddms:subOrganization ").append(getXmlnsISM()).append(
-				" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">sub1</ddms:subOrganization>\n");
+				" ism:classification=\"U\" ism:ownerProducer=\"USA\">sub1</ddms:subOrganization>\n");
 			xml.append("\t<ddms:subOrganization ").append(getXmlnsISM()).append(
-				" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">sub2</ddms:subOrganization>\n");
+				" ism:classification=\"U\" ism:ownerProducer=\"USA\">sub2</ddms:subOrganization>\n");
 		}
 		xml.append("</ddms:").append(Organization.getName(version)).append(">");
 		return (formatXml(xml.toString(), preserveFormatting));

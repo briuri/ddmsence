@@ -52,7 +52,8 @@ import buri.ddmsence.util.Util;
  * {@table.header Attributes}
  * 		{@child.info srsName|0..1|11110}
  * 		{@child.info srsDimension|0..1|11110}
- * 		{@child.info uomLabels|0..1|11110}
+ * 		{@child.info axisLabels|0..*|11110}
+ * 		{@child.info uomLabels|0..*|11110}
  * {@table.footer}
  * {@table.header Validation Rules}
  * 		{@ddms.rule If set, srsName is a valid URI.|Error|11111}
@@ -61,9 +62,9 @@ import buri.ddmsence.util.Util;
  * 		{@ddms.rule If axisLabels is not set, uomLabels must not be set.|Error|11111}
  * 		{@ddms.rule If set, each axisLabels value must be a NCName.|Error|11111}
  * 		{@ddms.rule If set, each uomLabel value must be a NCName.|Error|11111}
- * <p>When validating this attribute group, the required/optional nature of the srsName attribute is not checked.
- * Because that limitation depends on the parent element (for example, gml:Point and gml:Polygon require an srsName, but gml:pos
- * does not), the parent element should be responsible for checking.</p>
+ * 		<p>When validating this attribute group, the required/optional nature of the srsName attribute is not checked.
+ * 		Because that limitation depends on the parent element (for example, gml:Point and gml:Polygon require an srsName, but gml:pos
+ * 		does not), the parent element should be responsible for checking.</p>
  * {@table.footer}
  *  
  * @author Brian Uri!

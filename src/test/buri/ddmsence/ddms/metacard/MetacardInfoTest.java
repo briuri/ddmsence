@@ -175,7 +175,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:metacardInfo ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
-		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">");
 		xml.append("<ddms:identifier ddms:qualifier=\"URI\" ddms:value=\"urn:buri:ddmsence:testIdentifier\" />");
 		xml.append("<ddms:dates ddms:created=\"2003\" />");
 		xml.append("<ddms:publisher><ddms:person><ddms:name>Brian</ddms:name>");
@@ -185,35 +185,35 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 		xml.append("<ddms:creator><ddms:organization><ddms:name>DISA</ddms:name></ddms:organization></ddms:creator>");
 		xml.append("<ddms:pointOfContact><ddms:unknown><ddms:name>UnknownEntity</ddms:name>");
 		xml.append("</ddms:unknown></ddms:pointOfContact>");
-		xml.append("<ddms:description ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("<ddms:description ism:classification=\"U\" ism:ownerProducer=\"USA\">");
 		xml.append("A transformation service.</ddms:description>");
-		xml.append("<ddms:processingInfo ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ");
+		xml.append("<ddms:processingInfo ism:classification=\"U\" ism:ownerProducer=\"USA\" ");
 		xml.append("ddms:dateProcessed=\"2011-08-19\">");
 		xml.append("XSLT Transformation to convert DDMS 2.0 to DDMS 3.1.</ddms:processingInfo>");
 		xml.append("<ddms:revisionRecall xmlns:xlink=\"http://www.w3.org/1999/xlink\" ddms:revisionID=\"1\" ");
 		xml.append("ddms:revisionType=\"ADMINISTRATIVE RECALL\" ");
 		xml.append("xlink:type=\"resource\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:label=\"tank\" ");
-		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">Description of Recall</ddms:revisionRecall>");
+		xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">Description of Recall</ddms:revisionRecall>");
 		xml.append("<ddms:recordsManagementInfo ddms:vitalRecordIndicator=\"true\">");
 		xml.append("<ddms:recordKeeper><ddms:recordKeeperID>#289-99202.9</ddms:recordKeeperID>");
 		xml.append("<ddms:organization><ddms:name>DISA</ddms:name></ddms:organization></ddms:recordKeeper>");
-		xml.append("<ddms:applicationSoftware ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("<ddms:applicationSoftware ism:classification=\"U\" ism:ownerProducer=\"USA\">");
 		xml.append("IRM Generator 2L-9</ddms:applicationSoftware>");
 		xml.append("</ddms:recordsManagementInfo>");
 		if ("4.1".equals(DDMSVersion.getCurrentVersion().getVersion())) {
-			xml.append("<ddms:noticeList ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-			xml.append("<ISM:Notice ISM:noticeType=\"DoD-Dist-B\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
-			xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\"");
-			xml.append(" ISM:externalNotice=\"false\"");
-			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-			xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
-			xml.append(" ISM:pocType=\"DoD-Dist-B\">noticeText</ISM:NoticeText>");
-			xml.append("</ISM:Notice></ddms:noticeList>");
-			xml.append("<ntk:Access xmlns:ntk=\"urn:us:gov:ic:ntk\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+			xml.append("<ddms:noticeList ism:classification=\"U\" ism:ownerProducer=\"USA\">");
+			xml.append("<ism:Notice ism:noticeType=\"DoD-Dist-B\" ism:noticeReason=\"noticeReason\" ism:noticeDate=\"2011-09-15\" ");
+			xml.append("ism:unregisteredNoticeType=\"unregisteredNoticeType\"");
+			xml.append(" ism:externalNotice=\"false\"");
+			xml.append(" ism:classification=\"U\" ism:ownerProducer=\"USA\">");
+			xml.append("<ism:NoticeText ism:classification=\"U\" ism:ownerProducer=\"USA\"");
+			xml.append(" ism:pocType=\"DoD-Dist-B\">noticeText</ism:NoticeText>");
+			xml.append("</ism:Notice></ddms:noticeList>");
+			xml.append("<ntk:Access xmlns:ntk=\"urn:us:gov:ic:ntk\" ism:classification=\"U\" ism:ownerProducer=\"USA\">");
 			xml.append("<ntk:AccessIndividualList>");
-			xml.append("<ntk:AccessIndividual ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-			xml.append("<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>");
-			xml.append("<ntk:AccessIndividualValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+			xml.append("<ntk:AccessIndividual ism:classification=\"U\" ism:ownerProducer=\"USA\">");
+			xml.append("<ntk:AccessSystemName ism:classification=\"U\" ism:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>");
+			xml.append("<ntk:AccessIndividualValue ism:classification=\"U\" ism:ownerProducer=\"USA\">");
 			xml.append("user_2321889:Doe_John_H</ntk:AccessIndividualValue>");
 			xml.append("</ntk:AccessIndividual>");
 			xml.append("</ntk:AccessIndividualList>");
@@ -355,8 +355,8 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 				String locator = "ddms:metacardInfo";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 
-				text = "The ISM:externalNotice attribute in this DDMS component";
-				locator = "ddms:metacardInfo/ddms:noticeList/ISM:Notice";
+				text = "The ism:externalNotice attribute in this DDMS component";
+				locator = "ddms:metacardInfo/ddms:noticeList/ism:Notice";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(1));
 
 			}

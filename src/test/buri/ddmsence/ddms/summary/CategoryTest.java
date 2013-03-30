@@ -144,7 +144,7 @@ public class CategoryTest extends AbstractBaseTestCase {
 		xml.append("ddms:code=\"").append(TEST_CODE).append("\" ");
 		xml.append("ddms:label=\"").append(TEST_LABEL).append("\"");
 		if (version.isAtLeast("4.0.1")) {
-			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
+			xml.append(" ism:classification=\"U\" ism:ownerProducer=\"USA\"");
 		}
 		xml.append(" />");
 		return (xml.toString());

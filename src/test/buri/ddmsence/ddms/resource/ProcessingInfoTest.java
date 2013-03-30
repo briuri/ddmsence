@@ -132,7 +132,7 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:processingInfo ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM());
-		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ");
+		xml.append(" ism:classification=\"U\" ism:ownerProducer=\"USA\" ");
 		xml.append("ddms:dateProcessed=\"").append(TEST_DATE_PROCESSED).append("\">");
 		xml.append(TEST_VALUE).append("</ddms:processingInfo>");
 		return (xml.toString());

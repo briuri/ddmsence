@@ -135,7 +135,7 @@ public class TypeTest extends AbstractBaseTestCase {
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE).append(
 			"\"");
 		if (version.isAtLeast("4.0.1")) {
-			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">Description</ddms:type>");
+			xml.append(" ism:classification=\"U\" ism:ownerProducer=\"USA\">Description</ddms:type>");
 		}
 		else
 			xml.append(" />");

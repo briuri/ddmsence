@@ -49,6 +49,8 @@ import buri.ddmsence.util.Util;
 
 /**
  * Representation of the Controlled Vocabulary enumerations used by ISM attributes.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
  * <p>
  * Token values are read from the CVEnumISM.xml files accompanying the "XML Data Encoding Specification for Information

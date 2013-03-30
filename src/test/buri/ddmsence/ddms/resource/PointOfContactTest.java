@@ -138,8 +138,8 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:pointOfContact ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM());
 		if (version.isAtLeast("4.0.1"))
-			xml.append(" ISM:pocType=\"DoD-Dist-B\"");
-		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t");
+			xml.append(" ism:pocType=\"DoD-Dist-B\"");
+		xml.append(" ism:classification=\"U\" ism:ownerProducer=\"USA\">\n\t");
 		if ("2.0".equals(version.getVersion())) {
 			xml.append("<ddms:").append(Service.getName(version)).append(">\n");
 			xml.append("\t\t<ddms:name>https://metadata.dod.mil/ebxmlquery/soap</ddms:name>\n");

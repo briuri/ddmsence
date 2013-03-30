@@ -179,7 +179,7 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:subjectCoverage ").append(getXmlnsDDMS());
 		if (version.isAtLeast("3.0")) {
-			xml.append(" ").append(getXmlnsISM()).append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
+			xml.append(" ").append(getXmlnsISM()).append(" ism:classification=\"U\" ism:ownerProducer=\"USA\"");
 		}
 		xml.append(">\n");
 		if (version.isAtLeast("4.0.1")) {
@@ -187,8 +187,8 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 			xml.append("\t<ddms:keyword ddms:value=\"Uri\" />\n");
 			xml.append("\t<ddms:category ddms:qualifier=\"urn:buri:ddmsence:categories\" ddms:code=\"DDMS\" ").append(
 				"ddms:label=\"DDMS\" />\n");
-			xml.append("\t<ddms:productionMetric ddms:subject=\"FOOD\" ddms:coverage=\"AFG\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\" />\n");
-			xml.append("\t<ddms:nonStateActor ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ddms:order=\"1\"");
+			xml.append("\t<ddms:productionMetric ddms:subject=\"FOOD\" ddms:coverage=\"AFG\" ism:classification=\"U\" ism:ownerProducer=\"USA\" />\n");
+			xml.append("\t<ddms:nonStateActor ism:classification=\"U\" ism:ownerProducer=\"USA\" ddms:order=\"1\"");
 			if (version.isAtLeast("4.1")) {
 				xml.append(" ddms:qualifier=\"urn:sample\"");
 			}

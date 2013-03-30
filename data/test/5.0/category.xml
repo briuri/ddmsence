@@ -2,9 +2,9 @@
 <!--  Represents a single ddms:category element, for unit testing -->
 <ddms:category
 	xmlns:ddms="urn:us:mil:ces:metadata:ddms:5"
-	xmlns:ISM="urn:us:gov:ic:ism" 
+	xmlns:ism="urn:us:gov:ic:ism" 
 	ddms:qualifier="http://metadata.dod.mil/mdr/artifiact/MET/severeWeatherCode_enum/xml"
 	ddms:code="T"
 	ddms:label="TORNADO"
-	ISM:classification="U"
-	ISM:ownerProducer="USA" />
+	ism:classification="U"
+	ism:ownerProducer="USA" />

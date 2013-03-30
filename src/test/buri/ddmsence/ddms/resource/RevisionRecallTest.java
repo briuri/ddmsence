@@ -220,13 +220,13 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
 			xml.append("otherNetwork=\"PBS\" ");
 		xml.append("xlink:type=\"resource\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:label=\"tank\" ");
-		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">");
 
 		if (hasLinks) {
 			xml.append("<ddms:link xlink:type=\"locator\" xlink:href=\"http://en.wikipedia.org/wiki/Tank\" ");
 			xml.append("xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:label=\"tank\" ");
-			xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\" />");
-			xml.append("<ddms:details ISM:classification=\"U\" ISM:ownerProducer=\"USA\">Details</ddms:details>");
+			xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\" />");
+			xml.append("<ddms:details ism:classification=\"U\" ism:ownerProducer=\"USA\">Details</ddms:details>");
 		}
 		else
 			xml.append(TEST_VALUE);
