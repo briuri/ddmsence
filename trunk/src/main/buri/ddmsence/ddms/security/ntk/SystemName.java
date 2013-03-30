@@ -30,13 +30,31 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ntk:AccessSystemName.
+ * <br /><br />
+ * {@ddms.versions 00010}
  * 
+ * <p></p>
+ * 
+ * {@table.header History}
+ * 		<p>This class was introduced to support NTK components in DDMS 4.1. Those components are
+ * 		no longer a part of DDMS 5.0.</p>
+ * {@table.footer}
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ntk:id</u>: A unique XML identifier (optional)<br />
- * <u>ntk:IDReference</u>: A cross-reference to a unique identifier (optional)<br />
- * <u>ntk:qualifier</u>: A user-defined property within an element for general purpose processing used with block
- * objects to provide supplemental information over and above that conveyed by the element name (optional)<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
+ * 		{@child.info ntk:id|0..1|00010}
+ * 		{@child.info ntk:IDReference|0..1|00010}
+ * 		{@child.info ntk:qualifier|0..1|00010}
+ * 		{@child.info ism:classification|1|00010}
+ * 		{@child.info ism:ownerProducer|1..*|00010}
+ * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..*|00010}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule ism:classification is required.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -70,12 +88,6 @@ public final class SystemName extends AbstractNtkString {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {

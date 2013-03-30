@@ -83,7 +83,7 @@ import buri.ddmsence.util.Util;
  * 		{@ddms.rule At least 1 producer of any kind is required.|Error|00001}
  * 		{@ddms.rule ddms:noticeList can only be used in DDMS 4.x.|Error|11111}
  * 		{@ddms.rule ntk:Access can only be used in DDMS 4.x.|Error|11111}
- * 		{@ddms.rule ntk:Access may cause issues for DDMS 4.0.1 systems|Warning|00010}
+ * 		{@ddms.rule ntk:Access may cause issues for DDMS 4.0.1 systems.|Warning|00010}
  * {@table.footer}
  * 
  * @author Brian Uri!
