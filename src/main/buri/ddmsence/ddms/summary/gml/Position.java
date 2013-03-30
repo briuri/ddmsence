@@ -36,17 +36,17 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of gml:pos.
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>A position must either have 2 coordinates (to comply with WGS84E_2D) or 3 coordinates (to comply with WGS84E_3D).
  * </li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>{@link SRSAttributes}</u>
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -109,14 +109,14 @@ public final class Position extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>Each coordinate is a valid Double value.</li>
 	 * <li>The position is represented by 2 or 3 coordinates.</li>
 	 * <li>The first coordinate is a valid latitude.</li>
 	 * <li>The second coordinate is a valid longitude.</li>
 	 * <li>Does not perform any special validation on the third coordinate (height above ellipsoid).</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
@@ -135,9 +135,9 @@ public final class Position extends AbstractBaseComponent {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>Include any validation warnings from the SRS attributes.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		addWarnings(getSRSAttributes().getValidationWarnings(), true);

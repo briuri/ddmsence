@@ -35,22 +35,22 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of gml:Point.
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>The srsName must also be non-empty.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>gml:pos</u>: the position (exactly 1 required), implemented as a {@link Position}<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>gml:id</u>: unique ID (required)<br />
  * <u>{@link SRSAttributes}</u>
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -117,13 +117,13 @@ public final class Point extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>The srsName is required.</li>
 	 * <li>The ID is required, and must be a valid NCName.</li>
 	 * <li>If the position has an srsName, it matches the srsName of this Point.</li>
 	 * <li>Does not perform any special validation on the third coordinate (height above ellipsoid).</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
@@ -144,9 +144,9 @@ public final class Point extends AbstractBaseComponent {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>Include any validation warnings from the SRS attributes.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		addWarnings(getSRSAttributes().getValidationWarnings(), true);

@@ -33,19 +33,19 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:keyword.
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>The keyword value must not be empty. This rule is codified in the schema, starting in DDMS 5.0.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ddms:value</u>: The keyword itself (required)<br />
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS
  * 4.0.1)<br />
  * <u>{@link ExtensibleAttributes}</u>: (optional, starting in DDMS 3.0).
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -117,12 +117,12 @@ public final class Keyword extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>The keyword value exists and is not empty.</li>
 	 * <li>The SecurityAttributes do not exist until DDMS 4.0.1 or later.</li>
 	 * <li>No extensible attributes can exist until DDMS 3.0 or later.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */

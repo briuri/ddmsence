@@ -36,19 +36,19 @@ import buri.ddmsence.util.Util;
  * 
  * <p>This element is not a global component, but is being implemented because it has attributes.</p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>The child text must not be empty. This rule is codified in the schema, starting in DDMS 5.0.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ddms:taskingSystem</u>: the tasking system (optional)<br />
  * <u>network</u>: the name of the network, taken from a token list (optional)<br /> (becomes virt: in DDMS 5.0)
  * <u>otherNetwork</u>: an alternate network name (optional)<br /> (goes away in DDMS 5.0)
  * <u>{@link XLinkAttributes}</u>: If set, the xlink:type attribute must have a fixed value of "simple".<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -123,13 +123,13 @@ public final class TaskID extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A child text value is required.</li>
 	 * <li>If set, the xlink:type attribute has a value of "simple".</li>
 	 * <li>If set, the network attribute must be a valid network token.</li>
 	 * <li>The otherNetwork cannot be used after DDMS 4.1.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
@@ -148,9 +148,9 @@ public final class TaskID extends AbstractBaseComponent {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>Include any warnings from the XLink attributes.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		if (getXLinkAttributes() != null)

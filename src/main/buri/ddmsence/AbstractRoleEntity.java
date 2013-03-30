@@ -115,9 +115,9 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The entity has at least 1 non-empty name.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -135,10 +135,10 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>A ddms:phone element was found with no value, through DDMS 4.1.</li>
 	 * <li>A ddms:email element was found with no value, through DDMS 4.1.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		if (!getDDMSVersion().isAtLeast("5.0")) {

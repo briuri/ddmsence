@@ -44,26 +44,25 @@ import buri.ddmsence.util.Util;
  * ({@link Link}, {@link RevisionRecall}, or {@link TaskID}).
  * </p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Locator Attributes (for ddms:link)</th></tr><tr><td class="infoBody">
+ * {@table.header Locator Attributes (for ddms:link)}
  * <u>xlink:type</u>: the type of link (optional, but fixed as "locator" if set)<br />
  * <u>xlink:href</u>: A target URL (optional)<br />
  * <u>xlink:role</u>: The URI reference identifies some resource that describes the intended property. (optional)<br />
  * <u>xlink:title</u>: Used to describe the meaning of a link or resource in a human-readable fashion, along the same
  * lines as the role or arcrole attribute. (optional)<br />
  * <u>xlink:label</u>: The label attribute provides a name for the link (optional)<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Resource Attributes (for ddms:revisionRecall)</th></tr><tr>
- * <td class="infoBody">
+ * {@table.header Resource Attributes (for ddms:revisionRecall)}
  * <u>xlink:type</u>: (optional, but fixed as "resource" if set)<br />
  * <u>xlink:role</u>: The URI reference identifies some resource that describes the intended property. When no value is
  * supplied, no particular role value is to be inferred. (optional, but must be non-empty if set)<br />
  * <u>xlink:title</u>: Used to describe the meaning of a link or resource in a human-readable fashion, along the same
  * lines as the role or arcrole attribute. (optional)<br />
  * <u>xlink:label</u>: The label attribute provides a name for the link (optional)<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Simple Attributes (for ddms:taskID)</th></tr><tr><td class="infoBody">
+ * {@table.header Simple Attributes (for ddms:taskID)}
  * <u>xlink:type</u>: (optional, but fixed as "simple" if set)<br />
  * <u>xlink:href</u>: A URL (optional, must be a URI)<br />
  * <u>xlink:role</u>: The URI reference identifies some resource that describes the intended property. When no value is
@@ -73,7 +72,7 @@ import buri.ddmsence.util.Util;
  * <u>xlink:arcrole</u>: A URI reference describing an arc role (optional)<br />
  * <u>xlink:show</u>: A token which signifies the behavior intentions for traversal (optional)<br />
  * <u>xlink:actuate</u>: A token which signifies the behavior intentions for traversal (optional)<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -260,7 +259,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	/**
 	 * Validates the attribute group.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>If the href attribute is set, it is a valid URI.</li>
 	 * <li>If the role attribute is set, it is a valid URI, starting in DDMS 4.0.1.</li>
 	 * <li>If the label attribute is set, it is a valid NCName, starting in DDMS 4.0.1.</li>
@@ -269,7 +268,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 * <li>If the actuate attribute is set, it is a valid token.</li>
 	 * <li>Does not validate the required nature of any attribute. It is the parent class'
 	 * responsibility to do that.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @param version the DDMS version to validate against. This cannot be stored in the attribute group because some
 	 *        DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).

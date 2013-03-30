@@ -36,21 +36,21 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:postalAddress.
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
  * <li>A postalAddress element can be used with no child elements.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:street</u>: the street address (0-6 optional)<br />
  * <u>ddms:city</u>: the city (0-1 optional)<br />
  * <u>ddms:state</u>: the state (0-1 optional)<br />
  * <u>ddms:province</u>: the province (0-1 optional)<br />
  * <u>ddms:postalCode</u>: the postal code (0-1 optional)<br />
  * <u>ddms:countryCode</u>: the country code (0-1 optional), implemented as a {@link CountryCode}<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -150,11 +150,11 @@ public final class PostalAddress extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>Either a state or a province can exist, but not both.</li>
 	 * <li>0-6 streets, 0-1 cities, 0-1 states, 0-1 provinces, 0-1 postal codes, and 0-1 country codes exist.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -177,9 +177,9 @@ public final class PostalAddress extends AbstractBaseComponent {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>A completely empty ddms:postalAddress element was found.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		if (getStreets().isEmpty() && Util.isEmpty(getCity()) && Util.isEmpty(getState())

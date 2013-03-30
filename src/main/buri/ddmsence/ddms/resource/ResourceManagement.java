@@ -38,7 +38,7 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:resourceManagement.
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:recordsManagementInfo</u>: Information about the record keeper and software used to create the object to
  * which this metadata applies (0-1 optional), implemented as a {@link RecordsManagementInfo}<br />
  * <u>ddms:revisionRecall</u>: Details about any revision recalls for this resource (0-1 optional), implemented as a
@@ -47,11 +47,11 @@ import buri.ddmsence.util.Util;
  * as a {@link TaskingInfo}<br />
  * <u>ddms:processingInfo</u>: Details about the processing of the resource (0-many optional), implemented as a
  * {@link ProcessingInfo}<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -148,11 +148,11 @@ public final class ResourceManagement extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>Only 0-1 recordsManagementInfo or revisionRecall elements exist.</li>
 	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed

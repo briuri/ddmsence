@@ -31,20 +31,20 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ntk:AccessIndividualValue.
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
  * <li>An individual value element can be used without any child text.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ntk:id</u>: A unique XML identifier (optional)<br />
  * <u>ntk:IDReference</u>: A cross-reference to a unique identifier (optional)<br />
  * <u>ntk:qualifier</u>: A user-defined property within an element for general purpose processing used with block
  * objects to provide supplemental information over and above that conveyed by the element name (optional)<br />
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -79,9 +79,9 @@ public final class IndividualValue extends AbstractNtkString {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
@@ -93,9 +93,9 @@ public final class IndividualValue extends AbstractNtkString {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>An element was found with no child text.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getValue()))

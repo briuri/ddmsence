@@ -16,7 +16,7 @@
 		12) Manual sign-deploy steps for Maven Central Repository upload 
 		13) Announcements (Google Groups / freecode)
 	-->
-	
+
 	<property name="version" value="2.2.0" />
 	<property name="conf.dir" value="conf" />
 	<property name="data.dir" value="data" />
@@ -46,6 +46,8 @@
 		<pathelement location="${compile.main.dir}" />
 		<pathelement location="${compile.test.dir}" />
 		<fileset dir="lib/test/" includes="*.jar" />
+		<!-- This is used to compile the DDMSVersionTaglet, which is used in generating docs -->
+		<fileset dir="${java.home}/../lib/" includes="tools.jar" />
 	</path>
 	
 	<fileset dir="${conf.dir}" id="files.properties">
@@ -181,7 +183,7 @@
 		<delete quiet="true" dir="${dist.dir}/ddmsence-bin-${version}" />
 	</target>
 	
-	<target name="docs" description="Generates API Documentation">
+	<target name="docs" depends="compile" description="Generates API Documentation">
 		<tstamp>
 			<format property="javadoc.time" pattern="MM/dd/yyyy hh:mm aa" />
 		</tstamp>
@@ -194,7 +196,23 @@
             doctitle="DDMSence ${version}"		
             bottom="Copyright 2010 - 2013 by Brian Uri!&lt;br /&gt;Generated on ${javadoc.time}&lt;br /&gt;&lt;a target='_top' href='http://ddmsence.urizone.net/'&gt;http://ddmsence.urizone.net/&lt;/a&gt;"
 			stylesheetfile="${conf.dir}/javadoc-stylesheet.css"
-		/>
+		>
+			<taglet name="buri.ddmsence.util.taglet.DDMSChildInfoTaglet">
+				<path refid="classpath.test" />
+			</taglet>
+			<taglet name="buri.ddmsence.util.taglet.DDMSRuleTaglet">
+				<path refid="classpath.test" />
+			</taglet>
+			<taglet name="buri.ddmsence.util.taglet.DDMSVersionTaglet">
+				<path refid="classpath.test" />
+			</taglet>
+			<taglet name="buri.ddmsence.util.taglet.TableFooterTaglet">
+				<path refid="classpath.test" />
+			</taglet>
+			<taglet name="buri.ddmsence.util.taglet.TableHeaderTaglet">
+				<path refid="classpath.test" />
+			</taglet>
+		</javadoc>
 	</target>
 	
 	<target name="tests" description="Runs unit tests">

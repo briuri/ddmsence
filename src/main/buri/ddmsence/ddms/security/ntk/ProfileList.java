@@ -42,14 +42,14 @@ import buri.ddmsence.util.Util;
  * <p>Unlike ntk:AccessIndividualList and ntk:AccessGroupList, this element is implemented in DDMSence because it has
  * security attributes.
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ntk:AccessProfile</u>: A system access record matching a profile (1-to-many required), implemented as a
  * {@link Profile}<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -114,13 +114,13 @@ public final class ProfileList extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>At least 1 profile is required.</li>
 	 * <li>A classification is required.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
 	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed

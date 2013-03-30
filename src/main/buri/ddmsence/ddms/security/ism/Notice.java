@@ -38,15 +38,15 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ISM:Notice.
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ISM:NoticeText</u>: The text associated with this Notice (1-to-many required), implemented as a {@link NoticeText}
  * <br />
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.<br />
  * <u>{@link NoticeAttributes}</u>
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -116,11 +116,11 @@ public final class Notice extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>At least 1 NoticeText exists.</li>
 	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
@@ -138,10 +138,10 @@ public final class Notice extends AbstractBaseComponent {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>An externalNotice attribute may cause issues for DDMS 4.0 records.</li>
 	 * <li>Include any validation warnings from the notice attributes.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		if (!getNoticeAttributes().isEmpty()) {

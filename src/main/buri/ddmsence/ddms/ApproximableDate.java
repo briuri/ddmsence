@@ -43,15 +43,15 @@ import buri.ddmsence.util.Util;
  * class.
  * </p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
  * <li>This component can be used with no description, approximableDate, or searchableDate values.</li>
  * <li>A ddms:description element can be used without child text. This loophole goes away in DDMS 5.0.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:description</u>: A description of this date (0-1, optional)<br />
  * <u>ddms:approximableDate</u>: The value of this date, associated with an optional approximation decorator (0-1,
  * optional)<br />
@@ -59,12 +59,12 @@ import buri.ddmsence.util.Util;
  * (0-1, optional)<br />
  * <u>ddms:searchableDate/ddms:end</u>: The exact date which is the upper bound for this approximable date in searches
  * (0-1, optional)<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ddms:approximableDate/ddms:approximation</u>: An attribute that decorates the approximableDate with terms such as
  * "early" or "late" (0-1, optional)<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.1.0
@@ -173,14 +173,14 @@ public final class ApproximableDate extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The name of the element has an appropriate value.</li>
 	 * <li>If the approximableDate exists, it is an acceptable date format.</li>
 	 * <li>If an approximation exists, it has an appropriate value.</li>
 	 * <li>If start exists, it is a valid date format.</li>
 	 * <li>If end exists, it is a valid date format.</li>
 	 * <li>This component cannot be used until DDMS 4.1 or later.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
@@ -205,10 +205,10 @@ public final class ApproximableDate extends AbstractBaseComponent {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>A completely empty element was found.</li>
 	 * <li>A description element can be used without any child text, through DDMS 4.1.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getDescription())

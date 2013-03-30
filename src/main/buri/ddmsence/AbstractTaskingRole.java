@@ -42,16 +42,16 @@ import buri.ddmsence.util.Util;
  * the component is used.
  * </p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:organization</u>: The organization who is the addressee (0-1, optional), implemented as an
  * {@link Organization}<br />
  * <u>ddms:person</u>: the person who is the addressee (0-1, optional), implemented as a {@link Person}<br />
  * Only one of the nested entities can appear.
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -113,12 +113,12 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The entity exists and is either a Person or an Organization.</li>
 	 * <li>A classification is required.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
 	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */

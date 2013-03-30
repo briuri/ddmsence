@@ -36,7 +36,7 @@ import buri.ddmsence.util.Util;
  * with "geospatialCoverage.GeospatialExtent.geographicIdentifier.".
  * </p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>A non-empty qualifier value is required. This rule is codified in the schema, starting in DDMS 5.0.</li>
@@ -44,14 +44,14 @@ import buri.ddmsence.util.Util;
  * <li>Although qualifier and value are optional in DDMS 2.0, this is considered invalid data. DDMSence requires
  * a non-empty qualifier and value.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
  * <p>In DDMS 5.0, the "qualifier" and "value" attributes are renamed to "codespace" and "code".</p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ddms:qualifier</u>: a domain vocabulary (required)<br />
  * <u>ddms:value</u>: a permissible value (required)<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -83,12 +83,12 @@ public final class CountryCode extends AbstractQualifierValue {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>The qualifier exists and is not empty.</li>
 	 * <li>The value exists and is not empty.</li>
 	 * <li>Does not validate that the value is valid against the qualifier's vocabulary.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed

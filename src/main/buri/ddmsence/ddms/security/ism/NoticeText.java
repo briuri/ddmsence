@@ -35,17 +35,17 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ISM:NoticeText.
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
  * <li>A NoticeText element can be used without any child text.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ISM:pocType</u>: indicates that the element specifies a POC for particular notice type. (optional)<br />
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -105,11 +105,11 @@ public final class NoticeText extends AbstractSimpleString {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
 	 * <li>If set, the pocTypes must each be a valid token.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
@@ -128,10 +128,10 @@ public final class NoticeText extends AbstractSimpleString {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>An ISM:NoticeText element was found with no value.</li>
 	 * <li>Include any validation warnings from the security attributes.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getValue()))

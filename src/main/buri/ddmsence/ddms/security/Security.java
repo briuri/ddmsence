@@ -37,17 +37,17 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:security.
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:noticeList</u>: A collection of IC notices (optional, starting in DDMS 4.0.1), implemented as a
  * {@link NoticeList}<br />
  * <u>ntk:Access</u>: Need-To-Know access information (optional, starting in DDMS 4.0.1), implemented as an
  * {@link Access}<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ISM:excludeFromRollup</u>: (required, fixed as "true", starting in DDMS 3.0)<br />
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -127,14 +127,14 @@ public final class Security extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A classification is required.</li>
 	 * <li>Only 0-1 noticeLists or Access elements exist.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
 	 * <li>The excludeFromRollup is set and has a value of "true", starting in DDMS 3.0.</li>
 	 * <li>This component cannot be used after DDMS 4.1.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */

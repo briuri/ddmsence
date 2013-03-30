@@ -33,18 +33,18 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:creator.
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:organization</u>: The organization who is in this role (0-1, optional), implemented as an
  * {@link Organization}<br />
  * <u>ddms:person</u>: the person who is in this role (0-1, optional), implemented as a {@link Person}<br />
  * <u>ddms:service</u>: The web service who is in this role (0-1, optional), implemented as a {@link Service}<br />
  * <u>ddms:unknown</u>: The unknown entity who is in this role (0-1, optional), implemented as an {@link Unknown}<br />
  * Only one of the nested entities can appear in this element.
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -76,9 +76,9 @@ public class Creator extends AbstractProducerRole {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractProducerRole#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed

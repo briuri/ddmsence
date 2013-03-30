@@ -38,7 +38,7 @@ import buri.ddmsence.util.Util;
  * 
  * <p>Starting in DDMS 5.0, additional content rules apply to a ddms:countryCode element.</p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>No more than 1 countryCode, subDivisionCode, or facilityIdentifier can be used. The schema seems to support this
@@ -46,9 +46,9 @@ import buri.ddmsence.util.Util;
  * <li>At least 1 of name, region, countryCode, subDivisionCode, or facilityIdentifier must be present. Once again, the
  * xs:choice restrictions create a loophole which could allow a completely empty geographicIdentifier to be valid.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:name</u>: geographic name (0-many optional)<br />
  * <u>ddms:region</u>: geographic region (0-many optional)<br />
  * <u>ddms:countryCode</u>: the country code (0-1 optional), implemented as a {@link CountryCode}<br />
@@ -56,7 +56,7 @@ import buri.ddmsence.util.Util;
  * {@link SubDivisionCode}<br />
  * <u>ddms:facilityIdentifier</u>: the facility identifier (0-1 optional), implemented as a {@link FacilityIdentifier}
  * <br />
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -160,14 +160,14 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>At least 1 of name, region, countryCode, subDivisionCode or facilityIdentifier must exist.</li>
 	 * <li>No more than 1 countryCode, subDivisionCode or facilityIdentifier can exist.</li>
 	 * <li>If facilityIdentifier is used, no other components can exist.</li>
 	 * <li>Starting in DDMS 5.0, if countryCode is used, it must pass several content rules for Geopolitical Entities,
 	 * Names, and Codes (GENC) tokens.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -211,12 +211,12 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * is correct for the provided codespace.
 	 * </p>
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The codespace is one of the 4 flavors.</li>
 	 * <li>If the codespace requires a trigraph, the code is 3 uppercase alpha characters.</li>
 	 * <li>If the codespace requires a digraph, the code is 2 uppercase alpha characters.</li>
 	 * <li>If the codespace requires numbers, the code is 3 numerals.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @param countryCode the country code to validate
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -245,9 +245,9 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>Starting in DDMS 5.0, if a countryCode is used, the GENC tokens are not actually looked up in the NGA registry.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		if (getDDMSVersion().isAtLeast("5.0") && getCountryCode() != null) {

@@ -33,14 +33,14 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:category.
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>The label value must be non-empty. This rule is codified in the schema, starting in DDMS 5.0.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ddms:qualifier</u>: A URI-based qualifier (optional)<br />
  * <u>ddms:code</u>: The machine readable description of a concept represented within the scope of the category
  * qualifier (optional)<br />
@@ -49,7 +49,7 @@ import buri.ddmsence.util.Util;
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional (starting in DDMS
  * 4.0.1).<br />
  * <u>{@link ExtensibleAttributes}</u>: (optional, starting in DDMS 3.0).
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -130,13 +130,13 @@ public final class Category extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A label exists and is not empty.</li>
 	 * <li>If a qualifier exists, it is a valid URI.</li>
 	 * <li>The SecurityAttributes do not exist until DDMS 4.0.1 or later.</li>
 	 * <li>No extensible attributes can exist until DDMS 3.0 or later.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */

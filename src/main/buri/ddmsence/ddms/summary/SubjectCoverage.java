@@ -47,14 +47,14 @@ import buri.ddmsence.util.Util;
  * so it is not implemented as a Java object. Starting in DDMS 4.0.1, the Subject wrapper has been removed.
  * </p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
  * <li>Duplicate keywords or categories can be used.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:category</u>: a category (0-many optional), implemented as a {@link Category}<br />
  * <u>ddms:keyword</u>: a keyword (0-many optional), implemented as a {@link Keyword}<br />
  * <u>ddms:productionMetric</u>: a categorization scheme whose values and use are defined by DDNI-A. (0-many optional,
@@ -62,12 +62,12 @@ import buri.ddmsence.util.Util;
  * <u>ddms:nonStateActor</u>: a non-state actor within the scope of this coverage (0-many optional, starting in DDMS
  * 4.0.1), implemented as a {@link NonStateActor}<br />
  * <p>At least 1 of category or keyword must be used.</p>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS
  * 3.0)
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -181,11 +181,11 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>At least 1 of "Keyword" or "Category" must exist.</li>
 	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
@@ -210,11 +210,11 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>1 or more keywords have the same value.</li>
 	 * <li>1 or more categories have the same value.</li>
 	 * <li>1 or more productionMetrics have the same value.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		Set<Keyword> uniqueKeywords = new HashSet<Keyword>(getKeywords());

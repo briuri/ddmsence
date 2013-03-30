@@ -31,16 +31,16 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:requesterInfo.
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:organization</u>: The organization who is the addressee (0-1, optional), implemented as an
  * {@link Organization}<br />
  * <u>ddms:person</u>: the person who is the addressee (0-1, optional), implemented as a {@link Person}<br />
  * Only one of the nested entities can appear in a requesterInfo element.
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -70,9 +70,9 @@ public class RequesterInfo extends AbstractTaskingRole {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractTaskingRole#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed

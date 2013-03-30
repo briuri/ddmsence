@@ -42,7 +42,7 @@ import buri.ddmsence.util.Util;
  * object. Starting in DDMS 4.0.1, the Media wrapper has been removed.
  * </p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>A non-empty mimeType value is required. This rule is codified in the schema, starting in DDMS 5.0.</li>
@@ -52,13 +52,13 @@ import buri.ddmsence.util.Util;
  * <ul>
  * <li>A medium element can be used with no child text. This loophole goes away in DDMS 5.0.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:mimeType</u>: the MIME type (exactly 1 required)<br />
  * <u>ddms:extent</u>: the format extent (0-1 optional), implemented as a {@link Extent}<br />
  * <u>ddms:medium</u>: the physical medium (0-1 optional)<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -138,11 +138,11 @@ public final class Format extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A mimeType exists, and is not empty.</li>
 	 * <li>Exactly 1 mimeType, 0-1 extents, and 0-1 mediums exist.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -162,9 +162,9 @@ public final class Format extends AbstractBaseComponent {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>A ddms:medium element was found with no value, through DDMS 4.1.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		Element mediaElement = getMediaElement();

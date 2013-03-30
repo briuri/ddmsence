@@ -30,7 +30,7 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:extent.
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * {@table.header Strictness}
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>A non-empty qualifier value is required when the value attribute is set.</li>
@@ -41,12 +41,12 @@ import buri.ddmsence.util.Util;
  * <li>A qualifier can be set with no value.</li>
  * <li>An extent can be set without a qualifier or value.</li>
  * </ul>
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ddms:qualifier</u>: a URI-based vocabulary (required if value is set)<br />
  * <u>ddms:value</u>: a related data size, compression rate, or pixel size (optional)<br />
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -77,12 +77,12 @@ public final class Extent extends AbstractQualifierValue {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If set, the qualifier is a valid URI.</li>
 	 * <li>If the value is set, a non-empty qualifier is required.</li>
 	 * <li>Does NOT validate that the value is valid against the qualifier's vocabulary.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -100,10 +100,10 @@ public final class Extent extends AbstractQualifierValue {
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>A qualifier has been set without an accompanying value attribute.</li>
 	 * <li>A completely empty ddms:extent element was found.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 */
 	protected void validateWarnings() {
 		if (!Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()))

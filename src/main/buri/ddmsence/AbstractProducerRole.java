@@ -48,19 +48,19 @@ import buri.ddmsence.util.Util;
  * the component is used.
  * </p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * {@table.header Nested Elements}
  * <u>ddms:organization</u>: The organization who is in this role (0-1, optional)<br />
  * <u>ddms:person</u>: the person who is in this role (0-1, optional)<br />
  * <u>ddms:service</u>: The web service who is in this role (0-1, optional)<br />
  * <u>ddms:unknown</u>: The unknown entity who is in this role (0-1, optional)<br />
  * Only one of the nested entities can appear in this element.
- * </td></tr></table>
+ * {@table.footer}
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>ISM:pocType</u>: Indicates that the element specifies a point-of-contact (POC) and the methods with which
  * to contact them (optional, starting in DDMS 4.0.1.1).<br />
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -139,12 +139,12 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>A producer entity exists.</li>
 	 * <li>Only 0-1 persons, organizations, services, or unknowns exist.</li>
 	 * <li>The pocType cannot be used before DDMS 4.0.1.</li>
 	 * <li>If set, the pocTypes must each be a valid token.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed

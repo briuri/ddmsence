@@ -36,9 +36,9 @@ import buri.ddmsence.util.Util;
  * <p> Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set
  * before the component is used. </p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * {@table.header Attributes}
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
- * </td></tr></table>
+ * {@table.footer}
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -105,10 +105,10 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * {@table.header Rules}
 	 * <li>A classification is required.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * </td></tr></table>
+	 * {@table.footer}
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
