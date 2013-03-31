@@ -191,19 +191,9 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion.setCurrentVersion(sVersion);
 
-			// Too many recordsManagementInfo elements
-			Element element = Util.buildDDMSElement(ResourceManagement.getName(version), null);
-			element.appendChild(RecordsManagementInfoTest.getFixture().getXOMElementCopy());
-			element.appendChild(RecordsManagementInfoTest.getFixture().getXOMElementCopy());
-			getInstance("No more than 1 recordsManagementInfo", element);
-
-			// Too many revisionRecall elements
-			element = Util.buildDDMSElement(ResourceManagement.getName(version), null);
-			element.appendChild(RevisionRecallTest.getTextFixtureElement(true));
-			element.appendChild(RevisionRecallTest.getTextFixtureElement(true));
-			getInstance("No more than 1 revisionRecall", element);
+			// No invalid cases
 		}
 	}
 

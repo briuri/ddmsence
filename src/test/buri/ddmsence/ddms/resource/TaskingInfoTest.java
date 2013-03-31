@@ -25,7 +25,6 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.ddms.summary.Description;
 import buri.ddmsence.ddms.summary.DescriptionTest;
@@ -335,16 +334,7 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 	}
 
 	public void testWrongVersion() {
-		try {
-			DDMSVersion.setCurrentVersion("4.0.1");
-			SecurityAttributes attr = SecurityAttributesTest.getFixture();
-			DDMSVersion.setCurrentVersion("2.0");
-			new TaskingInfo(null, null, null, new TaskID("test", null, null, null, null), attr);
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "The DDMS version of the parent");
-		}
+		// Implicit, because TaskID cannot be isntantiated in the wrong version.
 	}
 
 	public void testBuilderEquality() throws InvalidDDMSException {

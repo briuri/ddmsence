@@ -38,17 +38,31 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:taskingInfo.
+ * <br /><br />
+ * {@ddms.versions 00011}
  * 
- * {@table.header Nested Elements}
- * <u>ddms:requesterInfo</u>: Information about the requester of the production of this resource (0-many optional),
- * implemented as a {@link RequesterInfo}.<br />
- * <u>ddms:addressee</u>: The addressee for this tasking (0-many optional), implemented as a {@link Addressee} <br />
- * <u>ddms:description</u>: A description of this tasking (0-1, optional), implemented as a {@link Description}<br />
- * <u>ddms:taskID</u>: The task ID for this tasking (required), implemented as a {@link TaskID}<br />
+ * <p></p>
+ * 
+ * {@table.header History}
+ * 		None.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		{@child.info ddms:requesterInfo|0..*|00011}
+ * 		{@child.info ddms:addressee|0..*|00011}
+ * 		{@child.info ddms:description|0..1|00011}
+ * 		{@child.info ddms:taskID|1|00011}
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
+ * 		{@child.info ism:classification|1|00011}
+ * 		{@child.info ism:ownerProducer|1..*|00011}
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|00011}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule ddms:taskID is required.|Error|11111}
+ * 		{@ddms.rule ism:classification is required.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -142,31 +156,13 @@ public final class TaskingInfo extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>A TaskID exists.</li>
-	 * <li>Exactly 1 taskID, and 0-1 descriptions exist.</li>
-	 * <li>A classification is required.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
+		requireAtLeastVersion("4.0.1");
 		Util.requireDDMSQName(getXOMElement(), TaskingInfo.getName(getDDMSVersion()));
 		Util.requireDDMSValue("taskID", getTaskID());
-		Util.requireBoundedChildCount(getXOMElement(), Description.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedChildCount(getXOMElement(), TaskID.getName(getDDMSVersion()), 1, 1);
-		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
-
-		// Should be reviewed as additional versions of DDMS are supported.
-		requireAtLeastVersion("4.0.1");
-
 		super.validate();
 	}
 

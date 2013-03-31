@@ -52,7 +52,7 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ism:excludeFromRollup|1|11110}
  * 		{@child.info ism:classification|1|11110}
  * 		{@child.info ism:ownerProducer|1..*|11110}
- * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..*|11110}
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|11110}
  * {@table.footer}
  * {@table.header Validation Rules}
  * 		{@ddms.rule Component is not used after the DDMS version in which it was removed.|Error|11111}

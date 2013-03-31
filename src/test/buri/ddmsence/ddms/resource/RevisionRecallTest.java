@@ -367,7 +367,7 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 
 	public void testDataConstructorInvalid() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// Wrong type of XLinkAttributes (locator)
 			getInstance("The type attribute must have a fixed value", LinkTest.getLocatorFixtureList(true),
@@ -399,6 +399,13 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			getInstance("The network attribute must be one of", LinkTest.getLocatorFixtureList(true),
 				DetailsTest.getFixtureList(), TEST_REVISION_ID, TEST_REVISION_TYPE, "PBS", getOtherNetwork(),
 				XLinkAttributesTest.getResourceFixture());
+			
+			if (version.isAtLeast("5.0")) {
+				// Invalid otherNetwork
+				getInstance("The otherNetwork attribute cannot", LinkTest.getLocatorFixtureList(true),
+					DetailsTest.getFixtureList(), TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, "PBS",
+					XLinkAttributesTest.getResourceFixture());
+			}
 		}
 	}
 
@@ -565,12 +572,8 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 	}
 
 	public void testWrongVersion() throws InvalidDDMSException {
-		DDMSVersion.setCurrentVersion("4.0.1");
-		XLinkAttributes attr = XLinkAttributesTest.getResourceFixture();
 		DDMSVersion.setCurrentVersion("2.0");
-		// Cross version attributes are allowed, because the version is not set until they are added onto an element.
-		new RevisionRecall(TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(), attr,
-			SecurityAttributesTest.getFixture());
+		getInstance("The revisionRecall element cannot", TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, null, null, null);
 	}
 
 	public void testBuilderEquality() throws InvalidDDMSException {
@@ -620,6 +623,8 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 				expectMessage(e, "The revisionType attribute must be one of");
 			}
 			builder.setRevisionType(TEST_REVISION_TYPE);
+			builder.getSecurityAttributes().setClassification("U");
+			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
 			builder.commit();
 		}
 	}

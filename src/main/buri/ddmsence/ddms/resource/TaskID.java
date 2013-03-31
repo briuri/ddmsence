@@ -33,21 +33,33 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:taskID.
+ * <br /><br />
+ * {@ddms.versions 00011}
  * 
  * <p>This element is not a global component, but is being implemented because it has attributes.</p>
- * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>The child text must not be empty. This rule is codified in the schema, starting in DDMS 5.0.</li>
- * </ul>
+ *
+ * {@table.header History}
+ *  	<p>The network and otherNetwork attributes originated from DDMS 4.x's import of IC-COMMON. IC-COMMON was replaced
+ *  	by VIRT in DDMS 5.0, dropping otherNetwork, and moving network into the virt namespace.</p>
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ddms:taskingSystem</u>: the tasking system (optional)<br />
- * <u>network</u>: the name of the network, taken from a token list (optional)<br /> (becomes virt: in DDMS 5.0)
- * <u>otherNetwork</u>: an alternate network name (optional)<br /> (goes away in DDMS 5.0)
- * <u>{@link XLinkAttributes}</u>: If set, the xlink:type attribute must have a fixed value of "simple".<br />
+ * 		{@child.info ddms:taskingSystem|0..1|00011}
+ * 		{@child.info network|0..1|00010}
+ * 		{@child.info virt:network|0..1|00001}
+ * 		{@child.info otherNetwork|0..1|00010}
+ * 		{@child.info xlink:&lt;<i>xlinkAttributes</i>&gt;|0..*|00011}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule The child text value is required.|Error|11111}
+ * 		{@ddms.rule If set, xlink:type has a value of "simple".|Error|11111}
+ * 		{@ddms.rule If set, network or virt:network must be a valid network token.|Error|11111}
+ * 		{@ddms.rule network and otherNetwork cannot be used after DDMS 4.1.|Error|11111}
+ * 		{@ddms.rule Warnings from any XLink attributes are claimed by this component.|Warning|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -121,36 +133,34 @@ public final class TaskID extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>A child text value is required.</li>
-	 * <li>If set, the xlink:type attribute has a value of "simple".</li>
-	 * <li>If set, the network attribute must be a valid network token.</li>
-	 * <li>The otherNetwork cannot be used after DDMS 4.1.</li>
-	 * {@table.footer}
-	 * 
+	 *  * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule The child text value is required.|Error|11111}
+ * 		{@ddms.rule If set, xlink:type has a value of "simple".|Error|11111}
+ * 		{@ddms.rule If set, network or virt:network must be a valid network token.|Error|11111}
+ * 		{@ddms.rule network and otherNetwork cannot be used after DDMS 4.1.|Error|11111}
+ * 		{@ddms.rule Warnings from any XLink attributes are claimed by this component.|Warning|11111}
+ * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
+		requireAtLeastVersion("4.0.1");
 		Util.requireDDMSQName(getXOMElement(), TaskID.getName(getDDMSVersion()));
 		Util.requireDDMSValue("value", getValue());
 		if (!Util.isEmpty(getXLinkAttributes().getType()) && !getXLinkAttributes().getType().equals(FIXED_TYPE))
 			throw new InvalidDDMSException("The type attribute must have a fixed value of \"" + FIXED_TYPE + "\".");
 		if (!Util.isEmpty(getNetwork()))
 			ISMVocabulary.requireValidNetwork(getNetwork());
-		if (getDDMSVersion().isAtLeast("5.0") && !Util.isEmpty(getOtherNetwork()))
-			throw new InvalidDDMSException("The otherNetwork attribute cannot be used after DDMS 4.1.");
+		if (getDDMSVersion().isAtLeast("5.0")) {
+			// Check for network is implicit in schema validation.			
+			if (!Util.isEmpty(getOtherNetwork()))
+				throw new InvalidDDMSException("The otherNetwork attribute cannot be used after DDMS 4.1.");
+		}
 		super.validate();
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>Include any warnings from the XLink attributes.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		if (getXLinkAttributes() != null)
