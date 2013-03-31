@@ -54,13 +54,13 @@ import buri.ddmsence.util.Util;
  * 		None.		
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
  * 		{@ddms.rule This component must contain at least 1 child element.|Error|11111}
- * 		{@ddms.rule If ddms:facilityIdentifier is used, no other child elements can be used.|Error|11111}
- *		{@ddms.rule The codespace of ddms:countryCode has the correct GENC format.|Error|00001}
- *		{@ddms.rule The code of ddms:countryCode is 3 uppercase alpha characters when the codespace requires a trigraph.|Error|00001}
- *		{@ddms.rule The code of ddms:countryCode is 2 uppercase alpha characters when the codespace requires a digraph.|Error|00001}
- *		{@ddms.rule The code of ddms:countryCode is 3 numerals when the codespace requires numbers.|Error|00001}
+ * 		{@ddms.rule If ddms:facilityIdentifier is used, no other child elements must be used.|Error|11111}
+ *		{@ddms.rule The codespace of ddms:countryCode must have the correct GENC format.|Error|00001}
+ *		{@ddms.rule The code of ddms:countryCode must be 3 uppercase alpha characters when the codespace requires a trigraph.|Error|00001}
+ *		{@ddms.rule The code of ddms:countryCode must be 2 uppercase alpha characters when the codespace requires a digraph.|Error|00001}
+ *		{@ddms.rule The code of ddms:countryCode must be 3 numerals when the codespace requires numbers.|Error|00001}
  *		{@ddms.rule No lookup of GENC country codes is performed against the NGA registry.|Warning|00001}
  *		<p>See {@link #validateGencCountryCode(CountryCode)} for additional information about country code validation.</p>
  * {@table.footer}

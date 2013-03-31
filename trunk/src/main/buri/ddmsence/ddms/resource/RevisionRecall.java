@@ -71,19 +71,19 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|00011} 
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule A valid component cannot have both non-empty child text and nested elements.|Error|11111}
- * 		{@ddms.rule All ddms:links should have security attributes.|Error|11111}
+ * 		{@ddms.rule Component must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule A valid component must not have both non-empty child text and nested elements.|Error|11111}
+ * 		{@ddms.rule All ddms:links must have security attributes.|Error|11111}
  * 		{@ddms.rule The revisionID must be a valid Integer.|Error|11111}
  * 		{@ddms.rule The revisionType must be a valid type token.|Error|11111}
- * 		{@ddms.rule If set, xlink:type has a value of "resource".|Error|11111}
+ * 		{@ddms.rule If set, xlink:type must have a value of "resource".|Error|11111}
  * 		{@ddms.rule If set, network or virt:network must be a valid network token.|Error|11111}
- * 		{@ddms.rule network and otherNetwork cannot be used after DDMS 4.1.|Error|11111}
- * 		{@ddms.rule ism:classification is required.|Error|11111}
- * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
- * 		{@ddms.rule ism:classification is required on any ddms:links.|Error|11111}
- * 		{@ddms.rule ism:ownerProducer is required on any ddms:links.|Error|11111}
+ * 		{@ddms.rule network and otherNetwork must not be used after the DDMS version in which they were removed.|Error|11111}
+ * 		{@ddms.rule ism:classification must exist.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer must exist.|Error|11111}
+ * 		{@ddms.rule ism:classification must exist on any ddms:links.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer must exist on any ddms:links.|Error|11111}
  * 		{@ddms.rule Warnings from any XLink attributes are claimed by this component.|Warning|11111}
  * {@table.footer}
  * 

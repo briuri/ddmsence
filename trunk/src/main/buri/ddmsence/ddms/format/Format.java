@@ -54,8 +54,8 @@ import buri.ddmsence.util.Util;
  * 		None.
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule A ddms:mimeType is required.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule A ddms:mimeType must exist.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!

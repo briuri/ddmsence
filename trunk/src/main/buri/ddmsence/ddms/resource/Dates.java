@@ -60,11 +60,11 @@ import buri.ddmsence.util.Util;
  *      {@child.info ddms:receivedOn|0..1|00011}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule ddms:approvedOn is not used before the DDMS version in which it was introduced.|Error|11111}
- * 		{@ddms.rule ddms:receivedOn is not used before the DDMS version in which it was introduced.|Error|11111}
- * 		{@ddms.rule ddms:acquiredOn is not used before the DDMS version in which it was introduced.|Error|11111}
- * 		{@ddms.rule If set, each date attribute adheres to an acceptable date format.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule ddms:approvedOn must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule ddms:receivedOn must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule ddms:acquiredOn must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule If set, each date attribute must adhere to a valid date format.|Error|11111}
  * 		{@ddms.rule This component can be used with no values set.|Warning|11111}
  * 		{@ddms.rule ddms:acquiredOn may cause issues for DDMS 4.0.1 systems.|Warning|00010}
  * {@table.footer}

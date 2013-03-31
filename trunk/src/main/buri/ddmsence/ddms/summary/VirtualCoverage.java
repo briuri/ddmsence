@@ -52,11 +52,11 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|01111}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule If the address attribute is present, the protocol attribute is required.|Error|11111}
- * 		{@ddms.rule virt:network is not used before the DDMS version in which it was introduced.|Error|11111}
- * 		{@ddms.rule ntk:access is not used before the DDMS version in which it was introduced.|Error|11111}
- * 		{@ddms.rule ISM attributes are not used before the DDMS version in which they were introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule If the address attribute is present, the protocol attribute must exist.|Error|11111}
+ * 		{@ddms.rule virt:network must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule ntk:access must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule Security attributes must not be used before the DDMS version in which they were introduced.|Error|11111}
  * 		{@ddms.rule This component can be used with no values set.|Warning|11111}
  * {@table.footer}
  * 

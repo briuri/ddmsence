@@ -56,10 +56,10 @@ import buri.ddmsence.util.Util;
  * 		{@child.info any:&lt;<i>extensibleAttributes</i>&gt;|0..*|11110}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule At least 1 ddms:name is required.|Error|11111}
- * 		{@ddms.rule ddms:acronym is not used before the DDMS version in which it was introduced.|Error|11111}
- *		{@ddms.rule Extensible attributes not used after the DDMS version in which they were removed.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule At least 1 ddms:name must exist.|Error|11111}
+ * 		{@ddms.rule ddms:acronym must not be used before the DDMS version in which it was introduced.|Error|11111}
+ *		{@ddms.rule Extensible attributes must not be used after the DDMS version in which they were removed.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!

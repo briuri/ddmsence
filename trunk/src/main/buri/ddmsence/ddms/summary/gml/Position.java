@@ -50,11 +50,11 @@ import buri.ddmsence.util.Util;
  * 		{@child.info &lt;<i>srsAttributes</i>&gt;|0..*|11110}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule Each coordinate is a valid Double.|Error|11111}
- * 		{@ddms.rule The position is represented by 2 or 3 coordinates (to comply with WGS84E_2D or WGS84E_3D).|Error|11111}
- * 		{@ddms.rule The first coordinate is a valid latitude.|Error|11111}
- * 		{@ddms.rule The second coordinate is a valid longitude.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule Each coordinate must be a valid Double.|Error|11111}
+ * 		{@ddms.rule The position must be represented by 2 or 3 coordinates (to comply with WGS84E_2D or WGS84E_3D).|Error|11111}
+ * 		{@ddms.rule The first coordinate must be a valid latitude.|Error|11111}
+ * 		{@ddms.rule The second coordinate must be a valid longitude.|Error|11111}
  * 		{@ddms.rule Warnings from any SRS attributes are claimed by this component.|Warning|11111}
  * 		<p>Does not perform any special validation on the third coordinate (height above ellipsoid).</p>
  * {@table.footer}

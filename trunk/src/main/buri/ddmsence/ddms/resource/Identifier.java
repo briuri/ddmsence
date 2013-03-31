@@ -46,9 +46,9 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ddms:value|1|11111}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule ddms:qualifier is required and must be a valid URI.|Error|11111}
- * 		{@ddms.rule ddms:value is required.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule ddms:qualifier must exist, and must be a valid URI.|Error|11111}
+ * 		{@ddms.rule ddms:value must exist.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!

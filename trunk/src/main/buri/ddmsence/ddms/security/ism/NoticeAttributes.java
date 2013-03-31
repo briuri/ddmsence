@@ -61,11 +61,11 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ism:externalNotice|0..1|00010}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule Attribute group is not used before the DDMS version in which it was introduced.|Error|11111}
- * 		{@ddms.rule If set, ism:noticeType is a valid token.|Error|11111}
+ * 		{@ddms.rule Attribute group must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule If set, ism:noticeType must be a valid token.|Error|11111}
  * 		{@ddms.rule If set, ism:noticeReason must be shorter than 2048 characters.|Error|11111}
  * 		{@ddms.rule If set, ism:unregisteredNoticeType must be shorter than 2048 characters.|Error|11111}
- * 		{@ddms.rule If set, ism:noticeDate is in a valid date format.|Error|11111}
+ * 		{@ddms.rule If set, ism:noticeDate must adhere to a valid date format.|Error|11111}
  * 		<p>Does NOT do any validation on the constraints described in the DES ISM specification.</p>
  * {@table.footer}
  * 

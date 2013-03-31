@@ -15,7 +15,7 @@ import com.sun.tools.doclets.Taglet;
  * </p>
  * 
  * <p>
- * <b>Example:</b> <code>Something is required.|Error|11111</code>
+ * <b>Example:</b> <code>Something must exist.|Error|11111</code>
  * </p>
  * 
  * @author Brian Uri!

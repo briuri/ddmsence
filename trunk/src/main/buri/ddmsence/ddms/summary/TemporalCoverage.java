@@ -71,11 +71,11 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|01111}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule If set, ddms:start is a valid date format.|Error|11111}
- * 		{@ddms.rule If set, ddms:end is a valid date format.|Error|11111}
- * 		{@ddms.rule Approximable dates are not used before the DDMS version in which they were introduced.|Error|11111}
- * 		{@ddms.rule ISM attributes are not used before the DDMS version in which they were introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule If set, ddms:start must adhere to a valid date format.|Error|11111}
+ * 		{@ddms.rule If set, ddms:end must adhere to a valid date format.|Error|11111}
+ * 		{@ddms.rule Approximable dates must not be used before the DDMS version in which they were introduced.|Error|11111}
+ * 		{@ddms.rule Security attributes must not be used before the DDMS version in which they were introduced.|Error|11111}
  * 		{@ddms.rule An empty ddms:name will be given a default value.|Warning|11111}
  * 		{@ddms.rule Approximable dates may cause issues for DDMS 4.0.1 systems.|Warning|00010}
  * {@table.footer}

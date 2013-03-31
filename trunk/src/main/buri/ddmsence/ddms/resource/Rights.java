@@ -47,7 +47,7 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ddms:copyright|0..1|11111}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!

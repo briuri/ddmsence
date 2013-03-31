@@ -59,10 +59,10 @@ import buri.ddmsence.util.Util;
  * 		{@child.info &lt;<i>srsAttributes</i>&gt;|0..*|11110}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule The srsName is required.|Error|11111}
- * 		{@ddms.rule The gml:id is required, and must be a valid NCName.|Error|11111}
- * 		{@ddms.rule If a gml:pos has an srsName, it matches the srsName of this Polygon.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule The srsName must exist.|Error|11111}
+ * 		{@ddms.rule The gml:id must exist, and must be a valid NCName.|Error|11111}
+ * 		{@ddms.rule If a gml:pos has an srsName, it must match the srsName of this Polygon.|Error|11111}
  * 		{@ddms.rule The first and last position coordinates must be identical (a closed polygon).|Error|11111}
  * 		{@ddms.rule Warnings from any SRS attributes are claimed by this component.|Warning|11111}
  * {@table.footer}

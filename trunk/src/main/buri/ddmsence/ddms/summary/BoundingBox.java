@@ -49,12 +49,12 @@ import buri.ddmsence.util.Util;
  * 		None.
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule Component is not used after the DDMS version in which it was removed.|Error|11111}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule ddms:westBL is required, and must be a valid longitude.|Error|11110}
- * 		{@ddms.rule ddms:eastBL is required, and must be a valid longitude.|Error|11110}
- * 		{@ddms.rule ddms:southBL is required, and must be a valid latitude.|Error|11110}
- * 		{@ddms.rule ddms:northBL is required, and must be a valid latitude.|Error|11110}
+ * 		{@ddms.rule Component must not be used after the DDMS version in which it was removed.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule ddms:westBL must exist, and must be a valid longitude.|Error|11110}
+ * 		{@ddms.rule ddms:eastBL must exist, and must be a valid longitude.|Error|11110}
+ * 		{@ddms.rule ddms:southBL must exist, and must be a valid latitude.|Error|11110}
+ * 		{@ddms.rule ddms:northBL must exist, and must be a valid latitude.|Error|11110}
  * {@table.footer}
  * 
  * @author Brian Uri!

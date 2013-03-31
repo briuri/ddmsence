@@ -45,9 +45,9 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ddms:value|0..1|11111}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule ddms:qualifier is required if ddms:value is set.|Error|11111}
- * 		{@ddms.rule If set, the ddms:qualifier is a valid URI.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule ddms:qualifier must exist if ddms:value is set.|Error|11111}
+ * 		{@ddms.rule If set, the ddms:qualifier must be a valid URI.|Error|11111}
  * 		{@ddms.rule A ddms:qualifier can be set with no ddms:value.|Warning|11111}
  * 		{@ddms.rule This component can be used with no values set.|Warning|11111}
  * 		<p>Note: The ddms:value is not validated against the qualifier's vocabulary.</p>

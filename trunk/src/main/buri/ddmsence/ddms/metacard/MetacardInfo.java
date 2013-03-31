@@ -75,14 +75,16 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|11111}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule At least 1 ddms:identifier is required.|Error|11111}
- * 		{@ddms.rule A ddms:dates is required.|Error|11111}
- * 		{@ddms.rule At least 1 ddms:publisher is required.|Error|11110}
- * 		{@ddms.rule At least 1 producer of any kind is required.|Error|00001}
- * 		{@ddms.rule ddms:noticeList can only be used in DDMS 4.x.|Error|11111}
- * 		{@ddms.rule ntk:Access can only be used in DDMS 4.x.|Error|11111}
+ * 		{@ddms.rule Component must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule At least 1 ddms:identifier must exist.|Error|11111}
+ * 		{@ddms.rule A ddms:dates must exist.|Error|11111}
+ * 		{@ddms.rule At least 1 ddms:publisher must exist.|Error|11110}
+ * 		{@ddms.rule At least 1 producer of any kind must exist.|Error|00001}
+ * 		{@ddms.rule ddms:noticeList must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule ddms:noticeList must not be used after the DDMS version in which it was removed.|Error|11111}
+ * 		{@ddms.rule ntk:Access must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule ntk:Access must not be used after the DDMS version in which it was removed.|Error|11111}
  * 		{@ddms.rule ntk:Access may cause issues for DDMS 4.0.1 systems.|Warning|00010}
  * {@table.footer}
  * 

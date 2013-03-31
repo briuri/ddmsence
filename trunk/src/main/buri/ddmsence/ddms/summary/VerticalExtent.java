@@ -58,15 +58,15 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ddms:datum|1|11110}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule Component is not used after the DDMS version in which it was removed.|Error|11111}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule ddms:minVerticalExtent is required.|Error|11111}
- * 		{@ddms.rule ddms:maxVerticalExtent is required.|Error|11111}
- * 		{@ddms.rule ddms:unitOfMeasure is required, and is a valid token.|Error|11111}
- * 		{@ddms.rule ddms:datum is required, and is a valid token.|Error|11111}
- * 		{@ddms.rule If a minVerticalExtent has unitOfMeasure or datum set, its values match the parent attribute values.|Error|11111}
- * 		{@ddms.rule If a maxVerticalExtent has unitOfMeasure or datum set, its values match the parent attribute values.|Error|11111}
- * 		{@ddms.rule ddms:minVerticalExtent is less than ddms:maxVerticalExtent.|Error|11111}
+ * 		{@ddms.rule Component must not be used after the DDMS version in which it was removed.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule ddms:minVerticalExtent must exist.|Error|11111}
+ * 		{@ddms.rule ddms:maxVerticalExtent must exist.|Error|11111}
+ * 		{@ddms.rule ddms:unitOfMeasure must exist, and must be a valid token.|Error|11111}
+ * 		{@ddms.rule ddms:datum must exist, and must be a valid token.|Error|11111}
+ * 		{@ddms.rule If a minVerticalExtent has unitOfMeasure or datum set, its values must match the parent attribute values.|Error|11111}
+ * 		{@ddms.rule If a maxVerticalExtent has unitOfMeasure or datum set, its values must match the parent attribute values.|Error|11111}
+ * 		{@ddms.rule ddms:minVerticalExtent must be less than ddms:maxVerticalExtent.|Error|11111}
  * {@table.footer}
  *  
  * @author Brian Uri!

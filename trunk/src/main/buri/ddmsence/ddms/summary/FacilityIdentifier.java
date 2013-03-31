@@ -46,9 +46,9 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ddms:osuffix|1|11111}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule ddms:beNumber is required.|Error|11111}
- * 		{@ddms.rule ddms:osuffix is required.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule ddms:beNumber must exist.|Error|11111}
+ * 		{@ddms.rule ddms:osuffix must exist.|Error|11111}
  * 		<p>Does not validate whether the attributes have logical values.</p>
  * {@table.footer}
  * 

@@ -55,11 +55,11 @@ import buri.ddmsence.util.Util;
  * 		{@child.info any:&lt;<i>extensibleAttributes</i>&gt;|0..*|11100}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule At least 1 ddms:name is required.|Error|11111}
- * 		{@ddms.rule A ddms:surname is required.|Error|11111}
- * 		{@ddms.rule ddms:affiliation cannot have multiple values before DDMS 5.0.|Error|11111}
- *		{@ddms.rule Extensible attributes not used after the DDMS version in which they were removed.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule At least 1 ddms:name must exist.|Error|11111}
+ * 		{@ddms.rule A ddms:surname must exist.|Error|11111}
+ * 		{@ddms.rule ddms:affiliation must not have multiple values before DDMS 5.0.|Error|11111}
+ *		{@ddms.rule Extensible attributes must not be used after the DDMS version in which they were removed.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!

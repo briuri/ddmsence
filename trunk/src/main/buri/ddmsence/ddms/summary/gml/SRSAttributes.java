@@ -56,8 +56,8 @@ import buri.ddmsence.util.Util;
  * 		{@child.info uomLabels|0..*|11110}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule If set, srsName is a valid URI.|Error|11111}
- * 		{@ddms.rule If set, srsDimension is positive.|Error|11111}
+ * 		{@ddms.rule If set, srsName must be a valid URI.|Error|11111}
+ * 		{@ddms.rule If set, srsDimension must be positive.|Error|11111}
  * 		{@ddms.rule If srsName is not set, axisLabels must not be set.|Error|11111}
  * 		{@ddms.rule If axisLabels is not set, uomLabels must not be set.|Error|11111}
  * 		{@ddms.rule If set, each axisLabels value must be a NCName.|Error|11111}

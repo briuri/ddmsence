@@ -47,10 +47,10 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|11111}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule A title is required.|Error|11111}
- * 		{@ddms.rule ism:classification is required.|Error|11111}
- * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule A title must exist.|Error|11111}
+ * 		{@ddms.rule ism:classification must exist.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer must exist.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!

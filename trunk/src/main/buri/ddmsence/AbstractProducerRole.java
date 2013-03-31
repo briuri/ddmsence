@@ -64,8 +64,8 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|11111}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule Exactly 1 producer entity fills this role.|Error|11111}
- * 		{@ddms.rule ism:pocType is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule Exactly 1 producer entity must fill this role.|Error|11111}
+ * 		{@ddms.rule ism:pocType must not be used before the DDMS version in which it was introduced.|Error|11111}
  * 		{@ddms.rule If set, ism:pocType contains valid tokens.|Error|11111}
  * {@table.footer}
  * 

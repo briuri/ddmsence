@@ -60,9 +60,9 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|01111}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
  * 		{@ddms.rule At least one of ddms:keyword or ddms:category must exist.|Error|11111}
- * 		{@ddms.rule ISM attributes are not used before the DDMS version in which they were introduced.|Error|11111}
+ * 		{@ddms.rule Security attributes must not be used before the DDMS version in which they were introduced.|Error|11111}
  * 		{@ddms.rule 1 or more keywords have the same value.|Warning|11111}
  * 		{@ddms.rule 1 or more categories have the same value.|Warning|11111}
  * 		{@ddms.rule 1 or more production metrics have the same value.|Warning|11111}
