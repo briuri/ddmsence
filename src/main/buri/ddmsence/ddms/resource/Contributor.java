@@ -50,8 +50,8 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|11111}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule Exactly 1 producer entity fills this role.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule Exactly 1 producer entity must fill this role.|Error|11111}
  * {@table.footer}
  *  
  * @author Brian Uri!

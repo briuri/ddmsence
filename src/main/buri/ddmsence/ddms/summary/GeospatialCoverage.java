@@ -59,15 +59,15 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|01111}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
  * 		{@ddms.rule This component must contain at least 1 child element.|Error|11111}
- * 		{@ddms.rule Only 1 of each type of child element can be used.|Error|11111}
- * 		{@ddms.rule If a ddms:geographicIdentifier is used and contains a ddms:facilityIdentifier, no other child elements can be used.|Error|11111}
- *	 	{@ddms.rule ddms:order is not used before the DDMS version in which it was introduced.|Error|11111}
- *		{@ddms.rule ddms:precedence is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule Only 1 of each type of child element must be used.|Error|11111}
+ * 		{@ddms.rule If a ddms:geographicIdentifier is used and contains a ddms:facilityIdentifier, no other child elements must be used.|Error|11111}
+ *	 	{@ddms.rule ddms:order must not be used before the DDMS version in which it was introduced.|Error|11111}
+ *		{@ddms.rule ddms:precedence must not be used before the DDMS version in which it was introduced.|Error|11111}
  *		{@ddms.rule If set, ddms:precedence must be a valid token.|Error|11111}
  *		{@ddms.rule If ddms:precedence exists, this component must contain a ddms:geographicIdentifier with a ddms:countryCode.|Error|11111}
- *		{@ddms.rule ISM attributes are not used before the DDMS version in which they were introduced.|Error|11111}
+ *		{@ddms.rule Security attributes must not be used before the DDMS version in which they were introduced.|Error|11111}
  * 		<p>Does not validate the value of the order attribute (this is done at the Resource level).</p>
  * {@table.footer}
  * 

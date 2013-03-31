@@ -55,12 +55,12 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|00010}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule ntk:AccessSystemName is required.|Error|11111}
- * 		{@ddms.rule At least 1 ntk:AccessProfileValue is required.|Error|11111}
- * 		{@ddms.rule ism:classification is required.|Error|11111}
- * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
+ * 		{@ddms.rule Component must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule ntk:AccessSystemName must exist.|Error|11111}
+ * 		{@ddms.rule At least 1 ntk:AccessProfileValue must exist.|Error|11111}
+ * 		{@ddms.rule ism:classification must exist.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer must exist.|Error|11111}
  * {@table.footer}
  *  
  * @author Brian Uri!

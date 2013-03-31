@@ -55,12 +55,12 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|11110}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule Component is not used after the DDMS version in which it was removed.|Error|11111}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule ism:excludeFromRollup is not used before the DDMS version in which it was introduced.|Error|10000}
- * 		{@ddms.rule ism:excludeFromRollup is required and is "true".|Error|01111}
- * 		{@ddms.rule ism:classification is required.|Error|11111}
- * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
+ * 		{@ddms.rule Component must not be used after the DDMS version in which it was removed.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule ism:excludeFromRollup must not be used before the DDMS version in which it was introduced.|Error|10000}
+ * 		{@ddms.rule ism:excludeFromRollup must exist and is set to "true".|Error|01111}
+ * 		{@ddms.rule ism:classification must exist.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer must exist.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!

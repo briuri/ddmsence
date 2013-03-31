@@ -64,11 +64,11 @@ import buri.ddmsence.util.Util;
  * 		None.
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule Either a ddms:state or a ddms:province can exist, but not both.|Error|11110}
- * 		{@ddms.rule TSPI addresses are not used before the DDMS version in which they were introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule Either a ddms:state or a ddms:province must exist, but not both.|Error|11110}
+ * 		{@ddms.rule TSPI addresses must not be used before the DDMS version in which they were introduced.|Error|11111}
  * 		{@ddms.rule DDMS postal elements are not used after the DDMS version in which they were removed.|Error|11111}
- * 		{@ddms.rule A TSPI address is required.|Error|00001}
+ * 		{@ddms.rule A TSPI address must exist.|Error|00001}
  * 		{@ddms.rule This component can be used with no values set.|Warning|11110}
  * {@table.footer}
  * 

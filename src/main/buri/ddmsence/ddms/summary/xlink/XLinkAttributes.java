@@ -75,12 +75,12 @@ import buri.ddmsence.util.Util;
  * 		{@child.info xlink:actuate|0..1|00011}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule If set, xlink:href is a valid URI.|Error|11111}
- * 		{@ddms.rule If set, xlink:arcrole is a valid URI.|Error|11111}
- * 		{@ddms.rule If set, xlink:show is a valid token.|Error|11111}
- * 		{@ddms.rule If set, xlink:actuate is a valid token.|Error|11111}
- * 		{@ddms.rule If set, xlink:role is a valid URI.|Error|00011}
- * 		{@ddms.rule If set, xlink:label is a valid NCName.|Error|00011}
+ * 		{@ddms.rule If set, xlink:href must be a valid URI.|Error|11111}
+ * 		{@ddms.rule If set, xlink:arcrole must be a valid URI.|Error|11111}
+ * 		{@ddms.rule If set, xlink:show must be a valid token.|Error|11111}
+ * 		{@ddms.rule If set, xlink:actuate must be a valid token.|Error|11111}
+ * 		{@ddms.rule If set, xlink:role must be a valid URI.|Error|00011}
+ * 		{@ddms.rule If set, xlink:label msut be a valid NCName.|Error|00011}
  * {@table.footer}
  * 
  * @author Brian Uri!

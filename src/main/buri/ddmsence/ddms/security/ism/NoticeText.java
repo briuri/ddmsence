@@ -53,9 +53,9 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|00010}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule If set, each ism:pocType is a valid token.|Error|11111}
+ * 		{@ddms.rule Component must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule If set, each ism:pocType must be a valid token.|Error|11111}
  * 		{@ddms.rule Warnings from any notice attributes are claimed by this component.|Warning|11111}
  * 		{@ddms.rule This component can be used with no value set.|Warning|11111}
  * {@table.footer}

@@ -59,9 +59,9 @@ import buri.ddmsence.util.Util;
  * 		None.
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule At least 1 shape is required.|Error|11111}
- * 		{@ddms.rule TSPI shapes are not used before the DDMS version in which they were introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule At least 1 shape must exist.|Error|11111}
+ * 		{@ddms.rule TSPI shapes must not be used before the DDMS version in which they were introduced.|Error|11111}
  * 		{@ddms.rule GML shapes are not used after the DDMS version in which they were removed.|Error|11111}
  * {@table.footer}
  *  

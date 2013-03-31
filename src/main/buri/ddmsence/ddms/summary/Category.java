@@ -51,11 +51,11 @@ import buri.ddmsence.util.Util;
  * 		{@child.info any:&lt;<i>extensibleAttributes</i>&gt;|0..*|01111}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule ddms:label is required.|Error|11111}
- * 		{@ddms.rule If set, ddms:qualifier is a valid URI.|Error|11111}
- * 		{@ddms.rule ISM attributes are not used before the DDMS version in which they were introduced.|Error|11111}
- * 		{@ddms.rule Extensible attributes are not used before the DDMS version in which they were introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule ddms:label must exist.|Error|11111}
+ * 		{@ddms.rule If set, ddms:qualifier must be a valid URI.|Error|11111}
+ * 		{@ddms.rule Security attributes must not be used before the DDMS version in which they were introduced.|Error|11111}
+ * 		{@ddms.rule Extensible attributes must not be used before the DDMS version in which they were introduced.|Error|11111}
  * {@table.footer}
  * 
  * @since 0.9.b

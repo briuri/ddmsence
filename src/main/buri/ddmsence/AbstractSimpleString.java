@@ -53,8 +53,8 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|11111}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule ism:classification is required.|Error|11111}
- * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
+ * 		{@ddms.rule ism:classification must exist.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer must exist.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!

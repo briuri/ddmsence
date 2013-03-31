@@ -58,12 +58,12 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ddms:approximableDate/@ddms:approximation|0..1|00011}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule If set, the ddms:approximableDate has a valid date format.|Error|11111}
+ * 		{@ddms.rule Component must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule If set, the ddms:approximableDate must adhere to a valid date format.|Error|11111}
  * 		{@ddms.rule If set, the ddms:approximableDate/@ddms:approximation is a valid token.|Error|11111}
- * 		{@ddms.rule If set, the ddms:searchableDate/ddms:start has a valid date format.|Error|11111}
- * 		{@ddms.rule If set, the ddms:searchableDate/ddms:end has a valid date format.|Error|11111}
+ * 		{@ddms.rule If set, the ddms:searchableDate/ddms:start must adhere to a valid date format.|Error|11111}
+ * 		{@ddms.rule If set, the ddms:searchableDate/ddms:end must adhere to a valid date format.|Error|11111}
  * 		{@ddms.rule This component can be used with no values set.|Warning|11111}
  * {@table.footer}
  * 

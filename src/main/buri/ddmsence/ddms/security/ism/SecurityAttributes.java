@@ -82,13 +82,13 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ism:typeOfExemptedSource|0..1|01000}	
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule ism:atomicEnergyMarkings is not used before the DDMS version in which it was introduced.|Error|11111}
- * 		{@ddms.rule ism:displayOnlyTo is not used before the DDMS version in which it was introduced.|Error|11111}
- * 		{@ddms.rule ism:nonUSControls is not used before the DDMS version in which it was introduced.|Error|11111}
- * 		{@ddms.rule ism:compilationReason is not used before the DDMS version in which it was introduced.|Error|11111}
- * 		{@ddms.rule ism:dateOfExemptedSource is not used after the DDMS version in which it was removed.|Error|11111}
- * 		{@ddms.rule ism:typeOfExemptedSource is not used after the DDMS version in which it was removed.|Error|11111}
- * 		{@ddms.rule ism:declassManualReview is not used after the DDMS version in which it was removed.|Error|11111}
+ * 		{@ddms.rule ism:atomicEnergyMarkings must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule ism:displayOnlyTo must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule ism:nonUSControls must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule ism:compilationReason must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule ism:dateOfExemptedSource must not be used after the DDMS version in which it was removed.|Error|11111}
+ * 		{@ddms.rule ism:typeOfExemptedSource must not be used after the DDMS version in which it was removed.|Error|11111}
+ * 		{@ddms.rule ism:declassManualReview must not be used after the DDMS version in which it was removed.|Error|11111}
  * 		{@ddms.rule If set, ism:atomicEnergyMarkings must be valid tokens.|Error|11111}
  * 		{@ddms.rule If set, ism:classification must be a valid token.|Error|11111}
  * 		{@ddms.rule If set, ism:declassException must be a valid token.|Error|11111}
@@ -103,8 +103,8 @@ import buri.ddmsence.util.Util;
  * 		{@ddms.rule If set, ism:SARIdentifiers must be valid tokens.|Error|11111}
  * 		{@ddms.rule If set, ism:SCIcontrols must be valid tokens.|Error|11111}
  * 		{@ddms.rule If set, ism:typeOfExemptedSource must be a valid token.|Error|11111}
- * 		{@ddms.rule If set, ism:dateOfExemptedSource is a valid xs:date value.|Error|11111}
- * 		{@ddms.rule If set, ism:declassDate is a valid xs:date value.|Error|11111} 
+ * 		{@ddms.rule If set, ism:dateOfExemptedSource must adhere to a valid date format.|Error|11111}
+ * 		{@ddms.rule If set, ism:declassDate must adhere to a valid date format.|Error|11111} 
  * 		<p> When validating this attribute group, the required/optional nature of the classification and
  * 		ownerProducer attributes are not checked. Because that limitation depends on the parent element (for example,
  * 		ddms:title requires them, but ddms:creator does not), the parent element should be responsible for checking, via

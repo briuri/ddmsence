@@ -839,6 +839,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 			// At least 1 security
 			if (!version.isAtLeast("5.0")) {
 				Element element = getResourceWithoutBodyElement();
+				if (version.isAtLeast("4.0.1"))
+					element.appendChild(MetacardInfoTest.getFixture().getXOMElementCopy());
 				element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
 				element.appendChild(TitleTest.getFixture().getXOMElementCopy());
 				element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
@@ -848,15 +850,19 @@ public class ResourceTest extends AbstractBaseTestCase {
 
 			// At least 1 identifier
 			Element element = getResourceWithoutBodyElement();
+			if (version.isAtLeast("4.0.1"))
+				element.appendChild(MetacardInfoTest.getFixture().getXOMElementCopy());			
 			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
 			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
 			if (!version.isAtLeast("5.0"))
 				element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
-			getInstance("At least 1 identifier is required.", element);
+			getInstance("At least 1 identifier", element);
 
 			// At least 1 title
 			element = getResourceWithoutBodyElement();
+			if (version.isAtLeast("4.0.1"))
+				element.appendChild(MetacardInfoTest.getFixture().getXOMElementCopy());			
 			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
 			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
@@ -864,70 +870,10 @@ public class ResourceTest extends AbstractBaseTestCase {
 				element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 			getInstance("At least 1 title is required.", element);
 
-			// No more than 1 description
-			element = getResourceWithoutBodyElement();
-			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
-			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
-			element.appendChild(DescriptionTest.getFixture().getXOMElementCopy());
-			element.appendChild(DescriptionTest.getFixture().getXOMElementCopy());
-			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
-			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
-			if (!version.isAtLeast("5.0"))
-				element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
-			getInstance("No more than 1 description element can exist.", element);
-
-			// No more than 1 dates
-			element = getResourceWithoutBodyElement();
-			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
-			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
-			element.appendChild(DatesTest.getFixture().getXOMElementCopy());
-			element.appendChild(DatesTest.getFixture().getXOMElementCopy());
-			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
-			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
-			if (!version.isAtLeast("5.0"))
-				element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
-			getInstance("No more than 1 dates element can exist.", element);
-
-			// No more than 1 rights
-			element = getResourceWithoutBodyElement();
-			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
-			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
-			element.appendChild(RightsTest.getFixture().getXOMElementCopy());
-			element.appendChild(RightsTest.getFixture().getXOMElementCopy());
-			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
-			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
-			if (!version.isAtLeast("5.0"))
-				element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
-			getInstance("No more than 1 rights element can exist.", element);
-
-			// No more than 1 formats
-			element = getResourceWithoutBodyElement();
-			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
-			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
-			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
-			element.appendChild(FormatTest.getFixture().getXOMElementCopy());
-			element.appendChild(FormatTest.getFixture().getXOMElementCopy());
-			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
-			if (!version.isAtLeast("5.0"))
-				element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
-			getInstance("No more than 1 format element can exist.", element);
-
-			// No more than 1 resourceManagement
-			if (version.isAtLeast("4.0.1")) {
-				element = getResourceWithoutBodyElement();
-				element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
-				element.appendChild(TitleTest.getFixture().getXOMElementCopy());
-				element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
-				element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
-				element.appendChild(ResourceManagementTest.getFixture().getXOMElementCopy());
-				element.appendChild(ResourceManagementTest.getFixture().getXOMElementCopy());
-				if (!version.isAtLeast("5.0"))
-					element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
-				getInstance("No more than 1 resourceManagement", element);
-			}
-
 			// At least 1 subjectCoverage
 			element = getResourceWithoutBodyElement();
+			if (version.isAtLeast("4.0.1"))
+				element.appendChild(MetacardInfoTest.getFixture().getXOMElementCopy());			
 			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
 			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
 			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
@@ -953,26 +899,20 @@ public class ResourceTest extends AbstractBaseTestCase {
 			if (!version.isAtLeast("5.0")) {
 				// At least 1 security
 				element = getResourceWithoutBodyElement();
+				if (version.isAtLeast("4.0.1"))
+					element.appendChild(MetacardInfoTest.getFixture().getXOMElementCopy());						
 				element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
 				element.appendChild(TitleTest.getFixture().getXOMElementCopy());
 				element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 				element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
 				getInstance("Exactly 1 security element must exist.", element);
-
-				// No more than 1 security
-				element = getResourceWithoutBodyElement();
-				element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
-				element.appendChild(TitleTest.getFixture().getXOMElementCopy());
-				element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
-				element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
-				element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
-				element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
-				getInstance("Extensible elements cannot be defined", element);
 			}
 
 			// No top level components
+
 			element = getResourceWithoutBodyElement();
-			getInstance("At least 1 identifier is required.", element);
+			String error = (version.isAtLeast("4.0.1") ? "Exactly 1 metacardInfo" : "At least 1 identifier");
+			getInstance(error, element);
 		}
 	}
 
@@ -1053,7 +993,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 			}
 
 			// No top level components
-			getInstance("At least 1 identifier is required.", null, getResourceElement(), getCreateDate(), null,
+			String error = (version.isAtLeast("4.0.1") ? "Exactly 1 metacardInfo" : "At least 1 identifier");
+			getInstance(error, null, getResourceElement(), getCreateDate(), null,
 				getIsmDESVersion(), getNtkDESVersion());
 
 			// Non-top-level component
@@ -1658,7 +1599,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 
 	public void testBuilderValidation() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			Resource.Builder builder = new Resource.Builder();
 			builder.getRights().setCopyright(Boolean.TRUE);
 			try {
@@ -1666,7 +1607,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "At least 1 identifier is required.");
+				String error = (version.isAtLeast("4.0.1") ? "Exactly 1 metacardInfo" : "At least 1 identifier");
+				expectMessage(e, error);
 			}
 			// Successful cases covered in-depth below.
 		}
@@ -1847,7 +1789,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			fail("Builder allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "ntk:DESVersion is required.");
+			expectMessage(e, "Exactly 1 metacardInfo");
 		}
 
 		// Adding 4.0.1-specific fields works

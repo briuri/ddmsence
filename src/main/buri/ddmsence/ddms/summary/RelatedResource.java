@@ -71,13 +71,13 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|11111}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- *		{@ddms.rule ddms:relationship is required, and is a valid URI.|Error|11111}
- *		{@ddms.rule If set, ddms:direction is a valid token.|Error|11111}
- *		{@ddms.rule ddms:qualifier is required, and is a valid URI.|Error|11111}
- *		{@ddms.rule ddms:value is required.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ *		{@ddms.rule ddms:relationship must exist, and must be a valid URI.|Error|11111}
+ *		{@ddms.rule If set, ddms:direction must be a valid token.|Error|11111}
+ *		{@ddms.rule ddms:qualifier must exist, and must be a valid URI.|Error|11111}
+ *		{@ddms.rule ddms:value must exist.|Error|11111}
  *		{@ddms.rule At least 1 ddms:link exists.|Error|11111}
- *		{@ddms.rule Links cannot contain security attributes.|Error|11111}
+ *		{@ddms.rule Links must not contain security attributes.|Error|11111}
  * 		{@ddms.rule Parent component should not contain more than 1 ddms:relatedResource.|Warning|11100}
  * 		<p>Does NOT validate that the value is valid against the qualifier's vocabulary.</p>
  * {@table.footer}

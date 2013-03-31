@@ -53,12 +53,12 @@ import buri.ddmsence.util.Util;
  * 		{@child.info xlink:&lt;<i>xlinkAttributes</i>&gt;|0..*|00011}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule The child text value is required.|Error|11111}
- * 		{@ddms.rule If set, xlink:type has a value of "simple".|Error|11111}
+ * 		{@ddms.rule Component must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule The child text value must exist.|Error|11111}
+ * 		{@ddms.rule If set, xlink:type must have a value of "simple".|Error|11111}
  * 		{@ddms.rule If set, network or virt:network must be a valid network token.|Error|11111}
- * 		{@ddms.rule network and otherNetwork cannot be used after DDMS 4.1.|Error|11111}
+ * 		{@ddms.rule network and otherNetwork must not be used after DDMS 4.1.|Error|11111}
  * 		{@ddms.rule Warnings from any XLink attributes are claimed by this component.|Warning|11111}
  * {@table.footer}
  * 
@@ -133,14 +133,6 @@ public final class TaskID extends AbstractBaseComponent {
 	}
 
 	/**
-	 *  * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule The child text value is required.|Error|11111}
- * 		{@ddms.rule If set, xlink:type has a value of "simple".|Error|11111}
- * 		{@ddms.rule If set, network or virt:network must be a valid network token.|Error|11111}
- * 		{@ddms.rule network and otherNetwork cannot be used after DDMS 4.1.|Error|11111}
- * 		{@ddms.rule Warnings from any XLink attributes are claimed by this component.|Warning|11111}
- * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {

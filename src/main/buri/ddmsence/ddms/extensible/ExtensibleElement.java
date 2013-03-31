@@ -69,14 +69,14 @@ import buri.ddmsence.util.Util;
  * 		ExtensibleElement extension point was removed in DDMS 5.0.</p>
  * {@table.footer}
  * {@table.header Nested Elements}
- * 		{@child.info any:&lt;<i>otherElements</i>&gt;|0..1|10000}
- * 		{@child.info any:&lt;<i>otherElements</i>&gt;|0..*|01110}
+ * 		{@child.info any:&lt;<i>extensibleElements</i>&gt;|0..1|10000}
+ * 		{@child.info any:&lt;<i>extensibleElements</i>&gt;|0..*|01110}
  * {@table.footer}
  * {@table.header Attributes}
  * 		None.
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule An element cannot be in the DDMS namespace.|Error|11111}
+ * 		{@ddms.rule An extensible element must not be in the DDMS namespace.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!

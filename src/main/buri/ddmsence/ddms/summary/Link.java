@@ -51,10 +51,10 @@ import buri.ddmsence.util.Util;
  * 		{@child.info xlink:&lt;<i>xlinkAttributes</i>&gt;|0..*|11111}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule xlink:type is required, and is set to "locator".|Error|11111}
- * 		{@ddms.rule xlink:href is required.|Error|11111}
- * 		{@ddms.rule ISM attributes are not used before the DDMS version in which they were introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule xlink:type must exist, and must be set to "locator".|Error|11111}
+ * 		{@ddms.rule xlink:href must exist.|Error|11111}
+ * 		{@ddms.rule Security attributes must not be used before the DDMS version in which they were introduced.|Error|11111}
  * 		{@ddms.rule Warnings from any XLink attributes are claimed by this component.|Warning|11111}
  * 		<p>When a Link is used by {@link RelatedResource}, it cannot have security attributes. When a Link is used by
  * 		{@link RevisionRecall}, it must have security attributes. This is validated in the parent class.</p>

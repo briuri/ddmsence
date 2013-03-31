@@ -51,7 +51,7 @@ import buri.ddmsence.util.Util;
  * 		{@child.info any:&lt;<i>extensibleAttributes</i>&gt;|0..*|11111}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule At least 1 ddms:name is required.|Error|11111}
+ * 		{@ddms.rule At least 1 ddms:name must exist.|Error|11111}
  * {@table.footer}
  *  
  * @author Brian Uri!

@@ -48,11 +48,11 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ddms:code|1|00001}
  * {@table.footer}
  * {@table.header Validation Rules}
- * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
- * 		{@ddms.rule ddms:qualifier is required.|Error|11110}
- * 		{@ddms.rule ddms:codespace is required.|Error|00001}
- * 		{@ddms.rule ddms:value is required.|Error|11110}
- * 		{@ddms.rule ddms:code is required.|Error|00001}
+ * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule ddms:qualifier must exist.|Error|11110}
+ * 		{@ddms.rule ddms:codespace must exist.|Error|00001}
+ * 		{@ddms.rule ddms:value must exist.|Error|11110}
+ * 		{@ddms.rule ddms:code must exist.|Error|00001}
  * 		<p>Does not validate that the value is valid against the qualifier's vocabulary.</p>
  * {@table.footer}
  * 

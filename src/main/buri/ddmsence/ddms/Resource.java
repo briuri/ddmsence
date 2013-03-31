@@ -75,14 +75,9 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * An immutable implementation of ddms:resource (the top-level element of a DDMS record).
+ * An immutable implementation of ddms:resource (the top-level element of a DDMS metacard or assertion).
  * <br />
  * {@ddms.versions 11111}
- * 
- * <p>
- * Starting in DDMS 3.0, resources have additional ISM attributes which did not exist in 2.0. However, the 2.0 schema
- * still allows "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present.
- * </p>
  * 
  * <p>When generating HTML/Text output for a Resource, additional tags are generated listing the version of DDMSence
  * used to create the record (to help identify formatting bugs), and the version of DDMS. These lines are not required
@@ -95,62 +90,74 @@ import buri.ddmsence.util.Util;
  * &lt;meta name="ddms.version" content="3.0" /&gt;<br />
  * </code></ul></p>
  * 
- * <p>The name of this component was changed from "Resource" to "resource" in DDMS 4.0.1.</p>
- * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>A metacardInfo component is required. This loophole opened up in DDMS 5.0.</li>
- * </ul>
+ * {@table.header History}
+ * 		<p>Starting in DDMS 3.0, resources have additional ISM attributes which did not exist in 2.0. However, the 2.0 schema
+ * 		still allows "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present.</p>
+ * 		<p>Starting in DDMS 3.0, the ISM attributes explicitly defined in the schema should appear in the SecurityAttributes,
+ * 		not the ExtensibleAttributes. Attempts to load them as ExtensibleAttributes will throw an InvalidDDMSException.
+ * 		In DDMS 2.0, there are no ISM attributes explicitly defined in the schema, so you can load them in any way you
+ * 		want. It is recommended that you load them as SecurityAttributes anyhow, for consistency with newer DDMS resources.
+ * 		Please see the "Power Tips" on the Extensible Layer (on the DDMSence home page) for details.</p>
+ * 		<p>The names of this component was made lowercase in DDMS 4.0.1.</p>
  * {@table.footer}
- * 
  * {@table.header Nested Elements}
- * <u>ddms:metacardInfo</u>: (exactly 1 required, starting in DDMS 4.0.1), implemented as a {@link MetacardInfo}<br />
- * <u>ddms:identifier</u>: (1-many required), implemented as an {@link Identifier}<br />
- * <u>ddms:title</u>: (1-many required), implemented as a {@link Title}<br />
- * <u>ddms:subtitle</u>: (0-many optional), implemented as a {@link Subtitle}<br />
- * <u>ddms:description</u>: (0-1 optional), implemented as a {@link Description}<br />
- * <u>ddms:language</u>: (0-many optional), implemented as a {@link Language}<br />
- * <u>ddms:dates</u>: (0-1 optional), implemented as a {@link Dates}<br />
- * <u>ddms:rights</u>: (0-1 optional), implemented as a {@link Rights}<br />
- * <u>ddms:source</u>: (0-many optional), implemented as a {@link Source}<br />
- * <u>ddms:type</u>: (0-many optional), implemented as a {@link Type}<br />
- * <u>ddms:contributor</u>: (0-many optional), implemented as a {@link Contributor}<br />
- * <u>ddms:creator</u>: (0-many optional), implemented as a {@link Creator}<br />
- * <u>ddms:pointOfContact</u>: (0-many optional), implemented as a {@link PointOfContact}<br />
- * <u>ddms:publisher</u>: (0-many optional), implemented as a {@link Publisher}<br />
- * <u>ddms:format</u>: (0-1 optional), implemented as a {@link Format}<br />
- * <u>ddms:subjectCoverage</u>: (1-many required, starting in DDMS 4.0.1), implemented as a {@link SubjectCoverage}<br />
- * <u>ddms:virtualCoverage</u>: (0-many optional), implemented as a {@link VirtualCoverage}<br />
- * <u>ddms:temporalCoverage</u>: (0-many optional), implemented as a {@link TemporalCoverage}<br />
- * <u>ddms:geospatialCoverage</u>: (0-many optional), implemented as a {@link GeospatialCoverage}<br />
- * <u>ddms:relatedResource</u>: (0-many optional), implemented as a {@link RelatedResource}<br />
- * <u>ddms:resourceManagement</u>: (0-1 optional, starting in DDMS 4.0.1), implemented as a {@link ResourceManagement}<br />
- * <u>ddms:security</u>: (exactly 1 required), implemented as a {@link Security}, removed in DDMS 5.0<br />
- * <u>Extensible Layer</u>: (0-many optional), implemented as a {@link ExtensibleElement}, removed in DDMS 5.0<br />
+ * 		{@child.info ddms:metacardInfo|1|00011}
+ * 		{@child.info ddms:identifier|1..*|11111}
+ * 		{@child.info ddms:title|1..*|11111}
+ * 		{@child.info ddms:subtitle|0..*|11111}
+ * 		{@child.info ddms:description|0..1|11111}
+ * 		{@child.info ddms:language|0..*|11111}
+ * 		{@child.info ddms:dates|0..1|11111}
+ * 		{@child.info ddms:rights|0..1|11111}
+ * 		{@child.info ddms:source|0..*|11111}
+ * 		{@child.info ddms:type|0..*|11111}
+ * 		{@child.info ddms:contributor|0..*|11111}
+ * 		{@child.info ddms:creator|0..*|11111}
+ * 		{@child.info ddms:pointOfContact|0..*|11111}
+ * 		{@child.info ddms:publisher|0..*|11111}
+ * 		{@child.info ddms:format|0..1|11111}
+ * 		{@child.info ddms:subjectCoverage|0..1|11100}
+ * 		{@child.info ddms:subjectCoverage|1..*|00011}
+ * 		{@child.info ddms:virtualCoverage|0..*|11111}
+ * 		{@child.info ddms:temporalCoverage|0..*|11111}
+ * 		{@child.info ddms:geospatialCoverage|0..*|11111}
+ * 		{@child.info ddms:relatedResource|0..*|11111}
+ * 		{@child.info ddms:resourceManagement|0..1|00011}
+ * 		{@child.info ddms:security|1|11110}
+ * 		{@child.info any:&lt;<i>extensibleElements</i>&gt;|0..1|10000}
+ * 		{@child.info any:&lt;<i>extensibleElements</i>&gt;|0..*|01110}
  * {@table.footer}
- * 
  * {@table.header Attributes}
- * <u>ism:resourceElement</u>: Identifies whether this tag sets the classification for the xml file as a whole
- * (required, starting in DDMS 3.0, ending in DDMS 4.1)<br />
- * <u>ism:createDate</u>: Specifies the creation or latest modification date (YYYY-MM-DD) (required, starting in
- * DDMS 3.0, ending in DDMS 4.1)<br />
- * <u>ism:DESVersion</u>: Specifies the version of the Data Encoding Specification used for the security
- * markings on this record. (required, starting in DDMS 3.0, ending in DDMS 4.1)<br />
- * <u>ntk:DESVersion</u>: Specifies the version of the Data Encoding Specification used for Need-To-Know markings
- * on this record. (required, starting in DDMS 4.0.1 with a fixed value, ending in DDMS 4.1)<br />
- * <u>ism:compliesWith</u>: Specifies the rulesets for this document (optional, starting in DDMS 3.1 and ending in DDMS 4.1)<br />
- * <u>ddms:compliesWith</u>: Specifies the rulesets for this document (optional, starting in DDMS 5.0)<br />  
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required. (starting in DDMS
- * 3.0, ending in DDMS 4.1)<br />
- * <u>{@link NoticeAttributes}</u>: (optional, starting in DDMS 4.0.1, ending in DDMS 4.1)<br />
- * <u>{@link ExtensibleAttributes}</u>: (optional, ending in DDMS 4.1, ending in DDMS 4.1)<br />
- *  * <br />
- * Starting in DDMS 3.0, the ISM attributes explicitly defined in the schema should appear in the SecurityAttributes,
- * not the ExtensibleAttributes. Attempts to load them as ExtensibleAttributes will throw an InvalidDDMSException.
- * In DDMS 2.0, there are no ISM attributes explicitly defined in the schema, so you can load them in any way you
- * want. It is recommended that you load them as SecurityAttributes anyhow, for consistency with newer DDMS resources.
- * Please see the "Power Tips" on the Extensible Layer (on the DDMSence home page) for details.
+ * 		{@child.info ism:resourceElement|1|01110}
+ * 		{@child.info ism:createDate|1|01110}
+ * 		{@child.info ism:DESVersion|1|01110}
+ * 		{@child.info ntk:DESVersion|1|00010}
+ * 		{@child.info ism:compliesWith|0..*|00110}
+ * 		{@child.info ddms:compliesWith|0..*|00001}
+ *  	{@child.info ism:classification|1|01110}
+ * 		{@child.info ism:ownerProducer|1..*|01110}
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|01110}
+ * 		{@child.info ism:&lt;<i>noticeAttributes</i>&gt;|0..*|00010}  
+ * 		{@child.info any:&lt;<i>extensibleAttributes</i>&gt;|0..*|11110}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of the element is correct.|Error|11111}
+ * 		{@ddms.rule The cardinality all child components is enforced.|Error|11111}
+ * 		{@ddms.rule At least 1 of creator, publisher, contributor, or pointOfContact must exist.|Error|11111}
+ * 		{@ddms.rule All ddms:order attributes make a complete, consecutive set, starting at 1.|Error|11111}
+ * 		{@ddms.rule ism:resourceElement must exist.|Error|01110}
+ * 		{@ddms.rule ism:createDate must exist and adheres to a valid date format.|Error|01110}
+ * 		{@ddms.rule ism:DESVersion must exist and is a valid Integer.|Error|01111}
+ * 		{@ddms.rule ism:classification must exist.|Error|01110}
+ * 		{@ddms.rule ism:ownerProducer must exist.|Error|01110}
+ * 		{@ddms.rule ntk:DESVersion must exist and be a valid Integer.|Error|00010}
+ * 		{@ddms.rule ism:compliesWith must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule ism:compliesWith must not be used after the DDMS version in which it was removed.|Error|11111}
+ * 		{@ddms.rule If set, ism:compliesWith must contain valid tokens.|Error|11110}
+ * 		{@ddms.rule The resource must not have ISM or NTK attributes.|Error|00001}
+ * 		{@ddms.rule The resource must not have extensible elements or attributes.|Error|00001}			
+ * 		{@ddms.rule Warnings from any notice attributes are claimed by this component.|Warning|11111}
+ * 		{@ddms.rule ism:externalNotice  may cause issues for DDMS 4.0.1 systems.|Warning|00010}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -684,43 +691,21 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>Exactly 1 metacardInfo, 1-many identifiers, 1-many titles, 0-1 descriptions, 0-1 dates, 0-1 rights,
-	 * 0-1 formats, exactly 1 subjectCoverage, and 0-1 resourceManagement must exist.</li>
-	 * <li>Exactly 1 security element must exist, through DDMS 4.1.</li>
-	 * <li>Starting in DDMS 4.0.1, 1-many subjectCoverage elements can exist.</li>
-	 * <li>At least 1 of creator, publisher, contributor, or pointOfContact must exist.</li>
-	 * <li>All ddms:order attributes make a complete, consecutive set, starting at 1.</li>
-	 * <li>resourceElement attribute must exist, starting in DDMS 3.0 and ending in DDMS 4.1.</li>
-	 * <li>createDate attribute must exist and conform to the xs:date date type (YYYY-MM-DD), starting in DDMS 3.0
-	 * and ending in DDMS 4.1.</li>
-	 * <li>The ism:compliesWith attribute cannot be used until DDMS 3.1 or later, ending in DDMS 4.1 (replaced by ddms:compliesWith).</li>
-	 * <li>If set, the ism:compliesWith attribute must be valid tokens.</li>
-	 * <li>ISM DESVersion must exist and be a valid Integer, starting in DDMS 3.0, and ending in DDMS 4.1.</li>
-	 * <li>The value of ISM DESVersion must be fixed, starting in DDMS 3.1, ending in DDMS 4.1. This is checked during schema
-	 * validation.</li>
-	 * <li>NTK DESVersion must exist and be a valid Integer, starting in DDMS 4.0.1, ending in DDMS 4.1.</li>
-	 * <li>The value of NTK DESVersion must be fixed, starting in DDMS 4.0.1. This is checked during schema
-	 * validation.</li>
-	 * <li>A classification is required, starting in DDMS 3.0, ending in DDMS 4.1.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty, starting in DDMS 3.0, ending in DDMS 4.1.</li>
-	 * <li>Only 1 extensible element can exist in DDMS 2.0.</li>
-	 * <li>No extensible elements can exist, starting in DDMS 5.0.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
+		boolean isAtLeast30 = getDDMSVersion().isAtLeast("3.0");
+		boolean isAtLeast401 = getDDMSVersion().isAtLeast("4.0.1");
+		boolean isAtLeast50 = getDDMSVersion().isAtLeast("5.0");
+		
 		Util.requireDDMSQName(getXOMElement(), Resource.getName(getDDMSVersion()));
-
+		if (getDDMSVersion().isAtLeast("4.0.1"))
+			Util.requireBoundedChildCount(getXOMElement(), MetacardInfo.getName(getDDMSVersion()), 1, 1);
+	
 		if (getIdentifiers().size() < 1)
 			throw new InvalidDDMSException("At least 1 identifier is required.");
 		if (getTitles().size() < 1)
-			throw new InvalidDDMSException("At least 1 title is required.");
+			throw new InvalidDDMSException("At least 1 title is required.");	
 		if (getCreators().size() + getContributors().size() + getPublishers().size() + getPointOfContacts().size() == 0)
 			throw new InvalidDDMSException(
 				"At least 1 producer (creator, contributor, publisher, or pointOfContact) is required.");
@@ -729,43 +714,41 @@ public final class Resource extends AbstractBaseComponent {
 		Util.requireBoundedChildCount(getXOMElement(), Rights.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), Format.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), ResourceManagement.getName(getDDMSVersion()), 0, 1);
-		if (getDDMSVersion().isAtLeast("4.0.1")) {
+		if (isAtLeast401) {
 			if (getSubjectCoverages().size() < 1)
 				throw new InvalidDDMSException("At least 1 subjectCoverage is required.");
 		}
 		else
 			Util.requireBoundedChildCount(getXOMElement(), SubjectCoverage.getName(getDDMSVersion()), 1, 1);
-		if (!getDDMSVersion().isAtLeast("5.0"))
+		if (!isAtLeast50)
 			Util.requireBoundedChildCount(getXOMElement(), Security.getName(getDDMSVersion()), 1, 1);
-
-		// Should be reviewed as additional versions of DDMS are supported.
-		if (getDDMSVersion().isAtLeast("4.0.1")) {
-			validateOrderAttributes();
-		}
-		if (getDDMSVersion().isAtLeast("4.0.1") && !getDDMSVersion().isAtLeast("5.0")) {
-			Util.requireDDMSValue("ntk:" + DES_VERSION_NAME, getNtkDESVersion());
-		}
-		if (!getDDMSVersion().isAtLeast("3.1") && !getCompliesWiths().isEmpty())
-			throw new InvalidDDMSException("The compliesWith attribute cannot be used until DDMS 3.1 or later.");
-		if (getDDMSVersion().isAtLeast("3.1") && !getDDMSVersion().isAtLeast("5.0")) {
-			for (String with : getCompliesWiths())
-				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_COMPLIES_WITH, with);
-		}
-		if (!getDDMSVersion().isAtLeast("3.0") && getExtensibleElements().size() > 1) {
+		if (!isAtLeast30 && getExtensibleElements().size() > 1) {
 			throw new InvalidDDMSException("Only 1 extensible element is allowed in DDMS 2.0.");
 		}
-		if (getDDMSVersion().isAtLeast("4.0.1"))
-			Util.requireBoundedChildCount(getXOMElement(), MetacardInfo.getName(getDDMSVersion()), 1, 1);
-		if (getDDMSVersion().isAtLeast("3.0") && !getDDMSVersion().isAtLeast("5.0")) {
+		
+		validateOrderAttributes();
+		if (isAtLeast30 && !isAtLeast50) {
 			Util.requireDDMSValue(RESOURCE_ELEMENT_NAME, isResourceElement());
 			Util.requireDDMSValue(CREATE_DATE_NAME, getCreateDate());
+			if (!getCreateDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
+				throw new InvalidDDMSException("The createDate must be in the xs:date format (YYYY-MM-DD).");
 			Util.requireDDMSValue("ism:" + DES_VERSION_NAME, getIsmDESVersion());
 			Util.requireDDMSValue("security attributes", getSecurityAttributes());
 			getSecurityAttributes().requireClassification();
-			if (!getCreateDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
-				throw new InvalidDDMSException("The createDate must be in the xs:date format (YYYY-MM-DD).");
+		}			
+		if (isAtLeast401 && !isAtLeast50) {
+			Util.requireDDMSValue("ntk:" + DES_VERSION_NAME, getNtkDESVersion());
 		}
-		if (getDDMSVersion().isAtLeast("5.0")) {
+		
+		if (!getDDMSVersion().isAtLeast("3.1") && !getCompliesWiths().isEmpty())
+			throw new InvalidDDMSException("The compliesWith attribute cannot be used until DDMS 3.1 or later.");
+		if (getDDMSVersion().isAtLeast("3.1") && !isAtLeast50) {
+			// ism:compliesWith
+			for (String with : getCompliesWiths())
+				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_COMPLIES_WITH, with);
+		}
+
+		if (isAtLeast50) {
 			if (isResourceElement() != null || getCreateDate() != null || getIsmDESVersion() != null || getNtkDESVersion() != null
 				|| !getSecurityAttributes().isEmpty() || !getNoticeAttributes().isEmpty())
 				throw new InvalidDDMSException("The resource cannot have ISM or NTK attributes, starting in DDMS 5.0.");
@@ -806,12 +789,7 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>An externalNotice attribute may cause issues for DDMS 4.0 records.</li>
-	 * <li>Add any warnings from the notice attributes.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		if (!getDDMSVersion().isAtLeast("5.0") && !getNoticeAttributes().isEmpty()) {
