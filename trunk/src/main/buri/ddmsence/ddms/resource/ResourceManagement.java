@@ -37,20 +37,26 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:resourceManagement.
+ *  * <br /><br />
+ * {@ddms.versions 00011}
  * 
- * {@table.header Nested Elements}
- * <u>ddms:recordsManagementInfo</u>: Information about the record keeper and software used to create the object to
- * which this metadata applies (0-1 optional), implemented as a {@link RecordsManagementInfo}<br />
- * <u>ddms:revisionRecall</u>: Details about any revision recalls for this resource (0-1 optional), implemented as a
- * {@link RevisionRecall}<br />
- * <u>ddms:taskingInfo</u>: Information about who requested production of the resource (0-many optional), implemented
- * as a {@link TaskingInfo}<br />
- * <u>ddms:processingInfo</u>: Details about the processing of the resource (0-many optional), implemented as a
- * {@link ProcessingInfo}<br />
+ * <p></p>
+ * 
+ * {@table.header History}
+ *  	None.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		{@child.info ddms:recordsManagementInfo|0..1|00011}
+ * 		{@child.info ddms:revisionRecall|0..1|00011}
+ * 		{@child.info ddms:taskingInfo|0..*|00011}
+ * 		{@child.info ddms:processingInfo|0..*|00011}
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|00011}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -146,25 +152,11 @@ public final class ResourceManagement extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>Only 0-1 recordsManagementInfo or revisionRecall elements exist.</li>
-	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		Util.requireDDMSQName(getXOMElement(), ResourceManagement.getName(getDDMSVersion()));
-		Util.requireBoundedChildCount(getXOMElement(), RecordsManagementInfo.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedChildCount(getXOMElement(), RevisionRecall.getName(getDDMSVersion()), 0, 1);
-
-		// Should be reviewed as additional versions of DDMS are supported.
 		requireAtLeastVersion("4.0.1");
-
+		Util.requireDDMSQName(getXOMElement(), ResourceManagement.getName(getDDMSVersion()));
 		super.validate();
 	}
 

@@ -33,17 +33,30 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:processingInfo.
+ * <br /><br />
+ * {@ddms.versions 00011}
  * 
- * {@table.header Strictness}
- * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
- * <ul>
- * <li>A processingInfo element can be used without any child text. This loophole goes away in DDMS 5.0</li>
- * </ul>
+ * <p></p>
+ * 
+ * {@table.header History}
+ *  	None.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ddms:dateProcessed</u>: date when this processing occurred (required)<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
+ * 		{@child.info ddms:dateProcessed|1|00011}
+ * 		{@child.info ism:classification|1|00011}
+ * 		{@child.info ism:ownerProducer|1..*|00011}
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|00011}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule ddms:dateProcessed is required, and is an acceptable date format.|Error|11111}
+ * 		{@ddms.rule ism:classification is required.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
+ * 		{@ddms.rule This component can be used with no values set.|Warning|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -85,39 +98,21 @@ public final class ProcessingInfo extends AbstractSimpleString {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>The dateProcessed exists, and is an acceptable date format.</li>
-	 * <li>A classification is required.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
+		requireAtLeastVersion("4.0.1");
 		Util.requireDDMSQName(getXOMElement(), ProcessingInfo.getName(getDDMSVersion()));
 		Util.requireDDMSValue(DATE_PROCESSED_NAME, getDateProcessedString());
 		Util.requireDDMSDateFormat(getDateProcessedString(), getNamespace());
-
-		// Should be reviewed as additional versions of DDMS are supported.
-		requireAtLeastVersion("4.0.1");
-
 		super.validate();
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>A ddms:processingInfo element was found with no child text, through DDMS 4.1.</li>
-	 * <li>Include any warnings from the security attributes.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
-		if (!getDDMSVersion().isAtLeast("5.0") && Util.isEmpty(getValue()))
+		if (Util.isEmpty(getValue()))
 			addWarning("A ddms:processingInfo element was found with no value.");
 		super.validateWarnings();
 	}

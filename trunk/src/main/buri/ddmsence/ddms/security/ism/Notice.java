@@ -51,7 +51,7 @@ import buri.ddmsence.util.Util;
  * {@table.footer}
  * {@table.header Attributes}
  * 		{@child.info ism:&lt;<i>noticeAttributes</i>&gt;|0..*|00010}
- * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..*|00010}
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|00010}
  * {@table.footer}
  * {@table.header Validation Rules}
  * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}

@@ -30,16 +30,28 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:subOrganization.
+ * <br /><br />
+ * {@ddms.versions 00011}
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>The subOrganization child text must not be empty.</li>
- * </ul>
+ * <p></p>
+ * 
+ * {@table.header History}
+ *  	None.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
+ * 		{@child.info ism:classification|1|00011}
+ * 		{@child.info ism:ownerProducer|1..*|00011}
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|00011}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule The child text is required.|Error|11111}
+ * 		{@ddms.rule ism:classification is required.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -69,25 +81,12 @@ public final class SubOrganization extends AbstractSimpleString {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>The child text exists and is not empty.</li>
-	 * <li>A classification is required.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
+		requireAtLeastVersion("4.0.1");
 		Util.requireDDMSQName(getXOMElement(), SubOrganization.getName(getDDMSVersion()));
 		Util.requireDDMSValue("subOrganization value", getValue());
-
-		// Should be reviewed as additional versions of DDMS are supported.
-		requireAtLeastVersion("4.0.1");
-
 		super.validate();
 	}
 

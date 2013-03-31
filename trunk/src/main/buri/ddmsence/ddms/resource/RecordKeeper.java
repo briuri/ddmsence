@@ -34,19 +34,26 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:recordKeeper.
+ * <br /><br />
+ * {@ddms.versions 00011}
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>The recordKeeperID must not be empty. A competing rule and loophole were established in DDMS 5.0.</li>
- * <li>The organization must not be empty. This loophole opened up in DDMS 5.0.</li>
- * </ul>
+ * <p></p>
+ * 
+ * {@table.header History}
+ *  	None.
  * {@table.footer}
- * 
  * {@table.header Nested Elements}
- * <u>ddms:recordKeeperID</u>: A unique identifier for the Record Keeper (exactly 1 required)<br />
- * <u>ddms:organization</u>: The organization which acts as the record keeper (exactly 1 required), implemented as an
- * {@link Organization}<br />
+ * 		{@child.info ddms:recordKeeperID|1|00011}
+ * 		{@child.info ddms:organization|1|00011}
+ * {@table.footer}
+ * {@table.header Attributes}
+ * 		None.
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule ddms:recordKeeperID is required.|Error|11111}
+ * 		{@ddms.rule ddms:organization is required.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -103,28 +110,13 @@ public class RecordKeeper extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>The recordKeeperID exists.</li>
-	 * <li>The organization exists.</li>
-	 * <li>Exactly 1 organization exists.</li>
-	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractProducerRole#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
+		requireAtLeastVersion("4.0.1");
 		Util.requireDDMSQName(getXOMElement(), RecordKeeper.getName(getDDMSVersion()));
 		Util.requireDDMSValue("record keeper ID", getRecordKeeperID());
 		Util.requireDDMSValue("organization", getOrganization());
-		Util.requireBoundedChildCount(getXOMElement(), Organization.getName(getDDMSVersion()), 1, 1);
-
-		// Should be reviewed as additional versions of DDMS are supported.
-		requireAtLeastVersion("4.0.1");
-
 		super.validate();
 	}
 

@@ -33,17 +33,24 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:recordsManagementInfo.
+ * <br /><br />
+ * {@ddms.versions 00011}
  * 
- * {@table.header Nested Elements}
- * <u>ddms:recordKeeper</u>: The organization responsible for the custody and ongoing management of the records
- * (0-1 optional), implemented as a {@link RecordKeeper}<br />
- * <u>ddms:applicationSoftware</u>: The software used to create the object to which this metadata applies (0-1
- * optional), implemented as an {@link ApplicationSoftware}<br />
+ * <p></p>
+ * 
+ * {@table.header History}
+ *  	None.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		{@child.info ddms:recordKeeper|0..1|00011}
+ * 		{@child.info ddms:applicationSoftware|0..1|00011}
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ddms:vitalRecordIndicator</u>: An indication that a publication is categorized a vital record by the originating
- * agency (defaults to false)<br />
+ * 		{@child.info ddms:vitalRecordIndicator|0..1|00011}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -110,25 +117,11 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>Only 0-1 record keepers or applicationSoftwares exist.</li>
-	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		Util.requireDDMSQName(getXOMElement(), RecordsManagementInfo.getName(getDDMSVersion()));
-		Util.requireBoundedChildCount(getXOMElement(), RecordKeeper.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedChildCount(getXOMElement(), ApplicationSoftware.getName(getDDMSVersion()), 0, 1);
-
-		// Should be reviewed as additional versions of DDMS are supported.
 		requireAtLeastVersion("4.0.1");
-
+		Util.requireDDMSQName(getXOMElement(), RecordsManagementInfo.getName(getDDMSVersion()));
 		super.validate();
 	}
 

@@ -50,7 +50,7 @@ import buri.ddmsence.util.Util;
  * {@table.header Attributes}
  * 		{@child.info ism:classification|1|11111}
  * 		{@child.info ism:ownerProducer|1..*|11111}
- * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..*|11111}
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|11111}
  * {@table.footer}
  * {@table.header Validation Rules}
  * 		{@ddms.rule ism:classification is required.|Error|11111}

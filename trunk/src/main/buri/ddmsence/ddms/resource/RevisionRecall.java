@@ -45,30 +45,44 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:revisionRecall.
+ *  * <br /><br />
+ * {@ddms.versions 00011}
  * 
  * <p>A revisionRecall element will either contain free child text describing the recall, or a set of link and details
  * elements.</p>
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>A valid component cannot have both non-empty child text and nested elements.</li>
- * </ul>
+ * {@table.header History}
+ *  	<p>The network and otherNetwork attributes originated from DDMS 4.x's import of IC-COMMON. IC-COMMON was replaced
+ *  	by VIRT in DDMS 5.0, dropping otherNetwork, and moving network into the virt namespace.</p>
  * {@table.footer}
- * 
  * {@table.header Nested Elements}
- * <u>ddms:link</u>: Links to further information about the recall (0-many optional), implemented as a {@link Link}<br
- * />
- * <u>ddms:details</u>: Further details about the recall (0-many optional), implemented as a {@link Details}<br />
+ * 		{@child.info ddms:link|0..*|00011}
+ * 		{@child.info ddms:details|0..*|00011}
  * {@table.footer}
- * 
  * {@table.header Attributes}
- * <u>ddms:revisionID</u>: a sequential integer for the recall (required)<br />
- * <u>ddms:revisionType</u>: an enumerated type for the recall (required)<br />
- * <u>network</u>: the name of the network, taken from a token list (optional)<br /> (becomes virt: in DDMS 5.0)
- * <u>otherNetwork</u>: an alternate network name (optional)<br /> (goes away in DDMS 5.0)
- * <u>{@link XLinkAttributes}</u>: If set, the xlink:type attribute must have a fixed value of "resource".<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
+ * 		{@child.info ddms:revisionID|1|00011}
+ * 		{@child.info ddms:revisionType|1|00011}
+ * 		{@child.info network|0..1|00010}
+ * 		{@child.info virt:network|0..1|00001}
+ * 		{@child.info otherNetwork|0..1|00010}
+ * 		{@child.info ism:classification|1|00011}
+ * 		{@child.info ism:ownerProducer|1..*|00011}
+ * 		{@child.info xlink:&lt;<i>xlinkAttributes</i>&gt;|0..*|00011}
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|00011} 
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule A valid component cannot have both non-empty child text and nested elements.|Error|11111}
+ * 		{@ddms.rule All ddms:links should have security attributes.|Error|11111}
+ * 		{@ddms.rule The revisionID must be a valid Integer.|Error|11111}
+ * 		{@ddms.rule The revisionType must be a valid type token.|Error|11111}
+ * 		{@ddms.rule If set, xlink:type has a value of "resource".|Error|11111}
+ * 		{@ddms.rule If set, network or virt:network must be a valid network token.|Error|11111}
+ * 		{@ddms.rule network and otherNetwork cannot be used after DDMS 4.1.|Error|11111}
+ * 		{@ddms.rule ism:classification is required.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
+ * 		{@ddms.rule Warnings from any XLink attributes are claimed by this component.|Warning|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -235,22 +249,10 @@ public final class RevisionRecall extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>A valid component cannot have both non-empty child text and nested elements.</li>
-	 * <li>Any links should have security attributes.</li>
-	 * <li>The revisionID must be a valid Integer.</li>
-	 * <li>The revisionType must be a valid type token.</li>
-	 * <li>If set, the xlink:type attribute has a value of "resource".</li>
-	 * <li>If set, the network attribute must be a valid network token.</li>
-	 * <li>The otherNetwork cannot be used after DDMS 4.1.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
+		requireAtLeastVersion("4.0.1");
 		Util.requireDDMSQName(getXOMElement(), RevisionRecall.getName(getDDMSVersion()));
 
 		boolean hasChildText = false;
@@ -259,15 +261,15 @@ public final class RevisionRecall extends AbstractBaseComponent {
 			hasChildText = (hasChildText || (child instanceof Text && !Util.isEmpty(child.getValue().trim())));
 		}
 		boolean hasNestedElements = (!getLinks().isEmpty() || !getDetails().isEmpty());
-
 		if (hasChildText && hasNestedElements) {
 			throw new InvalidDDMSException(
 				"A ddms:revisionRecall element cannot have both child text and nested elements.");
-		}
+		}		
 		for (Link link : getLinks()) {
 			Util.requireDDMSValue("link security attributes", link.getSecurityAttributes());
 			link.getSecurityAttributes().requireClassification();
 		}
+		
 		Util.requireDDMSValue("revision ID", getRevisionID());
 		if (!REVISION_TYPE_TYPES.contains(getRevisionType()))
 			throw new InvalidDDMSException("The revisionType attribute must be one of " + REVISION_TYPE_TYPES);
@@ -275,17 +277,17 @@ public final class RevisionRecall extends AbstractBaseComponent {
 			throw new InvalidDDMSException("The type attribute must have a fixed value of \"" + FIXED_TYPE + "\".");
 		if (!Util.isEmpty(getNetwork()))
 			ISMVocabulary.requireValidNetwork(getNetwork());
-		if (getDDMSVersion().isAtLeast("5.0") && !Util.isEmpty(getOtherNetwork()))
-			throw new InvalidDDMSException("The otherNetwork attribute cannot be used after DDMS 4.1.");
+		if (getDDMSVersion().isAtLeast("5.0")) {
+			// Check for network is implicit in schema validation.
+			if (!Util.isEmpty(getOtherNetwork()))
+				throw new InvalidDDMSException("The otherNetwork attribute cannot be used after DDMS 4.1.");
+		}
+		getSecurityAttributes().requireClassification();
 		super.validate();
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>Include any warnings from the XLink attributes.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		if (getXLinkAttributes() != null)

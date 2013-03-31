@@ -261,7 +261,7 @@ public class TaskIDTest extends AbstractBaseTestCase {
 
 	public void testDataConstructorInvalid() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// Wrong type of XLinkAttributes
 			getInstance("The type attribute must have a fixed value", TEST_VALUE, null, null, null,
@@ -272,6 +272,11 @@ public class TaskIDTest extends AbstractBaseTestCase {
 
 			// Bad network
 			getInstance("The network attribute must be one of", TEST_VALUE, null, "PBS", null, null);
+			
+			if (version.isAtLeast("5.0")) {
+				// Invalid otherNetwork
+				getInstance("The otherNetwork attribute cannot", TEST_VALUE, null, null, "PBS", null);
+			}
 		}
 	}
 
@@ -366,11 +371,8 @@ public class TaskIDTest extends AbstractBaseTestCase {
 	}
 
 	public void testWrongVersion() throws InvalidDDMSException {
-		DDMSVersion.setCurrentVersion("4.0.1");
-		XLinkAttributes attr = XLinkAttributesTest.getSimpleFixture();
 		DDMSVersion.setCurrentVersion("2.0");
-		// Cross version attributes are allowed, because the version is not set until they are added onto an element.
-		new TaskID(TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, getOtherNetwork(), attr);
+		getInstance("The taskID element cannot", TEST_VALUE, TEST_TASKING_SYSTEM, null, null, null);
 	}
 
 	public void testBuilderEquality() throws InvalidDDMSException {

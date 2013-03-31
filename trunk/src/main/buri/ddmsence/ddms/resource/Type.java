@@ -45,7 +45,7 @@ import buri.ddmsence.util.Util;
  * {@table.header Attributes}
  * 		{@child.info ddms:qualifier|0..1|11111}
  * 		{@child.info ddms:value|0..1|11111}
- * 		{@child.info ism:&lt;<i>otherAttributes</i>&gt;|0..*|01111}
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|01111}
  * {@table.footer}
  * {@table.header Validation Rules}
  * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
