@@ -340,7 +340,8 @@ public final class Resource extends AbstractBaseComponent {
 				// Extensible Layer
 
 				// We use the security component to locate the extensible layer. If it is null, this resource is going
-				// to fail validation anyhow, so we skip the extensible layer.
+				// to fail validation anyhow (or we're in DDMS 5.0, which doesn't have an extensible layer, so we skip 
+				// the extensible layer.
 				int index = 0;
 				Elements allElements = element.getChildElements();
 				while (allElements.get(index) != component) {
