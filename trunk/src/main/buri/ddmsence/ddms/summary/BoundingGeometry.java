@@ -38,16 +38,33 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:boundingGeometry.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * <p>The DDMS documentation has no Text/HTML examples for the output of this component. However, the component has no
- * additional attributes or elements besides the nested Polygon/Point components, so no additional output is needed.</p>
+ * <p></p>
  * 
- * {@table.header Nested Elements}
- * <u>gml:Polygon</u>: a polygon (0-many optional), implemented as a {@link Polygon}<br />
- * <u>gml:Point</u>: a point (0-many optional), implemented as a {@link Point}<br />
- * <p>At least 1 of Polygon or Point must be used.</p>
+ *  {@table.header History}
+ *  	<p>The GML shapes were replaced by TSPI shapes in DDMS 5.0.</p>
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		{@child.info gml:Polygon|0..1|11110}
+ * 		{@child.info gml:Point|0..1|11110}
+ * 		{@child.info tspi:Polygon|0..1|00001} 
+ * 		{@child.info tspi:Point|0..1|00001}
+ * 		{@child.info tspi:Envelope|0..1|00001}
+ *  	{@child.info tspi:Circle|0..1|00001}
+ *   	{@child.info tspi:Ellipse|0..1|00001}
+ * {@table.footer}
+ * {@table.header Attributes}
+ * 		None.
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule At least 1 shape is required.|Error|11111}
+ * 		{@ddms.rule TSPI shapes are not used before the DDMS version in which they were introduced.|Error|11111}
+ * 		{@ddms.rule GML shapes are not used after the DDMS version in which they were removed.|Error|11111}
+ * {@table.footer}
+ *  
  * @author Brian Uri!
  * @since 0.9.b
  */
@@ -114,13 +131,6 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>At least 1 polygon or point exists.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
@@ -128,7 +138,7 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 		if (getPolygons().size() + getPoints().size() == 0) {
 			throw new InvalidDDMSException("At least 1 of Polygon or Point must be used.");
 		}
-
+		// TODO: TSPI vs GML Checks #193
 		super.validate();
 	}
 

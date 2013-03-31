@@ -82,6 +82,8 @@ import buri.ddmsence.util.Util;
  * 		{@ddms.rule network and otherNetwork cannot be used after DDMS 4.1.|Error|11111}
  * 		{@ddms.rule ism:classification is required.|Error|11111}
  * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
+ * 		{@ddms.rule ism:classification is required on any ddms:links.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer is required on any ddms:links.|Error|11111}
  * 		{@ddms.rule Warnings from any XLink attributes are claimed by this component.|Warning|11111}
  * {@table.footer}
  * 

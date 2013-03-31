@@ -40,33 +40,32 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:subjectCoverage.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * <p>
- * Before DDMS 4.0.1, a subjectCoverage element contains a locally defined Subject construct. This construct is a
- * container for the keywords and categories of a resource. It exists only inside of a ddms:subjectCoverage parent,
- * so it is not implemented as a Java object. Starting in DDMS 4.0.1, the Subject wrapper has been removed.
- * </p>
+ * <p></p>
  * 
- * {@table.header Strictness}
- * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
- * <ul>
- * <li>Duplicate keywords or categories can be used.</li>
- * </ul>
+ * {@table.header History}
+ * 		<p>Before DDMS 4.0.1, a subjectCoverage element contains a locally defined Subject construct. This construct is a
+ * 		container for the keywords and categories of a resource. It exists only inside of a ddms:subjectCoverage parent,
+ * 		so it is not implemented as a Java object. Starting in DDMS 4.0.1, the Subject wrapper has been removed.</p>
  * {@table.footer}
- * 
  * {@table.header Nested Elements}
- * <u>ddms:category</u>: a category (0-many optional), implemented as a {@link Category}<br />
- * <u>ddms:keyword</u>: a keyword (0-many optional), implemented as a {@link Keyword}<br />
- * <u>ddms:productionMetric</u>: a categorization scheme whose values and use are defined by DDNI-A. (0-many optional,
- * starting in DDMS 4.0.1), implemented as a {@link ProductionMetric}<br />
- * <u>ddms:nonStateActor</u>: a non-state actor within the scope of this coverage (0-many optional, starting in DDMS
- * 4.0.1), implemented as a {@link NonStateActor}<br />
- * <p>At least 1 of category or keyword must be used.</p>
+ * 		{@child.info ddms:category|0..*|11111}
+ * 		{@child.info ddms:keyword|0..*|11111}	
+ * 		{@child.info ddms:productionMetric|0..*|00011}	
+ * 		{@child.info ddms:nonStateActor|0..*|00011}		
  * {@table.footer}
- * 
  * {@table.header Attributes}
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS
- * 3.0)
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|01111}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule At least one of ddms:keyword or ddms:category must exist.|Error|11111}
+ * 		{@ddms.rule ISM attributes are not used before the DDMS version in which they were introduced.|Error|11111}
+ * 		{@ddms.rule 1 or more keywords have the same value.|Warning|11111}
+ * 		{@ddms.rule 1 or more categories have the same value.|Warning|11111}
+ * 		{@ddms.rule 1 or more production metrics have the same value.|Warning|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -179,14 +178,6 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>At least 1 of "Keyword" or "Category" must exist.</li>
-	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
@@ -198,23 +189,15 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			+ subjectElement.getChildElements(Category.getName(getDDMSVersion()), namespace).size();
 		if (count < 1)
 			throw new InvalidDDMSException("At least 1 keyword or category must exist.");
-		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException(
 				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
-
 		super.validate();
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>1 or more keywords have the same value.</li>
-	 * <li>1 or more categories have the same value.</li>
-	 * <li>1 or more productionMetrics have the same value.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		Set<Keyword> uniqueKeywords = new HashSet<Keyword>(getKeywords());

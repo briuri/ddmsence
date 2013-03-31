@@ -29,28 +29,31 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:countryCode.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * <p>
- * The Text/HTML output of this class depends on the enclosing element of this country code. For example,
- * if the country code is used in a geographicIdentifier, the HTML meta tags will prefix each field
- * with "geospatialCoverage.GeospatialExtent.geographicIdentifier.".
- * </p>
+ * <p></p>
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>A non-empty qualifier value is required. This rule is codified in the schema, starting in DDMS 5.0.</li>
- * <li>A non-empty value attribute is required. This rule is codified in the schema, starting in DDMS 5.0.</li>
- * <li>Although qualifier and value are optional in DDMS 2.0, this is considered invalid data. DDMSence requires
- * a non-empty qualifier and value.</li>
- * </ul>
+ *  {@table.header History}
+ * 		<p>In DDMS 5.0, the "qualifier" and "value" attributes are renamed to "codespace" and "code". 
+ * 		The name of the Java accessors remain the same to maintain consistency across versions.</p>
  * {@table.footer}
- * 
- * <p>In DDMS 5.0, the "qualifier" and "value" attributes are renamed to "codespace" and "code".</p>
- * 
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ddms:qualifier</u>: a domain vocabulary (required)<br />
- * <u>ddms:value</u>: a permissible value (required)<br />
+ * 		{@child.info ddms:qualifier|1|11110}
+ * 		{@child.info ddms:value|1|11110}
+ * 		{@child.info ddms:codespace|1|00001}
+ * 		{@child.info ddms:code|1|00001}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule ddms:qualifier is required.|Error|11110}
+ * 		{@ddms.rule ddms:codespace is required.|Error|00001}
+ * 		{@ddms.rule ddms:value is required.|Error|11110}
+ * 		{@ddms.rule ddms:code is required.|Error|00001}
+ * 		<p>Does not validate that the value is valid against the qualifier's vocabulary.</p>
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -81,17 +84,7 @@ public final class CountryCode extends AbstractQualifierValue {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>The qualifier exists and is not empty.</li>
-	 * <li>The value exists and is not empty.</li>
-	 * <li>Does not validate that the value is valid against the qualifier's vocabulary.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), CountryCode.getName(getDDMSVersion()));

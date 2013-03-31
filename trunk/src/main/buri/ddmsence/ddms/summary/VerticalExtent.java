@@ -32,33 +32,43 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:verticalExtent.
+ * <br /><br />
+ * {@ddms.versions 11110}
  * 
- * <p>
- * DDMSence is stricter than the specification in the following ways:</p><ul>
- * <li>The optional unitOfMeasure and datum on the minVerticalExtent/maxVerticalExtent child elements MUST match the
+ * <p>The optional unitOfMeasure and datum on the minVerticalExtent/maxVerticalExtent child elements MUST match the
  * values on the required attributes of the same name on this element. It does not seem logical to specify these
  * attributes on the parent element and then express the actual values with a different measure. Note that because
  * DDMSence is giving precedence to the top-level unitOfMeasure and datum attributes, those attributes on the
  * children are not displayed in HTML/Text. However, they are still rendered in XML, if present in an existing
- * document.</li>
- * </ul></p>
+ * document.</p>
  * 
  * <p>The above design decision dictates that VerticalDistance (the type behind minVerticalExtent and maxVerticalExtent)
  * does not need to be implemented as a Java class.</p>
  * 
+ * {@table.header History}
+ * 		<p>The names of the nested elements were made lowercase in DDMS 4.0.1.</p>
+ * 		<p>This component is functionally replaced by a TSPI Point in DDMS 5.0.</p>
+ * {@table.footer}
  * {@table.header Nested Elements}
- * <u>ddms:minVerticalExtent</u>: minimum extent (required)<br />
- * <u>ddms:maxVerticalExtent</u>: maximum extent (required)<br />
- * Please note that the case of the nested elements changed starting in DDMS 4.0.1. Previously, the first letter
- * of each element was capitalized (i.e. MinVerticalExtent/MaxVerticalExtent).
+ * 		{@child.info ddms:minVerticalExtent|1|11110}
+ * 		{@child.info ddms:maxVerticalExtent|1|11110}
  * {@table.footer}
- * 
  * {@table.header Attributes}
- * <u>ddms:unitOfMeasure</u>: unit of measure (Meter, Kilometer, Foot, StatuteMile, NauticalMile, Fathom, Inch)
- * (required) <br />
- * <u>ddms:datum</u>: vertical datum (MSL, AGL, HAE) (required)<br />
+ * 		{@child.info ddms:unitOfMeasure|1|11110}
+ * 		{@child.info ddms:datum|1|11110}
  * {@table.footer}
- * 
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used after the DDMS version in which it was removed.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule ddms:minVerticalExtent is required.|Error|11111}
+ * 		{@ddms.rule ddms:maxVerticalExtent is required.|Error|11111}
+ * 		{@ddms.rule ddms:unitOfMeasure is required, and is a valid token.|Error|11111}
+ * 		{@ddms.rule ddms:datum is required, and is a valid token.|Error|11111}
+ * 		{@ddms.rule If a minVerticalExtent has unitOfMeasure or datum set, its values match the parent attribute values.|Error|11111}
+ * 		{@ddms.rule If a maxVerticalExtent has unitOfMeasure or datum set, its values match the parent attribute values.|Error|11111}
+ * 		{@ddms.rule ddms:minVerticalExtent is less than ddms:maxVerticalExtent.|Error|11111}
+ * {@table.footer}
+ *  
  * @author Brian Uri!
  * @since 0.9.b
  */
@@ -161,23 +171,10 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>A minVerticalExtent exists.</li>
-	 * <li>A maxVerticalExtent exists.</li>
-	 * <li>A unitOfMeasure exists and has an appropriate value.</li>
-	 * <li>A datum exists and has an appropriate value.</li>
-	 * <li>If a minVerticalExtent has unitOfMeasure or datum set, its values match the parent attribute values.</li>
-	 * <li>If a maxVerticalExtent has unitOfMeasure or datum set, its values match the parent attribute values.</li>
-	 * <li>The minVerticalExtent is less than the MaxVerticalExtent.</li>
-	 * <li>This component cannot be used after DDMS 4.1.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
+		requireAtMostVersion("4.1");
 		Util.requireDDMSQName(getXOMElement(), VerticalExtent.getName(getDDMSVersion()));
 		Util.requireDDMSValue(getMinVerticalExtentName(), getMinVerticalExtent());
 		Util.requireDDMSValue(getMaxVerticalExtentName(), getMaxVerticalExtent());
@@ -189,8 +186,6 @@ public final class VerticalExtent extends AbstractBaseComponent {
 		validateInheritedAttributes(getChild(getMaxVerticalExtentName()));
 		if (getMaxVerticalExtent().compareTo(getMinVerticalExtent()) < 0)
 			throw new InvalidDDMSException("Minimum vertical extent must be less than maximum vertical extent.");
-		
-		requireAtMostVersion("4.1");
 		super.validate();
 	}
 

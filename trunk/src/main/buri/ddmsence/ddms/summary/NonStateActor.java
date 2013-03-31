@@ -30,18 +30,29 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:nonStateActor.
+ * <br /><br />
+ * {@ddms.versions 00011}
  * 
- * {@table.header Strictness}
- * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
- * <ul>
- * <li>A nonStateActor element can be used without any child text. This loophole goes away in DDMS 5.0.</li>
- * </ul>
+ * <p></p>
+ * 
+ * {@table.header History}
+ *  	None.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ddms:order</u>: specifies a user-defined order of an element within the given document (optional)<br />
- * <u>ddms:qualifier</u>: A URI-based qualifier (optional, starting in DDMS 4.1)<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
+ * 		{@child.info ddms:order|0..1|00011}
+ * 		{@child.info ddms:qualifier|0..1|00011}
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|00011}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule If set, ddms:qualifier is a valid URI.|Error|11111}
+ * 		{@ddms.rule This component can be used with no values set.|Warning|11111}
+ * 		{@ddms.rule ddms:qualifier may cause issues for DDMS 4.0.1 systems.|Warning|00010}
+ * 		<p>Does not validate the value of the order attribute (this is done at the Resource level).</p>
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -104,40 +115,23 @@ public final class NonStateActor extends AbstractSimpleString {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>If a qualifier exists, it is a valid URI.</li>
-	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
-	 * <li>Does not validate the value of the order attribute (this is done at the Resource level).</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
 		// Do not call super.validate(), because securityAttributes are optional.
+		requireAtLeastVersion("4.0.1");
 		Util.requireDDMSQName(getXOMElement(), NonStateActor.getName(getDDMSVersion()));
 		if (!Util.isEmpty(getQualifier())) {
 			Util.requireDDMSValidURI(getQualifier());
 		}
-		// Should be reviewed as additional versions of DDMS are supported.
-		requireAtLeastVersion("4.0.1");
-
 		validateWarnings();
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>A ddms:nonStateActor element was found with no value.</li>
-	 * <li>A qualifier attribute may cause issues for DDMS 4.0 records.</li>
-	 * <li>Include any validation warnings from the security attributes.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
-		if (!getDDMSVersion().isAtLeast("5.0") && Util.isEmpty(getValue()))
+		if (Util.isEmpty(getValue()))
 			addWarning("A ddms:" + getName() + " element was found with no value.");
 		if (!getDDMSVersion().isAtLeast("5.0") && !Util.isEmpty(getQualifier()))
 			addDdms40Warning("ddms:qualifier attribute");

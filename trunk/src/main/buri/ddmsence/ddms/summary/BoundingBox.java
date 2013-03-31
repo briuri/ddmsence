@@ -30,14 +30,31 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:boundingBox.
+ * <br /><br />
+ * {@ddms.versions 11110}
  * 
+ * <p></p>
+ * 
+ * {@table.header History}
+ *  	<p>The names of the nested elements were made lowercase in DDMS 4.0.1.</p>
+ * 		<p>This component is functionally replaced by a TSPI Envelope in DDMS 5.0.</p>
+ * {@table.footer}
  * {@table.header Nested Elements}
- * <u>ddms:westBL</u>: westbound longitude (required)<br />
- * <u>ddms:eastBL</u>: eastbound longitude (required)<br />
- * <u>ddms:southBL</u>: northbound latitude (required)<br />
- * <u>ddms:northBL</u>: southbound latitude (required)<br />
- * Please note that the case of the nested elements changed starting in DDMS 4.0.1. Previously, the first letter of
- * each element was capitalized (i.e. WestBL/EastBL/SouthBL/NorthBL).
+ * 		{@child.info ddms:westBL|1|11110}
+ * 		{@child.info ddms:eastBL|1|11110}
+ * 		{@child.info ddms:southBL|1|11110}
+ * 		{@child.info ddms:northBL|1|11110}
+ * {@table.footer}
+ * {@table.header Attributes}
+ * 		None.
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used after the DDMS version in which it was removed.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule ddms:westBL is required, and must be a valid longitude.|Error|11110}
+ * 		{@ddms.rule ddms:eastBL is required, and must be a valid longitude.|Error|11110}
+ * 		{@ddms.rule ddms:southBL is required, and must be a valid latitude.|Error|11110}
+ * 		{@ddms.rule ddms:northBL is required, and must be a valid latitude.|Error|11110}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -102,22 +119,10 @@ public final class BoundingBox extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>A westBL exists.</li>
-	 * <li>An eastBL exists.</li>
-	 * <li>A southBL exists.</li>
-	 * <li>A northBL exists.</li>
-	 * <li>westBL and eastBL must be between -180 and 180 degrees.</li>
-	 * <li>southBL and northBL must be between -90 and 90 degrees.</li>
-	 * <li>This component cannot be used after DDMS 4.1.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
+		requireAtMostVersion("4.1");
 		Util.requireDDMSQName(getXOMElement(), BoundingBox.getName(getDDMSVersion()));
 		Util.requireDDMSValue("westbound longitude", getWestBL());
 		Util.requireDDMSValue("eastbound longitude", getEastBL());
@@ -126,9 +131,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 		Util.requireValidLongitude(getWestBL());
 		Util.requireValidLongitude(getEastBL());
 		Util.requireValidLatitude(getSouthBL());
-		Util.requireValidLatitude(getNorthBL());
-		
-		requireAtMostVersion("4.1");
+		Util.requireValidLatitude(getNorthBL());	
 		super.validate();
 	}
 

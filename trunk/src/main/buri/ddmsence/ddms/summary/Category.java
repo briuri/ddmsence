@@ -32,26 +32,32 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:category.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>The label value must be non-empty. This rule is codified in the schema, starting in DDMS 5.0.</li>
- * </ul>
+ * <p></p>
+ * 
+ * {@table.header History}
+ *  	None.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		None.	
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ddms:qualifier</u>: A URI-based qualifier (optional)<br />
- * <u>ddms:code</u>: The machine readable description of a concept represented within the scope of the category
- * qualifier (optional)<br />
- * <u>ddms:label</u>: The human readable representation of the concept that corresponds to the category qualifier and
- * the category code, if they exist. (required)<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional (starting in DDMS
- * 4.0.1).<br />
- * <u>{@link ExtensibleAttributes}</u>: (optional, starting in DDMS 3.0).
+ * 		{@child.info ddms:qualifier|0..1|11111}
+ * 		{@child.info ddms:code|0..1|11111}
+ * 		{@child.info ddms:label|1|11111}
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|00011}
+ * 		{@child.info any:&lt;<i>extensibleAttributes</i>&gt;|0..*|01111}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule ddms:label is required.|Error|11111}
+ * 		{@ddms.rule If set, ddms:qualifier is a valid URI.|Error|11111}
+ * 		{@ddms.rule ISM attributes are not used before the DDMS version in which they were introduced.|Error|11111}
+ * 		{@ddms.rule Extensible attributes are not used before the DDMS version in which they were introduced.|Error|11111}
  * {@table.footer}
  * 
- * @author Brian Uri!
  * @since 0.9.b
  */
 public final class Category extends AbstractBaseComponent {
@@ -128,16 +134,6 @@ public final class Category extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>A label exists and is not empty.</li>
-	 * <li>If a qualifier exists, it is a valid URI.</li>
-	 * <li>The SecurityAttributes do not exist until DDMS 4.0.1 or later.</li>
-	 * <li>No extensible attributes can exist until DDMS 3.0 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
@@ -146,7 +142,6 @@ public final class Category extends AbstractBaseComponent {
 		if (!Util.isEmpty(getQualifier())) {
 			Util.requireDDMSValidURI(getQualifier());
 		}
-		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0.1") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException(
 				"Security attributes cannot be applied to this component until DDMS 4.0.1 or later.");
@@ -154,7 +149,6 @@ public final class Category extends AbstractBaseComponent {
 		if (!getDDMSVersion().isAtLeast("3.0") && !getExtensibleAttributes().isEmpty())
 			throw new InvalidDDMSException(
 				"xs:anyAttribute cannot be applied to ddms:category until DDMS 3.0 or later.");
-
 		super.validate();
 	}
 

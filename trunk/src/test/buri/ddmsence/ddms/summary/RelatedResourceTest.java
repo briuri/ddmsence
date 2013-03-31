@@ -299,8 +299,10 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 				element.appendChild(innerElement);
 			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
-			Link link = new Link(XLinkAttributesTest.getLocatorFixture(), SecurityAttributesTest.getFixture());
-			innerElement.appendChild(link.getXOMElementCopy());
+			Link link = new Link(XLinkAttributesTest.getLocatorFixture(), null);
+			Element linkElement = link.getXOMElementCopy();
+			SecurityAttributesTest.getFixture().addTo(linkElement);
+			innerElement.appendChild(linkElement);
 			getInstance("Security attributes cannot be applied", element);
 		}
 	}

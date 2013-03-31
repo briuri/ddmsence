@@ -49,7 +49,7 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ddms:affiliation|0..*|00001}
  * {@table.footer}
  * {@table.header Attributes}
- * 		{@child.info any:&lt;<i>otherAttributes</i>&gt;|0..*|01111}
+ * 		{@child.info any:&lt;<i>extensibleAttributes</i>&gt;|0..*|01111}
  * {@table.footer}
  * {@table.header Validation Rules}
  *  	{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}

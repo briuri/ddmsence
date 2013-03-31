@@ -246,26 +246,6 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 			Element element = Util.buildDDMSElement(geoIdName, null);
 			getInstance("At least 1 of ", element);
 
-			// No more than 1 countryCode
-			element = Util.buildDDMSElement(geoIdName, null);
-			element.appendChild(CountryCodeTest.getFixture().getXOMElementCopy());
-			element.appendChild(CountryCodeTest.getFixture().getXOMElementCopy());
-			getInstance("No more than 1 countryCode", element);
-
-			// No more than 1 subDivisionCode
-			if (version.isAtLeast("4.0.1")) {
-				element = Util.buildDDMSElement(geoIdName, null);
-				element.appendChild(SubDivisionCodeTest.getFixture().getXOMElementCopy());
-				element.appendChild(SubDivisionCodeTest.getFixture().getXOMElementCopy());
-				getInstance("No more than 1 subDivisionCode", element);
-			}
-
-			// No more than 1 facilityIdentifier
-			element = Util.buildDDMSElement(geoIdName, null);
-			element.appendChild(FacilityIdentifierTest.getFixture().getXOMElementCopy());
-			element.appendChild(FacilityIdentifierTest.getFixture().getXOMElementCopy());
-			getInstance("No more than 1 facilityIdentifier", element);
-
 			// facilityIdentifier must be alone
 			element = Util.buildDDMSElement(geoIdName, null);
 			element.appendChild(CountryCodeTest.getFixture().getXOMElementCopy());

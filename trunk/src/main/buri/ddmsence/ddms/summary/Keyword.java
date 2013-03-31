@@ -32,19 +32,27 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:keyword.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>The keyword value must not be empty. This rule is codified in the schema, starting in DDMS 5.0.</li>
- * </ul>
+ * <p></p>
+ * 
+ * {@table.header History}
+ *  	None.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		None.	
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ddms:value</u>: The keyword itself (required)<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS
- * 4.0.1)<br />
- * <u>{@link ExtensibleAttributes}</u>: (optional, starting in DDMS 3.0).
+ * 		{@child.info ddms:value|1|11111}
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|00011}
+ * 		{@child.info any:&lt;<i>extensibleAttributes</i>&gt;|0..*|01111}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule ddms:value is required.|Error|11111}
+ * 		{@ddms.rule ISM attributes are not used before the DDMS version in which they were introduced.|Error|11111}
+ * 		{@ddms.rule Extensible attributes are not used before the DDMS version in which they were introduced.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -115,28 +123,17 @@ public final class Keyword extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>The keyword value exists and is not empty.</li>
-	 * <li>The SecurityAttributes do not exist until DDMS 4.0.1 or later.</li>
-	 * <li>No extensible attributes can exist until DDMS 3.0 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Keyword.getName(getDDMSVersion()));
 		Util.requireDDMSValue("value attribute", getValue());
-		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0.1") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException(
 				"Security attributes cannot be applied to this component until DDMS 4.0.1 or later.");
 		}
 		if (!getDDMSVersion().isAtLeast("3.0") && !getExtensibleAttributes().isEmpty())
 			throw new InvalidDDMSException("xs:anyAttribute cannot be applied to ddms:keyword until DDMS 3.0 or later.");
-
 		super.validate();
 	}
 

@@ -35,42 +35,40 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:geospatialCoverage.
+ *  *  <br /><br />
+ * {@ddms.versions 11111}
  * 
- * <p>
- * Before DDMS 4.0.1, a geospatialCoverage element contains a nested GeospatialExtent element. Because
- * DDMS does not decorate this element with any special attributes, it is not implemented as a Java object.
- * Starting in DDMS 4.0.1, the GeospatialExtent wrapper has been removed.
- * </p>
+ * <p></p>
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>No more than 1 each of geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent can
- * be used. The schema seems to support this assertion with explicit restrictions on those elements, but the enclosing
- * xs:choice element allows multiples. From the specification, "The intent of Geospatial Coverage is to provide
- * logically and semantically consistent information. Flexibility in the specification does not absolve end users
- * using Geospatial Coverage from expressing information in a meaningful manner. Users should ensure that combinations
- * of elements are appropriately relatable, consistent, meaningful, and useful for enterprise discovery."</li>
- * </ul>
+ *  {@table.header History}
+ *  	<p>Before DDMS 4.0.1, a geospatialCoverage element contains a nested GeospatialExtent element. Because
+ * 		DDMS does not decorate this element with any special attributes, it is not implemented as a Java object.
+ * 		Starting in DDMS 4.0.1, the GeospatialExtent wrapper has been removed.</p>
+ * 		<p>The introduction of TSPI deprecated the boundingBox and verticalExtent components in DDMS 5.0.</p>
  * {@table.footer}
- * 
  * {@table.header Nested Elements}
- * <u>ddms:geographicIdentifier</u>: an identifier (0-1 optional) implemented as a {@link GeographicIdentifier}<br />
- * <u>ddms:boundingBox</u>: a bounding box (0-1 optional) implemented as a {@link BoundingBox} (cannot be used after
- * DDMS 4.1)<br />
- * <u>ddms:boundingGeometry</u>: a set of bounding geometry (0-1 optional) implemented as a {@link BoundingGeometry}<br
- * />
- * <u>ddms:postalAddress</u>: an address (0-1 optional), implemented as a (@link PostalAddress)<br />
- * <u>ddms:verticalExtent</u>: an extent (0-1 optional), implemented as a (@link VerticalExtent)<br />
+ * 		{@child.info ddms:geographicIdentifier|0..1|11111}
+ * 		{@child.info ddms:boundingBox|0..1|11110}
+ * 		{@child.info ddms:boundingGeometry|0..1|11111}
+ * 		{@child.info ddms:postalAddress|0..1|11111}
+ * 		{@child.info ddms:verticalExtent|0..1|11110}
  * {@table.footer}
- * 
  * {@table.header Attributes}
- * <u>ddms:precedence</u>: priority claimed or received as a result of preeminence. Used with country codes (optional,
- * starting in DDMS 4.0.1)
- * <u>ddms:order</u>: specifies a user-defined order of an element within the given document (optional, starting in
- * DDMS 4.0.1)<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS
- * 3.0)
+ * 		{@child.info ddms:precedence|0..1|00011}
+ * 		{@child.info ddms:order|0..1|00011}
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|01111}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule This component must contain at least 1 child element.|Error|11111}
+ * 		{@ddms.rule Only 1 of each type of child element can be used.|Error|11111}
+ * 		{@ddms.rule If a ddms:geographicIdentifier is used and contains a ddms:facilityIdentifier, no other child elements can be used.|Error|11111}
+ *	 	{@ddms.rule ddms:order is not used before the DDMS version in which it was introduced.|Error|11111}
+ *		{@ddms.rule ddms:precedence is not used before the DDMS version in which it was introduced.|Error|11111}
+ *		{@ddms.rule If set, ddms:precedence must be a valid token.|Error|11111}
+ *		{@ddms.rule If ddms:precedence exists, this component must contain a ddms:geographicIdentifier with a ddms:countryCode.|Error|11111}
+ *		{@ddms.rule ISM attributes are not used before the DDMS version in which they were introduced.|Error|11111}
+ * 		<p>Does not validate the value of the order attribute (this is done at the Resource level).</p>
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -193,36 +191,12 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>At least 1 of geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent must
-	 * be used.</li>
-	 * <li>No more than 1 geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent can
-	 * be used.</li>
-	 * <li>If a geographicIdentifer is used and contains a facilityIdentifier, no other subcomponents can be used.</li>
-	 * <li>The order and precedence cannot be used until DDMS 4.0.1 or later.</li>
-	 * <li>If set, the precedence must be "Primary" or "Secondary".</li>
-	 * <li>If a precedence is set, this coverage must contain a geographicIdentifier with a countryCode.</li>
-	 * <li>Does not validate the value of the order attribute (this is done at the Resource level).</li>
-	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), GeospatialCoverage.getName(getDDMSVersion()));
 		Element extElement = getExtentElement();
 		Util.requireDDMSValue("GeospatialExtent element", extElement);
-
-		Util.requireBoundedChildCount(extElement, GeographicIdentifier.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedChildCount(extElement, BoundingBox.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedChildCount(extElement, BoundingGeometry.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedChildCount(extElement, PostalAddress.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedChildCount(extElement, VerticalExtent.getName(getDDMSVersion()), 0, 1);
-
 		int validComponents = 0;
 		if (getGeographicIdentifier() != null)
 			validComponents++;
@@ -238,21 +212,23 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			throw new InvalidDDMSException("At least 1 of geographicIdentifier, boundingBox, boundingGeometry, "
 				+ "postalAddress, or verticalExtent must be used.");
 		}
+		Util.requireBoundedChildCount(extElement, GeographicIdentifier.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(extElement, BoundingBox.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(extElement, BoundingGeometry.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(extElement, PostalAddress.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(extElement, VerticalExtent.getName(getDDMSVersion()), 0, 1);
 		if (hasFacilityIdentifier() && validComponents > 1) {
 			throw new InvalidDDMSException("A geographicIdentifier containing a facilityIdentifier cannot be used in "
 				+ "tandem with any other coverage elements.");
 		}
-
-		// Should be reviewed as additional versions of DDMS are supported.
-		if (!getDDMSVersion().isAtLeast("4.0.1") && !Util.isEmpty(getPrecedence())) {
-			throw new InvalidDDMSException("The ddms:precedence attribute cannot be used until DDMS 4.0.1 or later.");
-		}
-		if (!getDDMSVersion().isAtLeast("4.0.1") && getOrder() != null) {
-			throw new InvalidDDMSException("The ddms:order attribute cannot be used until DDMS 4.0.1 or later.");
-		}
-		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException(
-				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
+		if (!getDDMSVersion().isAtLeast("4.0.1")) {
+			if (getOrder() != null) {
+				throw new InvalidDDMSException("The ddms:order attribute cannot be used until DDMS 4.0.1 or later.");
+			}
+			if (!Util.isEmpty(getPrecedence())) {
+				throw new InvalidDDMSException(
+					"The ddms:precedence attribute cannot be used until DDMS 4.0.1 or later.");
+			}
 		}
 		if (!Util.isEmpty(getPrecedence())) {
 			if (!VALID_PRECEDENCE_VALUES.contains(getPrecedence())) {
@@ -264,7 +240,10 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 					+ "geospatialCoverage containing a country code.");
 			}
 		}
-
+		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException(
+				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
+		}
 		super.validate();
 	}
 
