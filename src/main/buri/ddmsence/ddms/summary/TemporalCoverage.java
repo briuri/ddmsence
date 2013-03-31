@@ -41,16 +41,8 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:temporalCoverage.
- * 
- * <p>
- * Before DDMS 4.0.1, a temporalCoverage element contains a locally defined TimePeriod construct.
- * This TimePeriod construct is a container for the name, start, and end values of a time period.
- * It exists only inside of a ddms:temporalCoverage parent, so it is not implemented as a Java object.
- * Starting in DDMS 4.0.1, the TimePeriod wrapper has been removed.
- * </p>
- * 
- * <p>Starting in DDMS 4.1, the start and end dates may optionally be replaced by an approximableStart
- * or approximableEnd date.</p>
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
  * <p>To avoid confusion between the name of the temporalCoverage element and the name of the specified time period,
  * the latter is referred to as the "time period name".
@@ -60,25 +52,32 @@ import buri.ddmsence.util.Util;
  * If not "Not Applicable" or "Unknown", date formats must adhere to one of the DDMS-allowed date formats.
  * </p>
  * 
- * {@table.header Strictness}
- * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
- * <ul>
- * <li>A time period name element can be used with no child text. This loophole goes away in DDMS 5.0.</li>
- * <li>A completely empty approximableStart or approximableEnd date can be used.</li>
- * </ul>
+ * {@table.header History}
+ * 		<p>Before DDMS 4.0.1, a temporalCoverage element contains a locally defined TimePeriod construct.
+ * 		This TimePeriod construct is a container for the name, start, and end values of a time period.
+ * 		It exists only inside of a ddms:temporalCoverage parent, so it is not implemented as a Java object.
+ * 		Starting in DDMS 4.0.1, the TimePeriod wrapper has been removed.</p>
+ * 		<p>Starting in DDMS 4.1, the start and end dates may optionally be replaced by an approximableStart
+ * 		or approximableEnd date.</p>
  * {@table.footer}
- * 
  * {@table.header Nested Elements}
- * <u>ddms:name</u>: An interval of time, which can be expressed as a named era (0-1 optional, default=Unknown).<br />
- * <u>ddms:start</u>: The start date of a period of time (exactly 1 optional, default=Unknown).<br />
- * <u>ddms:end</u>: The end date of a period of time (exactly 1 optional, default=Unknown).<br />
- * <u>ddms:approximableStart</u>: The approximable start date (exactly 1 optional)<br />
- * <u>ddms:approximableEnd</u>: The approximable end date (exactly 1 optional)<br />
+ * 		{@child.info ddms:name|0..1|11111}
+ * 		{@child.info ddms:start|0..1|11111}	
+ * 		{@child.info ddms:end|0..1|11111}	
+ * 		{@child.info ddms:approximableStart|0..1|00011}
+ * 		{@child.info ddms:approximableEnd|0..1|00011}		
  * {@table.footer}
- * 
  * {@table.header Attributes}
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS
- * 3.0)
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|01111}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule If set, ddms:start is a valid date format.|Error|11111}
+ * 		{@ddms.rule If set, ddms:end is a valid date format.|Error|11111}
+ * 		{@ddms.rule Approximable dates are not used before the DDMS version in which they were introduced.|Error|11111}
+ * 		{@ddms.rule ISM attributes are not used before the DDMS version in which they were introduced.|Error|11111}
+ * 		{@ddms.rule An empty ddms:name will be given a default value.|Warning|11111}
+ * 		{@ddms.rule Approximable dates may cause issues for DDMS 4.0.1 systems.|Warning|00010}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -253,29 +252,12 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>If start exists, it is a valid date format.</li>
-	 * <li>If end exists, it is a valid date format.</li>
-	 * <li>0-1 names, start, end, approximableStart, approximableEnd exist.</li>
-	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
-	 * <li>approximableStart and approximableEnd do not exist until DDMS 4.1 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), TemporalCoverage.getName(getDDMSVersion()));
 		Element periodElement = getTimePeriodElement();
 		Util.requireDDMSValue("TimePeriod element", periodElement);
-		Util.requireBoundedChildCount(periodElement, TIME_PERIOD_NAME_NAME, 0, 1);
-		Util.requireBoundedChildCount(periodElement, START_NAME, 0, 1);
-		Util.requireBoundedChildCount(periodElement, END_NAME, 0, 1);
-		Util.requireBoundedChildCount(periodElement, APPROXIMABLE_START_NAME, 0, 1);
-		Util.requireBoundedChildCount(periodElement, APPROXIMABLE_END_NAME, 0, 1);
 		if (getApproximableStart() == null) {
 			Util.requireDDMSValue("start", getStartString());
 			if (!EXTENDED_DATE_TYPES.contains(getStartString()))
@@ -286,32 +268,24 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 			if (!EXTENDED_DATE_TYPES.contains(getEndString()))
 				Util.requireDDMSDateFormat(getEndString(), getNamespace());
 		}
-
-		// Should be reviewed as additional versions of DDMS are supported.
+		if (!getDDMSVersion().isAtLeast("4.1") && (getApproximableStart() != null || getApproximableEnd() != null)) {
+			throw new InvalidDDMSException("Approximable dates cannot be used until DDMS 4.1 or later.");
+		}
 		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException(
 				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
-		if (!getDDMSVersion().isAtLeast("4.1") && (getApproximableStart() != null || getApproximableEnd() != null)) {
-			throw new InvalidDDMSException("Approximable dates cannot be used until DDMS 4.1 or later.");
-		}
-
 		super.validate();
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>A ddms:name element was found with no value, through DDMS 4.1.</li>
-	 * <li>A ddms:approximableStart or ddms:approximableEnd element may cause issues for DDMS 4.0 records.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		Element periodElement = getTimePeriodElement();
 		Element timePeriodName = periodElement.getFirstChildElement(TIME_PERIOD_NAME_NAME,
 			periodElement.getNamespaceURI());
-		if (!getDDMSVersion().isAtLeast("5.0") && timePeriodName != null && Util.isEmpty(timePeriodName.getValue()))
+		if (timePeriodName != null && Util.isEmpty(timePeriodName.getValue()))
 			addWarning("A ddms:name element was found with no value. Defaulting to \"" + DEFAULT_VALUE + "\".");
 		if ("4.1".equals(getDDMSVersion().getVersion())
 			&& (getApproximableStart() != null || getApproximableEnd() != null))

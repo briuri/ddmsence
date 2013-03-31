@@ -208,42 +208,6 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 			element.appendChild(Util.buildDDMSElement("state", TEST_STATE));
 			element.appendChild(Util.buildDDMSElement("province", TEST_PROVINCE));
 			getInstance("Only 1 of state or province can be used.", element);
-
-			// Too many streets
-			element = Util.buildDDMSElement(postalName, null);
-			for (int i = 0; i < 7; i++)
-				element.appendChild(Util.buildDDMSElement("street", "street" + i));
-			getInstance("No more than 6 street elements can exist.", element);
-
-			// Too many cities
-			element = Util.buildDDMSElement(postalName, null);
-			for (int i = 0; i < 2; i++)
-				element.appendChild(Util.buildDDMSElement("city", "city" + i));
-			getInstance("No more than 1 city element can exist.", element);
-
-			// Too many states
-			element = Util.buildDDMSElement(postalName, null);
-			for (int i = 0; i < 2; i++)
-				element.appendChild(Util.buildDDMSElement("state", "state" + i));
-			getInstance("No more than 1 state element can exist.", element);
-
-			// Too many provinces
-			element = Util.buildDDMSElement(postalName, null);
-			for (int i = 0; i < 2; i++)
-				element.appendChild(Util.buildDDMSElement("province", "province" + i));
-			getInstance("No more than 1 province element can exist.", element);
-
-			// Too many postalCodes
-			element = Util.buildDDMSElement(postalName, null);
-			for (int i = 0; i < 2; i++)
-				element.appendChild(Util.buildDDMSElement("postalCode", "postalCode" + i));
-			getInstance("No more than 1 postalCode element can exist.", element);
-
-			// Too many country codes
-			element = Util.buildDDMSElement(postalName, null);
-			for (int i = 0; i < 2; i++)
-				element.appendChild(new CountryCode("ISO-123" + i, "US" + i).getXOMElementCopy());
-			getInstance("No more than 1 countryCode element can exist.", element);
 		}
 	}
 

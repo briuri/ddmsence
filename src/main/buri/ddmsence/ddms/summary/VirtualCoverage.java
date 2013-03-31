@@ -32,30 +32,34 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:virtualCoverage.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p><ul>
- * <li>If address is specified, protocol must not be empty.</li>
- * </ul>
- * 
- * <p>
- * DDMSence allows the following legal, but nonsensical constructs:</p>
- * <ul>
- * <li>A virtualCoverage element can be used with no attributes.</li>
- * </ul>
+ * <p></p>
+ * {@table.header History}
+ * 		<p>The network and protocol attributes moved into the virt namespace in DDMS 5.0.</p>
  * {@table.footer}
- * 
- * <p>Starting in DDMS 5.0, the ddms attributes have moved into the virt namespace.</p>
- * 
+ * {@table.header Nested Elements}
+ *		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ddms:address</u>: a computer or telecommunications network address, or a network name or locale. (optional).<br />
- * <u>ddms:protocol</u>: the type of rules for data transfer that apply to the Virtual Address (can stand alone, but
- * should be used if address is provided)<br />
- * <u>virt:network</u>
- * <u>ntk:access</u>
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS
- * 3.0)
+ * 		{@child.info ddms:address|0..1|11110}
+ * 		{@child.info virt:address|0..1|00001}
+ * 		{@child.info ddms:protocol|0..1|11110}
+ * 		{@child.info virt:protocol|0..1|00001}
+ * 		{@child.info virt:network|0..1|00001}
+ * 		{@child.info ntk:access|0..1|00001}	
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|01111}
  * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule If the address attribute is present, the protocol attribute is required.|Error|11111}
+ * 		{@ddms.rule virt:network is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule ntk:access is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule ISM attributes are not used before the DDMS version in which they were introduced.|Error|11111}
+ * 		{@ddms.rule This component can be used with no values set.|Warning|11111}
+ * {@table.footer}
+ * 
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -142,44 +146,24 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>If an address is provided, the protocol is required and must not be empty.</li>
-	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
-	 * <li>The access and network attributes cannot be used until DDMS 5.0.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), VirtualCoverage.getName(getDDMSVersion()));
 		if (!Util.isEmpty(getAddress()))
 			Util.requireDDMSValue(PROTOCOL_NAME, getProtocol());
-		// Should be reviewed as additional versions of DDMS are supported.
+		if (!getDDMSVersion().isAtLeast("5.0")) {
+			// Checks for ntk:access and virt:network are implicit in schema validation and data constructor.
+		}
 		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException(
 				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
-		if (!getDDMSVersion().isAtLeast("5.0") && !getAccess().isEmpty()) {
-			throw new InvalidDDMSException(
-				"The ntk:access attribute cannot be applied to this component until DDMS 5.0 or later.");
-		}
-		if (!getDDMSVersion().isAtLeast("5.0") && !getNetwork().isEmpty()) {
-			throw new InvalidDDMSException(
-				"The virt:network attribute cannot be applied to this component until DDMS 5.0 or later.");
-		}
-
 		super.validate();
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>A completely empty ddms:virtualCoverage element was found.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getAddress()) && Util.isEmpty(getProtocol()) && Util.isEmpty(getAccess())

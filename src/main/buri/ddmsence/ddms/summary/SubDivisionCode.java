@@ -29,22 +29,34 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:subDivisionCode.
+ * <br /><br />
+ * {@ddms.versions 00011}
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>A non-empty qualifier value is required. This rule is codified in the schema, starting in DDMS 5.0.</li>
- * <li>A non-empty value attribute is required. This rule is codified in the schema, starting in DDMS 5.0.</li>
- * </ul>
+ * <p></p>
+ * 
+ *  {@table.header History}
+ * 		<p>In DDMS 5.0, the "qualifier" and "value" attributes are renamed to "codespace" and "code". 
+ * 		The name of the Java accessors remain the same to maintain consistency across versions.</p>
  * {@table.footer}
- * 
- * <p>In DDMS 5.0, the "qualifier" and "value" attributes are renamed to "codespace" and "code".</p>
- * 
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ddms:qualifier</u>: a domain vocabulary (required)<br />
- * <u>ddms:value</u>: a permissible value (required)<br />
+ * 		{@child.info ddms:qualifier|1|00010}
+ * 		{@child.info ddms:value|1|00010}
+ * 		{@child.info ddms:codespace|1|00001}
+ * 		{@child.info ddms:code|1|00001}
  * {@table.footer}
- * 
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule ddms:qualifier is required.|Error|00010}
+ * 		{@ddms.rule ddms:codespace is required.|Error|00001}
+ * 		{@ddms.rule ddms:value is required.|Error|00010}
+ * 		{@ddms.rule ddms:code is required.|Error|00001}
+ * 		<p>Does not validate that the value is valid against the qualifier's vocabulary.</p>
+ * {@table.footer}
+ *  
  * @author Brian Uri!
  * @since 2.0.0
  */
@@ -73,26 +85,13 @@ public final class SubDivisionCode extends AbstractQualifierValue {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>The qualifier exists and is not empty.</li>
-	 * <li>The value exists and is not empty.</li>
-	 * <li>Does not validate that the value is valid against the qualifier's vocabulary.</li>
-	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
+		requireAtLeastVersion("4.0.1");
 		Util.requireDDMSQName(getXOMElement(), SubDivisionCode.getName(getDDMSVersion()));
 		Util.requireDDMSValue(getQualifierName() + " attribute", getQualifier());
-		Util.requireDDMSValue(getValueName() + " attribute", getValue());
-
-		// Should be reviewed as additional versions of DDMS are supported.
-		requireAtLeastVersion("4.0.1");
+		Util.requireDDMSValue(getValueName() + " attribute", getValue());		
 		super.validate();
 	}
 

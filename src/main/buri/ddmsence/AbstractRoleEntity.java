@@ -48,7 +48,7 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ddms:email|0..*|11111}
  * {@table.footer}
  * {@table.header Attributes}
- * 		{@child.info any:&lt;<i>otherAttributes</i>&gt;|0..*|11111}
+ * 		{@child.info any:&lt;<i>extensibleAttributes</i>&gt;|0..*|11111}
  * {@table.footer}
  * {@table.header Validation Rules}
  * 		{@ddms.rule At least 1 ddms:name is required.|Error|11111}

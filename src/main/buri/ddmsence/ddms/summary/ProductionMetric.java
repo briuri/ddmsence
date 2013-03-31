@@ -31,21 +31,27 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:productionMetric.
+ * <br /><br />
+ * {@ddms.versions 00011}
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>The subject and coverage attributes must be non-empty. This rule is codified in the schema, starting in DDMS
- * 5.0.</li>
- * </ul>
+ * <p></p>
+ * 
+ * {@table.header History}
+ *  	None.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>ddms:subject</u>: A method of categorizing the subject of a document in a fashion understandable by DDNI-A.
- * (required)<br />
- * <u>ddms:coverage</u>: A method of categorizing the coverage of a document in a fashion understandable by DDNI-A
- * (required)<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
+ * 		{@child.info ddms:subject|1|00011}
+ * 		{@child.info ddms:coverage|1|00011}
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|00011}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule Component is not used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule ddms:subject is required.|Error|11111}
+ * 		{@ddms.rule ddms:coverage is required.|Error|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -101,25 +107,13 @@ public final class ProductionMetric extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>A subject exists and is not empty.</li>
-	 * <li>A coverage exists and is not empty.</li>
-	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
+		requireAtLeastVersion("4.0.1");
 		Util.requireDDMSQName(getXOMElement(), ProductionMetric.getName(getDDMSVersion()));
 		Util.requireDDMSValue("subject attribute", getSubject());
 		Util.requireDDMSValue("coverage attribute", getCoverage());
-
-		// Should be reviewed as additional versions of DDMS are supported.
-		requireAtLeastVersion("4.0.1");
-
 		super.validate();
 	}
 

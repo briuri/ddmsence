@@ -30,18 +30,29 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:description.
+ *  * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * {@table.header Strictness}
- * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
- * <ul>
- * <li>A description element can be used without any child text. This loophole goes away in DDMS 5.0.</li>
- * </ul>
+ * <p></p>
+ * 
+ * {@table.header History}
+ *  	None.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		None.
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
+ * 		{@child.info ism:classification|1|11111}
+ * 		{@child.info ism:ownerProducer|1..*|11111}
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|11111}
  * {@table.footer}
- * 
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule ism:classification is required.|Error|11111}
+ * 		{@ddms.rule ism:ownerProducer is required.|Error|11111}
+ * 		{@ddms.rule This component can be used with no values set.|Warning|11111}
+ * {@table.footer}
+ *  
  * @author Brian Uri!
  * @since 0.9.b
  */
@@ -69,12 +80,6 @@ public final class Description extends AbstractSimpleString {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
@@ -83,14 +88,10 @@ public final class Description extends AbstractSimpleString {
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>A ddms:description element was found with no description value, through DDMS 4.1.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
-		if (!getDDMSVersion().isAtLeast("5.0") && Util.isEmpty(getValue()))
+		if (Util.isEmpty(getValue()))
 			addWarning("A ddms:" + getName() + " element was found with no description value.");
 		super.validateWarnings();
 	}

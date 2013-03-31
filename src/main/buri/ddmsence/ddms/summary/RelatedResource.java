@@ -39,45 +39,47 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of the ddms:relatedResource component.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * <p>Before DDMS 4.0.1, ddms:RelatedResources was the top-level component (0-many in a resource) and contained
- * 1 to many ddms:relatedResource components. Starting in DDMS 4.0.1, the ddms:RelatedResources component was
- * removed, and the ddms:relatedResource now contains all of the parent information (relationship and direction).</p>
+ * <p></p>
  * 
- * <p>The element-based constructor for this class can automatically handle these cases, and will automatically
- * mediate the Text/HTML/XML output:</p>
- * <ul>
- * <li>A pre-DDMS 4.0.1 ddms:RelatedResources element containing 1 ddms:relatedResource.</li>
- * <li>A post-DDMS 4.0.1 ddms:relatedResource element.</li>
- * </ul>
- * <p>If you have a case where a pre-DDMS 4.0.1 ddms:RelatedResources element contained 5 ddms:relatedResource
- * elements, the Resource class will automatically mediate it to create 5 RelatedResource instances. If an
- * old-fashioned parent element containing multiple children is loaded in the element-based constructor,
- * only the first child will be processed, and a warning will be provided.</p>
+ * {@table.header History}
+ *  	<p>Before DDMS 4.0.1, ddms:RelatedResources was the top-level component (0-many in a resource) and contained
+ * 		1 to many ddms:relatedResource components. Starting in DDMS 4.0.1, the ddms:RelatedResources component was
+ * 		removed, and the ddms:relatedResource now contains all of the parent information (relationship and direction).</p>
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>A non-empty relationship attribute is required.</li>
- * <li>A non-empty qualifier value is required.</li>
- * <li>A non-empty value attribute is required. This rule is codified in the schema, starting in DDMS 5.0.</li>
- * </ul>
+ * 		<p>The element-based constructor for this class can automatically handle these cases, and will automatically
+ * 		mediate the Text/HTML/XML output:</p>
+ * 		<ul>
+ * 		<li>A pre-DDMS 4.0.1 ddms:RelatedResources element containing 1 ddms:relatedResource.</li>
+ * 		<li>A post-DDMS 4.0.1 ddms:relatedResource element.</li>
+ * 		</ul>
+ * 		<p>If you have a case where a pre-DDMS 4.0.1 ddms:RelatedResources element contained 5 ddms:relatedResource
+ * 		elements, the Resource class will automatically mediate it to create 5 RelatedResource instances. If an
+ * 		old-fashioned parent element containing multiple children is loaded in the element-based constructor,
+ * 		only the first child will be processed, and a warning will be provided.</p>
  * {@table.footer}
- * 
  * {@table.header Nested Elements}
- * <u>ddms:link</u>: a link for the resource (1-many required), implemented as a {@link Link}<br />
+ * 		{@child.info ddms:link|1..*|11111}	
  * {@table.footer}
- * 
  * {@table.header Attributes}
- * <u>ddms:relationship</u>: A URI representing a relationship of some relationship type between the resource being
- * described and other resources. (required)<br />
- * <u>ddms:direction</u>: Used to indicate the direction of the relationship between the resource being described and
- * the target related resource. Valid values are "inbound," "outbound," and "bidirectional". (optional)
- * <u>ddms:qualifier</u>: A URI specifying the formal identification system or encoding scheme by which the identifier
- * value is to be interpreted. (required)<br />
- * <u>ddms:value</u>: an unambiguous reference to the resource within a given context. An internal, external, and/or
- * universal identification number for a data asset or resource. (required)<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
+ *  	{@child.info ddms:relationship|1|11111}
+ * 		{@child.info ddms:direction|0..1|11111} 
+ *  	{@child.info ddms:qualifier|1|11111}
+ * 		{@child.info ddms:value|1|11111}
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|11111}
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ *		{@ddms.rule ddms:relationship is required, and is a valid URI.|Error|11111}
+ *		{@ddms.rule If set, ddms:direction is a valid token.|Error|11111}
+ *		{@ddms.rule ddms:qualifier is required, and is a valid URI.|Error|11111}
+ *		{@ddms.rule ddms:value is required.|Error|11111}
+ *		{@ddms.rule At least 1 ddms:link exists.|Error|11111}
+ *		{@ddms.rule Links cannot contain security attributes.|Error|11111}
+ * 		{@ddms.rule Parent component should not contain more than 1 ddms:relatedResource.|Warning|11100}
+ * 		<p>Does NOT validate that the value is valid against the qualifier's vocabulary.</p>
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -191,49 +193,28 @@ public final class RelatedResource extends AbstractQualifierValue {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>A relationship exists and is not empty.</li>
-	 * <li>The relationship is a valid URI.</li>
-	 * <li>If set, the direction has a valid value.</li>
-	 * <li>A qualifier exists and is not empty.</li>
-	 * <li>A value exists and is not empty.</li>
-	 * <li>The qualifier is a valid URI.</li>
-	 * <li>At least 1 link exists.</li>
-	 * <li>No link contains security attributes.</li>
-	 * <li>Does NOT validate that the value is valid against the qualifier's vocabulary.</li>
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
-	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), RelatedResource.getName(getDDMSVersion()));
 		Util.requireDDMSValue("relationship attribute", getRelationship());
-		Util.requireDDMSValidURI(getRelationship());
+		Util.requireDDMSValidURI(getRelationship());		
 		if (!Util.isEmpty(getDirection()))
 			validateRelationshipDirection(getDirection());
 		Util.requireDDMSValue("qualifier attribute", getQualifier());
-		Util.requireDDMSValue("value attribute", getValue());
 		Util.requireDDMSValidURI(getQualifier());
+		Util.requireDDMSValue("value attribute", getValue());
 		if (getLinks().isEmpty())
 			throw new InvalidDDMSException("At least 1 link must exist.");
 		for (Link link : getLinks()) {
 			if (!link.getSecurityAttributes().isEmpty())
 				throw new InvalidDDMSException("Security attributes cannot be applied to links in a related resource.");
 		}
-
 		super.validate();
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>Before DDMS 4.0.1, warn if the parent component contains more than 1 ddms:relatedResource.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		if (!getDDMSVersion().isAtLeast("4.0.1")) {
@@ -243,7 +224,6 @@ public final class RelatedResource extends AbstractQualifierValue {
 					+ "To ensure consistency between versions of DDMS, each ddms:RelatedResources element "
 					+ "should contain only 1 ddms:RelatedResource. DDMSence will only process the first child.");
 		}
-
 		super.validateWarnings();
 	}
 

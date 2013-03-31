@@ -52,7 +52,7 @@ import buri.ddmsence.util.Util;
  * 		{@child.info ddms:userId|0..1|11111}
  * {@table.footer}
  * {@table.header Attributes}
- * 		{@child.info any:&lt;<i>otherAttributes</i>&gt;|0..*|11100}
+ * 		{@child.info any:&lt;<i>extensibleAttributes</i>&gt;|0..*|11100}
  * {@table.footer}
  * {@table.header Validation Rules}
  * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}

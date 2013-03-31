@@ -35,21 +35,41 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:postalAddress.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * {@table.header Strictness}
- * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
- * <ul>
- * <li>A postalAddress element can be used with no child elements.</li>
- * </ul>
+ * <p></p>
+ * 
+ *  {@table.header History}
+ *  	<p>The custom definition of postal address was replaced by TSPI addresses in DDMS 5.0.</p>
  * {@table.footer}
- * 
  * {@table.header Nested Elements}
- * <u>ddms:street</u>: the street address (0-6 optional)<br />
- * <u>ddms:city</u>: the city (0-1 optional)<br />
- * <u>ddms:state</u>: the state (0-1 optional)<br />
- * <u>ddms:province</u>: the province (0-1 optional)<br />
- * <u>ddms:postalCode</u>: the postal code (0-1 optional)<br />
- * <u>ddms:countryCode</u>: the country code (0-1 optional), implemented as a {@link CountryCode}<br />
+ * 		{@child.info ddms:street|0..6|11110}
+ * 		{@child.info ddms:city|0..1|11110}
+ * 		{@child.info ddms:state|0..1|11110}
+ * 		{@child.info ddms:province|0..1|11110}
+ * 		{@child.info ddms:postalCode|0..1|11110}
+ * 		{@child.info ddms:countryCode|0..1|11110}
+ * 		{@child.info tspi:NumberedThoroughfareAddress|0..1|00001} 
+ * 		{@child.info tspi:UnnumberedThoroughfareAddress|0..1|00001}
+ * 		{@child.info tspi:IntersectionAddress|0..1|00001}
+ *  	{@child.info tspi:TwoNumberAddressRange|0..1|00001}
+ *   	{@child.info tspi:LandmarkAddress|0..1|00001}
+ *   	{@child.info tspi:USPSPostalDeliveryBox|0..1|00001}
+ *   	{@child.info tspi:USPSPostalDeliveryRoute|0..1|00001}
+ *   	{@child.info tspi:USPSGeneralDeliveryOffice|0..1|00001}
+ *   	{@child.info tspi:GeneralAddressClass|0..1|00001}
+ * {@table.footer}
+ * {@table.header Attributes}
+ * 		None.
+ * {@table.footer}
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule Either a ddms:state or a ddms:province can exist, but not both.|Error|11110}
+ * 		{@ddms.rule TSPI addresses are not used before the DDMS version in which they were introduced.|Error|11111}
+ * 		{@ddms.rule DDMS postal elements are not used after the DDMS version in which they were removed.|Error|11111}
+ * 		{@ddms.rule A TSPI address is required.|Error|00001}
+ * 		{@ddms.rule This component can be used with no values set.|Warning|11110}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -151,35 +171,23 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>Either a state or a province can exist, but not both.</li>
-	 * <li>0-6 streets, 0-1 cities, 0-1 states, 0-1 provinces, 0-1 postal codes, and 0-1 country codes exist.</li>
-	 * {@table.footer}
+
+
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), PostalAddress.getName(getDDMSVersion()));
+		Util.requireBoundedChildCount(getXOMElement(), STREET_NAME, 0, 6);
 		if (!Util.isEmpty(getState()) && !Util.isEmpty(getProvince())) {
 			throw new InvalidDDMSException("Only 1 of state or province can be used.");
 		}
-		Util.requireBoundedChildCount(getXOMElement(), STREET_NAME, 0, 6);
-		Util.requireBoundedChildCount(getXOMElement(), CITY_NAME, 0, 1);
-		Util.requireBoundedChildCount(getXOMElement(), STATE_NAME, 0, 1);
-		Util.requireBoundedChildCount(getXOMElement(), PROVINCE_NAME, 0, 1);
-		Util.requireBoundedChildCount(getXOMElement(), POSTAL_CODE_NAME, 0, 1);
-		Util.requireBoundedChildCount(getXOMElement(), CountryCode.getName(getDDMSVersion()), 0, 1);
-
 		super.validate();
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>A completely empty ddms:postalAddress element was found.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		if (getStreets().isEmpty() && Util.isEmpty(getCity()) && Util.isEmpty(getState())

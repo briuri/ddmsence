@@ -244,6 +244,7 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 	}
 
 	public void testNorthboundLatitudeValiation() {
+		DDMSVersion.setCurrentVersion("4.1");
 		// Issue #65
 		getInstance("A latitude value must be between", TEST_WEST, TEST_EAST, TEST_SOUTH, -91);
 		getInstance("A latitude value must be between", TEST_WEST, TEST_EAST, TEST_SOUTH, 91);

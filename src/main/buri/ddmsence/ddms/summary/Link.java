@@ -33,23 +33,33 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:link.
+ * <br /><br />
+ * {@ddms.versions 11111}
  * 
- * <p>This element is not a global component, but is being implemented because it has attributes.</p>
+ * <p></p>
  * 
- * {@table.header Strictness}
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>The href value must not be empty.</li>
- * </ul>
+ * {@table.header History}
+ *  	None.
  * {@table.footer}
- * 
+ * {@table.header Nested Elements}
+ * 		None.	
+ * {@table.footer}
  * {@table.header Attributes}
- * <u>{@link XLinkAttributes}</u>: The xlink:type attribute is required and must have a fixed
- * value of "locator". The xlink:href attribute is also required.<br />
- * <u>{@link SecurityAttributes}</u>: Only allowed when used in the context of a {@link RevisionRecall} (starting in
- * DDMS 4.0.1). The classification and ownerProducer attributes are required.
+ *  	{@child.info ism:classification|0..1|00011}
+ * 		{@child.info ism:ownerProducer|0..*|00011}
+ * 		{@child.info ism:&lt;<i>securityAttributes</i>&gt;|0..*|00011}
+ * 		{@child.info xlink:&lt;<i>xlinkAttributes</i>&gt;|0..*|11111}
  * {@table.footer}
- * 
+ * {@table.header Validation Rules}
+ * 		{@ddms.rule The qualified name of this element is correct.|Error|11111}
+ * 		{@ddms.rule xlink:type is required, and is set to "locator".|Error|11111}
+ * 		{@ddms.rule xlink:href is required.|Error|11111}
+ * 		{@ddms.rule ISM attributes are not used before the DDMS version in which they were introduced.|Error|11111}
+ * 		{@ddms.rule Warnings from any XLink attributes are claimed by this component.|Warning|11111}
+ * 		<p>When a Link is used by {@link RelatedResource}, it cannot have security attributes. When a Link is used by
+ * 		{@link RevisionRecall}, it must have security attributes. This is validated in the parent class.</p>
+ * {@table.footer}
+ *  
  * @author Brian Uri!
  * @since 0.9.b
  */
@@ -111,35 +121,23 @@ public final class Link extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
-	 * 
-	 * {@table.header Rules}
-	 * <li>The qualified name of the element is correct.</li>
-	 * <li>The xlink:type is set and has a value of "locator".</li>
-	 * <li>The xlink:href is set and non-empty.</li>
-	 * <li>Does not validate the security attributes. It is the parent class' responsibility
-	 * to do that.
-	 * {@table.footer}
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Link.getName(getDDMSVersion()));
 		Util.requireDDMSValue("type attribute", getXLinkAttributes().getType());
-		Util.requireDDMSValue("href attribute", getXLinkAttributes().getHref());
-
 		if (!getXLinkAttributes().getType().equals(FIXED_TYPE))
 			throw new InvalidDDMSException("The type attribute must have a fixed value of \"" + FIXED_TYPE + "\".");
-
+		Util.requireDDMSValue("href attribute", getXLinkAttributes().getHref());
+		if (!getDDMSVersion().isAtLeast("4.0.1") && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException(
+				"Security attributes cannot be applied to this component until DDMS 4.0.1 or later.");
+		}
 		super.validate();
 	}
 
 	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * {@table.header Rules}
-	 * <li>Include any warnings from the XLink attributes.</li>
-	 * {@table.footer}
+	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
 		if (getXLinkAttributes() != null)
