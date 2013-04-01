@@ -26,7 +26,9 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p> Tests related to ddms:format elements </p>
+ * <p>
+ * Tests related to ddms:format elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -58,13 +60,12 @@ public class FormatTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private Format getInstance(String message, Element element) {
+	private Format getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Format component = null;
 		try {
@@ -80,12 +81,12 @@ public class FormatTest extends AbstractBaseTestCase {
 
 	/**
 	 * Helper method to create an object which is expected to be valid.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param builder the builder to commit
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
+	 * 
 	 * @return a valid object
 	 */
-	private Format getInstance(String message, Format.Builder builder) {
+	private Format getInstance(Format.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Format component = null;
 		try {
@@ -98,14 +99,14 @@ public class FormatTest extends AbstractBaseTestCase {
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Returns a builder, pre-populated with base data from the XML sample.
 	 * 
-	 *  This builder can then be modified to test various conditions.
+	 * This builder can then be modified to test various conditions.
 	 */
 	private Format.Builder getBaseBuilder() {
-		Format component = getInstance(SUCCESS, getValidElement(DDMSVersion.getCurrentVersion().getVersion()));
+		Format component = getInstance(getValidElement(DDMSVersion.getCurrentVersion().getVersion()), SUCCESS);
 		return (new Format.Builder(component));
 	}
 
@@ -166,46 +167,46 @@ public class FormatTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_DDMS_PREFIX,
 				Format.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
 	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			// Element-based
-			getInstance(SUCCESS, getValidElement(sVersion));
-			
+			getInstance(getValidElement(sVersion), SUCCESS);
+
 			// Data-based via Builder
 			getBaseBuilder();
 		}
 	}
-	
+
 	public void testConstructorsMinimal() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-		
+
 			// Element-based, no optional fields
 			Element mediaElement = Util.buildDDMSElement("Media", null);
 			Util.addDDMSChildElement(mediaElement, "mimeType", "text/html");
-			Format elementComponent = getInstance(SUCCESS, wrapInnerElement(mediaElement));
-			
+			Format elementComponent = getInstance(wrapInnerElement(mediaElement), SUCCESS);
+
 			// Data-based via Builder, no optional fields
-			getInstance(SUCCESS, new Format.Builder(elementComponent));			
+			getInstance(new Format.Builder(elementComponent), SUCCESS);
 		}
 	}
-	
+
 	public void testValidationErrors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-		
+
 			// Missing mimeType
 			Format.Builder builder = getBaseBuilder();
 			builder.setMimeType(null);
-			getInstance("mimeType is required.", builder);
+			getInstance(builder, "mimeType is required.");
 		}
 	}
 
@@ -214,7 +215,7 @@ public class FormatTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			Format component = getInstance(SUCCESS, getValidElement(sVersion));
+			Format component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -224,7 +225,7 @@ public class FormatTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Base equality
-			Format elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Format elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
 			Format builderComponent = new Format.Builder(elementComponent).commit();
 			assertEquals(elementComponent, builderComponent);
 			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
@@ -233,26 +234,26 @@ public class FormatTest extends AbstractBaseTestCase {
 			Format.Builder builder = getBaseBuilder();
 			builder.setMimeType(DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(builder.commit()));
-			
+
 			builder = getBaseBuilder();
 			builder.setExtent(null);
 			assertFalse(elementComponent.equals(builder.commit()));
-			
+
 			builder = getBaseBuilder();
 			builder.setMedium(DIFFERENT_VALUE);
-			assertFalse(elementComponent.equals(builder.commit()));			
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
 	public void testVersionSpecific() {
 		// No tests.
 	}
-	
+
 	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Format elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Format elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
 			assertEquals(getExpectedOutput(false), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
@@ -266,7 +267,7 @@ public class FormatTest extends AbstractBaseTestCase {
 			Format.Builder builder = new Format.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
-			
+
 			builder.setMimeType(TEST_MIME_TYPE);
 			assertFalse(builder.isEmpty());
 		}
@@ -275,12 +276,12 @@ public class FormatTest extends AbstractBaseTestCase {
 	public void testExtentAccessors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			// Base case
-			Format component = getInstance(SUCCESS, getValidElement(sVersion));
+			Format component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(component.getExtentQualifier(), component.getExtent().getQualifier());
 			assertEquals(component.getExtentValue(), component.getExtent().getValue());
-			
+
 			// No Extent
 			Format.Builder builder = getBaseBuilder();
 			builder.setExtent(null);

@@ -113,8 +113,7 @@ public abstract class AbstractBaseTestCase extends TestCase {
 	 */
 	protected void expectMessage(Exception e, String message) {
 		if (!e.getMessage().startsWith(message)) {
-			System.out.println(DDMSVersion.getCurrentVersion());
-			System.out.println(e.getMessage());
+			System.out.println(DDMSVersion.getCurrentVersion() + ": " + e.getMessage());
 			fail("Test failed for the wrong reason.");
 		}
 	}

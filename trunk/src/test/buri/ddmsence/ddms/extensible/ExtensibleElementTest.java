@@ -53,13 +53,12 @@ public class ExtensibleElementTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private ExtensibleElement getInstance(String message, Element element) {
+	private ExtensibleElement getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		ExtensibleElement component = null;
 		try {
@@ -74,12 +73,33 @@ public class ExtensibleElementTest extends AbstractBaseTestCase {
 	}
 
 	/**
+	 * Helper method to create an object which is expected to be valid.
+	 * @param builder the builder to commit
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
+	 * 
+	 * @return a valid object
+	 */
+	private ExtensibleElement getInstance(ExtensibleElement.Builder builder, String message) {
+		boolean expectFailure = !Util.isEmpty(message);
+		ExtensibleElement component = null;
+		try {
+			component = builder.commit();
+			checkConstructorSuccess(expectFailure);
+		}
+		catch (InvalidDDMSException e) {
+			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
+		}
+		return (component);
+	}
+
+	/**
 	 * Returns the expected XML output for this unit test
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddmsence:extension xmlns:ddmsence=\"http://ddmsence.urizone.net/\">").append(
-			"This is an extensible element.</ddmsence:extension>");
+		xml.append("<ddmsence:extension xmlns:ddmsence=\"http://ddmsence.urizone.net/\">");
+		xml.append("This is an extensible element.</ddmsence:extension>");
 		return (xml.toString());
 	}
 
@@ -87,91 +107,87 @@ public class ExtensibleElementTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), TEST_PREFIX, TEST_NAME);
+			assertNameAndNamespace(getInstance(getFixtureElement(), SUCCESS), TEST_PREFIX, TEST_NAME);
 		}
 	}
 
-	public void testElementConstructorValid() {
+	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			// All fields
-			getInstance(SUCCESS, getFixtureElement());
+
+			// Element-based
+			getInstance(getFixtureElement(), SUCCESS);
+
+			// Data-based via Builder
+			ExtensibleElement.Builder builder = new ExtensibleElement.Builder();
+			builder.setXml(getExpectedXMLOutput());
+			getInstance(builder, SUCCESS);
 		}
 	}
-
-	public void testElementConstructorInvalid() {
+	
+	public void testConstructorsMinimal() {
+		// No tests.
+	}
+	
+	public void testValidationErrors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+
 			// Using the DDMS namespace
 			Element element = Util.buildDDMSElement("name", null);
-			getInstance("Extensible elements cannot be defined in the DDMS namespace.", element);
+			getInstance(element, "Extensible elements cannot be defined in the DDMS namespace.");
+			
+			// Bad XML
+			ExtensibleElement.Builder builder = new ExtensibleElement.Builder();
+			builder.setXml("This is not XML.");
+			getInstance(builder, "Could not create");
 		}
 	}
-
-	public void testWarnings() {
+	
+	public void testValidationWarnings() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+			
 			// No warnings
-			ExtensibleElement component = getInstance(SUCCESS, getFixtureElement());
+			ExtensibleElement component = getInstance(getFixtureElement(), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			ExtensibleElement elementComponent = getInstance(SUCCESS, getFixtureElement());
-
-			Element element = Util.buildElement(TEST_PREFIX, TEST_NAME, TEST_NAMESPACE,
-				"This is an extensible element.");
-			ExtensibleElement dataComponent = getInstance(SUCCESS, element);
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-		}
-	}
-
-	public void testConstructorInequalityDifferentValues() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			ExtensibleElement elementComponent = getInstance(SUCCESS, getFixtureElement());
+			
+			// Base equality
+			ExtensibleElement elementComponent = getInstance(getFixtureElement(), SUCCESS);
+			ExtensibleElement builderComponent = new ExtensibleElement.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+			
+			// Different values in each field
 			Element element = Util.buildElement(TEST_PREFIX, "newName", TEST_NAMESPACE,
 				"This is an extensible element.");
-			ExtensibleElement dataComponent = getInstance(SUCCESS, element);
-			assertFalse(elementComponent.equals(dataComponent));
+			ExtensibleElement.Builder builder = new ExtensibleElement.Builder();
+			builder.setXml(element.toXML());
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			ExtensibleElement component = getInstance(SUCCESS, getFixtureElement());
-			assertEquals("", component.toHTML());
-			assertEquals("", component.toText());
-		}
+	public void testVersionSpecific() {
+		// No tests.
 	}
 
-	public void testXMLOutput() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			ExtensibleElement component = getInstance(SUCCESS, getFixtureElement());
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ExtensibleElement component = getInstance(SUCCESS, getFixtureElement());
-			ExtensibleElement.Builder builder = new ExtensibleElement.Builder(component);
-			assertEquals(component, builder.commit());
-
-			builder = new ExtensibleElement.Builder();
-			builder.setXml(getFixtureElement().toXML());
-			assertEquals(component, builder.commit());
+			ExtensibleElement elementComponent = getInstance(getFixtureElement(), SUCCESS);
+			assertEquals("", elementComponent.toHTML());
+			assertEquals("", elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
-
+	
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -179,26 +195,9 @@ public class ExtensibleElementTest extends AbstractBaseTestCase {
 			ExtensibleElement.Builder builder = new ExtensibleElement.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.setXml("<test/>");
 			assertFalse(builder.isEmpty());
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			ExtensibleElement.Builder builder = new ExtensibleElement.Builder();
-			builder.setXml("InvalidXml");
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "Could not create a valid element");
-			}
-			builder.setXml(getExpectedXMLOutput());
-			builder.commit();
 		}
 	}
 }
