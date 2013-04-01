@@ -102,7 +102,6 @@ public abstract class AbstractBaseTestCase extends TestCase {
 		catch (Exception e) {
 			throw new RuntimeException("Cannot run tests without valid DDMSReader and valid unit test object.", e);
 		}
-
 	}
 
 	/**
