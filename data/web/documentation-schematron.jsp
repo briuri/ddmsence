@@ -104,14 +104,14 @@ Message: [ISM-ID-00100][Error] If ISM-CAPCO-RESOURCE and attribute ownerProducer
 
 <h2>Supported XSLT Engines</h2>
 
-<p>DDMSence comes bundled with Saxon Home Edition (v9.4.0.4) because it supports both XSLT1 and XSLT2 transformations. Support for alternate engines is provided through the 
+<p>DDMSence comes bundled with Saxon Home Edition (v9.4.0.7) because it supports both XSLT1 and XSLT2 transformations. Support for alternate engines is provided through the 
 <code>xml.transform.TransformerFactory</code> configurable property, which can be set to the class name of another processor. Please 
 see the Power Tip on <a href="documentation-configuration.jsp">Configurable Properties</a> for details on how to set this property. The table below lists the engines I have tested with.
 None of the engines listed will work with XSLT 2 Schema-Aware (SA) Schematron files.</p>
 
 <table>
 <tr><th>Name and Version</th><th>Class Name</th><th>XSLT1</th><th>XSLT2</th></tr>
-<tr><td>Saxon HE 9.4.0.4</td><td><code>net.sf.saxon.TransformerFactoryImpl</code></td><td>supported</td><td>supported</td></tr>
+<tr><td>Saxon HE 9.4.0.7</td><td><code>net.sf.saxon.TransformerFactoryImpl</code></td><td>supported</td><td>supported</td></tr>
 <tr><td>Xalan interpretive, v2.7.1</td><td><code>org.apache.xalan.processor.TransformerFactoryImpl</code></td><td>supported</td><td>fails, doesn't support XSLT 2.0</td></tr>
 <tr><td>Xalan XSLTC, v2.7.1</td><td><code>org.apache.xalan.xsltc.trax.TransformerFactoryImpl</code></td><td>fails, SVRL transformation doesn't seem to occur properly</td><td>fails, doesn't support XSLT 2.0</td></tr>
 <tr><td>Xalan XSLTC, bundled with Java 1.5</td><td><code>com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl</code></td><td>fails, Xalan bug treats XSLT warning as an error</td><td>fails, doesn't support XSLT 2.0</td></tr>
