@@ -251,7 +251,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 			Attribute attr1 = getAttributes().get(i);
 			Attribute attr2 = test.getAttributes().get(i);
 			if (!attr1.getLocalName().equals(attr2.getLocalName())
-				|| !attr1.getNamespaceURI().equals(attr1.getNamespaceURI()))
+				|| !attr1.getNamespaceURI().equals(attr2.getNamespaceURI()))
 				return (false);
 		}
 		return (true);

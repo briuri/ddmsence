@@ -29,19 +29,15 @@ import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.ContributorTest;
 import buri.ddmsence.ddms.resource.CreatorTest;
-import buri.ddmsence.ddms.resource.Dates;
 import buri.ddmsence.ddms.resource.DatesTest;
-import buri.ddmsence.ddms.resource.Identifier;
 import buri.ddmsence.ddms.resource.IdentifierTest;
-import buri.ddmsence.ddms.resource.LanguageTest;
 import buri.ddmsence.ddms.resource.PointOfContactTest;
 import buri.ddmsence.ddms.resource.ProcessingInfoTest;
-import buri.ddmsence.ddms.resource.Publisher;
 import buri.ddmsence.ddms.resource.PublisherTest;
 import buri.ddmsence.ddms.resource.RecordsManagementInfoTest;
 import buri.ddmsence.ddms.resource.RevisionRecallTest;
+import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.NoticeListTest;
-import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.ddms.security.ntk.Access;
 import buri.ddmsence.ddms.security.ntk.AccessTest;
@@ -51,7 +47,9 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p> Tests related to ddms:metacardInfo elements </p>
+ * <p>
+ * Tests related to ddms:metacardInfo elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -71,8 +69,8 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 	 */
 	public static MetacardInfo getFixture() {
 		try {
-			return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? new MetacardInfo(getRequiredChildComponents(),
-				SecurityAttributesTest.getFixture()) : null);
+			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1"))
+				return (new MetacardInfo(getChildComponents(true), SecurityAttributesTest.getFixture()));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
@@ -82,46 +80,38 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns a list of child components for testing.
+	 * 
+	 * @boolean onlyRequired true to return a minimal set of required components.
 	 */
-	private static List<IDDMSComponent> getRequiredChildComponents() {
+	private static List<IDDMSComponent> getChildComponents(boolean onlyRequired) {
 		List<IDDMSComponent> childComponents = new ArrayList<IDDMSComponent>();
 		childComponents.add(IdentifierTest.getFixture());
 		childComponents.add(DatesTest.getFixture());
 		childComponents.add(PublisherTest.getFixture());
-		return (childComponents);
-	}
-
-	/**
-	 * Returns a list of child components for testing.
-	 */
-	private static List<IDDMSComponent> getChildComponents() {
-		List<IDDMSComponent> childComponents = new ArrayList<IDDMSComponent>();
-		childComponents.add(IdentifierTest.getFixture());
-		childComponents.add(DatesTest.getFixture());
-		childComponents.add(PublisherTest.getFixture());
-		childComponents.add(ContributorTest.getFixture());
-		childComponents.add(CreatorTest.getFixture());
-		childComponents.add(PointOfContactTest.getFixture());
-		childComponents.add(DescriptionTest.getFixture());
-		childComponents.add(ProcessingInfoTest.getFixture());
-		childComponents.add(RevisionRecallTest.getTextFixture());
-		childComponents.add(RecordsManagementInfoTest.getFixture());
-		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
-			childComponents.add(NoticeListTest.getFixture());
-			childComponents.add(AccessTest.getFixture());
+		if (!onlyRequired) {
+			childComponents.add(ContributorTest.getFixture());
+			childComponents.add(CreatorTest.getFixture());
+			childComponents.add(PointOfContactTest.getFixture());
+			childComponents.add(DescriptionTest.getFixture());
+			childComponents.add(ProcessingInfoTest.getFixture());
+			childComponents.add(RevisionRecallTest.getTextFixture());
+			childComponents.add(RecordsManagementInfoTest.getFixture());
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
+				childComponents.add(NoticeListTest.getFixture());
+				childComponents.add(AccessTest.getFixture());
+			}
 		}
 		return (childComponents);
 	}
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private MetacardInfo getInstance(String message, Element element) {
+	private MetacardInfo getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		MetacardInfo component = null;
 		try {
@@ -137,15 +127,16 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 
 	/**
 	 * Helper method to create an object which is expected to be valid.
-	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param childComponents a list of child components to be put into this instance (required)
+	 * 
+	 * @return a valid object
 	 */
-	private MetacardInfo getInstance(String message, List<IDDMSComponent> childComponents) {
+	private MetacardInfo getInstance(MetacardInfo.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		MetacardInfo component = null;
 		try {
-			component = new MetacardInfo(childComponents, SecurityAttributesTest.getFixture());
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -156,11 +147,21 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 	}
 
 	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private MetacardInfo.Builder getBaseBuilder() {
+		MetacardInfo component = getInstance(getValidElement(DDMSVersion.getCurrentVersion().getVersion()), SUCCESS);
+		return (new MetacardInfo.Builder(component));
+	}
+
+	/**
 	 * Returns the expected HTML or Text output for this unit test
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		for (IDDMSComponent component : getChildComponents())
+		for (IDDMSComponent component : getChildComponents(false))
 			text.append(((AbstractBaseComponent) component).getOutput(isHTML, "metacardInfo.", ""));
 		text.append(buildOutput(isHTML, "metacardInfo.classification", "U"));
 		text.append(buildOutput(isHTML, "metacardInfo.ownerProducer", "USA"));
@@ -169,10 +170,8 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:metacardInfo ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
 		xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">");
@@ -220,270 +219,201 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 			xml.append("</ntk:Access>");
 		}
 		xml.append("</ddms:metacardInfo>");
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_DDMS_PREFIX,
 				MetacardInfo.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			// All fields
-			getInstance(SUCCESS, getValidElement(sVersion));
-
-			// No optional fields
-			Element element = Util.buildDDMSElement(MetacardInfo.getName(version), null);
-			for (IDDMSComponent component : getRequiredChildComponents())
-				element.appendChild(component.getXOMElementCopy());
-			getInstance(SUCCESS, element);
-		}
-	}
-
-	public void testDataConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// All fields
-			getInstance(SUCCESS, getChildComponents());
+			// Element-based
+			getInstance(getValidElement(sVersion), SUCCESS);
 
-			// Null components
-			List<IDDMSComponent> components = getChildComponents();
-			components.add(null);
-			getInstance(SUCCESS, components);
-
-			// No optional fields
-			getInstance(SUCCESS, getRequiredChildComponents());
+			// Data-based via Builder
+			getBaseBuilder();
 		}
 	}
 
-	public void testElementConstructorInvalid() throws InvalidDDMSException {
+	public void testConstructorsMinimal() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// Missing identifier
+			// Element-based, no optional fields
 			Element element = Util.buildDDMSElement(MetacardInfo.getName(version), null);
-			for (IDDMSComponent component : getRequiredChildComponents()) {
-				if (component instanceof Identifier)
-					continue;
+			for (IDDMSComponent component : getChildComponents(true))
 				element.appendChild(component.getXOMElementCopy());
-			}
-			getInstance("At least one ddms:identifier", element);
+			MetacardInfo elementComponent = getInstance(element, SUCCESS);
 
-			// Missing publisher
-			element = Util.buildDDMSElement(MetacardInfo.getName(version), null);
-			for (IDDMSComponent component : getRequiredChildComponents()) {
-				if (component instanceof Publisher)
-					continue;
-				element.appendChild(component.getXOMElementCopy());
-			}
-			getInstance("At least one", element);
-
-			// Missing dates
-			element = Util.buildDDMSElement(MetacardInfo.getName(version), null);
-			for (IDDMSComponent component : getRequiredChildComponents()) {
-				if (component instanceof Dates)
-					continue;
-				element.appendChild(component.getXOMElementCopy());
-			}
-			getInstance("Exactly 1 dates element must exist.", element);
+			// Data-based via Builder, no optional fields
+			getInstance(new MetacardInfo.Builder(elementComponent), SUCCESS);
 		}
 	}
 
-	public void testDataConstructorInvalid() throws InvalidDDMSException {
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// No components
-			getInstance("At least one ddms:identifier", (List) null);
-
-			// Weird component
-			List<IDDMSComponent> components = getChildComponents();
-			components.add(LanguageTest.getFixture());
-			getInstance("language is not a valid child", components);
-
-			// Missing identifier
-			components = getChildComponents();
-			components.remove(IdentifierTest.getFixture());
-			getInstance("At least one ddms:identifier must exist", components);
-
-			// Missing publisher
-			components = getChildComponents();
-			components.remove(PublisherTest.getFixture());
-			if (version.isAtLeast("5.0")) {
-				components.remove(ContributorTest.getFixture());
-				components.remove(CreatorTest.getFixture());
-				components.remove(PointOfContactTest.getFixture());
-			}
-			getInstance("At least one", components);
-
-			// Missing dates
-			components = getChildComponents();
-			components.remove(DatesTest.getFixture());
-			getInstance("Exactly 1 dates element must exist.", components);
-
-			// Incorrect version of security attributes
-			DDMSVersion.setCurrentVersion("2.0");
-			SecurityAttributes attributes = SecurityAttributesTest.getFixture();
-			DDMSVersion.setCurrentVersion(sVersion);
+			// Null component list
 			try {
-				new MetacardInfo(getChildComponents(), attributes);
-				fail("Allowed invalid data.");
+				new MetacardInfo(null, null);
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "The DDMS version of the parent");
+				expectMessage(e, "At least one");
 			}
+			
+			// Null in component list
+			try {
+				List<IDDMSComponent> components = getChildComponents(true);
+				components.add(null);
+				new MetacardInfo(components, null);
+			}
+			catch (InvalidDDMSException e) {
+				checkConstructorFailure(false, e);
+			}
+			
+			// Invalid object in component list
+			try {
+				List<IDDMSComponent> components = getChildComponents(true);
+				components.add(new Rights(true, true, true));
+				new MetacardInfo(components, null);
+			}
+			catch (InvalidDDMSException e) {
+				expectMessage(e, "rights is not a valid");
+			}
+			
+			// Missing identifier
+			MetacardInfo.Builder builder = getBaseBuilder();
+			builder.getIdentifiers().clear();
+			getInstance(builder, "At least one");
+
+			// Missing publisher
+			builder = getBaseBuilder();
+			builder.getPublishers().clear();
+			if (version.isAtLeast("5.0")) {
+				builder.getContributors().clear();
+				builder.getCreators().clear();
+				builder.getPointOfContacts().clear();
+			}
+			getInstance(builder, "At least one");
+
+			// Missing dates
+			builder = getBaseBuilder();
+			builder.setDates(null);
+			getInstance(builder, "Exactly 1 dates");
 		}
 	}
 
-	public void testWarnings() throws InvalidDDMSException {
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			MetacardInfo component = getInstance(SUCCESS, getValidElement(sVersion));
-			// 4.1 ntk:Access element used
-			if ("4.1".equals(sVersion)) {
+
+			if (!"4.1".equals(sVersion)) {
+				// No warnings
+				MetacardInfo component = getInstance(getValidElement(sVersion), SUCCESS);
+				assertEquals(0, component.getValidationWarnings().size());
+			}
+			else {
+				// ntk:Access used
+				MetacardInfo component = getInstance(getValidElement(sVersion), SUCCESS);
 				assertEquals(2, component.getValidationWarnings().size());
 				String text = "The ntk:Access element in this DDMS component";
 				String locator = "ddms:metacardInfo";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 
+				// ism:externalNotice used
 				text = "The ism:externalNotice attribute in this DDMS component";
 				locator = "ddms:metacardInfo/ddms:noticeList/ism:Notice";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(1));
-
-			}
-			// No warnings
-			else {
-				assertEquals(0, component.getValidationWarnings().size());
 			}
 		}
 	}
 
-	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			MetacardInfo elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			MetacardInfo dataComponent = getInstance(SUCCESS, getChildComponents());
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-		}
-	}
-
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			MetacardInfo elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			// Base equality
+			MetacardInfo elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			MetacardInfo builderComponent = new MetacardInfo.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
 
-			List<IDDMSComponent> components = getChildComponents();
-			components.add(IdentifierTest.getFixture());
-			MetacardInfo dataComponent = getInstance(SUCCESS, components);
-			assertFalse(elementComponent.equals(dataComponent));
+			// Different values in each field
+			MetacardInfo.Builder builder = getBaseBuilder();
+			builder.getIdentifiers().get(0).setQualifier(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
 
-			components = getChildComponents();
-			components.remove(DatesTest.getFixture());
-			components.add(new Dates(null, null, null, null, null, null, null));
-			dataComponent = getInstance(SUCCESS, components);
-			assertFalse(elementComponent.equals(dataComponent));
+			builder = getBaseBuilder();
+			builder.getDates().setApprovedOn("2013-01-01");
+			assertFalse(elementComponent.equals(builder.commit()));
 
-			components = getChildComponents();
-			components.remove(CreatorTest.getFixture());
-			dataComponent = getInstance(SUCCESS, components);
-			assertFalse(elementComponent.equals(dataComponent));
+			builder = getBaseBuilder();
+			builder.getCreators().clear();
+			assertFalse(elementComponent.equals(builder.commit()));
 
-			components = getChildComponents();
-			components.remove(ContributorTest.getFixture());
-			dataComponent = getInstance(SUCCESS, components);
-			assertFalse(elementComponent.equals(dataComponent));
+			builder = getBaseBuilder();
+			builder.getContributors().clear();
+			assertFalse(elementComponent.equals(builder.commit()));
 
-			components = getChildComponents();
-			components.remove(PointOfContactTest.getFixture());
-			dataComponent = getInstance(SUCCESS, components);
-			assertFalse(elementComponent.equals(dataComponent));
+			builder = getBaseBuilder();
+			builder.getPointOfContacts().clear();
+			assertFalse(elementComponent.equals(builder.commit()));
 
-			components = getChildComponents();
-			components.add(PublisherTest.getFixture());
-			dataComponent = getInstance(SUCCESS, components);
-			assertFalse(elementComponent.equals(dataComponent));
+			builder = getBaseBuilder();
+			builder.getPublishers().get(0).getPerson().setNames(Util.getXsListAsList("Ellen"));
+			assertFalse(elementComponent.equals(builder.commit()));
 
-			components = getChildComponents();
-			components.remove(DescriptionTest.getFixture());
-			dataComponent = getInstance(SUCCESS, components);
-			assertFalse(elementComponent.equals(dataComponent));
+			builder = getBaseBuilder();
+			builder.setDescription(null);
+			assertFalse(elementComponent.equals(builder.commit()));
 
-			components = getChildComponents();
-			components.remove(ProcessingInfoTest.getFixture());
-			dataComponent = getInstance(SUCCESS, components);
-			assertFalse(elementComponent.equals(dataComponent));
+			builder = getBaseBuilder();
+			builder.getProcessingInfos().clear();
+			assertFalse(elementComponent.equals(builder.commit()));
 
-			components = getChildComponents();
-			components.remove(RevisionRecallTest.getTextFixture());
-			dataComponent = getInstance(SUCCESS, components);
-			assertFalse(elementComponent.equals(dataComponent));
+			builder = getBaseBuilder();
+			builder.setRevisionRecall(null);
+			assertFalse(elementComponent.equals(builder.commit()));
 
-			components = getChildComponents();
-			components.remove(RecordsManagementInfoTest.getFixture());
-			dataComponent = getInstance(SUCCESS, components);
-			assertFalse(elementComponent.equals(dataComponent));
+			builder = getBaseBuilder();
+			builder.setRecordsManagementInfo(null);
+			assertFalse(elementComponent.equals(builder.commit()));
 
 			if (!version.isAtLeast("5.0")) {
-				components = getChildComponents();
-				components.remove(NoticeListTest.getFixture());
-				dataComponent = getInstance(SUCCESS, components);
-				assertFalse(elementComponent.equals(dataComponent));
+				builder = getBaseBuilder();
+				builder.setNoticeList(null);
+				assertFalse(elementComponent.equals(builder.commit()));
 			}
 		}
 	}
 
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			MetacardInfo component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, getChildComponents());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			MetacardInfo component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(true), component.toXML());
-
-			component = getInstance(SUCCESS, getChildComponents());
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
-		}
-	}
-
-	public void testWrongVersion() throws InvalidDDMSException {
+	public void testVersionSpecific() throws InvalidDDMSException {
+		// No Access in DDMS 5.0.
 		DDMSVersion.setCurrentVersion("5.0");
-		List<IDDMSComponent> components = getRequiredChildComponents();
-		components.add(new Access(IndividualTest.getFixtureList(), null, null, SecurityAttributesTest.getFixture()));
-		getInstance("The ntk:Access element", components);
+		MetacardInfo.Builder builder = getBaseBuilder();
+		Access access = new Access(IndividualTest.getFixtureList(), null, null, SecurityAttributesTest.getFixture());
+		builder.setAccess(new Access.Builder(access));
+		getInstance(builder, "The ntk:Access element");
 	}
-	
-	public void testBuilderEquality() throws InvalidDDMSException {
+
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			MetacardInfo component = getInstance(SUCCESS, getValidElement(sVersion));
-			MetacardInfo.Builder builder = new MetacardInfo.Builder(component);
-			assertEquals(component, builder.commit());
+			MetacardInfo elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
 
@@ -494,28 +424,9 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 			MetacardInfo.Builder builder = new MetacardInfo.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+
 			builder.getDates().setApprovedOn("2001");
 			assertFalse(builder.isEmpty());
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			MetacardInfo component = getInstance(SUCCESS, getValidElement(sVersion));
-			MetacardInfo.Builder builder = new MetacardInfo.Builder(component);
-			builder.getIdentifiers().clear();
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "At least one ddms:identifier");
-			}
-			builder.getIdentifiers().get(0).setQualifier("test");
-			builder.getIdentifiers().get(0).setValue("test");
-			builder.commit();
 		}
 	}
 }

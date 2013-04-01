@@ -32,8 +32,10 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p> Tests related to the extensible attributes themselves. How they interact with parent classes is tested in those
- * classes. </p>
+ * <p>
+ * Tests related to the extensible attributes themselves. How they interact with parent classes is tested in those
+ * classes.
+ * </p>
  * 
  * @author Brian Uri!
  * @since 1.1.0
@@ -41,8 +43,6 @@ import buri.ddmsence.util.Util;
 public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 
 	private static final String TEST_NAMESPACE = "http://ddmsence.urizone.net/";
-
-	private static final Attribute TEST_ATTRIBUTE = new Attribute("ddmsence:relevance", TEST_NAMESPACE, "95");
 
 	/**
 	 * Constructor
@@ -57,7 +57,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 	public static ExtensibleAttributes getFixture() {
 		try {
 			List<Attribute> attributes = new ArrayList<Attribute>();
-			attributes.add(new Attribute(TEST_ATTRIBUTE));
+			attributes.add(getTestAttribute());
 			return (new ExtensibleAttributes(attributes));
 		}
 		catch (InvalidDDMSException e) {
@@ -67,14 +67,21 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 	}
 
 	/**
+	 * Returns generated test data.
+	 */
+	private static Attribute getTestAttribute() {
+		return (new Attribute("ddmsence:relevance", TEST_NAMESPACE, "95"));
+	}
+	
+	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private ExtensibleAttributes getInstance(String message, Element element) {
+	private ExtensibleAttributes getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		ExtensibleAttributes attributes = null;
 		try {
@@ -91,22 +98,54 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param attributes a list of attributes (optional)
+	 * 
 	 * @return a valid object
 	 */
-	private ExtensibleAttributes getInstance(String message, List<Attribute> attributes) {
+	private ExtensibleAttributes getInstance(ExtensibleAttributes.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
-		ExtensibleAttributes exAttributes = null;
+		ExtensibleAttributes component = null;
 		try {
-			exAttributes = new ExtensibleAttributes(attributes);
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 			expectMessage(e, message);
 		}
-		return (exAttributes);
+		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the test attribute.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private ExtensibleAttributes.Builder getBaseBuilder() {
+		try {
+			List<Attribute> attributes = new ArrayList<Attribute>();
+			attributes.add(getTestAttribute());
+			ExtensibleAttributes component = new ExtensibleAttributes(attributes);
+			return (new ExtensibleAttributes.Builder(component));
+		}
+		catch (InvalidDDMSException e) {
+			checkConstructorFailure(false, e);
+		}
+		return (null);
+	}
+
+	/**
+	 * Returns a test element that can be decorated with extensible attributes.
+	 */
+	private Element getElement() {
+		try {
+			return (new Keyword("testValue", null).getXOMElementCopy());
+		}
+		catch (InvalidDDMSException e) {
+			checkConstructorFailure(false, e);
+		}
+		return (null);
 	}
 
 	/**
@@ -118,119 +157,121 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 		return (text.toString());
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// All fields
-			Element element = new Keyword("testValue", null).getXOMElementCopy();
-			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
-			getInstance(SUCCESS, element);
+			// Element-based
+			Element element = getElement();
+			element.addAttribute(new Attribute(getTestAttribute()));
+			getInstance(element, SUCCESS);
 
-			// No optional fields
-			element = new Keyword("testValue", null).getXOMElementCopy();
-			getInstance(SUCCESS, element);
+			// Data-based via Builder
+			getBaseBuilder();
 		}
 	}
 
-	public void testDataConstructorValid() {
+	public void testConstructorsMinimal() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// All fields
-			List<Attribute> attributes = new ArrayList<Attribute>();
-			attributes.add(new Attribute(TEST_ATTRIBUTE));
-			getInstance(SUCCESS, attributes);
+			// Element-based, no optional fields
+			ExtensibleAttributes elementComponent = getInstance(getElement(), SUCCESS);
 
-			// No optional fields
-			getInstance(SUCCESS, (List<Attribute>) null);
+			// Data-based via Builder, no optional fields
+			getInstance(new ExtensibleAttributes.Builder(elementComponent), SUCCESS);
 		}
 	}
 
-	public void testElementConstructorInvalid() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			// No invalid cases right now, since reserved names are silently skipped.
-		}
+	public void testValidationErrors() {
+		// No invalid cases right now. The validation occurs when the attributes are added to some component.
 	}
 
-	public void testDataConstructorInvalid() {
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			// No invalid cases right now. The validation occurs when the attributes are added to some component.
-		}
-	}
 
-	public void testWarnings() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			Element element = new Keyword("testValue", null).getXOMElementCopy();
-			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
-			getInstance(SUCCESS, element);
-			ExtensibleAttributes component = getInstance(SUCCESS, element);
+			Element element = getElement();
+			element.addAttribute(new Attribute(getTestAttribute()));
+			ExtensibleAttributes component = getInstance(element, SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Element element = new Keyword("testValue", null).getXOMElementCopy();
-			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
-			ExtensibleAttributes elementAttributes = getInstance(SUCCESS, element);
+			// Base equality
+			Element element = getElement();
+			element.addAttribute(new Attribute(getTestAttribute()));
+			ExtensibleAttributes elementComponent = getInstance(element, SUCCESS);
+			ExtensibleAttributes builderComponent = new ExtensibleAttributes.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
 
-			List<Attribute> attributes = new ArrayList<Attribute>();
-			attributes.add(new Attribute(TEST_ATTRIBUTE));
-			ExtensibleAttributes dataAttributes = getInstance(SUCCESS, attributes);
-
-			assertEquals(elementAttributes, dataAttributes);
-			assertEquals(elementAttributes.hashCode(), dataAttributes.hashCode());
-		}
-	}
-
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Element element = new Keyword("testValue", null).getXOMElementCopy();
-			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
-			ExtensibleAttributes elementAttributes = getInstance(SUCCESS, element);
-			List<Attribute> attributes = new ArrayList<Attribute>();
-			attributes.add(new Attribute("essence:confidence", "http://essence/", "test"));
-			ExtensibleAttributes dataAttributes = getInstance(SUCCESS, attributes);
-			assertFalse(elementAttributes.equals(dataAttributes));
-
-			dataAttributes = getInstance(SUCCESS, (List<Attribute>) null);
-			assertFalse(elementAttributes.equals(dataAttributes));
-		}
-	}
-
-	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Element element = new Keyword("testValue", null).getXOMElementCopy();
-			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
-			ExtensibleAttributes elementAttributes = getInstance(SUCCESS, element);
+			// // Wrong class
 			Rights wrongComponent = new Rights(true, true, true);
-			assertFalse(elementAttributes.equals(wrongComponent));
+			assertFalse(elementComponent.equals(wrongComponent));
+
+			// Different attribute list sizes
+			ExtensibleAttributes.Builder builder = getBaseBuilder();
+			Attribute attr = new Attribute("essence:confidence", "http://essence/", "test");
+			builder.getAttributes().add(new ExtensibleAttributes.AttributeBuilder(attr));
+			assertFalse(elementComponent.equals(builder.commit()));
+
+			// Different attribute name
+			builder = getBaseBuilder();
+			builder.getAttributes().clear();
+			attr = new Attribute("ddmsence:confidence", TEST_NAMESPACE, "95");
+			builder.getAttributes().add(new ExtensibleAttributes.AttributeBuilder(attr));
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			// Different attribute namespace
+			builder = getBaseBuilder();
+			builder.getAttributes().clear();
+			attr = new Attribute("essence:relevance", "http://essence/", "95");
+			builder.getAttributes().add(new ExtensibleAttributes.AttributeBuilder(attr));
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testHTMLTextOutput() throws InvalidDDMSException {
+	public void testVersionSpecific() {
+		// No tests.
+	}
+
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Element element = new Keyword("testValue", null).getXOMElementCopy();
-			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
-			ExtensibleAttributes elementAttributes = getInstance(SUCCESS, element);
-			assertEquals(getExpectedOutput(true), elementAttributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false), elementAttributes.getOutput(false, ""));
 
-			List<Attribute> attributes = new ArrayList<Attribute>();
-			attributes.add(new Attribute(TEST_ATTRIBUTE));
-			elementAttributes = getInstance(SUCCESS, attributes);
-			assertEquals(getExpectedOutput(true), elementAttributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false), elementAttributes.getOutput(false, ""));
+			Element element = getElement();
+			element.addAttribute(new Attribute(getTestAttribute()));
+			ExtensibleAttributes elementComponent = getInstance(element, SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.getOutput(true, ""));
+			assertEquals(getExpectedOutput(false), elementComponent.getOutput(false, ""));
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			ExtensibleAttributes.Builder builder = new ExtensibleAttributes.Builder();
+			assertNotNull(builder.commit());
+			assertTrue(builder.isEmpty());
+
+			builder.getAttributes().add(new ExtensibleAttributes.AttributeBuilder(getTestAttribute()));
+			assertFalse(builder.isEmpty());
+		}
+	}
+
+	public void testBuilderLazyList() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			ExtensibleAttributes.Builder builder = new ExtensibleAttributes.Builder();
+			assertNotNull(builder.getAttributes().get(1));
+			assertTrue(builder.commit().getAttributes().isEmpty());
 		}
 	}
 
@@ -239,10 +280,22 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 			ExtensibleAttributes component = getFixture();
 
+			// Base case
 			Element element = Util.buildDDMSElement("sample", null);
 			component.addTo(element);
 			ExtensibleAttributes output = new ExtensibleAttributes(element);
 			assertEquals(component, output);
+			
+			// Duplicate
+			element = getElement();
+			element.addAttribute(getTestAttribute());
+			try {
+				component.addTo(element);
+				fail("addTo() allowed duplicate attribute.");
+			}
+			catch (InvalidDDMSException e) {
+				expectMessage(e, "The extensible attribute with");
+			}
 		}
 	}
 
@@ -258,56 +311,9 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 	public void testIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Element element = new Keyword("testValue", null).getXOMElementCopy();
-			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
-			ExtensibleAttributes elementAttributes = getInstance(SUCCESS, element);
-			assertFalse(elementAttributes.isEmpty());
 
-			ExtensibleAttributes dataAttributes = getInstance(SUCCESS, (List<Attribute>) null);
-			assertTrue(dataAttributes.isEmpty());
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Element element = new Keyword("testValue", null).getXOMElementCopy();
-			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
-			ExtensibleAttributes component = getInstance(SUCCESS, element);
-			ExtensibleAttributes.Builder builder = new ExtensibleAttributes.Builder(component);
-			assertEquals(component, builder.commit());
-		}
-	}
-
-	public void testBuilderIsEmpty() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			ExtensibleAttributes.Builder builder = new ExtensibleAttributes.Builder();
-			assertNotNull(builder.commit());
-			assertTrue(builder.isEmpty());
-			builder.getAttributes().add(new ExtensibleAttributes.AttributeBuilder(TEST_ATTRIBUTE));
-			assertFalse(builder.isEmpty());
-
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// No invalid cases right now, because validation cannot occur until these attributes are attached to
-			// something.
-		}
-	}
-
-	public void testBuilderLazyList() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			ExtensibleAttributes.Builder builder = new ExtensibleAttributes.Builder();
-			assertNotNull(builder.getAttributes().get(1));
-			assertTrue(builder.commit().getAttributes().isEmpty());
+			ExtensibleAttributes component = getInstance(getElement(), SUCCESS);
+			assertTrue(component.isEmpty());
 		}
 	}
 }
