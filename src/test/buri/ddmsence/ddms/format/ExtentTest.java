@@ -82,15 +82,14 @@ public class ExtentTest extends AbstractBaseTestCase {
 	 * Helper method to create an object which is expected to be valid.
 	 * 
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param qualifier the qualifier value
-	 * @param value the value
+	 * @param builder the builder to commit
 	 * @return a valid object
 	 */
-	private Extent getInstance(String message, String qualifier, String value) {
+	private Extent getInstance(String message, Extent.Builder builder) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Extent component = null;
 		try {
-			component = new Extent(qualifier, value);
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -98,6 +97,16 @@ public class ExtentTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+	
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 *  This builder can then be modified to test various conditions.
+	 */
+	private Extent.Builder getBaseBuilder() {
+		Extent component = getInstance(SUCCESS, getValidElement(DDMSVersion.getCurrentVersion().getVersion()));
+		return (new Extent.Builder(component));
 	}
 
 	/**
@@ -115,8 +124,9 @@ public class ExtentTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:extent ").append(getXmlnsDDMS()).append(" ddms:qualifier=\"").append(TEST_QUALIFIER).append(
-			"\" ddms:value=\"").append(TEST_VALUE).append("\" />");
+		xml.append("<ddms:extent ").append(getXmlnsDDMS()).append(" ");
+		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ");
+		xml.append("ddms:value=\"").append(TEST_VALUE).append("\" />");
 		return (xml.toString());
 	}
 
@@ -130,146 +140,106 @@ public class ExtentTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testElementConstructorValid() {
+	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			// All fields
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			// Element-based
 			getInstance(SUCCESS, getValidElement(sVersion));
-
-			// No optional fields
-			Element element = Util.buildDDMSElement(Extent.getName(version), null);
-			getInstance(SUCCESS, element);
+			
+			// Data-based via Builder
+			getBaseBuilder();
 		}
 	}
-
-	public void testDataConstructorValid() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// All fields
-			getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE);
-
-			// No optional fields
-			getInstance(SUCCESS, "", "");
-		}
-	}
-
-	public void testElementConstructorInvalid() {
+	
+	public void testConstructorsMinimal() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			// Missing qualifier
+		
+			// Element-based, no optional fields
 			Element element = Util.buildDDMSElement(Extent.getName(version), null);
-			Util.addDDMSAttribute(element, "value", TEST_VALUE);
-			getInstance("qualifier attribute is required.", element);
-
-			// Qualifier not URI
-			element = Util.buildDDMSElement(Extent.getName(version), null);
-			Util.addDDMSAttribute(element, "value", TEST_VALUE);
-			Util.addDDMSAttribute(element, "qualifier", INVALID_URI);
-			getInstance("Invalid URI", element);
+			Extent elementComponent = getInstance(SUCCESS, element);
+			
+			// Data-based via Builder, no optional fields
+			getInstance(SUCCESS, new Extent.Builder(elementComponent));			
 		}
 	}
-
-	public void testDataConstructorInvalid() {
+	
+	public void testValidationErrors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-
+		
 			// Missing qualifier
-			getInstance("qualifier attribute is required.", null, TEST_VALUE);
+			Extent.Builder builder = getBaseBuilder();
+			builder.setQualifier(null);
+			getInstance("qualifier attribute is required.", builder);
 
 			// Qualifier not URI
-			getInstance("Invalid URI", INVALID_URI, TEST_VALUE);
+			builder = getBaseBuilder();
+			builder.setQualifier(INVALID_URI);
+			getInstance("Invalid URI", builder);			
 		}
 	}
 
-	public void testWarnings() {
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			String extentName = Extent.getName(version);
-
+			final String locator = "ddms:extent";
+			
 			// No warnings
 			Extent component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Qualifier without value
-			Element element = Util.buildDDMSElement(extentName, null);
-			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
-			component = getInstance(SUCCESS, element);
+			Extent.Builder builder = getBaseBuilder();
+			builder.setValue(null);
+			component = getInstance(SUCCESS, builder);
 			assertEquals(1, component.getValidationWarnings().size());
-
 			String text = "A qualifier has been set without an accompanying value attribute.";
-			String locator = "ddms:extent";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 
-			// Neither attribute
-			element = Util.buildDDMSElement(extentName, null);
-			component = getInstance(SUCCESS, element);
-			assertEquals(1, component.getValidationWarnings().size());
+			// Completely empty
+			Element element = Util.buildDDMSElement(Extent.getName(version), null);
+			Extent elementComponent = getInstance(SUCCESS, element);
+			assertEquals(1, elementComponent.getValidationWarnings().size());
 			text = "A completely empty ddms:extent element was found.";
-			locator = "ddms:extent";
-			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			assertWarningEquality(text, locator, elementComponent.getValidationWarnings().get(0));
 		}
 	}
 
-	public void testConstructorEquality() {
+	public void testEquality() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			// Base equality
+			Extent elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Extent builderComponent = new Extent.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+
+			// Different values in each field
+			Extent.Builder builder = getBaseBuilder();
+			builder.setQualifier(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setValue(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
+		}
+	}
+
+	public void testVersionSpecific() {
+		// No tests.
+	}
+	
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Extent elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Extent dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE);
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-		}
-	}
-
-	public void testConstructorInequalityDifferentValues() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Extent elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Extent dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, DIFFERENT_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Extent component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE);
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Extent component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-
-			component = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE);
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Extent component = getInstance(SUCCESS, getValidElement(sVersion));
-			Extent.Builder builder = new Extent.Builder(component);
-			assertEquals(component, builder.commit());
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
 
@@ -280,27 +250,9 @@ public class ExtentTest extends AbstractBaseTestCase {
 			Extent.Builder builder = new Extent.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.setValue(TEST_VALUE);
 			assertFalse(builder.isEmpty());
-
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Extent.Builder builder = new Extent.Builder();
-			builder.setValue(TEST_VALUE);
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "qualifier attribute is required.");
-			}
-			builder.setQualifier(TEST_QUALIFIER);
-			builder.commit();
 		}
 	}
 }
