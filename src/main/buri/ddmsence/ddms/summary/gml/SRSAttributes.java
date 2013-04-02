@@ -126,10 +126,10 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	/**
 	 * Constructor which builds from raw data.
 	 * 
-	 * @param srsName the srsName (required if the name is not "pos")
-	 * @param srsDimension the srsDimension (optional)
-	 * @param axisLabels the axis labels (optional, but should be omitted if no srsName is set)
-	 * @param uomLabels the labels for UOM (required when axisLabels is set)
+	 * @param srsName the srsName 
+	 * @param srsDimension the srsDimension
+	 * @param axisLabels the axis labels
+	 * @param uomLabels the labels for UOM
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public SRSAttributes(String srsName, Integer srsDimension, List<String> axisLabels, List<String> uomLabels)

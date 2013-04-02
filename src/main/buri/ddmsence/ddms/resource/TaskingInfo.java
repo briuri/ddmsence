@@ -115,11 +115,11 @@ public final class TaskingInfo extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * @param requesterInfos list of requestors (optional)
-	 * @param addressees list of addressee (optional)
-	 * @param description description of tasking (optional)
-	 * @param taskID taskID for tasking (required)
-	 * @param securityAttributes any security attributes (required)
+	 * @param requesterInfos list of requestors
+	 * @param addressees list of addressee
+	 * @param description description of tasking
+	 * @param taskID taskID for tasking
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException
 	 */
 	public TaskingInfo(List<RequesterInfo> requesterInfos, List<Addressee> addressees, Description description,

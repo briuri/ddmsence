@@ -112,12 +112,12 @@ public final class Dates extends AbstractBaseComponent {
 	 * @deprecated A new constructor was added for DDMS 4.1 to support ddms:acquiredOn. This constructor is preserved
 	 *             for backwards compatibility, but may disappear in the next major release.
 	 * 
-	 * @param created the creation date (optional)
-	 * @param posted the posting date (optional)
-	 * @param validTil the expiration date (optional)
-	 * @param infoCutOff the info cutoff date (optional)
-	 * @param approvedOn the approved on date (optional, starting in DDMS 3.1)
-	 * @param receivedOn the received on date (optional, starting in DDMS 4.0.1)
+	 * @param created the creation date
+	 * @param posted the posting date
+	 * @param validTil the expiration date
+	 * @param infoCutOff the info cutoff date
+	 * @param approvedOn the approved on date
+	 * @param receivedOn the received on date
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Dates(String created, String posted, String validTil, String infoCutOff, String approvedOn, String receivedOn)
@@ -128,13 +128,13 @@ public final class Dates extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data.
 	 * 
-	 * @param acquiredOns the acquisition dates (optional, starting in DDMS 4.1)
-	 * @param created the creation date (optional)
-	 * @param posted the posting date (optional)
-	 * @param validTil the expiration date (optional)
-	 * @param infoCutOff the info cutoff date (optional)
-	 * @param approvedOn the approved on date (optional, starting in DDMS 3.1)
-	 * @param receivedOn the received on date (optional, starting in DDMS 4.0.1)
+	 * @param acquiredOns the acquisition dates
+	 * @param created the creation date
+	 * @param posted the posting date
+	 * @param validTil the expiration date
+	 * @param infoCutOff the info cutoff date
+	 * @param approvedOn the approved on date
+	 * @param receivedOn the received on date
 	 * 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
@@ -276,7 +276,7 @@ public final class Dates extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the created date (optional). Returns a copy.
+	 * Accessor for the created date. Returns a copy.
 	 * 
 	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
 	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
@@ -293,14 +293,14 @@ public final class Dates extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the created date (optional).
+	 * Accessor for the created date.
 	 */
 	public String getCreatedString() {
 		return (getAttributeValue(CREATED_NAME));
 	}
 
 	/**
-	 * Accessor for the posted date (optional). Returns a copy.
+	 * Accessor for the posted date. Returns a copy.
 	 * 
 	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
 	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
@@ -317,14 +317,14 @@ public final class Dates extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the posted date (optional).
+	 * Accessor for the posted date.
 	 */
 	public String getPostedString() {
 		return (getAttributeValue(POSTED_NAME));
 	}
 
 	/**
-	 * Accessor for the expiration date (optional). Returns a copy.
+	 * Accessor for the expiration date. Returns a copy.
 	 * 
 	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
 	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
@@ -341,14 +341,14 @@ public final class Dates extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the expiration date (optional).
+	 * Accessor for the expiration date.
 	 */
 	public String getValidTilString() {
 		return (getAttributeValue(VALID_TIL_NAME));
 	}
 
 	/**
-	 * Accessor for the cutoff date (optional). Returns a copy.
+	 * Accessor for the cutoff date. Returns a copy.
 	 * 
 	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
 	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
@@ -365,14 +365,14 @@ public final class Dates extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the cutoff date (optional).
+	 * Accessor for the cutoff date.
 	 */
 	public String getInfoCutOffString() {
 		return (getAttributeValue(INFO_CUT_OFF_NAME));
 	}
 
 	/**
-	 * Accessor for the approved on date (optional). Returns a copy.
+	 * Accessor for the approved on date. Returns a copy.
 	 * 
 	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
 	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
@@ -389,14 +389,14 @@ public final class Dates extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the approved on date (optional).
+	 * Accessor for the approved on date.
 	 */
 	public String getApprovedOnString() {
 		return (getAttributeValue(APPROVED_ON_NAME));
 	}
 
 	/**
-	 * Accessor for the received on date (optional). Returns a copy.
+	 * Accessor for the received on date. Returns a copy.
 	 * 
 	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
 	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
@@ -413,7 +413,7 @@ public final class Dates extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the received on date (optional).
+	 * Accessor for the received on date.
 	 */
 	public String getReceivedOnString() {
 		return (getAttributeValue(RECEIVED_ON_NAME));

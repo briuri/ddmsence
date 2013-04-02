@@ -90,8 +90,8 @@ public class RecordKeeper extends AbstractBaseComponent {
 	/**
 	 * Constructor which builds from raw data.
 	 * 
-	 * @param recordKeeperID a unique ID for the organization (required)
-	 * @param organization the organization acting as record keeper (required)
+	 * @param recordKeeperID a unique ID for the organization
+	 * @param organization the organization acting as record keeper
 	 */
 	public RecordKeeper(String recordKeeperID, Organization organization) throws InvalidDDMSException {
 		try {

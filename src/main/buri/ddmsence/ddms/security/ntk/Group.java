@@ -96,9 +96,9 @@ public final class Group extends AbstractAccessEntity {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * @param systemName the system name (required)
-	 * @param groupValues the list of values (at least 1 required)
-	 * @param securityAttributes security attributes (required)
+	 * @param systemName the system name
+	 * @param groupValues the list of values
+	 * @param securityAttributes security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Group(SystemName systemName, List<GroupValue> groupValues, SecurityAttributes securityAttributes)

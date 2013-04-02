@@ -597,7 +597,7 @@ public class Util {
 	 * The resultant element will use the DDMS prefix and have no attributes or children (yet).
 	 * 
 	 * @param name the local name of the element
-	 * @param childText the text of the element (optional)
+	 * @param childText the text of the element
 	 */
 	public static Element buildDDMSElement(String name, String childText) {
 		return (buildElement(PropertyReader.getPrefix("ddms"), name, DDMSVersion.getCurrentVersion().getNamespace(),
@@ -611,7 +611,7 @@ public class Util {
 	 * @param prefix the prefix to use (without a trailing colon)
 	 * @param name the local name of the element
 	 * @param namespaceURI the namespace this element is in
-	 * @param childText the text of the element (optional)
+	 * @param childText the text of the element
 	 */
 	public static Element buildElement(String prefix, String name, String namespaceURI, String childText) {
 		Util.requireValue("name", name);

@@ -85,9 +85,7 @@ public final class ProductionMetric extends AbstractBaseComponent {
 	 * Constructor for creating a component from raw data.
 	 * 
 	 * @param subject a method of categorizing the subject of a document in a fashion understandable by DDNI-A
-	 *        (required)
 	 * @param coverage a method of categorizing the coverage of a document in a fashion understandable by DDNI-A
-	 *        (required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ProductionMetric(String subject, String coverage, SecurityAttributes securityAttributes)

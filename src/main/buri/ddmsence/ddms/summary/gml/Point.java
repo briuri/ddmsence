@@ -91,10 +91,9 @@ public final class Point extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * @param position the position of the Point (required)
-	 * @param srsAttributes the attribute group containing srsName, srsDimension, axisLabels, and uomLabels (srsName
-	 *        required)
-	 * @param id the id value (required)
+	 * @param position the position of the Point
+	 * @param srsAttributes the attribute group containing srsName, srsDimension, axisLabels, and uomLabels
+	 * @param id the id value
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Point(Position position, SRSAttributes srsAttributes, String id) throws InvalidDDMSException {

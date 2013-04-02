@@ -98,7 +98,7 @@ public final class Service extends AbstractRoleEntity {
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
 	 * @param affiliations the affiliations of the service
-	 * @param extensions extensible attributes (optional)
+	 * @param extensions extensible attributes
 	 */
 	public Service(List<String> names, List<String> phones, List<String> emails, List<String> affiliations,
 		ExtensibleAttributes extensions) throws InvalidDDMSException {
@@ -156,7 +156,7 @@ public final class Service extends AbstractRoleEntity {
 	}
 
 	/**
-	 * Accessor for the affiliations of the person
+	 * Accessor for the affiliations of the service
 	 */
 	public List<String> getAffiliations() {
 		return (Collections.unmodifiableList(_affiliations));

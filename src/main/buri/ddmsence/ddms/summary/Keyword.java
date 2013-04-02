@@ -86,8 +86,8 @@ public final class Keyword extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * @param value the value attribute (required)
-	 * @param securityAttributes any security attributes (optional)
+	 * @param value the value attribute
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Keyword(String value, SecurityAttributes securityAttributes) throws InvalidDDMSException {
@@ -100,9 +100,9 @@ public final class Keyword extends AbstractBaseComponent {
 	 * <p>This constructor will throw an InvalidDDMSException if the extensible attributes uses the reserved
 	 * attribute "ddms:value".</p>
 	 * 
-	 * @param value the value attribute (required)
-	 * @param securityAttributes any security attributes (optional)
-	 * @param extensibleAttributes extensible attributes (optional)
+	 * @param value the value attribute
+	 * @param securityAttributes any security attributes
+	 * @param extensibleAttributes extensible attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Keyword(String value, SecurityAttributes securityAttributes, ExtensibleAttributes extensibleAttributes)

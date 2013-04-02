@@ -90,10 +90,10 @@ public final class Category extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * @param qualifier the qualifier (optional)
-	 * @param code the code (optional)
-	 * @param label the label (required)
-	 * @param securityAttributes any security attributes (optional)
+	 * @param qualifier the qualifier
+	 * @param code the code
+	 * @param label the label
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Category(String qualifier, String code, String label, SecurityAttributes securityAttributes)
@@ -107,11 +107,11 @@ public final class Category extends AbstractBaseComponent {
 	 * <p>This constructor will throw an InvalidDDMSException if the extensible attributes uses the reserved
 	 * attributes, "ddms:qualifier", "ddms:code", or "ddms:label".</p>
 	 * 
-	 * @param qualifier the qualifier (optional)
-	 * @param code the code (optional)
-	 * @param label the label (required)
-	 * @param securityAttributes any security attributes (optional)
-	 * @param extensibleAttributes extensible attributes (optional)
+	 * @param qualifier the qualifier
+	 * @param code the code
+	 * @param label the label
+	 * @param securityAttributes any security attributes
+	 * @param extensibleAttributes extensible attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Category(String qualifier, String code, String label, SecurityAttributes securityAttributes,

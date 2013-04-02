@@ -143,7 +143,7 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the nameof the value attribute
+	 * Accessor for the name of the value attribute
 	 */
 	public String getValueName() {
 		return (_useClassicAttributeNames ? VALUE_NAME : CODE_NAME);

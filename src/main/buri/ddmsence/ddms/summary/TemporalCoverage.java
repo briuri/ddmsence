@@ -143,10 +143,10 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data, using two exact date values.
 	 * 
-	 * @param timePeriodName the time period name (optional) (if empty, defaults to Unknown)
-	 * @param startString a string representation of the date (required) (if empty, defaults to Unknown)
-	 * @param endString a string representation of the end date (required) (if empty, defaults to Unknown)
-	 * @param securityAttributes any security attributes (optional)
+	 * @param timePeriodName the time period name
+	 * @param startString a string representation of the date
+	 * @param endString a string representation of the end date
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public TemporalCoverage(String timePeriodName, String startString, String endString,
@@ -158,10 +158,10 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * Constructor for creating a component from raw data, using an exact start date
 	 * and an approximable end date.
 	 * 
-	 * @param timePeriodName the time period name (optional) (if empty, defaults to Unknown)
-	 * @param startString a string representation of the date (required) (if empty, defaults to Unknown)
-	 * @param approximableEnd the end date, as an approximable date (required)
-	 * @param securityAttributes any security attributes (optional)
+	 * @param timePeriodName the time period name
+	 * @param startString a string representation of the date
+	 * @param approximableEnd the end date, as an approximable date
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public TemporalCoverage(String timePeriodName, String startString, ApproximableDate approximableEnd,
@@ -173,10 +173,10 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * Constructor for creating a component from raw data, using an approximable start date
 	 * and an exact end date.
 	 * 
-	 * @param timePeriodName the time period name (optional) (if empty, defaults to Unknown)
-	 * @param approximableStart the start date, as an approximable date (required)
-	 * @param endString a string representation of the end date (required) (if empty, defaults to Unknown)
-	 * @param securityAttributes any security attributes (optional)
+	 * @param timePeriodName the time period name
+	 * @param approximableStart the start date, as an approximable date
+	 * @param endString a string representation of the end date
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public TemporalCoverage(String timePeriodName, ApproximableDate approximableStart, String endString,
@@ -187,10 +187,10 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data, using two approximable dates.
 	 * 
-	 * @param timePeriodName the time period name (optional) (if empty, defaults to Unknown)
-	 * @param approximableStart the start date, as an approximable date (required)
-	 * @param approximableEnd the end date, as an approximable date (required)
-	 * @param securityAttributes any security attributes (optional)
+	 * @param timePeriodName the time period name (if empty, defaults to Unknown)
+	 * @param approximableStart the start date, as an approximable date
+	 * @param approximableEnd the end date, as an approximable date
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public TemporalCoverage(String timePeriodName, ApproximableDate approximableStart,
@@ -202,12 +202,12 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * Constructor for creating a component from raw data, which handles all permutations of exact and
 	 * approximable date formats.
 	 * 
-	 * @param timePeriodName the time period name (optional) (if empty, defaults to Unknown)
-	 * @param startString a string representation of the date (optional) (if empty, defaults to Unknown)
-	 * @param approximableStart the start date, as an approximable date (optional)
-	 * @param endString a string representation of the end date (optional) (if empty, defaults to Unknown)
-	 * @param approximableEnd the end date, as an approximable date (optional)
-	 * @param securityAttributes any security attributes (optional)
+	 * @param timePeriodName the time period name (if empty, defaults to Unknown)
+	 * @param startString a string representation of the date (if empty, defaults to Unknown)
+	 * @param approximableStart the start date, as an approximable date
+	 * @param endString a string representation of the end date (if empty, defaults to Unknown)
+	 * @param approximableEnd the end date, as an approximable date
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	private TemporalCoverage(String timePeriodName, String startString, ApproximableDate approximableStart,

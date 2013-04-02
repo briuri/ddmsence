@@ -127,7 +127,7 @@ public final class Access extends AbstractBaseComponent {
 	 * @param individuals a list of individuals
 	 * @param groups a list of groups
 	 * @param profileList the profile list
-	 * @param securityAttributes security attributes (required)
+	 * @param securityAttributes security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Access(List<Individual> individuals, List<Group> groups, ProfileList profileList,
@@ -141,8 +141,8 @@ public final class Access extends AbstractBaseComponent {
 	 * @param individuals a list of individuals
 	 * @param groups a list of groups
 	 * @param profileList the profile list
-	 * @param externalReference a boolean attribute (optional)
-	 * @param securityAttributes security attributes (required)
+	 * @param externalReference a boolean attribute
+	 * @param securityAttributes security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Access(List<Individual> individuals, List<Group> groups, ProfileList profileList, Boolean externalReference,

@@ -115,7 +115,7 @@ public final class Organization extends AbstractRoleEntity {
 	 * @param emails an ordered list of email addresses
 	 * @param subOrganizations an ordered list of suborganizations
 	 * @param acronym the organization's acronym
-	 * @param extensions extensible attributes (optional)
+	 * @param extensions extensible attributes
 	 */
 	public Organization(List<String> names, List<String> phones, List<String> emails,
 		List<SubOrganization> subOrganizations, String acronym, ExtensibleAttributes extensions)
@@ -199,7 +199,7 @@ public final class Organization extends AbstractRoleEntity {
 	}
 
 	/**
-	 * Accessor for the suborganizations (0-many)
+	 * Accessor for the suborganizations
 	 */
 	public List<SubOrganization> getSubOrganizations() {
 		return (Collections.unmodifiableList(_subOrganizations));

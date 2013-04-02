@@ -176,9 +176,9 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	/**
 	 * Constructor which builds from raw data for a resource link.
 	 * 
-	 * @param role the role attribute (optional)
-	 * @param title the link title (optional)
-	 * @param label the name of the link (optional)
+	 * @param role the role attribute
+	 * @param title the link title
+	 * @param label the name of the link
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public XLinkAttributes(String role, String title, String label) throws InvalidDDMSException {
@@ -193,10 +193,10 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	/**
 	 * Constructor which builds from raw data for a locator link.
 	 * 
-	 * @param href the link href (optional)
-	 * @param role the role attribute (optional)
-	 * @param title the link title (optional)
-	 * @param label the name of the link (optional)
+	 * @param href the link href
+	 * @param role the role attribute
+	 * @param title the link title
+	 * @param label the name of the link
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public XLinkAttributes(String href, String role, String title, String label) throws InvalidDDMSException {
@@ -212,12 +212,12 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	/**
 	 * Constructor which builds from raw data for a simple link.
 	 * 
-	 * @param href the link href (optional)
-	 * @param role the role attribute (optional)
-	 * @param title the link title (optional)
-	 * @param arcrole the arcrole (optional)
-	 * @param show the show token (optional)
-	 * @param actuate the actuate token (optional)
+	 * @param href the link href
+	 * @param role the role attribute
+	 * @param title the link title
+	 * @param arcrole the arcrole
+	 * @param show the show token
+	 * @param actuate the actuate token
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public XLinkAttributes(String href, String role, String title, String arcrole, String show, String actuate)

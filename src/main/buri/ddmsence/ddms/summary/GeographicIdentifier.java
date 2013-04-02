@@ -114,10 +114,10 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * Constructor for creating a component from raw data. Note that the facilityIdentifier component cannot be used
 	 * with the components in this constructor.
 	 * 
-	 * @param names the names (optional)
-	 * @param regions the region names (optional)
-	 * @param countryCode the country code (optional)
-	 * @param subDivisionCode the subdivision code (optional, starting in DDMS 4.0.1)
+	 * @param names the names
+	 * @param regions the region names
+	 * @param countryCode the country code
+	 * @param subDivisionCode the subdivision code
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public GeographicIdentifier(List<String> names, List<String> regions, CountryCode countryCode,

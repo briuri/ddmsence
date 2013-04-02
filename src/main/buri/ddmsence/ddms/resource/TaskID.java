@@ -101,10 +101,10 @@ public final class TaskID extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * @param value the child text (optional)
-	 * @param taskingSystem the tasking system (optional)
-	 * @param network the network (optional)
-	 * @param otherNetwork another network (optional)
+	 * @param value the child text
+	 * @param taskingSystem the tasking system
+	 * @param network the network
+	 * @param otherNetwork another network
 	 * @param xlinkAttributes simple xlink attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */

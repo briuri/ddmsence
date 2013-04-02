@@ -97,9 +97,9 @@ public abstract class AbstractNtkString extends AbstractBaseComponent {
 	 * @param tokenBased true if the child text is an NMTOKEN, false if it's just a string
 	 * @param name the name of the element without a prefix
 	 * @param value the value of the element's child text
-	 * @param id the NTK ID (optional)
-	 * @param idReference a reference to an NTK ID (optional)
-	 * @param qualifier an NTK qualifier (optional)
+	 * @param id the NTK ID
+	 * @param idReference a reference to an NTK ID
+	 * @param qualifier an NTK qualifier
 	 * @param securityAttributes the security attributes
 	 * @param validateNow whether to validate immediately
 	 */

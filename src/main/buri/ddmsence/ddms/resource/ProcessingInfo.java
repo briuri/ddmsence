@@ -80,8 +80,8 @@ public final class ProcessingInfo extends AbstractSimpleString {
 	 * Constructor for creating a component from raw data
 	 * 
 	 * @param value the value of the child text
-	 * @param dateProcessed the processing date (required)
-	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
+	 * @param dateProcessed the processing date
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ProcessingInfo(String value, String dateProcessed, SecurityAttributes securityAttributes)
@@ -151,7 +151,7 @@ public final class ProcessingInfo extends AbstractSimpleString {
 	}
 
 	/**
-	 * Accessor for the processing date (required). Returns a copy.
+	 * Accessor for the processing date. Returns a copy.
 	 * 
 	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
 	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
@@ -168,7 +168,7 @@ public final class ProcessingInfo extends AbstractSimpleString {
 	}
 
 	/**
-	 * Accessor for the processing date (required).
+	 * Accessor for the processing date.
 	 */
 	public String getDateProcessedString() {
 		return (getAttributeValue(DATE_PROCESSED_NAME));

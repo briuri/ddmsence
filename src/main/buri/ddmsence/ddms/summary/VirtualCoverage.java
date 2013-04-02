@@ -96,9 +96,9 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 * @deprecated A new constructor was added for DDMS 5.0 to support ntk:access and virt:network. This constructor is
 	 *             preserved for backwards compatibility, but may disappear in the next major release.
 	 * 
-	 * @param address the virtual address (optional)
-	 * @param protocol the network protocol (optional, should be used if address is provided)
-	 * @param securityAttributes any security attributes (optional)
+	 * @param address the virtual address
+	 * @param protocol the network protocol
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public VirtualCoverage(String address, String protocol, SecurityAttributes securityAttributes)
@@ -109,11 +109,11 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * @param address the virtual address (optional)
-	 * @param protocol the network protocol (optional, should be used if address is provided)
-	 * @param access an NTK portion access pattern (optional)
-	 * @param network a VIRT network name (optional)
-	 * @param securityAttributes any security attributes (optional)
+	 * @param address the virtual address
+	 * @param protocol the network protocol
+	 * @param access an NTK portion access pattern
+	 * @param network a VIRT network name
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public VirtualCoverage(String address, String protocol, String access, String network, SecurityAttributes securityAttributes)
@@ -223,7 +223,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the address attribute (optional)
+	 * Accessor for the address attribute
 	 */
 	public String getAddress() {
 		if (getDDMSVersion().isAtLeast("5.0"))
@@ -241,14 +241,14 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the access attribute (optional)
+	 * Accessor for the access attribute
 	 */
 	public String getAccess() {
 		return (getAttributeValue(ACCESS_NAME, getDDMSVersion().getNtkNamespace()));
 	}
 	
 	/**
-	 * Accessor for the network attribute (optional)
+	 * Accessor for the network attribute
 	 */
 	public String getNetwork() {
 		return (getAttributeValue(NETWORK_NAME, getDDMSVersion().getVirtNamespace()));

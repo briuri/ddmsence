@@ -143,11 +143,11 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 * Constructor for creating a component from raw data
 	 * 
 	 * @param links the xlinks
-	 * @param relationship the relationship attribute (required)
-	 * @param direction the relationship direction (optional)
+	 * @param relationship the relationship attribute
+	 * @param direction the relationship direction
 	 * @param qualifier the value of the qualifier attribute
 	 * @param value the value of the value attribute
-	 * @param securityAttributes any security attributes (optional)
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public RelatedResource(List<Link> links, String relationship, String direction, String qualifier, String value,

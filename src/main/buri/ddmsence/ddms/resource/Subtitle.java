@@ -72,7 +72,7 @@ public final class Subtitle extends AbstractSimpleString {
 	 * Constructor for creating a component from raw data
 	 * 
 	 * @param subtitle the value of the subtitle child text
-	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Subtitle(String subtitle, SecurityAttributes securityAttributes) throws InvalidDDMSException {
