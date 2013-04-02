@@ -24,7 +24,6 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
-import buri.ddmsence.ddms.IRoleEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -89,12 +88,12 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private RequesterInfo getInstance(String message, Element element) {
+	private RequesterInfo getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		RequesterInfo component = null;
 		try {
@@ -111,15 +110,16 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param entity the person or organization in this role
-	 * @param org the organization
+	 * 
+	 * @return a valid object
 	 */
-	private RequesterInfo getInstance(String message, IRoleEntity entity) {
+	private RequesterInfo getInstance(RequesterInfo.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		RequesterInfo component = null;
 		try {
-			component = new RequesterInfo(entity, SecurityAttributesTest.getFixture());
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -127,6 +127,18 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 * 
+	 * @param useOrg true to put an organization in, false for a person
+	 */
+	private RequesterInfo.Builder getBaseBuilder(boolean useOrg) {
+		RequesterInfo component = getInstance(getFixtureElement(useOrg), SUCCESS);
+		return (new RequesterInfo.Builder(component));
 	}
 
 	/**
@@ -157,165 +169,99 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement(true)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getFixtureElement(true), SUCCESS), DEFAULT_DDMS_PREFIX,
 				RequesterInfo.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// All fields, organization
-			getInstance(SUCCESS, getFixtureElement(true));
+			// Element-based, organization
+			getInstance(getFixtureElement(true), SUCCESS);
 
-			// All fields, person
-			getInstance(SUCCESS, getFixtureElement(false));
+			// Element-based, person
+			getInstance(getFixtureElement(false), SUCCESS);
+
+			// Data-based via Builder, organization
+			getBaseBuilder(true);
+
+			// Data-based via Builder, person
+			getBaseBuilder(false);
 		}
 	}
 
-	public void testDataConstructorValid() throws InvalidDDMSException {
+	public void testConstructorsMinimal() {
+		// No tests.
+	}
+
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-
-			// All fields, organization
-			getInstance(SUCCESS, OrganizationTest.getFixture());
-
-			// All fields, person
-			getInstance(SUCCESS, PersonTest.getFixture());
-		}
-	}
-
-	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing entity
-			Element element = Util.buildDDMSElement(RequesterInfo.getName(version), null);
-			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("entity is required.", element);
+			RequesterInfo.Builder builder = getBaseBuilder(true);
+			builder.setEntityType(null);
+			builder.setOrganization(null);
+			getInstance(builder, "entity is required.");
 
 			// Missing security attributes
-			element = Util.buildDDMSElement(RequesterInfo.getName(version), null);
-			element.appendChild(OrganizationTest.getFixture().getXOMElementCopy());
-			getInstance("classification is required.", element);
-		}
-	}
-
-	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// Missing entity
-			getInstance("entity is required.", (IRoleEntity) null);
+			builder = getBaseBuilder(true);
+			builder.setSecurityAttributes(null);
+			getInstance(builder, "classification is required.");
 
 			// Wrong entity
-			getInstance("The entity must be a person or an organization.", new Service(Util.getXsListAsList("Service"),
-				null, null));
-
-			// Missing security attributes
 			try {
-				new RequesterInfo(OrganizationTest.getFixture(), null);
-				fail("Allowed invalid data.");
+				new RequesterInfo(ServiceTest.getFixture(), SecurityAttributesTest.getFixture());
+				fail("Constructor allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "classification is required.");
+				expectMessage(e, "The entity must be a ");
 			}
 		}
 	}
 
-	public void testWarnings() throws InvalidDDMSException {
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			RequesterInfo component = getInstance(SUCCESS, getFixtureElement(true));
+			RequesterInfo component = getInstance(getFixtureElement(true), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			RequesterInfo elementComponent = getInstance(SUCCESS, getFixtureElement(true));
-			RequesterInfo dataComponent = getInstance(SUCCESS, OrganizationTest.getFixture());
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			// Base equality
+			RequesterInfo elementComponent = getInstance(getFixtureElement(true), SUCCESS);
+			RequesterInfo builderComponent = new RequesterInfo.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+
+			// Different values in each field
+			RequesterInfo.Builder builder = getBaseBuilder(false);
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
+	public void testVersionSpecific() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("2.0");
+		getInstance(getFixtureElement(true), "The requesterInfo element cannot");
+	}
+
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			RequesterInfo elementComponent = getInstance(SUCCESS, getFixtureElement(true));
-			RequesterInfo dataComponent = getInstance(SUCCESS, PersonTest.getFixture());
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			RequesterInfo elementComponent = getInstance(SUCCESS, getFixtureElement(true));
-			Rights wrongComponent = new Rights(true, true, true);
-			assertFalse(elementComponent.equals(wrongComponent));
-		}
-	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			RequesterInfo component = getInstance(SUCCESS, getFixtureElement(true));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, OrganizationTest.getFixture());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			RequesterInfo component = getInstance(SUCCESS, getFixtureElement(true));
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-
-			component = getInstance(SUCCESS, OrganizationTest.getFixture());
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testWrongVersion() {
-		try {
-			DDMSVersion.setCurrentVersion("2.0");
-			new RequesterInfo(OrganizationTest.getFixture(), SecurityAttributesTest.getFixture());
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "The requesterInfo element cannot be used");
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// Equality after Building, organization
-			RequesterInfo component = getInstance(SUCCESS, getFixtureElement(true));
-			RequesterInfo.Builder builder = new RequesterInfo.Builder(component);
-			assertEquals(component, builder.commit());
-
-			// Equality after Building, person
-			component = getInstance(SUCCESS, getFixtureElement(false));
-			builder = new RequesterInfo.Builder(component);
-			assertEquals(component, builder.commit());
+			RequesterInfo elementComponent = getInstance(getFixtureElement(true), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
 
@@ -326,29 +272,9 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 			RequesterInfo.Builder builder = new RequesterInfo.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
-			builder.getPerson().setSurname("surname");
+
+			builder.getPerson().setNames(Util.getXsListAsList("Name"));
 			assertFalse(builder.isEmpty());
-
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			RequesterInfo.Builder builder = new RequesterInfo.Builder();
-			builder.getPerson().setNames(Util.getXsListAsList("Brian"));
-			builder.getPerson().setSurname("Uri");
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "classification is required.");
-			}
-			builder.getSecurityAttributes().setClassification("U");
-			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-			builder.commit();
 		}
 	}
 }

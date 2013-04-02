@@ -76,13 +76,12 @@ public class RecordKeeperTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private RecordKeeper getInstance(String message, Element element) {
+	private RecordKeeper getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		RecordKeeper component = null;
 		try {
@@ -99,15 +98,16 @@ public class RecordKeeperTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param recordKeeperID ID value
-	 * @param org the organization
+	 * 
+	 * @return a valid object
 	 */
-	private RecordKeeper getInstance(String message, String recordKeeperID, Organization org) {
+	private RecordKeeper getInstance(RecordKeeper.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		RecordKeeper component = null;
 		try {
-			component = new RecordKeeper(recordKeeperID, org);
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -115,6 +115,16 @@ public class RecordKeeperTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private RecordKeeper.Builder getBaseBuilder() {
+		RecordKeeper component = getInstance(getFixtureElement(), SUCCESS);
+		return (new RecordKeeper.Builder(component));
 	}
 
 	/**
@@ -146,146 +156,91 @@ public class RecordKeeperTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getFixtureElement(), SUCCESS), DEFAULT_DDMS_PREFIX,
 				RecordKeeper.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// All fields
-			getInstance(SUCCESS, getFixtureElement());
+			// Element-based
+			getInstance(getFixtureElement(), SUCCESS);
+
+			// Data-based via Builder
+			getBaseBuilder();
 		}
 	}
 
-	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// All fields
-			getInstance(SUCCESS, TEST_ID, OrganizationTest.getFixture());
-		}
+	public void testConstructorsMinimal() throws InvalidDDMSException {
+		// No tests.
 	}
-
-	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			// Missing recordKeeperID
-			Element element = Util.buildDDMSElement(RecordKeeper.getName(version), null);
-			element.appendChild(OrganizationTest.getFixture().getXOMElementCopy());
-			getInstance("record keeper ID is required.", element);
-
-			// Empty recordKeeperID
-			element = Util.buildDDMSElement(RecordKeeper.getName(version), null);
-			element.appendChild(Util.buildDDMSElement("recordKeeperID", null));
-			element.appendChild(OrganizationTest.getFixture().getXOMElementCopy());
-			getInstance("record keeper ID is required.", element);
-
-			// Missing organization
-			element = Util.buildDDMSElement(RecordKeeper.getName(version), null);
-			element.appendChild(Util.buildDDMSElement("recordKeeperID", TEST_ID));
-			getInstance("organization is required.", element);
-		}
-	}
-
-	public void testDataConstructorInvalid() throws InvalidDDMSException {
+	
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing recordKeeperID
-			getInstance("record keeper ID is required.", null, OrganizationTest.getFixture());
-
+			RecordKeeper.Builder builder = getBaseBuilder();
+			builder.setRecordKeeperID(null);			
+			getInstance(builder, "record keeper ID is required.");
+			
 			// Missing organization
-			getInstance("organization is required.", TEST_ID, null);
+			builder = getBaseBuilder();
+			builder.setOrganization(null);			
+			getInstance(builder, "organization is required.");
 		}
 	}
-
-	public void testWarnings() throws InvalidDDMSException {
+	
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			RecordKeeper component = getInstance(SUCCESS, getFixtureElement());
+			RecordKeeper component = getInstance(getFixtureElement(), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			RecordKeeper elementComponent = getInstance(SUCCESS, getFixtureElement());
-			RecordKeeper dataComponent = getInstance(SUCCESS, TEST_ID, OrganizationTest.getFixture());
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			// Base equality
+			RecordKeeper elementComponent = getInstance(getFixtureElement(), SUCCESS);
+			RecordKeeper builderComponent = new RecordKeeper.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+
+			// Different values in each field
+			RecordKeeper.Builder builder = getBaseBuilder();
+			builder.setRecordKeeperID(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.getOrganization().setAcronym("DARPA");
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
+	public void testVersionSpecific() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("2.0");
+		getInstance(getFixtureElement(), "The recordKeeper element cannot");
+	}
+	
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			RecordKeeper elementComponent = getInstance(SUCCESS, getFixtureElement());
-			RecordKeeper dataComponent = getInstance(SUCCESS, "newID", OrganizationTest.getFixture());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, TEST_ID, new Organization(Util.getXsListAsList("DARPA"), null, null,
-				null, null));
-			assertFalse(elementComponent.equals(dataComponent));
+			RecordKeeper elementComponent = getInstance(getFixtureElement(), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			RecordKeeper component = getInstance(SUCCESS, getFixtureElement());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, TEST_ID, OrganizationTest.getFixture());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			RecordKeeper component = getInstance(SUCCESS, getFixtureElement());
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-
-			component = getInstance(SUCCESS, TEST_ID, OrganizationTest.getFixture());
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testWrongVersion() {
-		try {
-			DDMSVersion.setCurrentVersion("2.0");
-			new RecordKeeper(TEST_ID, OrganizationTest.getFixture());
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "The recordKeeper element cannot be used");
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			RecordKeeper component = getInstance(SUCCESS, getFixtureElement());
-			RecordKeeper.Builder builder = new RecordKeeper.Builder(component);
-			assertEquals(component, builder.commit());
-		}
-	}
-
+	
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -293,27 +248,9 @@ public class RecordKeeperTest extends AbstractBaseTestCase {
 			RecordKeeper.Builder builder = new RecordKeeper.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.setRecordKeeperID(TEST_ID);
 			assertFalse(builder.isEmpty());
-
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			RecordKeeper.Builder builder = new RecordKeeper.Builder();
-			builder.setRecordKeeperID(TEST_ID);
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "organization is required.");
-			}
-			builder.getOrganization().setNames(Util.getXsListAsList(TEST_NAME));
-			builder.commit();
 		}
 	}
 }

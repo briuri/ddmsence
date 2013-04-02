@@ -150,10 +150,8 @@ public class PositionTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<gml:pos ").append(getXmlnsGML()).append(" ");
 		xml.append("srsName=\"").append(SRSAttributesTest.TEST_SRS_NAME).append("\" ");
@@ -161,7 +159,7 @@ public class PositionTest extends AbstractBaseTestCase {
 		xml.append("axisLabels=\"").append(Util.getXsList(SRSAttributesTest.TEST_AXIS_LABELS)).append("\" ");
 		xml.append("uomLabels=\"").append(Util.getXsList(SRSAttributesTest.TEST_UOM_LABELS)).append("\">");
 		xml.append(TEST_XS_LIST).append("</gml:pos>");
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() throws InvalidDDMSException {
@@ -334,10 +332,10 @@ public class PositionTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Position component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(true), component.toXML());
+			assertEquals(getExpectedXMLOutput(), component.toXML());
 
 			component = getInstance(SUCCESS, TEST_COORDS, SRSAttributesTest.getFixture());
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
+			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
 

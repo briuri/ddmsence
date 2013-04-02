@@ -26,7 +26,6 @@ import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
-import buri.ddmsence.ddms.summary.Description;
 import buri.ddmsence.ddms.summary.DescriptionTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -90,13 +89,12 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private TaskingInfo getInstance(String message, Element element) {
+	private TaskingInfo getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		TaskingInfo component = null;
 		try {
@@ -113,19 +111,16 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param requesterInfos list of requestors (optional)
-	 * @param addressees list of addressee (optional)
-	 * @param description description of tasking (optional)
-	 * @param taskID taskID for tasking (required)
+	 * 
+	 * @return a valid object
 	 */
-	private TaskingInfo getInstance(String message, List<RequesterInfo> requesterInfos, List<Addressee> addressees,
-		Description description, TaskID taskID) {
+	private TaskingInfo getInstance(TaskingInfo.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		TaskingInfo component = null;
 		try {
-			component = new TaskingInfo(requesterInfos, addressees, description, taskID,
-				SecurityAttributesTest.getFixture());
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -133,6 +128,16 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private TaskingInfo.Builder getBaseBuilder() {
+		TaskingInfo component = getInstance(getFixtureElement(), SUCCESS);
+		return (new TaskingInfo.Builder(component));
 	}
 
 	/**
@@ -191,162 +196,121 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getFixtureElement(), SUCCESS), DEFAULT_DDMS_PREFIX,
 				TaskingInfo.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			// All fields
-			getInstance(SUCCESS, getFixtureElement());
-
-			// No optional fields
-			Element element = Util.buildDDMSElement(TaskingInfo.getName(version), null);
-			SecurityAttributesTest.getFixture().addTo(element);
-			element.appendChild(TaskIDTest.getFixture().getXOMElementCopy());
-			getInstance(SUCCESS, element);
-		}
-	}
-
-	public void testDataConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// All fields
-			getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(),
-				DescriptionTest.getFixture(), TaskIDTest.getFixture());
+			// Element-based
+			getInstance(getFixtureElement(), SUCCESS);
 
-			// No optional fields
-			getInstance(SUCCESS, null, null, null, TaskIDTest.getFixture());
+			// Data-based via Builder
+			getBaseBuilder();
 		}
 	}
-
-	public void testElementConstructorInvalid() throws InvalidDDMSException {
+	
+	public void testConstructorsMinimal() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// Missing taskID
+			// Element-based, No optional fields
 			Element element = Util.buildDDMSElement(TaskingInfo.getName(version), null);
 			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("taskID is required.", element);
-
-			// Missing security attributes
-			element = Util.buildDDMSElement(TaskingInfo.getName(version), null);
 			element.appendChild(TaskIDTest.getFixture().getXOMElementCopy());
-			getInstance("classification is required.", element);
-		}
-	}
+			TaskingInfo elementComponent = getInstance(element, SUCCESS);
 
-	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// Missing taskID
-			getInstance("taskID is required.", null, null, null, null);
-
-			// Missing security attributes
+			// Data-based, No optional fields
+			getInstance(new TaskingInfo.Builder(elementComponent), SUCCESS);
+			
+			// Null list parameters
 			try {
-				new TaskingInfo(null, null, null, new TaskID("test", null, null, null, null), null);
-				fail("Allowed invalid data.");
+				new TaskingInfo(null, null, null, TaskIDTest.getFixture(), SecurityAttributesTest.getFixture());
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "classification is required.");
+				checkConstructorFailure(false, e);
 			}
 		}
 	}
+	
+	public void testValidationErrors() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
-	public void testWarnings() throws InvalidDDMSException {
+			// Missing taskID
+			TaskingInfo.Builder builder = getBaseBuilder();
+			builder.setTaskID(null);
+			getInstance(builder, "taskID is required.");
+
+			// Missing security attributes
+			builder = getBaseBuilder();
+			builder.setSecurityAttributes(null);
+			getInstance(builder, "classification is required.");
+		}
+	}
+
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			TaskingInfo component = getInstance(SUCCESS, getFixtureElement());
+			TaskingInfo component = getInstance(getFixtureElement(), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			TaskingInfo elementComponent = getInstance(SUCCESS, getFixtureElement());
-			TaskingInfo dataComponent = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(),
-				AddresseeTest.getFixtureList(), DescriptionTest.getFixture(),  new TaskID(TaskIDTest.getFixtureElementNoNetwork()));
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			// Base equality
+			TaskingInfo elementComponent = getInstance(getFixtureElement(), SUCCESS);
+			TaskingInfo builderComponent = new TaskingInfo.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+
+			// Wrong class
+			Rights wrongComponent = new Rights(true, true, true);
+			assertFalse(elementComponent.equals(wrongComponent));
+			
+			// Different values in each field
+			TaskingInfo.Builder builder = getBaseBuilder();
+			builder.getRequesterInfos().clear();
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.getAddressees().clear();
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setDescription(null);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.getTaskID().setValue(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));			
 		}
 	}
+	
+	public void testVersionSpecific() throws InvalidDDMSException {
+		// Implicit because TaskID cannot be instantiated before 4.0.1.
+	}
 
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			TaskingInfo elementComponent = getInstance(SUCCESS, getFixtureElement());
-			TaskingInfo dataComponent = getInstance(SUCCESS, null, AddresseeTest.getFixtureList(),
-				DescriptionTest.getFixture(), TaskIDTest.getFixture());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), null,
-				DescriptionTest.getFixture(), TaskIDTest.getFixture());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(),
-				null, TaskIDTest.getFixture());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			TaskID taskID = new TaskID("Test", null, null, null, null);
-			dataComponent = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(),
-				DescriptionTest.getFixture(), taskID);
-			assertFalse(elementComponent.equals(dataComponent));
+			TaskingInfo elementComponent = getInstance(getFixtureElement(), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			TaskingInfo component = getInstance(SUCCESS, getFixtureElement());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(),
-				DescriptionTest.getFixture(), new TaskID(TaskIDTest.getFixtureElementNoNetwork()));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			TaskingInfo component = getInstance(SUCCESS, getFixtureElement());
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-
-			component = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(),
-				DescriptionTest.getFixture(), new TaskID(TaskIDTest.getFixtureElementNoNetwork()));
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testWrongVersion() {
-		// Implicit, because TaskID cannot be isntantiated in the wrong version.
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			TaskingInfo component = getInstance(SUCCESS, getFixtureElement());
-			TaskingInfo.Builder builder = new TaskingInfo.Builder(component);
-			assertEquals(component, builder.commit());
-		}
-	}
-
+	
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -354,30 +318,13 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 			TaskingInfo.Builder builder = new TaskingInfo.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.getRequesterInfos().get(1).getSecurityAttributes().setClassification("U");
 			assertFalse(builder.isEmpty());
+			
 			builder = new TaskingInfo.Builder();
 			builder.getAddressees().get(1).getSecurityAttributes().setClassification("U");
 			assertFalse(builder.isEmpty());
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			TaskingInfo.Builder builder = new TaskingInfo.Builder();
-			builder.getSecurityAttributes().setClassification("U");
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "taskID is required.");
-			}
-			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-			builder.getTaskID().setValue("test");
-			builder.commit();
 		}
 	}
 }

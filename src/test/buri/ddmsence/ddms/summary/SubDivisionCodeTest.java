@@ -58,14 +58,27 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 	}
 
 	/**
+	 * Returns the name of the qualifier attribute, based on DDMS version
+	 */
+	public static String getTestQualifierName() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? "codespace" : "qualifier");
+	}
+
+	/**
+	 * Returns the name of the value attribute, based on DDMS version
+	 */
+	public static String getTestValueName() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? "code" : "value");
+	}
+	
+	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private SubDivisionCode getInstance(String message, Element element) {
+	private SubDivisionCode getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		SubDivisionCode component = null;
 		try {
@@ -82,16 +95,16 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param qualifier the qualifier value
-	 * @param value the value
+	 * 
 	 * @return a valid object
 	 */
-	private SubDivisionCode getInstance(String message, String qualifier, String value) {
+	private SubDivisionCode getInstance(SubDivisionCode.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		SubDivisionCode component = null;
 		try {
-			component = new SubDivisionCode(qualifier, value);
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -102,12 +115,23 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 	}
 
 	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private SubDivisionCode.Builder getBaseBuilder() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		SubDivisionCode component = getInstance(getValidElement(version.getVersion()), SUCCESS);
+		return (new SubDivisionCode.Builder(component));
+	}
+
+	/**
 	 * Returns the expected HTML or Text output for this unit test
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "subDivisionCode." + CountryCodeTest.getQualifierName(), TEST_QUALIFIER));
-		text.append(buildOutput(isHTML, "subDivisionCode." + CountryCodeTest.getValueName(), TEST_VALUE));
+		text.append(buildOutput(isHTML, "subDivisionCode." + getTestQualifierName(), TEST_QUALIFIER));
+		text.append(buildOutput(isHTML, "subDivisionCode." + getTestValueName(), TEST_VALUE));
 		return (text.toString());
 	}
 
@@ -116,9 +140,9 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:subDivisionCode ").append(getXmlnsDDMS()).append(" ddms:").append(
-			CountryCodeTest.getQualifierName()).append("=\"").append(TEST_QUALIFIER).append("\" ddms:").append(
-			CountryCodeTest.getValueName()).append("=\"").append(TEST_VALUE).append("\" />");
+		xml.append("<ddms:subDivisionCode ").append(getXmlnsDDMS()).append(" ");
+		xml.append("ddms:").append(getTestQualifierName()).append("=\"").append(TEST_QUALIFIER).append("\" ");
+		xml.append("ddms:").append(getTestValueName()).append("=\"").append(TEST_VALUE).append("\" />");
 		return (xml.toString());
 	}
 
@@ -126,159 +150,89 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_DDMS_PREFIX,
 				SubDivisionCode.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() {
+	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			getInstance(SUCCESS, getValidElement(sVersion));
+			// Element-based
+			getInstance(getValidElement(sVersion), SUCCESS);
+			
+			// Data-based via Builder
+			getBaseBuilder();
 		}
 	}
+	
+	public void testConstructorsMinimal() {
+		// No tests
+	}
 
-	public void testDataConstructorValid() {
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-
-			getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE);
-		}
-	}
-
-	public void testElementConstructorInvalid() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			String subCode = SubDivisionCode.getName(version);
-
-			String qualifierName = CountryCodeTest.getQualifierName();
-			String valueName = CountryCodeTest.getValueName();
 
 			// Missing qualifier
-			Element element = Util.buildDDMSElement(subCode, null);
-			Util.addDDMSAttribute(element, valueName, TEST_VALUE);
-			getInstance(qualifierName + " attribute is required.", element);
-
-			// Empty qualifier
-			element = Util.buildDDMSElement(subCode, null);
-			Util.addDDMSAttribute(element, qualifierName, "");
-			Util.addDDMSAttribute(element, valueName, TEST_VALUE);
-			getInstance(qualifierName + " attribute is required.", element);
+			SubDivisionCode.Builder builder = getBaseBuilder();
+			builder.setQualifier(null);
+			getInstance(builder, getTestQualifierName() + " attribute is required.");
 
 			// Missing value
-			element = Util.buildDDMSElement(subCode, null);
-			Util.addDDMSAttribute(element, qualifierName, TEST_QUALIFIER);
-			getInstance(valueName + " attribute is required.", element);
-
-			// Empty value
-			element = Util.buildDDMSElement(subCode, null);
-			Util.addDDMSAttribute(element, qualifierName, TEST_QUALIFIER);
-			Util.addDDMSAttribute(element, valueName, "");
-			getInstance(valueName + " attribute is required.", element);
+			builder = getBaseBuilder();
+			builder.setValue(null);
+			getInstance(builder, getTestValueName() + " attribute is required.");
 		}
 	}
-
-	public void testDataConstructorInvalid() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			String qualifierName = CountryCodeTest.getQualifierName();
-			String valueName = CountryCodeTest.getValueName();
-
-			// Missing qualifier
-			getInstance(qualifierName + " attribute is required.", null, TEST_VALUE);
-
-			// Empty qualifier
-			getInstance(qualifierName + " attribute is required.", "", TEST_VALUE);
-
-			// Missing value
-			getInstance(valueName + " attribute is required.", TEST_QUALIFIER, null);
-
-			// Empty value
-			getInstance(valueName + " attribute is required.", TEST_QUALIFIER, "");
-		}
-	}
-
-	public void testWarnings() {
+	
+	public void testValidationWarnings() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			SubDivisionCode component = getInstance(SUCCESS, getValidElement(sVersion));
+			SubDivisionCode component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			SubDivisionCode elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			SubDivisionCode dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE);
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			// Base equality
+			SubDivisionCode elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			SubDivisionCode builderComponent = new SubDivisionCode.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+			
+			// Different values in each field	
+			SubDivisionCode.Builder builder = getBaseBuilder();
+			builder.setQualifier(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
+
+			builder = getBaseBuilder();
+			builder.setValue(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() {
+	public void testVersionSpecific() throws InvalidDDMSException {
+		SubDivisionCode.Builder builder = getBaseBuilder();
+		DDMSVersion.setCurrentVersion("2.0");
+		getInstance(builder, "The subDivisionCode element cannot be used");
+	}
+
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			SubDivisionCode elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			SubDivisionCode dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, DIFFERENT_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			SubDivisionCode component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE);
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			SubDivisionCode component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-
-			component = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE);
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testWrongVersion() {
-		try {
-			DDMSVersion.setCurrentVersion("2.0");
-			new SubDivisionCode(TEST_QUALIFIER, TEST_VALUE);
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "The subDivisionCode element cannot be used");
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			SubDivisionCode component = getInstance(SUCCESS, getValidElement(sVersion));
-			SubDivisionCode.Builder builder = new SubDivisionCode.Builder(component);
-			assertEquals(component, builder.commit());
+			SubDivisionCode elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
 
@@ -289,27 +243,9 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 			SubDivisionCode.Builder builder = new SubDivisionCode.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.setValue(TEST_VALUE);
 			assertFalse(builder.isEmpty());
-
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			SubDivisionCode.Builder builder = new SubDivisionCode.Builder();
-			builder.setValue(TEST_VALUE);
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, CountryCodeTest.getQualifierName() + " attribute is required.");
-			}
-			builder.setQualifier(TEST_QUALIFIER);
-			builder.commit();
 		}
 	}
 }

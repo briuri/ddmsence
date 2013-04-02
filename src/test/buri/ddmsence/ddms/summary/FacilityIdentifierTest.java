@@ -112,15 +112,13 @@ public class FacilityIdentifierTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:facilityIdentifier ").append(getXmlnsDDMS()).append(" ");
 		xml.append("ddms:beNumber=\"").append(TEST_BENUMBER).append("\" ");
 		xml.append("ddms:osuffix=\"").append(TEST_OSUFFIX).append("\" />");
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() {
@@ -248,10 +246,10 @@ public class FacilityIdentifierTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			FacilityIdentifier component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(true), component.toXML());
+			assertEquals(getExpectedXMLOutput(), component.toXML());
 
 			component = getInstance(SUCCESS, TEST_BENUMBER, TEST_OSUFFIX);
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
+			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
 

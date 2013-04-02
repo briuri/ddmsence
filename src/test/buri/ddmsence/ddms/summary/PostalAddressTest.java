@@ -134,10 +134,9 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 * @boolean whether this address has a state or a province
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting, boolean hasState) {
+	private String getExpectedXMLOutput(boolean hasState) {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:postalAddress ").append(getXmlnsDDMS()).append(">\n\t");
 		xml.append("<ddms:street>1600 Pennsylvania Avenue, NW</ddms:street>\n\t");
@@ -148,16 +147,16 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 			xml.append("<ddms:province>Alberta</ddms:province>\n\t");
 		xml.append("<ddms:postalCode>20500</ddms:postalCode>\n\t");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
-			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getQualifierName()).append(
-				"=\"http://api.nsgreg.nga.mil/geo-political/GENC/2/ed1\" ddms:").append(CountryCodeTest.getValueName()).append(
+			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getTestQualifierName()).append(
+				"=\"http://api.nsgreg.nga.mil/geo-political/GENC/2/ed1\" ddms:").append(CountryCodeTest.getTestValueName()).append(
 				"=\"US\" />\n");
 		}
 		else {
-			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getQualifierName()).append(
-				"=\"ISO-3166\" ddms:").append(CountryCodeTest.getValueName()).append("=\"USA\" />\n");
+			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getTestQualifierName()).append(
+				"=\"ISO-3166\" ddms:").append(CountryCodeTest.getTestValueName()).append("=\"USA\" />\n");
 		}
 		xml.append("</ddms:postalAddress>");
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() {
@@ -298,23 +297,6 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 				CountryCodeTest.getFixture(), false);
 			assertEquals(getExpectedOutput(true, false), component.toHTML());
 			assertEquals(getExpectedOutput(false, false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			PostalAddress component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(true, true), component.toXML());
-
-			component = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE,
-				CountryCodeTest.getFixture(), true);
-			assertEquals(getExpectedXMLOutput(false, true), component.toXML());
-
-			component = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE,
-				CountryCodeTest.getFixture(), false);
-			assertEquals(getExpectedXMLOutput(false, false), component.toXML());
 		}
 	}
 

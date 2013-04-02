@@ -116,10 +116,8 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:boundingGeometry ").append(getXmlnsDDMS()).append(">\n\t");
 		xml.append("<gml:Point ").append(getXmlnsGML()).append(" ");
@@ -129,7 +127,7 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 		xml.append("<gml:pos>32.1 40.1</gml:pos>\n\t");
 		xml.append("</gml:Point>\n");
 		xml.append("</ddms:boundingGeometry>");
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() {
@@ -241,17 +239,6 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 				component.toHTML());
 			assertEquals(PolygonTest.getFixtureList().get(0).getOutput(false, "boundingGeometry.", ""),
 				component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			BoundingGeometry component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(true), component.toXML());
-
-			component = getInstance(SUCCESS, null, PointTest.getFixtureList());
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
 

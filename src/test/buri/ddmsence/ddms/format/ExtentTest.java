@@ -60,6 +60,7 @@ public class ExtentTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
+	 * 
 	 * @param element the element to build from
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
@@ -81,6 +82,7 @@ public class ExtentTest extends AbstractBaseTestCase {
 
 	/**
 	 * Helper method to create an object which is expected to be valid.
+	 * 
 	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
@@ -159,15 +161,10 @@ public class ExtentTest extends AbstractBaseTestCase {
 
 			// Element-based, no optional fields
 			Element element = Util.buildDDMSElement(Extent.getName(version), null);
-			getInstance(element, SUCCESS);
+			Extent component = getInstance(element, SUCCESS);
 
 			// Data-based, no optional fields
-			try {
-				new Extent(null, null);
-			}
-			catch (InvalidDDMSException e) {
-				checkConstructorFailure(false, e);
-			}
+			getInstance(new Extent.Builder(component), SUCCESS);
 		}
 	}
 

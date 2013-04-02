@@ -25,8 +25,6 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
-import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
@@ -57,13 +55,6 @@ public class ServiceTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Generates affiliations for testing.
-	 */
-	private List<String> getAffiliations() {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? TEST_AFFILIATIONS : null);
-	}
-
-	/**
 	 * Returns a fixture object for testing.
 	 */
 	public static Service getFixture() {
@@ -78,13 +69,12 @@ public class ServiceTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private Service getInstance(String message, Element element) {
+	private Service getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Service component = null;
 		try {
@@ -101,18 +91,16 @@ public class ServiceTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param names an ordered list of names
-	 * @param phones an ordered list of phone numbers
-	 * @param emails an ordered list of email addresses
-	 * @param affiliations organizational affiliations of the service
+	 * 
+	 * @return a valid object
 	 */
-	private Service getInstance(String message, List<String> names, List<String> phones, List<String> emails,
-		List<String> affiliations) {
+	private Service getInstance(Service.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Service component = null;
 		try {
-			component = new Service(names, phones, emails, affiliations, null);
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -120,6 +108,17 @@ public class ServiceTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private Service.Builder getBaseBuilder() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		Service component = getInstance(getValidElement(version.getVersion()), SUCCESS);
+		return (new Service.Builder(component));
 	}
 
 	/**
@@ -144,10 +143,8 @@ public class ServiceTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:").append(Service.getName(version)).append(" ").append(getXmlnsDDMS()).append(">\n");
@@ -162,149 +159,116 @@ public class ServiceTest extends AbstractBaseTestCase {
 				xml.append("\t<ddms:affiliation>").append(affiliation).append("</ddms:affiliation>\n");
 		}
 		xml.append("</ddms:").append(Service.getName(version)).append(">");
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_DDMS_PREFIX,
 				Service.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
+	
+	public void testConstructors() {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
-	public void testElementConstructorValid() {
+			// Element-based
+			getInstance(getValidElement(sVersion), SUCCESS);
+			
+			// Data-based via Builder
+			getBaseBuilder();
+		}
+	}
+	
+	public void testConstructorsMinimal() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			// All fields
-			getInstance(SUCCESS, getValidElement(sVersion));
 
-			// No optional fields
+			// Element-based, No optional fields
 			Element element = Util.buildDDMSElement(Service.getName(version), null);
 			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
-			getInstance(SUCCESS, element);
+			Service elementComponent = getInstance(element, SUCCESS);
+			
+			// Data-based, No optional fields
+			getInstance(new Service.Builder(elementComponent), SUCCESS);
+			
+			// Null affiliation list
+			new Service(TEST_NAMES, null, null, null, null);
 		}
 	}
 
-	public void testDataConstructorValid() {
+	public void testValidationErrors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			// All fields
-			getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, TEST_EMAILS, getAffiliations());
-
-			// No optional fields
-			getInstance(SUCCESS, TEST_NAMES, null, null, null);
-		}
-	}
-
-	public void testElementConstructorInvalid() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			
 			// Missing name
-			Element element = Util.buildDDMSElement(Service.getName(version), null);
-			getInstance("At least 1 name element must", element);
-
-			// Empty name
-			element = Util.buildDDMSElement(Service.getName(version), null);
-			element.appendChild(Util.buildDDMSElement("name", ""));
-			getInstance("At least 1 name element must", element);
+			Service.Builder builder = getBaseBuilder();
+			builder.getNames().clear();
+			getInstance(builder, "At least 1 name element must");
 		}
 	}
-
-	public void testDataConstructorInvalid() {
+	
+	public void testValidationWarnings() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			// Missing name
-			getInstance("At least 1 name element must", null, TEST_PHONES, TEST_EMAILS, getAffiliations());
-
-			// Empty name
-			List<String> names = new ArrayList<String>();
-			names.add("");
-			getInstance("At least 1 name element must", names, TEST_PHONES, TEST_EMAILS,
-				getAffiliations());
-		}
-	}
-
-	public void testWarnings() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			
 			// No warnings
-			Service component = getInstance(SUCCESS, getValidElement(sVersion));
+			Service component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Service elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Service dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, TEST_EMAILS, getAffiliations());
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-		}
-	}
-
-	public void testConstructorInequalityDifferentValues() {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			Service elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Service dataComponent = getInstance(SUCCESS, TEST_NAMES, null, TEST_EMAILS, getAffiliations());
-			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, null, getAffiliations());
-			assertFalse(elementComponent.equals(dataComponent));
+			// Base equality
+			Service elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			Service builderComponent = new Service.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
 
+			// Different values in each field	
+			Service.Builder builder = getBaseBuilder();
+			builder.getNames().set(0, "Ellen");
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.getPhones().clear();
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.getEmails().clear();
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.getPhones().clear();
+			assertFalse(elementComponent.equals(builder.commit()));
+			
 			if (version.isAtLeast("5.0")) {
-				dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, TEST_EMAILS, null);
-				assertFalse(elementComponent.equals(dataComponent));
+				builder = getBaseBuilder();
+				builder.getAffiliations().add("DISA");
+				assertFalse(elementComponent.equals(builder.commit()));
 			}
 		}
 	}
 
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Service component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, TEST_EMAILS, getAffiliations());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
+	public void testVersionSpecific() throws InvalidDDMSException {
+		// No tests.
 	}
 
-	public void testXMLOutput() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Service component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(true), component.toXML());
-
-			component = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, TEST_EMAILS, getAffiliations());
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
-		}
-	}
-
-	public void testExtensibleAttributes() throws InvalidDDMSException {
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
-			List<String> names = new ArrayList<String>();
-			names.add("DISA");
-			new Service(names, null, null, null, attr);
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Service component = getInstance(SUCCESS, getValidElement(sVersion));
-			Service.Builder builder = new Service.Builder(component);
-			assertEquals(component, builder.commit());
+			Service elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
 
@@ -315,26 +279,9 @@ public class ServiceTest extends AbstractBaseTestCase {
 			Service.Builder builder = new Service.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.setNames(TEST_NAMES);
 			assertFalse(builder.isEmpty());
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Service.Builder builder = new Service.Builder();
-			builder.setPhones(Util.getXsListAsList("703-885-1000"));
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "At least 1 name element must");
-			}
-			builder.setNames(TEST_NAMES);
-			builder.commit();
 		}
 	}
 
@@ -346,5 +293,11 @@ public class ServiceTest extends AbstractBaseTestCase {
 			assertNotNull(builder.getPhones().get(1));
 			assertNotNull(builder.getEmails().get(1));
 		}
+	}
+	
+	public void testConstructorChaining() throws InvalidDDMSException {
+		Service person = new Service(TEST_NAMES, null, null);
+		Service personFull = new Service(TEST_NAMES, null, null, null, null);
+		assertTrue(person.equals(personFull));
 	}
 }

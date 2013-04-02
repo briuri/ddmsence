@@ -114,10 +114,8 @@ public class ProfileListTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ntk:AccessProfileList ").append(getXmlnsNTK()).append(" ").append(getXmlnsISM()).append(" ");
 		xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">\n");
@@ -126,7 +124,7 @@ public class ProfileListTest extends AbstractBaseTestCase {
 		xml.append("\t\t<ntk:AccessProfileValue ism:classification=\"U\" ism:ownerProducer=\"USA\" ntk:vocabulary=\"vocabulary\">profile</ntk:AccessProfileValue>\n");
 		xml.append("\t</ntk:AccessProfile>\n");
 		xml.append("</ntk:AccessProfileList>\n");
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() throws InvalidDDMSException {
@@ -240,18 +238,6 @@ public class ProfileListTest extends AbstractBaseTestCase {
 			component = getInstance(SUCCESS, ProfileTest.getFixtureList());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			ProfileList component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
-
-			component = getInstance(SUCCESS, ProfileTest.getFixtureList());
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
 

@@ -136,10 +136,8 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:verticalExtent ").append(getXmlnsDDMS()).append(" ");
 		xml.append("ddms:unitOfMeasure=\"").append(TEST_UOM).append("\" ");
@@ -149,7 +147,7 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 		xml.append("<ddms:").append(getMaxVerticalExtentName()).append(">").append(TEST_MAX).append("</ddms:").append(
 			getMaxVerticalExtentName()).append(">\n");
 		xml.append("</ddms:verticalExtent>");
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() {
@@ -361,17 +359,6 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testXMLOutput() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			VerticalExtent component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(true), component.toXML());
-
-			component = getInstance(SUCCESS, TEST_MIN, TEST_MAX, TEST_UOM, TEST_DATUM);
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
-		}
-	}
-
 	public void testWrongVersion() {
 		try {
 			DDMSVersion.setCurrentVersion("5.0");
@@ -382,7 +369,7 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 			expectMessage(e, "The verticalExtent element cannot be used");
 		}
 	}
-	
+
 	public void testDoubleEquality() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

@@ -19,16 +19,11 @@
  */
 package buri.ddmsence.ddms.resource;
 
-import java.util.List;
-
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
-import buri.ddmsence.ddms.IRoleEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.RoleEntityTest;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
-import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -61,13 +56,12 @@ public class PublisherTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private Publisher getInstance(String message, Element element) {
+	private Publisher getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Publisher component = null;
 		try {
@@ -85,15 +79,16 @@ public class PublisherTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param entity the producer entity
-	 * @param pocTypes the pocType (DDMS 4.0.1 or later)
+	 * 
+	 * @return a valid object
 	 */
-	private Publisher getInstance(String message, IRoleEntity entity, List<String> pocTypes) {
+	private Publisher getInstance(Publisher.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Publisher component = null;
 		try {
-			component = new Publisher(entity, pocTypes, SecurityAttributesTest.getFixture());
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -101,6 +96,17 @@ public class PublisherTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private Publisher.Builder getBaseBuilder() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		Publisher component = getInstance(getValidElement(version.getVersion()), SUCCESS);
+		return (new Publisher.Builder(component));
 	}
 
 	/**
@@ -119,10 +125,8 @@ public class PublisherTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:publisher ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM());
@@ -132,167 +136,123 @@ public class PublisherTest extends AbstractBaseTestCase {
 			">\n");
 		xml.append("\t\t<ddms:name>https://metadata.dod.mil/ebxmlquery/soap</ddms:name>\n");
 		xml.append("\t</ddms:").append(Service.getName(version)).append(">\n</ddms:publisher>");
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_DDMS_PREFIX,
 				Publisher.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			// All fields
-			getInstance(SUCCESS, getValidElement(sVersion));
-
-			// No optional fields
-			Element element = Util.buildDDMSElement(Publisher.getName(version), null);
-			element.appendChild(ServiceTest.getFixture().getXOMElementCopy());
-			getInstance(SUCCESS, element);
-		}
-	}
-
-	public void testDataConstructorValid() {
+	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			// All fields
-			getInstance(SUCCESS, ServiceTest.getFixture(), null);
+
+			// Element-based
+			getInstance(getValidElement(sVersion), SUCCESS);
+			
+			// Data-based via Builder
+			getBaseBuilder();
 		}
 	}
-
-	public void testElementConstructorInvalid() {
+	
+	public void testConstructorsMinimal() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			String ismPrefix = PropertyReader.getPrefix("ism");
 
-			// Missing entity
+			// Element-based, No optional fields
 			Element element = Util.buildDDMSElement(Publisher.getName(version), null);
-			getInstance("entity is required.", element);
-
-			if (version.isAtLeast("4.0.1")) {
-				// Invalid pocType
-				element = Util.buildDDMSElement(Publisher.getName(version), null);
-				element.appendChild(ServiceTest.getFixture().getXOMElementCopy());
-				Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "Unknown");
-				getInstance("Unknown is not a valid enumeration token", element);
-
-				// Partial Invalid pocType
-				element = Util.buildDDMSElement(Publisher.getName(version), null);
-				element.appendChild(ServiceTest.getFixture().getXOMElementCopy());
-				Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "DoD-Dist-B Unknown");
-				getInstance("Unknown is not a valid enumeration token", element);
-			}
+			element.appendChild(OrganizationTest.getFixture().getXOMElementCopy());
+			Publisher elementComponent = getInstance(element, SUCCESS);
+			
+			// Data-based, No optional fields
+			getInstance(new Publisher.Builder(elementComponent), SUCCESS);
 		}
 	}
 
-	public void testDataConstructorInvalid() {
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing entity
-			getInstance("entity is required.", (IRoleEntity) null, null);
+			Publisher.Builder builder = getBaseBuilder();
+			builder.setEntityType(null);
+			builder.setOrganization(null);
+			getInstance(builder, "entity is required.");
 
 			if (version.isAtLeast("4.0.1")) {
 				// Invalid pocType
-				getInstance("Unknown is not a valid enumeration token", ServiceTest.getFixture(),
-					Util.getXsListAsList("Unknown"));
+				builder = getBaseBuilder();
+				builder.setPocTypes(Util.getXsListAsList("Unknown"));
+				getInstance(builder, "Unknown is not a valid enumeration token");
 
 				// Partial Invalid pocType
-				getInstance("Unknown is not a valid enumeration token", ServiceTest.getFixture(),
-					Util.getXsListAsList("DoD-Dist-B Unknown"));
+				builder = getBaseBuilder();
+				builder.setPocTypes(Util.getXsListAsList("DoD-Dist-B Unknown"));
+				getInstance(builder, "Unknown is not a valid enumeration token");
 			}
 		}
 	}
 
-	public void testWarnings() {
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+
 			// No warnings
-			Publisher component = getInstance(SUCCESS, getValidElement(sVersion));
+			Publisher component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Publisher elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Publisher dataComponent = getInstance(SUCCESS, ServiceTest.getFixture(), RoleEntityTest.getPocTypes());
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+
+			// Base equality
+			Publisher elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			Publisher builderComponent = new Publisher.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+
+			// Different values in each field	
+			Publisher.Builder builder = getBaseBuilder();
+			builder.setEntityType(Person.getName(version));
+			builder.setPerson(new Person.Builder(PersonTest.getFixture()));
+			builder.setOrganization(null);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			if (version.isAtLeast("4.0.1")) {
+				builder = getBaseBuilder();
+				builder.setPocTypes(Util.getXsListAsList("DoD-Dist-C"));
+				assertFalse(elementComponent.equals(builder.commit()));
+			}
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Publisher elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Publisher dataComponent = getInstance(SUCCESS, new Service(Util.getXsListAsList("DISA PEO-GES"),
-				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Publisher component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, ServiceTest.getFixture(), RoleEntityTest.getPocTypes());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Publisher component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(true), component.toXML());
-
-			component = getInstance(SUCCESS, ServiceTest.getFixture(), RoleEntityTest.getPocTypes());
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
-		}
-	}
-
-	public void testSecurityAttributes() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Publisher component = new Publisher(ServiceTest.getFixture(), null, SecurityAttributesTest.getFixture());
-			assertEquals(SecurityAttributesTest.getFixture(), component.getSecurityAttributes());
-		}
-	}
-
-	public void testWrongVersionPocType() {
+	public void testVersionSpecific() throws InvalidDDMSException {
+		// pocType before 4.0.1
 		DDMSVersion.setCurrentVersion("3.1");
-		try {
-			new Publisher(ServiceTest.getFixture(), Util.getXsListAsList("DoD-Dist-B"),
-				SecurityAttributesTest.getFixture());
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "This component cannot have a pocType");
-		}
+		Publisher.Builder builder = getBaseBuilder();
+		builder.setPocTypes(Util.getXsListAsList("DoD-Dist-B"));
+		getInstance(builder, "This component cannot have a pocType");
 	}
 
-	public void testBuilderEquality() throws InvalidDDMSException {
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Publisher component = getInstance(SUCCESS, getValidElement(sVersion));
-			Publisher.Builder builder = new Publisher.Builder(component);
-			assertEquals(component, builder.commit());
+			Publisher elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
-
+	
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -300,29 +260,9 @@ public class PublisherTest extends AbstractBaseTestCase {
 			Publisher.Builder builder = new Publisher.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.setPocTypes(Util.getXsListAsList("DoD-Dist-B"));
 			assertFalse(builder.isEmpty());
-
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			Publisher.Builder builder = new Publisher.Builder();
-			builder.setEntityType(Person.getName(version));
-			builder.getPerson().setPhones(Util.getXsListAsList("703-885-1000"));
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "surname is required.");
-			}
-			builder.getPerson().setSurname("Uri");
-			builder.getPerson().setNames(Util.getXsListAsList("Brian"));
-			builder.commit();
 		}
 	}
 }

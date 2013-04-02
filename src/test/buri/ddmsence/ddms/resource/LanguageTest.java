@@ -58,13 +58,12 @@ public class LanguageTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private Language getInstance(String message, Element element) {
+	private Language getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Language component = null;
 		try {
@@ -81,16 +80,16 @@ public class LanguageTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param qualifier the qualifier value
-	 * @param value the value
+	 * 
 	 * @return a valid object
 	 */
-	private Language getInstance(String message, String qualifier, String value) {
+	private Language getInstance(Language.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Language component = null;
 		try {
-			component = new Language(qualifier, value);
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -98,6 +97,17 @@ public class LanguageTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private Language.Builder getBaseBuilder() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		Language component = getInstance(getValidElement(version.getVersion()), SUCCESS);
+		return (new Language.Builder(component));
 	}
 
 	/**
@@ -124,72 +134,69 @@ public class LanguageTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_DDMS_PREFIX,
 				Language.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			// All fields
-			getInstance(SUCCESS, getValidElement(sVersion));
-
-			// No optional fields
-			Element element = Util.buildDDMSElement(Language.getName(version), null);
-			getInstance(SUCCESS, element);
-		}
-	}
-
-	public void testDataConstructorValid() {
+	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			// All fields
-			getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE);
 
-			// No optional fields
-			getInstance(SUCCESS, "", "");
+			// Element-based
+			getInstance(getValidElement(sVersion), SUCCESS);
+			
+			// Data-based via Builder
+			getBaseBuilder();
 		}
 	}
-
-	public void testElementConstructorInvalid() {
+	
+	public void testConstructorsMinimal() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			// Missing qualifier
+
+			// Element-based, No optional fields
 			Element element = Util.buildDDMSElement(Language.getName(version), null);
-			Util.addDDMSAttribute(element, "value", TEST_VALUE);
-			getInstance("qualifier attribute is required.", element);
+			Language elementComponent = getInstance(element, SUCCESS);
+
+			// Data-based, No optional fields
+			Language.Builder builder = new Language.Builder(elementComponent);
+			getInstance(builder, SUCCESS);
 		}
 	}
 
-	public void testDataConstructorInvalid() {
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+
 			// Missing qualifier
-			getInstance("qualifier attribute is required.", null, TEST_VALUE);
+			Language.Builder builder = getBaseBuilder();
+			builder.setQualifier(null);
+			getInstance(builder, "qualifier attribute is required.");	
 		}
 	}
-
-	public void testWarnings() {
+	
+	public void testValidationWarnings() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			
 			// No warnings
-			Language component = getInstance(SUCCESS, getValidElement(sVersion));
+			Language component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Qualifier without value
-			Element element = Util.buildDDMSElement(Language.getName(version), null);
-			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
-			component = getInstance(SUCCESS, element);
+			Language.Builder builder = getBaseBuilder();
+			builder.setValue(null);
+			component = getInstance(builder, SUCCESS);
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "A qualifier has been set without an accompanying value attribute.";
 			String locator = "ddms:language";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 
-			// Neither attribute
-			element = Util.buildDDMSElement(Language.getName(version), null);
-			component = getInstance(SUCCESS, element);
+			// Completely empty
+			Element element = Util.buildDDMSElement(Language.getName(version), null);
+			component = getInstance(element, SUCCESS);
 			assertEquals(1, component.getValidationWarnings().size());
 			text = "Neither a qualifier nor a value was set on this language.";
 			locator = "ddms:language";
@@ -197,59 +204,39 @@ public class LanguageTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testConstructorEquality() {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Language elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Language dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE);
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+
+			// Base equality
+			Language elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			Language builderComponent = new Language.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+			
+			// Different values in each field	
+			Language.Builder builder = getBaseBuilder();
+			builder.setQualifier(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
+
+			builder = getBaseBuilder();
+			builder.setValue(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Language elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Language dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, DIFFERENT_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
+	public void testVersionSpecific() throws InvalidDDMSException {
+		// No tests.
 	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Language component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Language component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-
-			component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
+	
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Language component = getInstance(SUCCESS, getValidElement(sVersion));
-			Language.Builder builder = new Language.Builder(component);
-			assertEquals(component, builder.commit());
+			Language elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
 
@@ -263,24 +250,6 @@ public class LanguageTest extends AbstractBaseTestCase {
 			builder.setValue(TEST_VALUE);
 			assertFalse(builder.isEmpty());
 
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Language.Builder builder = new Language.Builder();
-			builder.setValue(TEST_VALUE);
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "qualifier attribute is required.");
-			}
-			builder.setQualifier(TEST_QUALIFIER);
-			builder.commit();
 		}
 	}
 }

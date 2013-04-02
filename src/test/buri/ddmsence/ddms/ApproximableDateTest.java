@@ -192,7 +192,6 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 			// Element-based, no optional fields
 			getInstance(getFixtureElement(TEST_NAME, false), SUCCESS);
 
-			// Data-based via Builder, no optional fields
 			// Data-based, no optional fields
 			try {
 				new ApproximableDate(TEST_NAME, null, null, null, null, null);

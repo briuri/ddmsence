@@ -23,7 +23,6 @@ import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
-import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -56,13 +55,12 @@ public class RightsTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private Rights getInstance(String message, Element element) {
+	private Rights getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Rights component = null;
 		try {
@@ -79,17 +77,16 @@ public class RightsTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param privacyAct the value for the privacyAct attribute
-	 * @param intellectualProperty the value for the intellectualProperty attribute
-	 * @param copyright the value for the copyright attribute
+	 * 
 	 * @return a valid object
 	 */
-	private Rights getInstance(String message, boolean privacyAct, boolean intellectualProperty, boolean copyright) {
+	private Rights getInstance(Rights.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Rights component = null;
 		try {
-			component = new Rights(privacyAct, intellectualProperty, copyright);
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -97,6 +94,17 @@ public class RightsTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private Rights.Builder getBaseBuilder() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		Rights component = getInstance(getValidElement(version.getVersion()), SUCCESS);
+		return (new Rights.Builder(component));
 	}
 
 	/**
@@ -115,130 +123,102 @@ public class RightsTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:rights ").append(getXmlnsDDMS()).append(
-			" ddms:privacyAct=\"true\" ddms:intellectualProperty=\"true\" ddms:copyright=\"false\" />");
+		xml.append("<ddms:rights ").append(getXmlnsDDMS());
+		xml.append(" ddms:privacyAct=\"true\" ddms:intellectualProperty=\"true\" ddms:copyright=\"false\" />");
 		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			Rights component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(Rights.getName(version), component.getName());
-			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
-			assertEquals(PropertyReader.getPrefix("ddms") + ":" + Rights.getName(version), component.getQualifiedName());
+			
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_DDMS_PREFIX,
+				Rights.getName(version));
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 
-			// Wrong name/namespace
-			Element element = Util.buildDDMSElement("wrongName", null);
-			getInstance(WRONG_NAME_MESSAGE, element);
 		}
 	}
 
-	public void testElementConstructorValid() {
+	public void testConstructors() {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			// Element-based
+			getInstance(getValidElement(sVersion), SUCCESS);
+			
+			// Data-based via Builder
+			getBaseBuilder();
+		}
+	}
+	
+	public void testConstructorsMinimal() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			// All fields
-			getInstance(SUCCESS, getValidElement(sVersion));
 
-			// No optional fields
+			// Element-based, No optional fields
 			Element element = Util.buildDDMSElement(Rights.getName(version), null);
-			getInstance(SUCCESS, element);
+			Rights elementComponent = getInstance(element, SUCCESS);
+						
+			// Data-based, No optional fields
+			getInstance(new Rights.Builder(elementComponent), SUCCESS);
 		}
 	}
-
-	public void testDataConstructorValid() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			// All fields
-			getInstance(SUCCESS, true, true, true);
-		}
+	
+	public void testValidationErrors() {
+		// No tests.		
 	}
-
-	public void testWarnings() {
+	
+	public void testValidationWarnings() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+			
 			// No warnings
-			Rights component = getInstance(SUCCESS, getValidElement(sVersion));
+			Rights component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Rights elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Rights dataComponent = getInstance(SUCCESS, true, true, false);
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-		}
-	}
 
-	public void testConstructorInequalityDifferentValues() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Rights elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Rights dataComponent = getInstance(SUCCESS, false, true, false);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, true, false, false);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, true, true, true);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Rights elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			// Base equality
+			Rights elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			Rights builderComponent = new Rights.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+			
+			// Wrong class
 			Language wrongComponent = new Language("qualifier", "value");
 			assertFalse(elementComponent.equals(wrongComponent));
+						
+			// Different values in each field
+			Rights.Builder builder = getBaseBuilder();
+			builder.setCopyright(true);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setPrivacyAct(false);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setIntellectualProperty(false);
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Rights component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, true, true, false);
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
+	public void testVersionSpecific() throws InvalidDDMSException {
+		// No tests.
 	}
-
-	public void testXMLOutput() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Rights component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-
-			component = getInstance(SUCCESS, true, true, false);
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testDefaultValues() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			Element element = Util.buildDDMSElement(Rights.getName(version), null);
-			Rights component = getInstance(SUCCESS, element);
-			assertFalse(component.getPrivacyAct());
-			assertFalse(component.getIntellectualProperty());
-			assertFalse(component.getCopyright());
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
+	
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Rights component = getInstance(SUCCESS, getValidElement(sVersion));
-			Rights.Builder builder = new Rights.Builder(component);
-			assertEquals(component, builder.commit());
+			Rights elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
 
@@ -249,15 +229,21 @@ public class RightsTest extends AbstractBaseTestCase {
 			Rights.Builder builder = new Rights.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.setCopyright(Boolean.TRUE);
 			assertFalse(builder.isEmpty());
 		}
 	}
 
-	public void testBuilderValidation() throws InvalidDDMSException {
+	public void testDefaultValues() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			Element element = Util.buildDDMSElement(Rights.getName(version), null);
+			Rights component = getInstance(element, SUCCESS);
+			assertFalse(component.getPrivacyAct());
+			assertFalse(component.getIntellectualProperty());
+			assertFalse(component.getCopyright());
+			
 			// Default values (at least 1 value must be explicit to prevent a null commit)
 			Rights.Builder builder = new Rights.Builder();
 			builder.setPrivacyAct(true);

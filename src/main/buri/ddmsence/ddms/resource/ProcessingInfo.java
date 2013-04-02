@@ -56,7 +56,6 @@ import buri.ddmsence.util.Util;
  * 		{@ddms.rule ddms:dateProcessed must exist, and adheres to a valid date format.|Error|11111}
  * 		{@ddms.rule ism:classification must exist.|Error|11111}
  * 		{@ddms.rule ism:ownerProducer must exist.|Error|11111}
- * 		{@ddms.rule This component can be used with no values set.|Warning|11111}
  * {@table.footer}
  * 
  * @author Brian Uri!
@@ -112,8 +111,6 @@ public final class ProcessingInfo extends AbstractSimpleString {
 	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
-		if (Util.isEmpty(getValue()))
-			addWarning("A ddms:processingInfo element was found with no value.");
 		super.validateWarnings();
 	}
 
