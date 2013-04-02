@@ -28,7 +28,7 @@ public class DDMSVersionTaglet extends AbstractInlineTaglet {
 
 	private static final String NAME = "ddms.versions";
 	private static final char DEFAULT_VALUE = '1';
-	
+
 	/**
 	 * Return the name of this custom tag.
 	 */
@@ -52,12 +52,15 @@ public class DDMSVersionTaglet extends AbstractInlineTaglet {
 			if (i < input.length())
 				value = input.charAt(i);
 			b.append("<td class=\"versionChart").append(value).append("\">");
-			b.append(versions.get(i)).append("</td>");
+			String version = versions.get(i);
+			if ("4.1".equals(version))
+				version = "4.0.1/4.1";
+			b.append(version).append("</td>");
 		}
 		b.append("</tr></table>\n");
 		return (b.toString());
 	}
-	
+
 	/**
 	 * Given the <code>Tag</code> representation of this custom
 	 * tag, return its string representation.
@@ -67,7 +70,7 @@ public class DDMSVersionTaglet extends AbstractInlineTaglet {
 	public String toString(Tag tag) {
 		return (getTableFor(tag.text()));
 	}
-	
+
 	/**
 	 * Register this Taglet.
 	 * 

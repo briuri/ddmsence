@@ -29,12 +29,14 @@ body {
 }
 .contentContainer table.versionChart td.versionChart0 {
 	background-color: #ffaaaa;
+	border-right: 1px solid #999999;
 	color: #999999;
 	margin: 0px;
 	padding: 4px;
 }
 .contentContainer table.versionChart td.versionChart1 {
 	background-color:#aaffaa;
+	border-right: 1px solid #999999;
 	margin: 0px;
 	padding: 4px;
 }
@@ -42,19 +44,19 @@ table.childInfo td.cardinality {
 	width: 10%;
 }
 table.childInfo td.name {
-	width: 60%;
+	width: 55%;
 }
 table.childInfo td.versions {
-	width: 30%;
+	width: 35%;
 }
 table.rules td.rule {
-	width: 60%;
+	width: 55%;
 }
 table.rules td.type {
 	width: 10%;
 }
 table.rules td.versions {
-	width: 30%;
+	width: 35%;
 }
 td.hierarchy {
 	border-color: #adb3b5;

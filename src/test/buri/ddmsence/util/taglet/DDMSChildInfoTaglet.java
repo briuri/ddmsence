@@ -25,7 +25,7 @@ public class DDMSChildInfoTaglet extends AbstractInlineTaglet {
 
 	private static final String NAME = "child.info";
 	private static final String DELIMITER = "\\|";
-	
+
 	/**
 	 * Return the name of this custom tag.
 	 */
@@ -51,7 +51,7 @@ public class DDMSChildInfoTaglet extends AbstractInlineTaglet {
 		b.append("</tr></table>\n");
 		return (b.toString());
 	}
-	
+
 	/**
 	 * Register this Taglet.
 	 * 

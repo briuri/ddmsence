@@ -25,7 +25,7 @@ public abstract class AbstractInlineTaglet implements Taglet {
 	 * @param tag the <code>Tag</code> representation of this custom tag.
 	 */
 	public abstract String toString(Tag tag);
-		
+
 	/**
 	 * @return true since this tag can be used in a field doc comment
 	 */
