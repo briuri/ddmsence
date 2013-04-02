@@ -180,10 +180,8 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:geospatialCoverage ").append(getXmlnsDDMS());
@@ -196,16 +194,16 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		xml.append(">\n\t");
 		if (version.isAtLeast("5.0")) {
 			xml.append("<ddms:geographicIdentifier>\n\t\t");
-			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getQualifierName()).append(
-				"=\"urn:us:gov:dod:nga:def:geo-political:GENC:3:ed1\" ddms:").append(CountryCodeTest.getValueName()).append(
+			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getTestQualifierName()).append(
+				"=\"urn:us:gov:dod:nga:def:geo-political:GENC:3:ed1\" ddms:").append(CountryCodeTest.getTestValueName()).append(
 				"=\"USA\" />\n\t");
 			xml.append("</ddms:geographicIdentifier>\n");
 		}
 		else if (version.isAtLeast("4.0.1")) {
 			xml.append("<ddms:geographicIdentifier>\n\t\t");
-			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getQualifierName()).append(
+			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getTestQualifierName()).append(
 				"=\"urn:us:gov:ic:cvenum:irm:coverage:iso3166:trigraph:v1\" ddms:").append(
-				CountryCodeTest.getValueName()).append("=\"LAO\" />\n\t");
+				CountryCodeTest.getTestValueName()).append("=\"LAO\" />\n\t");
 			xml.append("</ddms:geographicIdentifier>\n");
 		}
 		else {
@@ -214,7 +212,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			xml.append("</ddms:geographicIdentifier>\n\t</ddms:GeospatialExtent>\n");
 		}
 		xml.append("</ddms:geospatialCoverage>");
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	/**
@@ -283,7 +281,6 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			element = buildComponentElement(PostalAddressTest.getFixture());
 			getInstance(SUCCESS, element);
 
-
 			// everything
 			List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
 			list.add(BoundingBoxTest.getFixture());
@@ -311,7 +308,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			if (!version.isAtLeast("5.0")) {
 				// boundingBox
 				getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
-				
+
 				// verticalExtent
 				getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
 			}
@@ -430,11 +427,12 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 				dataComponent = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
 				assertEquals(elementComponent, dataComponent);
 				assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-				
+
 				// verticalExtent
 				element = buildComponentElement(VerticalExtentTest.getFixture());
 				elementComponent = getInstance(SUCCESS, element);
-				dataComponent = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
+				dataComponent = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null,
+					null);
 				assertEquals(elementComponent, dataComponent);
 				assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 			}
@@ -473,7 +471,8 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 				dataComponent = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
 				assertFalse(elementComponent.equals(dataComponent));
 
-				dataComponent = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
+				dataComponent = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null,
+					null);
 				assertFalse(elementComponent.equals(dataComponent));
 			}
 
@@ -509,7 +508,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 					component.toHTML());
 				assertEquals(BoundingBoxTest.getFixture().getOutput(false, prefix, "") + getTextIcism(),
 					component.toText());
-				
+
 				component = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
 				assertEquals(VerticalExtentTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(),
 					component.toHTML());
@@ -528,21 +527,6 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 				component.toHTML());
 			assertEquals(PostalAddressTest.getFixture().getOutput(false, prefix, "") + getTextIcism(),
 				component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			String precedence = version.isAtLeast("4.0.1") ? TEST_PRECEDENCE : null;
-			Integer order = version.isAtLeast("4.0.1") ? TEST_ORDER : null;
-
-			GeospatialCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(true), component.toXML());
-
-			component = getInstance(SUCCESS, GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null, null,
-				null, precedence, order);
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
 
@@ -588,7 +572,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 	public void testVerticalExtentReuse() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			if (!version.isAtLeast("5.0")) {
 				VerticalExtent extent = VerticalExtentTest.getFixture();
 				getInstance(SUCCESS, null, null, null, null, extent, null, null);
@@ -683,7 +667,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 				component = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
 				builder = new GeospatialCoverage.Builder(component);
 				assertEquals(component, builder.commit());
-				
+
 				component = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
 				builder = new GeospatialCoverage.Builder(component);
 				assertEquals(component, builder.commit());

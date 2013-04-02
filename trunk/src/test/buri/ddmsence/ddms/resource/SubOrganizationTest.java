@@ -93,7 +93,7 @@ public class SubOrganizationTest extends AbstractBaseTestCase {
 	 * @param element the element to build from
 	 * @return a valid object
 	 */
-	private SubOrganization getInstance(String message, Element element) {
+	private SubOrganization getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		SubOrganization component = null;
 		try {
@@ -110,15 +110,16 @@ public class SubOrganizationTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param value the value
+	 * 
 	 * @return a valid object
 	 */
-	private SubOrganization getInstance(String message, String value) {
+	private SubOrganization getInstance(SubOrganization.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		SubOrganization component = null;
 		try {
-			component = new SubOrganization(value, SecurityAttributesTest.getFixture());
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -126,7 +127,16 @@ public class SubOrganizationTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
 
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private SubOrganization.Builder getBaseBuilder() {
+		SubOrganization component = getInstance(getFixtureElement(), SUCCESS);
+		return (new SubOrganization.Builder(component));
 	}
 
 	/**
@@ -156,129 +166,80 @@ public class SubOrganizationTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getFixtureElement(), SUCCESS), DEFAULT_DDMS_PREFIX,
 				SubOrganization.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			getInstance(SUCCESS, getFixtureElement());
+			// Element-based
+			getInstance(getFixtureElement(), SUCCESS);
+
+			// Data-based via Builder
+			getBaseBuilder();
 		}
 	}
 
-	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			getInstance(SUCCESS, TEST_VALUE);
-		}
+	public void testConstructorsMinimal() throws InvalidDDMSException {
+		// No tests.
 	}
 
-	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			// Missing child text
-			Element element = Util.buildDDMSElement(SubOrganization.getName(version), null);
-			getInstance("subOrganization value is required.", element);
-
-			// Empty child text
-			element = Util.buildDDMSElement(SubOrganization.getName(version), "");
-			getInstance("subOrganization value is required.", element);
-		}
-	}
-
-	public void testDataConstructorInvalid() throws InvalidDDMSException {
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing child text
-			getInstance("subOrganization value is required.", (String) null);
-
-			// Empty child text
-			getInstance("subOrganization value is required.", "");
+			SubOrganization.Builder builder = getBaseBuilder();
+			builder.setValue(null);
+			getInstance(builder, "subOrganization value is required");
 		}
 	}
-
-	public void testWarnings() throws InvalidDDMSException {
+	
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			SubOrganization component = getInstance(SUCCESS, getFixtureElement());
+			SubOrganization component = getInstance(getFixtureElement(), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			SubOrganization elementComponent = getInstance(SUCCESS, getFixtureElement());
-			SubOrganization dataComponent = getInstance(SUCCESS, TEST_VALUE);
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			// Base equality
+			SubOrganization elementComponent = getInstance(getFixtureElement(), SUCCESS);
+			SubOrganization builderComponent = new SubOrganization.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+
+			// Different values in each field
+			SubOrganization.Builder builder = getBaseBuilder();
+			builder.setValue(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
+	public void testVersionSpecific() throws InvalidDDMSException {
+		SubOrganization.Builder builder = getBaseBuilder();
+		DDMSVersion.setCurrentVersion("2.0");
+		getInstance(builder, "The subOrganization element cannot be used");
+	}
+	
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			SubOrganization elementComponent = getInstance(SUCCESS, getFixtureElement());
-			SubOrganization dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			SubOrganization component = getInstance(SUCCESS, getFixtureElement());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, TEST_VALUE);
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			SubOrganization component = getInstance(SUCCESS, getFixtureElement());
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-
-			component = getInstance(SUCCESS, TEST_VALUE);
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testWrongVersion() {
-		try {
-			DDMSVersion.setCurrentVersion("2.0");
-			new SubOrganization(TEST_VALUE, SecurityAttributesTest.getFixture());
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "The subOrganization element cannot be used");
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			SubOrganization component = getInstance(SUCCESS, getFixtureElement());
-			SubOrganization.Builder builder = new SubOrganization.Builder(component);
-			assertEquals(component, builder.commit());
+			SubOrganization elementComponent = getInstance(getFixtureElement(), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
 
@@ -289,28 +250,9 @@ public class SubOrganizationTest extends AbstractBaseTestCase {
 			SubOrganization.Builder builder = new SubOrganization.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.setValue(TEST_VALUE);
 			assertFalse(builder.isEmpty());
-
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			SubOrganization.Builder builder = new SubOrganization.Builder();
-			builder.setValue(TEST_VALUE);
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "classification is required.");
-			}
-			builder.getSecurityAttributes().setClassification("U");
-			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-			builder.commit();
 		}
 	}
 }

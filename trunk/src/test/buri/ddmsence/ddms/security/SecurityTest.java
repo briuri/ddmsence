@@ -138,10 +138,8 @@ public class SecurityTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:security ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
@@ -174,7 +172,7 @@ public class SecurityTest extends AbstractBaseTestCase {
 			}
 			xml.append("</ddms:security>");
 		}
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() {
@@ -323,17 +321,6 @@ public class SecurityTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Security component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(true), component.toXML());
-
-			component = getInstance(SUCCESS, NoticeListTest.getFixture(), AccessTest.getFixture());
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
-		}
-	}
-
 	public void testWrongVersionExcludeFromRollup() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		String icPrefix = PropertyReader.getPrefix("ism");
@@ -355,14 +342,14 @@ public class SecurityTest extends AbstractBaseTestCase {
 	public void testWrongVersion() {
 		try {
 			DDMSVersion.setCurrentVersion("5.0");
-			new Security(null, null, SecurityAttributesTest.getFixture());			
+			new Security(null, null, SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
 			expectMessage(e, "The security element cannot be used");
 		}
 	}
-	
+
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

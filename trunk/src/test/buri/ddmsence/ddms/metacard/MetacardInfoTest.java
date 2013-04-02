@@ -106,6 +106,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
+	 * 
 	 * @param element the element to build from
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
@@ -127,6 +128,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 
 	/**
 	 * Helper method to create an object which is expected to be valid.
+	 * 
 	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
@@ -256,6 +258,16 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 
 			// Data-based via Builder, no optional fields
 			getInstance(new MetacardInfo.Builder(elementComponent), SUCCESS);
+
+			// Null in component list
+			try {
+				List<IDDMSComponent> components = getChildComponents(true);
+				components.add(null);
+				new MetacardInfo(components, null);
+			}
+			catch (InvalidDDMSException e) {
+				checkConstructorFailure(false, e);
+			}
 		}
 	}
 
@@ -270,17 +282,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "At least one");
 			}
-			
-			// Null in component list
-			try {
-				List<IDDMSComponent> components = getChildComponents(true);
-				components.add(null);
-				new MetacardInfo(components, null);
-			}
-			catch (InvalidDDMSException e) {
-				checkConstructorFailure(false, e);
-			}
-			
+
 			// Invalid object in component list
 			try {
 				List<IDDMSComponent> components = getChildComponents(true);
@@ -290,7 +292,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "rights is not a valid");
 			}
-			
+
 			// Missing identifier
 			MetacardInfo.Builder builder = getBaseBuilder();
 			builder.getIdentifiers().clear();

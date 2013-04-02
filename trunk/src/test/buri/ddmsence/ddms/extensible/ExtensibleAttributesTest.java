@@ -72,7 +72,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 	private static Attribute getTestAttribute() {
 		return (new Attribute("ddmsence:relevance", TEST_NAMESPACE, "95"));
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -211,7 +211,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 			assertEquals(elementComponent, builderComponent);
 			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
 
-			// // Wrong class
+			// Wrong class
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 
@@ -227,7 +227,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 			attr = new Attribute("ddmsence:confidence", TEST_NAMESPACE, "95");
 			builder.getAttributes().add(new ExtensibleAttributes.AttributeBuilder(attr));
 			assertFalse(elementComponent.equals(builder.commit()));
-			
+
 			// Different attribute namespace
 			builder = getBaseBuilder();
 			builder.getAttributes().clear();
@@ -285,7 +285,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 			component.addTo(element);
 			ExtensibleAttributes output = new ExtensibleAttributes(element);
 			assertEquals(component, output);
-			
+
 			// Duplicate
 			element = getElement();
 			element.addAttribute(getTestAttribute());

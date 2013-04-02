@@ -151,29 +151,27 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:geographicIdentifier ").append(getXmlnsDDMS()).append(">\n\t");
 		xml.append("<ddms:name>The White House</ddms:name>\n\t");
 		xml.append("<ddms:region>Mid-Atlantic States</ddms:region>\n\t");
 		if (version.isAtLeast("5.0")) {
-			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getQualifierName()).append(
-				"=\"http://api.nsgreg.nga.mil/geo-political/GENC/2/ed1\" ddms:").append(CountryCodeTest.getValueName()).append(
+			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getTestQualifierName()).append(
+				"=\"http://api.nsgreg.nga.mil/geo-political/GENC/2/ed1\" ddms:").append(CountryCodeTest.getTestValueName()).append(
 				"=\"US\" />\n");
 		}
 		else {
-			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getQualifierName()).append(
-				"=\"ISO-3166\" ddms:").append(CountryCodeTest.getValueName()).append("=\"USA\" />\n");
+			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getTestQualifierName()).append(
+				"=\"ISO-3166\" ddms:").append(CountryCodeTest.getTestValueName()).append("=\"USA\" />\n");
 		}
 		if (version.isAtLeast("4.0.1"))
-			xml.append("\t<ddms:subDivisionCode ddms:").append(CountryCodeTest.getQualifierName()).append(
-				"=\"ISO-3166\" ddms:").append(CountryCodeTest.getValueName()).append("=\"USA\" />\n");
+			xml.append("\t<ddms:subDivisionCode ddms:").append(CountryCodeTest.getTestQualifierName()).append(
+				"=\"ISO-3166\" ddms:").append(CountryCodeTest.getTestValueName()).append("=\"USA\" />\n");
 		xml.append("</ddms:geographicIdentifier>");
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() {
@@ -357,19 +355,6 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 			facIdOutput.append("geographicIdentifier.facilityIdentifier.beNumber: 1234DD56789\n");
 			facIdOutput.append("geographicIdentifier.facilityIdentifier.osuffix: DD123\n");
 			assertEquals(facIdOutput.toString(), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			SubDivisionCode subCode = SubDivisionCodeTest.getFixture();
-
-			GeographicIdentifier component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(true), component.toXML());
-
-			component = getInstance(SUCCESS, TEST_NAMES, TEST_REGIONS, CountryCodeTest.getFixture(), subCode, null);
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
 

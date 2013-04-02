@@ -22,7 +22,6 @@ package buri.ddmsence.ddms.resource;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.summary.xlink.XLinkAttributes;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -70,7 +69,7 @@ public class TaskIDTest extends AbstractBaseTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -79,7 +78,7 @@ public class TaskIDTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			String prefix = version.isAtLeast("5.0") ? PropertyReader.getPrefix("virt") : "";
 			String namespace = version.isAtLeast("5.0") ? version.getVirtNamespace() : "";
-			
+
 			Element element = Util.buildDDMSElement(TaskID.getName(version), TEST_VALUE);
 			element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
 			if (version.isAtLeast("5.0"))
@@ -87,7 +86,7 @@ public class TaskIDTest extends AbstractBaseTestCase {
 			element.addNamespaceDeclaration(PropertyReader.getPrefix("xlink"), version.getXlinkNamespace());
 			Util.addDDMSAttribute(element, "taskingSystem", TEST_TASKING_SYSTEM);
 			Util.addAttribute(element, prefix, "network", namespace, TEST_NETWORK);
-			Util.addAttribute(element, "", "otherNetwork", "", getOtherNetwork());
+			Util.addAttribute(element, "", "otherNetwork", "", getTestOtherNetwork());
 			XLinkAttributesTest.getSimpleFixture().addTo(element);
 			return (element);
 		}
@@ -113,19 +112,18 @@ public class TaskIDTest extends AbstractBaseTestCase {
 	/**
 	 * Gets an otherNetwork value for the version
 	 */
-	private static String getOtherNetwork() {
+	private static String getTestOtherNetwork() {
 		return (DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? "" : TEST_OTHER_NETWORK);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private TaskID getInstance(String message, Element element) {
+	private TaskID getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		TaskID component = null;
 		try {
@@ -142,19 +140,16 @@ public class TaskIDTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param value the child text (optional) link href (required)
-	 * @param taskingSystem the tasking system (optional)
-	 * @param network the network (optional)
-	 * @param otherNetwork another network (optional)
-	 * @param attributes the xlink attributes (optional)
+	 * 
+	 * @return a valid object
 	 */
-	private TaskID getInstance(String message, String value, String taskingSystem, String network, String otherNetwork,
-		XLinkAttributes attributes) {
+	private TaskID getInstance(TaskID.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		TaskID component = null;
 		try {
-			component = new TaskID(value, taskingSystem, network, otherNetwork, attributes);
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -162,6 +157,16 @@ public class TaskIDTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private TaskID.Builder getBaseBuilder() {
+		TaskID component = getInstance(getFixtureElement(), SUCCESS);
+		return (new TaskID.Builder(component));
 	}
 
 	/**
@@ -173,7 +178,7 @@ public class TaskIDTest extends AbstractBaseTestCase {
 		text.append(buildOutput(isHTML, "taskID.taskingSystem", TEST_TASKING_SYSTEM));
 		text.append(buildOutput(isHTML, "taskID.network", TEST_NETWORK));
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
-			text.append(buildOutput(isHTML, "taskID.otherNetwork", getOtherNetwork()));
+			text.append(buildOutput(isHTML, "taskID.otherNetwork", getTestOtherNetwork()));
 		}
 		text.append(XLinkAttributesTest.getSimpleFixture().getOutput(isHTML, "taskID."));
 		return (text.toString());
@@ -204,187 +209,131 @@ public class TaskIDTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getFixtureElement(), SUCCESS), DEFAULT_DDMS_PREFIX,
 				TaskID.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
-
-	public void testElementConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			// All fields
-			getInstance(SUCCESS, getFixtureElement());
-
-			// No optional fields
-			Element element = Util.buildDDMSElement(TaskID.getName(version), TEST_VALUE);
-			getInstance(SUCCESS, element);
-		}
-	}
-
-	public void testDataConstructorValid() throws InvalidDDMSException {
+	
+	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// All fields
-			getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, getOtherNetwork(),
-				XLinkAttributesTest.getSimpleFixture());
+			// Element-based
+			getInstance(getFixtureElement(), SUCCESS);
 
-			// No optional fields
-			getInstance(SUCCESS, TEST_VALUE, null, null, null, null);
+			// Data-based via Builder
+			getBaseBuilder();
 		}
 	}
-
-	public void testElementConstructorInvalid() throws InvalidDDMSException {
+	
+	public void testConstructorsMinimal() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// Wrong type of XLinkAttributes (locator)
+			// Element-based, No optional fields
 			Element element = Util.buildDDMSElement(TaskID.getName(version), TEST_VALUE);
-			XLinkAttributesTest.getLocatorFixture().addTo(element);
-			getInstance("The type attribute must have a fixed value", element);
+			TaskID elementComponent = getInstance(element, SUCCESS);
 
-			// Missing value
-			element = Util.buildDDMSElement(TaskID.getName(version), null);
-			getInstance("value is required.", element);
-
-			// Bad network
-			if (!version.isAtLeast("5.0")) {
-				element = Util.buildDDMSElement(TaskID.getName(version), TEST_VALUE);
-				Util.addAttribute(element, "", "network", "", "PBS");
-				getInstance("The network attribute must be one of", element);
-			}
-
+			// Data-based, No optional fields
+			getInstance(new TaskID.Builder(elementComponent), SUCCESS);
 		}
 	}
 
-	public void testDataConstructorInvalid() throws InvalidDDMSException {
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// Wrong type of XLinkAttributes
-			getInstance("The type attribute must have a fixed value", TEST_VALUE, null, null, null,
-				XLinkAttributesTest.getLocatorFixture());
+			TaskID.Builder builder = getBaseBuilder();
+			builder.getXLinkAttributes().setType("locator");
+			getInstance(builder, "The type attribute must have a fixed value");
 
 			// Missing value
-			getInstance("value is required.", null, null, null, null, null);
+			builder = getBaseBuilder();
+			builder.setValue(null);
+			getInstance(builder, "value is required.");
 
-			// Bad network
-			getInstance("The network attribute must be one of", TEST_VALUE, null, "PBS", null, null);
-			
-			if (version.isAtLeast("5.0")) {
+			if (!version.isAtLeast("5.0")) {
+				// Bad network
+				builder = getBaseBuilder();
+				builder.setNetwork("PBS");
+				getInstance(builder, "The network attribute must be one of");
+			}
+			else {
 				// Invalid otherNetwork
-				getInstance("The otherNetwork attribute cannot", TEST_VALUE, null, null, "PBS", null);
+				builder = getBaseBuilder();
+				builder.setOtherNetwork(TEST_OTHER_NETWORK);				
+				getInstance(builder, "The otherNetwork attribute cannot");
 			}
 		}
 	}
-
-	public void testWarnings() throws InvalidDDMSException {
+	
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			TaskID component = getInstance(SUCCESS, getFixtureElement());
+			TaskID component = getInstance(getFixtureElement(), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			TaskID elementComponent = getInstance(SUCCESS, getFixtureElement());
-			TaskID dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK,
-				getOtherNetwork(), XLinkAttributesTest.getSimpleFixture());
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-		}
-	}
-
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			TaskID elementComponent = getInstance(SUCCESS, getFixtureElement());
-			TaskID dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK,
-				getOtherNetwork(), XLinkAttributesTest.getSimpleFixture());
-			assertFalse(elementComponent.equals(dataComponent));
+			// Base equality
+			TaskID elementComponent = getInstance(getFixtureElement(), SUCCESS);
+			TaskID builderComponent = new TaskID.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
 
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, DIFFERENT_VALUE, TEST_NETWORK, getOtherNetwork(),
-				XLinkAttributesTest.getSimpleFixture());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, "SIPRNet", getOtherNetwork(),
-				XLinkAttributesTest.getSimpleFixture());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			if (!version.isAtLeast("5.0")) {
-				dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, DIFFERENT_VALUE,
-					XLinkAttributesTest.getSimpleFixture());
-				assertFalse(elementComponent.equals(dataComponent));
-			}
-
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, getOtherNetwork(),
-				null);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			TaskID elementComponent = getInstance(SUCCESS, getFixtureElement());
+			// Wrong class
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
+			
+			// Different values in each field
+			TaskID.Builder builder = getBaseBuilder();
+			builder.setValue(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setTaskingSystem(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setNetwork("SIPRNet");
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			if (!version.isAtLeast("5.0")) {
+				builder = getBaseBuilder();
+				builder.setOtherNetwork(DIFFERENT_VALUE);
+				assertFalse(elementComponent.equals(builder.commit()));
+			}
+			
+			builder = getBaseBuilder();
+			builder.setXLinkAttributes(null);
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			TaskID component = getInstance(SUCCESS, getFixtureElement());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, getOtherNetwork(),
-				XLinkAttributesTest.getSimpleFixture());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			TaskID component = getInstance(SUCCESS, getFixtureElement());
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-
-			component = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, getOtherNetwork(),
-				XLinkAttributesTest.getSimpleFixture());
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testWrongVersion() throws InvalidDDMSException {
+	
+	public void testVersionSpecific() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance("The taskID element cannot", TEST_VALUE, TEST_TASKING_SYSTEM, null, null, null);
+		getInstance(getFixtureElement(), "The taskID element cannot");
 	}
 
-	public void testBuilderEquality() throws InvalidDDMSException {
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			TaskID component = getInstance(SUCCESS, getFixtureElement());
-			TaskID.Builder builder = new TaskID.Builder(component);
-			assertEquals(component, builder.commit());
+			TaskID elementComponent = getInstance(getFixtureElement(), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
-
+	
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -392,27 +341,9 @@ public class TaskIDTest extends AbstractBaseTestCase {
 			TaskID.Builder builder = new TaskID.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.setValue(TEST_VALUE);
 			assertFalse(builder.isEmpty());
-
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			TaskID.Builder builder = new TaskID.Builder();
-			builder.setTaskingSystem(TEST_TASKING_SYSTEM);
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "value is required.");
-			}
-			builder.setValue(TEST_VALUE);
-			builder.commit();
 		}
 	}
 }

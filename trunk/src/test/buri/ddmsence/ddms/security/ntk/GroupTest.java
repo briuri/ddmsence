@@ -126,17 +126,15 @@ public class GroupTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ntk:AccessGroup ").append(getXmlnsNTK()).append(" ").append(getXmlnsISM()).append(" ");
 		xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">\n");
 		xml.append("\t<ntk:AccessSystemName ism:classification=\"U\" ism:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
 		xml.append("\t<ntk:AccessGroupValue ism:classification=\"U\" ism:ownerProducer=\"USA\">WISE/RODCA</ntk:AccessGroupValue>\n");
 		xml.append("</ntk:AccessGroup>\n");
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() throws InvalidDDMSException {
@@ -263,18 +261,6 @@ public class GroupTest extends AbstractBaseTestCase {
 			component = getInstance(SUCCESS, SystemNameTest.getFixture(), GroupValueTest.getFixtureList());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Group component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
-
-			component = getInstance(SUCCESS, SystemNameTest.getFixture(), GroupValueTest.getFixtureList());
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
 

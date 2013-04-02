@@ -19,16 +19,11 @@
  */
 package buri.ddmsence.ddms.resource;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
-import buri.ddmsence.ddms.summary.Link;
 import buri.ddmsence.ddms.summary.LinkTest;
-import buri.ddmsence.ddms.summary.xlink.XLinkAttributes;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -44,7 +39,6 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 	private static final Integer TEST_REVISION_ID = Integer.valueOf(1);
 	private static final String TEST_REVISION_TYPE = "ADMINISTRATIVE RECALL";
 	private static final String TEST_VALUE = "Description of Recall";
-	private static final String TEST_NETWORK = "NIPRNet";
 	private static final String TEST_OTHER_NETWORK = "PBS";
 
 	/**
@@ -89,23 +83,15 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 		}
 		return (null);
 	}
-	
-	/**
-	 * Gets an otherNetwork value for the version
-	 */
-	private String getOtherNetwork() {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? "" : TEST_OTHER_NETWORK);
-	}
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private RevisionRecall getInstance(String message, Element element) {
+	private RevisionRecall getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		RevisionRecall component = null;
 		try {
@@ -122,22 +108,16 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param links associated links (optional)
-	 * @param details associated details (optional)
-	 * @param revisionID integer ID for this recall (required)
-	 * @param revisionType type of revision (required)
-	 * @param network the network (optional)
-	 * @param otherNetwork another network (optional)
-	 * @param xlinkAttributes simple xlink attributes (optional)
+	 * 
+	 * @return a valid object
 	 */
-	private RevisionRecall getInstance(String message, List<Link> links, List<Details> details, Integer revisionID,
-		String revisionType, String network, String otherNetwork, XLinkAttributes xlinkAttributes) {
+	private RevisionRecall getInstance(RevisionRecall.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		RevisionRecall component = null;
 		try {
-			component = new RevisionRecall(links, details, revisionID, revisionType, network, otherNetwork,
-				xlinkAttributes, SecurityAttributesTest.getFixture());
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -148,30 +128,13 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Helper method to create an object which is expected to be valid.
+	 * Returns a builder, pre-populated with base data from the XML sample.
 	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param value child text (optional)
-	 * @param revisionID integer ID for this recall (required)
-	 * @param revisionType type of revision (required)
-	 * @param network the network (optional)
-	 * @param otherNetwork another network (optional)
-	 * @param xlinkAttributes simple xlink attributes (optional)
+	 * This builder can then be modified to test various conditions.
 	 */
-	private RevisionRecall getInstance(String message, String value, Integer revisionID, String revisionType,
-		String network, String otherNetwork, XLinkAttributes xlinkAttributes) {
-		boolean expectFailure = !Util.isEmpty(message);
-		RevisionRecall component = null;
-		try {
-			component = new RevisionRecall(value, revisionID, revisionType, network, otherNetwork, xlinkAttributes,
-				SecurityAttributesTest.getFixture());
-			checkConstructorSuccess(expectFailure);
-		}
-		catch (InvalidDDMSException e) {
-			checkConstructorFailure(expectFailure, e);
-			expectMessage(e, message);
-		}
-		return (component);
+	private RevisionRecall.Builder getBaseBuilder() {
+		RevisionRecall component = getInstance(getValidElement(DDMSVersion.getCurrentVersion().getVersion()), SUCCESS);
+		return (new RevisionRecall.Builder(component));
 	}
 
 	/**
@@ -231,7 +194,6 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 		else
 			xml.append(TEST_VALUE);
 		xml.append("</ddms:revisionRecall>");
-
 		return (xml.toString());
 	}
 
@@ -239,356 +201,228 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_DDMS_PREFIX,
 				RevisionRecall.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			// Element-based, links & details
+			getInstance(getValidElement(sVersion), SUCCESS);
+			
+			// Data-based via Builder, links & details
+			getBaseBuilder();
+			
+			// Element-based, text
+			RevisionRecall elementComponent = getInstance(getTextFixtureElement(false), SUCCESS);
+			
+			// Data-based, text
+			getInstance(new RevisionRecall.Builder(elementComponent), SUCCESS);
+		}
+	}
+	
+	public void testConstructorsMinimal() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// All fields (links)
-			getInstance(SUCCESS, getValidElement(sVersion));
-
-			// All fields (text)
-			getInstance(SUCCESS, getTextFixtureElement(false));
-
-			// No optional fields (links)
+			// Element-based, No optional fields (text)
 			Element element = Util.buildDDMSElement(RevisionRecall.getName(version), null);
 			Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
 			Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
 			SecurityAttributesTest.getFixture().addTo(element);
-			element.appendChild(LinkTest.getLocatorFixture(true).getXOMElementCopy());
-			getInstance(SUCCESS, element);
+			RevisionRecall elementComponent = getInstance(element, SUCCESS);
 
-			// No optional fields (text)
-			element = Util.buildDDMSElement(RevisionRecall.getName(version), null);
-			Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
-			Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
-			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance(SUCCESS, element);
+			// Data-based, No optional fields (text)
+			getInstance(new RevisionRecall.Builder(elementComponent), SUCCESS);
+			
+			// Element-based, No optional fields (links & details)
+			element.appendChild(LinkTest.getLocatorFixture(true).getXOMElementCopy());
+			elementComponent = getInstance(element, SUCCESS);
+			
+			// Data-based, No optional fields (links & details)
+			getInstance(new RevisionRecall.Builder(elementComponent), SUCCESS);
+			
+			// Null list parameters
+			try {
+				new RevisionRecall(null, null, TEST_REVISION_ID, TEST_REVISION_TYPE, null, null, null,
+					SecurityAttributesTest.getFixture());
+			}
+			catch (InvalidDDMSException e) {
+				checkConstructorFailure(false, e);
+			}
 		}
 	}
 
-	public void testDataConstructorValid() throws InvalidDDMSException {
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// All fields (links)
-			getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), TEST_REVISION_ID,
-				TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
-
-			// All fields (text)
-			getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(),
-				XLinkAttributesTest.getResourceFixture());
-
-			// No optional fields (links)
-			getInstance(SUCCESS, null, null, TEST_REVISION_ID, TEST_REVISION_TYPE, null, null, null);
-
-			// No optional fields (text)
-			getInstance(SUCCESS, null, TEST_REVISION_ID, TEST_REVISION_TYPE, null, null, null);
-		}
-	}
-
-	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
 			// Wrong type of XLinkAttributes (locator)
-			Element element = Util.buildDDMSElement(RevisionRecall.getName(version), TEST_VALUE);
-			XLinkAttributesTest.getLocatorFixture().addTo(element);
-			getInstance("revision ID is required.", element);
+			RevisionRecall.Builder builder = getBaseBuilder();
+			builder.getXLinkAttributes().setType("simple");
+			getInstance(builder, "The type attribute must have a fixed value");
 
-			// Both text AND links/details, text first
-			element = Util.buildDDMSElement(RevisionRecall.getName(version), TEST_VALUE);
-			Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
-			Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
-			SecurityAttributesTest.getFixture().addTo(element);
-			element.appendChild(LinkTest.getLocatorFixture(true).getXOMElementCopy());
-			getInstance("A ddms:revisionRecall element cannot have both child text and nested elements.", element);
-
-			// Both text AND links/details, text last
-			element = Util.buildDDMSElement(RevisionRecall.getName(version), null);
-			Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
-			Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
-			SecurityAttributesTest.getFixture().addTo(element);
-			element.appendChild(LinkTest.getLocatorFixture(true).getXOMElementCopy());
-			element.appendChild(TEST_VALUE);
-			getInstance("A ddms:revisionRecall element cannot have both child text and nested elements.", element);
-
-			// Links without security attributes
-			element = Util.buildDDMSElement(RevisionRecall.getName(version), null);
-			Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
-			Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
-			SecurityAttributesTest.getFixture().addTo(element);
-			Link link = new Link(XLinkAttributesTest.getLocatorFixture(), null);
-			element.appendChild(link.getXOMElementCopy());
-			getInstance("classification is required.", element);
-
-			// Bad revisionID
-			element = Util.buildDDMSElement(RevisionRecall.getName(version), TEST_VALUE);
-			Util.addDDMSAttribute(element, "revisionID", "one");
-			Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
-			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("revision ID is required.", element);
-
-			// Missing revisionID
-			element = Util.buildDDMSElement(RevisionRecall.getName(version), TEST_VALUE);
-			Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
-			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("revision ID is required.", element);
-
-			// Missing revisionType
-			element = Util.buildDDMSElement(RevisionRecall.getName(version), TEST_VALUE);
-			Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
-			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("The revisionType attribute must be one of", element);
-
-			// Bad revisionType
-			element = Util.buildDDMSElement(RevisionRecall.getName(version), TEST_VALUE);
-			Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
-			Util.addDDMSAttribute(element, "revisionType", "MISTAKE");
-			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("The revisionType attribute must be one of", element);
-
-			// Bad network
-			if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
-				element = Util.buildDDMSElement(RevisionRecall.getName(version), TEST_VALUE);
-				Util.addAttribute(element, "", "network", "", "PBS");
-				Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
-				Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
-				SecurityAttributesTest.getFixture().addTo(element);
-				getInstance("The network attribute must be one of", element);
-			}
-		}
-	}
-
-	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			// Wrong type of XLinkAttributes (locator)
-			getInstance("The type attribute must have a fixed value", LinkTest.getLocatorFixtureList(true),
-				DetailsTest.getFixtureList(), TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(),
-				XLinkAttributesTest.getLocatorFixture());
-
-			// Links without security attributes
-			Link link = new Link(XLinkAttributesTest.getLocatorFixture(), null);
-			List<Link> linkList = new ArrayList<Link>();
-			linkList.add(link);
-			getInstance("classification is required.", linkList, DetailsTest.getFixtureList(), TEST_REVISION_ID,
-				TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(), XLinkAttributesTest.getLocatorFixture());
-
-			// Missing revisionID
-			getInstance("revision ID is required.", LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
-				null, TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
-
-			// Missing revisionType
-			getInstance("The revisionType attribute must be one of", LinkTest.getLocatorFixtureList(true),
-				DetailsTest.getFixtureList(), TEST_REVISION_ID, null, TEST_NETWORK, getOtherNetwork(),
-				XLinkAttributesTest.getResourceFixture());
-
-			// Bad revisionType
-			getInstance("The revisionType attribute must be one of", LinkTest.getLocatorFixtureList(true),
-				DetailsTest.getFixtureList(), TEST_REVISION_ID, "MISTAKE", TEST_NETWORK, getOtherNetwork(),
-				XLinkAttributesTest.getResourceFixture());
-
-			// Bad network
-			getInstance("The network attribute must be one of", LinkTest.getLocatorFixtureList(true),
-				DetailsTest.getFixtureList(), TEST_REVISION_ID, TEST_REVISION_TYPE, "PBS", getOtherNetwork(),
-				XLinkAttributesTest.getResourceFixture());
+			// Both text AND links/details
+			builder = getBaseBuilder();
+			builder.setValue(TEST_VALUE);
+			getInstance(builder, "A ddms:revisionRecall element cannot have both");
 			
-			if (version.isAtLeast("5.0")) {
+			// Links without security attributes
+			builder = getBaseBuilder();
+			builder.getLinks().get(0).setSecurityAttributes(null);
+			getInstance(builder, "classification is required.");
+
+			// Missing revisionID
+			builder = getBaseBuilder();
+			builder.setRevisionID(null);
+			getInstance(builder, "revision ID is required.");
+
+			// Missing revisionType
+			builder = getBaseBuilder();
+			builder.setRevisionType(null);
+			getInstance(builder, "The revisionType attribute must be one of");
+
+			// Invalid revisionType
+			builder = getBaseBuilder();
+			builder.setRevisionType("MISTAKE");
+			getInstance(builder, "The revisionType attribute must be one of");
+
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
+				// Bad network
+				builder = getBaseBuilder();
+				builder.setNetwork("PBS");
+				getInstance(builder, "The network attribute must be one of");
+			}
+			else {
 				// Invalid otherNetwork
-				getInstance("The otherNetwork attribute cannot", LinkTest.getLocatorFixtureList(true),
-					DetailsTest.getFixtureList(), TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, "PBS",
-					XLinkAttributesTest.getResourceFixture());
+				builder = getBaseBuilder();
+				builder.setOtherNetwork(TEST_OTHER_NETWORK);				
+				getInstance(builder, "The otherNetwork attribute cannot");
 			}
 		}
 	}
 
-	public void testWarnings() throws InvalidDDMSException {
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			RevisionRecall component = getInstance(SUCCESS, getValidElement(sVersion));
+			RevisionRecall component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// links
-			RevisionRecall elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			RevisionRecall dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true),
-				DetailsTest.getFixtureList(), TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(),
-				XLinkAttributesTest.getResourceFixture());
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			// Base equality, links & details
+			RevisionRecall elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			RevisionRecall builderComponent = new RevisionRecall.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
 
-			// text
-			elementComponent = getInstance(SUCCESS, getTextFixtureElement(false));
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK,
-				getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-		}
-	}
-
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// links
-			RevisionRecall elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			RevisionRecall dataComponent = getInstance(SUCCESS, null, DetailsTest.getFixtureList(), TEST_REVISION_ID,
-				TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), null, TEST_REVISION_ID,
-				TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
-				Integer.valueOf(2), TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(),
-				XLinkAttributesTest.getResourceFixture());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
-				TEST_REVISION_ID, "ADMINISTRATIVE REVISION", TEST_NETWORK, getOtherNetwork(),
-				XLinkAttributesTest.getResourceFixture());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
-				TEST_REVISION_ID, TEST_REVISION_TYPE, "SIPRNet", getOtherNetwork(),
-				XLinkAttributesTest.getResourceFixture());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
-				dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
-					TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, "DoD-Dist-B",
-					XLinkAttributesTest.getResourceFixture());
-				assertFalse(elementComponent.equals(dataComponent));
-			}
-
-			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
-				TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(), null);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			// text
-			elementComponent = getInstance(SUCCESS, getTextFixtureElement(false));
-			dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK,
-				getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, Integer.valueOf(2), TEST_REVISION_TYPE, TEST_NETWORK,
-				getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, "ADMINISTRATIVE REVISION", TEST_NETWORK,
-				getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, "SIPRNet",
-				getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
-				dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK,
-					"DoD-Dist-B", XLinkAttributesTest.getResourceFixture());
-				assertFalse(elementComponent.equals(dataComponent));
-			}
-
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK,
-				getOtherNetwork(), null);
-			assertFalse(elementComponent.equals(dataComponent));
-
-		}
-	}
-
-	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			RevisionRecall elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			// Wrong class
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
+			
+			// Different values in each field, links & details
+			RevisionRecall.Builder builder = getBaseBuilder();
+			builder.getLinks().get(0).getSecurityAttributes().setClassification("S");
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.getLinks().get(0).getSecurityAttributes().setClassification("S");
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.getDetails().clear();
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setRevisionID(Integer.valueOf(2));
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setRevisionType("ADMINISTRATIVE REVISION");
+			assertFalse(elementComponent.equals(builder.commit()));
+
+			builder = getBaseBuilder();
+			builder.setNetwork("SIPRNet");
+			assertFalse(elementComponent.equals(builder.commit()));
+
+			if (!version.isAtLeast("5.0")) {
+				builder = getBaseBuilder();
+				builder.setOtherNetwork("SIPRNet");
+				assertFalse(elementComponent.equals(builder.commit()));
+			}
+			
+			builder = getBaseBuilder();
+			builder.setXLinkAttributes(null);
+			assertFalse(elementComponent.equals(builder.commit()));
+						
+			// Base equality, text
+			elementComponent = getInstance(getTextFixtureElement(false), SUCCESS);
+			builderComponent = new RevisionRecall.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+
+			// Different values in each field, text
+			builder = new RevisionRecall.Builder(elementComponent);
+			builder.setValue(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = new RevisionRecall.Builder(elementComponent);
+			builder.setRevisionID(Integer.valueOf(2));
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = new RevisionRecall.Builder(elementComponent);
+			builder.setRevisionType("ADMINISTRATIVE REVISION");
+			assertFalse(elementComponent.equals(builder.commit()));
+
+			builder = new RevisionRecall.Builder(elementComponent);
+			builder.setNetwork("SIPRNet");
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			if (!version.isAtLeast("5.0")) {
+				builder = new RevisionRecall.Builder(elementComponent);
+				builder.setOtherNetwork("SIPRNet");
+				assertFalse(elementComponent.equals(builder.commit()));
+			}
+			
+			builder = new RevisionRecall.Builder(elementComponent);
+			builder.setXLinkAttributes(null);
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// links
-			RevisionRecall component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true, true), component.toHTML());
-			assertEquals(getExpectedOutput(true, false), component.toText());
-
-			component = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
-				TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(),
-				XLinkAttributesTest.getResourceFixture());
-			assertEquals(getExpectedOutput(true, true), component.toHTML());
-			assertEquals(getExpectedOutput(true, false), component.toText());
-
-			// text
-			component = getInstance(SUCCESS, getTextFixtureElement(false));
-			assertEquals(getExpectedOutput(false, true), component.toHTML());
-			assertEquals(getExpectedOutput(false, false), component.toText());
-
-			component = getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK,
-				getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
-			assertEquals(getExpectedOutput(false, true), component.toHTML());
-			assertEquals(getExpectedOutput(false, false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// links
-			RevisionRecall component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(true), component.toXML());
-
-			component = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
-				TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(),
-				XLinkAttributesTest.getResourceFixture());
-			assertEquals(getExpectedXMLOutput(true), component.toXML());
-
-			// text
-			component = getInstance(SUCCESS, getTextFixtureElement(false));
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
-
-			component = getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK,
-				getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
-		}
-	}
-
-	public void testWrongVersion() throws InvalidDDMSException {
+	public void testVersionSpecific() throws InvalidDDMSException {
+		RevisionRecall.Builder builder = getBaseBuilder();
+		builder.getLinks().clear();
+		builder.getDetails().clear();		
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance("The revisionRecall element cannot", TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, null, null, null);
+		getInstance(builder, "The revisionRecall element cannot");
 	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
+	
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// Equality after Building (links)
-			RevisionRecall component = getInstance(SUCCESS, getValidElement(sVersion));
-			RevisionRecall.Builder builder = new RevisionRecall.Builder(component);
-			assertEquals(component, builder.commit());
-
-			// Equality after Building (text)
-			component = getInstance(SUCCESS, getTextFixtureElement(false));
-			builder = new RevisionRecall.Builder(component);
-			assertEquals(component, builder.commit());
+			// links & details
+			RevisionRecall elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true, true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(true, false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(true), elementComponent.toXML());
+			
+			// text
+			elementComponent = getInstance(getTextFixtureElement(false), SUCCESS);
+			assertEquals(getExpectedOutput(false, true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false, false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(false), elementComponent.toXML());
 		}
 	}
 
@@ -599,33 +433,23 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			RevisionRecall.Builder builder = new RevisionRecall.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.getLinks().get(2).getSecurityAttributes().setClassification("U");
 			assertFalse(builder.isEmpty());
 
 			builder = new RevisionRecall.Builder();
 			assertTrue(builder.isEmpty());
+			
 			builder.getDetails().get(2).getSecurityAttributes().setClassification("U");
 			assertFalse(builder.isEmpty());
 		}
 	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			RevisionRecall.Builder builder = new RevisionRecall.Builder();
-			builder.setRevisionID(TEST_REVISION_ID);
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "The revisionType attribute must be one of");
-			}
-			builder.setRevisionType(TEST_REVISION_TYPE);
-			builder.getSecurityAttributes().setClassification("U");
-			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-			builder.commit();
-		}
+	
+	public void testConstructorChaining() throws InvalidDDMSException {
+		RevisionRecall recall = new RevisionRecall(null, TEST_REVISION_ID, TEST_REVISION_TYPE, null, null, null,
+			SecurityAttributesTest.getFixture());
+		RevisionRecall recallFull = new RevisionRecall(null, null, TEST_REVISION_ID, TEST_REVISION_TYPE, null, null,
+			null, SecurityAttributesTest.getFixture());
+		assertTrue(recall.equals(recallFull));
 	}
 }

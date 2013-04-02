@@ -171,10 +171,8 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:subjectCoverage ").append(getXmlnsDDMS());
@@ -203,7 +201,7 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 			xml.append("\t</ddms:Subject>\n");
 		}
 		xml.append("</ddms:subjectCoverage>");
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() {
@@ -359,18 +357,6 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 				ProductionMetricTest.getFixtureList(), NonStateActorTest.getFixtureList());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			SubjectCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(true), component.toXML());
-
-			component = getInstance(SUCCESS, KeywordTest.getFixtureList(), CategoryTest.getFixtureList(),
-				ProductionMetricTest.getFixtureList(), NonStateActorTest.getFixtureList());
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
 

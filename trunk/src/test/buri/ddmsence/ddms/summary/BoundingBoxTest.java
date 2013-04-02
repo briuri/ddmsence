@@ -149,10 +149,8 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:boundingBox ").append(getXmlnsDDMS()).append(">\n\t");
 		xml.append("<ddms:").append(getWestBLName()).append(">").append(TEST_WEST).append("</ddms:").append(
@@ -164,7 +162,7 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 		xml.append("<ddms:").append(getNorthBLName()).append(">").append(TEST_NORTH).append("</ddms:").append(
 			getNorthBLName()).append(">\n");
 		xml.append("</ddms:boundingBox>");
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	/**
@@ -323,17 +321,6 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 			component = getInstance(SUCCESS, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			BoundingBox component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(true), component.toXML());
-
-			component = getInstance(SUCCESS, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
 

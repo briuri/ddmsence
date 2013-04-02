@@ -134,10 +134,8 @@ public class AccessTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ntk:Access ").append(getXmlnsNTK()).append(" ").append(getXmlnsISM()).append(" ");
@@ -165,7 +163,7 @@ public class AccessTest extends AbstractBaseTestCase {
 		xml.append("\t</ntk:AccessProfileList>\n");
 		xml.append("</ntk:Access>");
 
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() throws InvalidDDMSException {
@@ -318,19 +316,6 @@ public class AccessTest extends AbstractBaseTestCase {
 				ProfileListTest.getFixture(), getExternalReference());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Access component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(true), component.toXML());
-
-			component = getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
-				ProfileListTest.getFixture(), getExternalReference());
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
 

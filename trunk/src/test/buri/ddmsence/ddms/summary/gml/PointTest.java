@@ -118,10 +118,8 @@ public class PointTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) throws InvalidDDMSException {
+	private String getExpectedXMLOutput() throws InvalidDDMSException {
 		SRSAttributes attr = SRSAttributesTest.getFixture();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<gml:Point ").append(getXmlnsGML()).append(" ");
@@ -137,7 +135,7 @@ public class PointTest extends AbstractBaseTestCase {
 		xml.append("uomLabels=\"").append(attr.getUomLabelsAsXsList()).append("\">");
 		xml.append(PositionTest.TEST_XS_LIST).append("</gml:pos>\n");
 		xml.append("</gml:Point>");
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() throws InvalidDDMSException {
@@ -328,17 +326,6 @@ public class PointTest extends AbstractBaseTestCase {
 			component = getInstance(SUCCESS, PositionTest.getFixture(), SRSAttributesTest.getFixture(), TEST_ID);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Point component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(true), component.toXML());
-
-			component = getInstance(SUCCESS, PositionTest.getFixture(), SRSAttributesTest.getFixture(), TEST_ID);
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
 

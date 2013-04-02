@@ -25,7 +25,6 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -94,13 +93,12 @@ public class DetailsTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private Details getInstance(String message, Element element) {
+	private Details getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Details component = null;
 		try {
@@ -117,15 +115,16 @@ public class DetailsTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param value the child text
+	 * 
 	 * @return a valid object
 	 */
-	private Details getInstance(String message, String value) {
+	private Details getInstance(Details.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Details component = null;
 		try {
-			component = new Details(value, SecurityAttributesTest.getFixture());
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -133,6 +132,16 @@ public class DetailsTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private Details.Builder getBaseBuilder() {
+		Details component = getInstance(getFixtureElement(), SUCCESS);
+		return (new Details.Builder(component));
 	}
 
 	/**
@@ -161,149 +170,100 @@ public class DetailsTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getFixtureElement(), SUCCESS), DEFAULT_DDMS_PREFIX,
 				Details.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			// Element-based
+			getInstance(getFixtureElement(), SUCCESS);
+
+			// Data-based via Builder
+			getBaseBuilder();
+		}
+	}
+
+	public void testConstructorsMinimal() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// All fields
-			getInstance(SUCCESS, getFixtureElement());
-
-			// No optional fields
+			// Element-based, No optional fields
 			Element element = Util.buildDDMSElement(Details.getName(version), null);
 			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance(SUCCESS, element);
+			getInstance(element, SUCCESS);
+
+			// Data-based, No optional fields
+			Details.Builder builder = getBaseBuilder();
+			builder.setValue(null);
+			getInstance(builder, SUCCESS);
 		}
 	}
-
-	public void testDataConstructorValid() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// All fields
-			getInstance(SUCCESS, TEST_VALUE);
-
-			// No optional fields
-			getInstance(SUCCESS, "");
-		}
-	}
-
-	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			// Bad security attributes
-			Element element = Util.buildDDMSElement(Details.getName(version), null);
-			getInstance("classification is required.", element);
-		}
-	}
-
-	public void testDataConstructorInvalid() {
+	
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Bad security attributes
-			try {
-				new Details(TEST_VALUE, (SecurityAttributes) null);
-				fail("Allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "classification is required.");
-			}
+			Details.Builder builder = getBaseBuilder();
+			builder.setSecurityAttributes(null);
+			getInstance(builder, "classification is required.");
 		}
 	}
 
-	public void testWarnings() throws InvalidDDMSException {
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			Details component = getInstance(SUCCESS, getFixtureElement());
+			Details component = getInstance(getFixtureElement(), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 
-			// No value
-			if (!version.isAtLeast("5.0")) {
-				Element element = Util.buildDDMSElement(Details.getName(version), null);
-				SecurityAttributesTest.getFixture().addTo(element);
-				component = getInstance(SUCCESS, element);
-				assertEquals(1, component.getValidationWarnings().size());
-				String text = "A ddms:details element was found with no value.";
-				String locator = "ddms:details";
-				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-			}
+			// Completely empty
+			Details.Builder builder = getBaseBuilder();
+			builder.setValue(null);
+			component = getInstance(builder, SUCCESS);
+			assertEquals(1, component.getValidationWarnings().size());
+			String text = "A ddms:details element was found with no value.";
+			String locator = "ddms:details";
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
-
-	public void testConstructorEquality() throws InvalidDDMSException {
+	
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Details elementComponent = getInstance(SUCCESS, getFixtureElement());
-			Details dataComponent = getInstance(SUCCESS, TEST_VALUE);
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			// Base equality
+			Details elementComponent = getInstance(getFixtureElement(), SUCCESS);
+			Details builderComponent = new Details.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+
+			// Different values in each field
+			Details.Builder builder = getBaseBuilder();
+			builder.setValue(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
+	public void testVersionSpecific() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("2.0");
+		getInstance(getFixtureElement(), "The details element cannot");
+	}
+	
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Details elementComponent = getInstance(SUCCESS, getFixtureElement());
-			Details dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Details component = getInstance(SUCCESS, getFixtureElement());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, TEST_VALUE);
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Details component = getInstance(SUCCESS, getFixtureElement());
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-
-			component = getInstance(SUCCESS, TEST_VALUE);
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testWrongVersion() {
-		try {
-			DDMSVersion.setCurrentVersion("2.0");
-			new Details(TEST_VALUE, SecurityAttributesTest.getFixture());
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "The details element cannot be used");
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Details component = getInstance(SUCCESS, getFixtureElement());
-			Details.Builder builder = new Details.Builder(component);
-			assertEquals(component, builder.commit());
+			Details elementComponent = getInstance(getFixtureElement(), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
 
@@ -314,28 +274,10 @@ public class DetailsTest extends AbstractBaseTestCase {
 			Details.Builder builder = new Details.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.setValue(TEST_VALUE);
 			assertFalse(builder.isEmpty());
 
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Details.Builder builder = new Details.Builder();
-			builder.setValue(TEST_VALUE);
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "classification is required.");
-			}
-			builder.getSecurityAttributes().setClassification("U");
-			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-			builder.commit();
 		}
 	}
 }

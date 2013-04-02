@@ -19,16 +19,11 @@
  */
 package buri.ddmsence.ddms.resource;
 
-import java.util.List;
-
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
-import buri.ddmsence.ddms.IRoleEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.RoleEntityTest;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
-import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -61,13 +56,12 @@ public class ContributorTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private Contributor getInstance(String message, Element element) {
+	private Contributor getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Contributor component = null;
 		try {
@@ -85,15 +79,16 @@ public class ContributorTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param entity the producer entity
-	 * @param pocTypes the pocType (DDMS 4.0.1 or later)
+	 * 
+	 * @return a valid object
 	 */
-	private Contributor getInstance(String message, IRoleEntity entity, List<String> pocTypes) {
+	private Contributor getInstance(Contributor.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Contributor component = null;
 		try {
-			component = new Contributor(entity, pocTypes, SecurityAttributesTest.getFixture());
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -101,6 +96,17 @@ public class ContributorTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private Contributor.Builder getBaseBuilder() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		Contributor component = getInstance(getValidElement(version.getVersion()), SUCCESS);
+		return (new Contributor.Builder(component));
 	}
 
 	/**
@@ -119,182 +125,134 @@ public class ContributorTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:contributor ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM());
 		if (version.isAtLeast("4.0.1"))
 			xml.append(" ism:pocType=\"DoD-Dist-B\"");
-		xml.append(" ism:classification=\"U\" ism:ownerProducer=\"USA\">\n\t<ddms:").append(
-			Organization.getName(version)).append(">\n");
+		xml.append(" ism:classification=\"U\" ism:ownerProducer=\"USA\">\n\t<ddms:");
+		xml.append(Organization.getName(version)).append(">\n");
 		xml.append("\t\t<ddms:name>DISA</ddms:name>\n");
 		xml.append("\t</ddms:").append(Organization.getName(version)).append(">\n</ddms:contributor>");
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_DDMS_PREFIX,
 				Contributor.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() {
+	public void testConstructors() {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			// Element-based
+			getInstance(getValidElement(sVersion), SUCCESS);
+			
+			// Data-based via Builder
+			getBaseBuilder();
+		}
+	}
+	
+	public void testConstructorsMinimal() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			// All fields
-			getInstance(SUCCESS, getValidElement(sVersion));
 
-			// No optional fields
+			// Element-based, No optional fields
 			Element element = Util.buildDDMSElement(Contributor.getName(version), null);
 			element.appendChild(OrganizationTest.getFixture().getXOMElementCopy());
-			getInstance(SUCCESS, element);
+			Contributor elementComponent = getInstance(element, SUCCESS);
+			
+			// Data-based, No optional fields
+			getInstance(new Contributor.Builder(elementComponent), SUCCESS);
 		}
 	}
 
-	public void testDataConstructorValid() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			// All fields
-			getInstance(SUCCESS, OrganizationTest.getFixture(), null);
-		}
-	}
-
-	public void testElementConstructorInvalid() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			String ismPrefix = PropertyReader.getPrefix("ism");
-
-			// Missing entity
-			Element element = Util.buildDDMSElement(Contributor.getName(version), null);
-			getInstance("entity is required.", element);
-
-			if (version.isAtLeast("4.0.1")) {
-				// Invalid pocType
-				element = Util.buildDDMSElement(Contributor.getName(version), null);
-				element.appendChild(OrganizationTest.getFixture().getXOMElementCopy());
-				Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "Unknown");
-				getInstance("Unknown is not a valid enumeration token", element);
-
-				// Partial Invalid pocType
-				element = Util.buildDDMSElement(Contributor.getName(version), null);
-				element.appendChild(OrganizationTest.getFixture().getXOMElementCopy());
-				Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "DoD-Dist-B Unknown");
-				getInstance("Unknown is not a valid enumeration token", element);
-			}
-		}
-	}
-
-	public void testDataConstructorInvalid() {
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing entity
-			getInstance("entity is required.", (IRoleEntity) null, null);
+			Contributor.Builder builder = getBaseBuilder();
+			builder.setEntityType(null);
+			builder.setOrganization(null);
+			getInstance(builder, "entity is required.");
 
 			if (version.isAtLeast("4.0.1")) {
 				// Invalid pocType
-				getInstance("Unknown is not a valid enumeration token", OrganizationTest.getFixture(),
-					Util.getXsListAsList("Unknown"));
+				builder = getBaseBuilder();
+				builder.setPocTypes(Util.getXsListAsList("Unknown"));
+				getInstance(builder, "Unknown is not a valid enumeration token");
 
 				// Partial Invalid pocType
-				getInstance("Unknown is not a valid enumeration token", OrganizationTest.getFixture(),
-					Util.getXsListAsList("DoD-Dist-B Unknown"));
+				builder = getBaseBuilder();
+				builder.setPocTypes(Util.getXsListAsList("DoD-Dist-B Unknown"));
+				getInstance(builder, "Unknown is not a valid enumeration token");
 			}
 		}
 	}
 
-	public void testWarnings() {
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+
 			// No warnings
-			Contributor component = getInstance(SUCCESS, getValidElement(sVersion));
+			Contributor component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Contributor elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Contributor dataComponent = getInstance(SUCCESS, OrganizationTest.getFixture(),
-				RoleEntityTest.getPocTypes());
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+
+			// Base equality
+			Contributor elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			Contributor builderComponent = new Contributor.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+
+			// Different values in each field	
+			Contributor.Builder builder = getBaseBuilder();
+			builder.setEntityType(Person.getName(version));
+			builder.setPerson(new Person.Builder(PersonTest.getFixture()));
+			builder.setOrganization(null);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			if (version.isAtLeast("4.0.1")) {
+				builder = getBaseBuilder();
+				builder.setPocTypes(Util.getXsListAsList("DoD-Dist-C"));
+				assertFalse(elementComponent.equals(builder.commit()));
+			}
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Contributor elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Contributor dataComponent = getInstance(SUCCESS, new Service(Util.getXsListAsList("DISA PEO-GES"),
-				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Contributor component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, OrganizationTest.getFixture(), RoleEntityTest.getPocTypes());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Contributor component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(true), component.toXML());
-
-			component = getInstance(SUCCESS, OrganizationTest.getFixture(), RoleEntityTest.getPocTypes());
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
-		}
-	}
-
-	public void testSecurityAttributes() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Contributor component = new Contributor(OrganizationTest.getFixture(), null,
-				SecurityAttributesTest.getFixture());
-			assertEquals(SecurityAttributesTest.getFixture(), component.getSecurityAttributes());
-		}
-	}
-
-	public void testWrongVersionPocType() {
+	public void testVersionSpecific() throws InvalidDDMSException {
+		// pocType before 4.0.1
 		DDMSVersion.setCurrentVersion("3.1");
-		try {
-			new Contributor(OrganizationTest.getFixture(), Util.getXsListAsList("DoD-Dist-B"),
-				SecurityAttributesTest.getFixture());
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "This component cannot have a pocType");
-		}
+		Contributor.Builder builder = getBaseBuilder();
+		builder.setPocTypes(Util.getXsListAsList("DoD-Dist-B"));
+		getInstance(builder, "This component cannot have a pocType");
 	}
 
-	public void testBuilderEquality() throws InvalidDDMSException {
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Contributor component = getInstance(SUCCESS, getValidElement(sVersion));
-			Contributor.Builder builder = new Contributor.Builder(component);
-			assertEquals(component, builder.commit());
+			Contributor elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
-
+	
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -302,34 +260,9 @@ public class ContributorTest extends AbstractBaseTestCase {
 			Contributor.Builder builder = new Contributor.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.setPocTypes(Util.getXsListAsList("DoD-Dist-B"));
 			assertFalse(builder.isEmpty());
-
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-		}
-	}
-
-	public void testBuilder() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			Contributor.Builder builder = new Contributor.Builder();
-			builder.setEntityType(Organization.getName(version));
-			builder.getOrganization().setPhones(Util.getXsListAsList("703-885-1000"));
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "At least 1 name element must");
-			}
-			builder.getOrganization().setNames(Util.getXsListAsList("DISA"));
-			builder.commit();
 		}
 	}
 }

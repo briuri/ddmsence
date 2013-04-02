@@ -101,7 +101,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 	public ResourceTest() throws InvalidDDMSException {
 		super("resource.xml");
 	}
-	
+
 	/**
 	 * Returns a test resource element value for DDMSVersions that support it.
 	 */
@@ -178,7 +178,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 		return (element);
 	}
-	
+
 	/**
 	 * Creates a stub resource element that is otherwise correct, but leaves resource components out.
 	 * 
@@ -675,7 +675,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			createComponents();
-			
+			boolean isAtLeast50 = version.isAtLeast("5.0");
+
 			// Element-based
 			getInstance(getValidElement(sVersion), SUCCESS);
 
@@ -709,12 +710,24 @@ public class ResourceTest extends AbstractBaseTestCase {
 				catch (InvalidDDMSException e) {
 					checkConstructorFailure(false, e);
 				}
-				
+
 				// Data-based via Builder, with ExtensibleElement
 				ExtensibleElement component = new ExtensibleElement(ExtensibleElementTest.getFixtureElement());
 				Resource.Builder builder = getBaseBuilder();
 				builder.getExtensibleElements().get(0).setXml(component.toXML());
 				getInstance(builder, SUCCESS);
+			}
+
+			// Null in component list
+			try {
+				List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
+				components.add(null);
+				SecurityAttributes attributes = isAtLeast50 ? null : SecurityAttributesTest.getFixture();
+				new Resource(components, getTestResourceElement(), getTestCreateDate(), null, getTestIsmDesVersion(),
+					getTestNtkDesVersion(), attributes, null, null);
+			}
+			catch (InvalidDDMSException e) {
+				checkConstructorFailure(false, e);
 			}
 		}
 	}
@@ -757,18 +770,6 @@ public class ResourceTest extends AbstractBaseTestCase {
 				expectMessage(e, error);
 			}
 
-			// Null in component list
-			try {
-				List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
-				components.add(null);
-				SecurityAttributes attributes = isAtLeast50 ? null : SecurityAttributesTest.getFixture();
-				new Resource(components, getTestResourceElement(), getTestCreateDate(), null, getTestIsmDesVersion(),
-					getTestNtkDesVersion(), attributes, null, null);
-			}
-			catch (InvalidDDMSException e) {
-				checkConstructorFailure(false, e);
-			}
-
 			// Invalid object in component list
 			try {
 				List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
@@ -789,17 +790,17 @@ public class ResourceTest extends AbstractBaseTestCase {
 				builder = getBaseBuilder();
 				builder.setCreateDate(null);
 				getInstance(builder, "createDate is required.");
-				
+
 				// Invalid createDate
 				builder = getBaseBuilder();
 				builder.setCreateDate("soon");
 				getInstance(builder, "The ism:createDate attribute is not in a valid");
-				
+
 				// Almost valid createDate
 				builder = getBaseBuilder();
 				builder.setCreateDate("---31");
 				getInstance(builder, "The createDate must be in the xs:date");
-				
+
 				// Missing ISM DESVersion
 				builder = getBaseBuilder();
 				builder.setIsmDESVersion(null);
@@ -954,13 +955,13 @@ public class ResourceTest extends AbstractBaseTestCase {
 		Resource.Builder builder = getBaseBuilder();
 		builder.setCompliesWiths(TEST_ISM_COMPLIES_WITH);
 		getInstance(builder, "The compliesWith attribute cannot");
-		
+
 		// ISM/NTK in DDMS 5.0
 		DDMSVersion.setCurrentVersion("5.0");
 		builder = getBaseBuilder();
 		builder.setCreateDate("2012-01-01");
 		getInstance(builder, "The resource cannot have ISM");
-		
+
 		// Extensible Elements in DDMS 5.0
 		DDMSVersion.setCurrentVersion("5.0");
 		builder = getBaseBuilder();
@@ -982,7 +983,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
 			assertEquals(getExpectedOutput(false), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
-			
+
 			if (!version.isAtLeast("5.0")) {
 				// ExtensibleElements
 				ExtensibleElement component = new ExtensibleElement(ExtensibleElementTest.getFixtureElement());
@@ -1240,7 +1241,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		assertNull(component.getIsmDESVersion());
 		assertTrue(component.getSecurityAttributes().isEmpty());
 		assertEquals(0, component.getExtensibleAttributes().getAttributes().size());
-		
+
 		// ism:DESVersion in element
 		Element element = getTestResourceNoHeader();
 		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, version.getIsmNamespace(),
@@ -1373,7 +1374,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 				builder.setExtensibleAttributes(new ExtensibleAttributes.Builder(attributes));
 				getInstance(builder, "The extensible attribute with the name, ntk:DESVersion");
 			}
-			
+
 			// classification in securityAttributes AND extensible.
 			exAttr = new ArrayList<Attribute>();
 			exAttr.add(new Attribute("ism:classification", version.getIsmNamespace(), "S"));
@@ -1394,13 +1395,13 @@ public class ResourceTest extends AbstractBaseTestCase {
 		builder.getExtensibleElements().get(0).setXml(ExtensibleElementTest.getFixtureElement().toXML());
 		builder.getExtensibleElements().get(1).setXml(ExtensibleElementTest.getFixtureElement().toXML());
 		getInstance(builder, "Only 1 extensible element is allowed in DDMS 2.0.");
-		
+
 		// Okay later
 		DDMSVersion.setCurrentVersion("3.0");
 		builder = getBaseBuilder();
 		builder.getExtensibleElements().get(0).setXml(ExtensibleElementTest.getFixtureElement().toXML());
 		builder.getExtensibleElements().get(1).setXml(ExtensibleElementTest.getFixtureElement().toXML());
-		getInstance(builder, SUCCESS);		
+		getInstance(builder, SUCCESS);
 	}
 
 	public void test20DeclassManualReviewAttribute() throws InvalidDDMSException {

@@ -59,13 +59,12 @@ public class RecordsManagementInfoTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private RecordsManagementInfo getInstance(String message, Element element) {
+	private RecordsManagementInfo getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		RecordsManagementInfo component = null;
 		try {
@@ -82,18 +81,16 @@ public class RecordsManagementInfoTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param keeper the record keeper (optional)
-	 * @param software the software (optional)
-	 * @param vitalRecord whether this is a vital record (optional, defaults to false)
-	 * @param org the organization
+	 * 
+	 * @return a valid object
 	 */
-	private RecordsManagementInfo getInstance(String message, RecordKeeper keeper, ApplicationSoftware software,
-		Boolean vitalRecord) {
+	private RecordsManagementInfo getInstance(RecordsManagementInfo.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		RecordsManagementInfo component = null;
 		try {
-			component = new RecordsManagementInfo(keeper, software, vitalRecord);
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -101,6 +98,16 @@ public class RecordsManagementInfoTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private RecordsManagementInfo.Builder getBaseBuilder() {
+		RecordsManagementInfo component = getInstance(getValidElement(DDMSVersion.getCurrentVersion().getVersion()), SUCCESS);
+		return (new RecordsManagementInfo.Builder(component));
 	}
 
 	/**
@@ -116,10 +123,8 @@ public class RecordsManagementInfoTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:recordsManagementInfo ").append(getXmlnsDDMS());
 		xml.append(" ddms:vitalRecordIndicator=\"true\">\n");
@@ -132,145 +137,98 @@ public class RecordsManagementInfoTest extends AbstractBaseTestCase {
 		xml.append("\t<ddms:applicationSoftware ").append(getXmlnsISM());
 		xml.append(" ism:classification=\"U\" ism:ownerProducer=\"USA\">IRM Generator 2L-9</ddms:applicationSoftware>\n");
 		xml.append("</ddms:recordsManagementInfo>");
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_DDMS_PREFIX,
 				RecordsManagementInfo.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			// Element-based
+			getInstance(getValidElement(sVersion), SUCCESS);
+
+			// Data-based via Builder
+			getBaseBuilder();
+		}
+	}
+
+	public void testConstructorsMinimal() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// All fields
-			getInstance(SUCCESS, getValidElement(sVersion));
-
-			// No optional fields
+			// Element-based, no optional fields
 			Element element = Util.buildDDMSElement(RecordsManagementInfo.getName(version), null);
-			getInstance(SUCCESS, element);
+			RecordsManagementInfo elementComponent = getInstance(element, SUCCESS);
+
+			// Data-based via Builder, no optional fields
+			getInstance(new RecordsManagementInfo.Builder(elementComponent), SUCCESS);
 		}
 	}
-
-	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// All fields
-			getInstance(SUCCESS, RecordKeeperTest.getFixture(), ApplicationSoftwareTest.getFixture(), TEST_VITAL);
-
-			// No optional fields
-			getInstance(SUCCESS, null, null, null);
-		}
+	
+	public void testValidationErrors() throws InvalidDDMSException {
+		// No tests.
 	}
 
-	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// No invalid cases.
-		}
-	}
-
-	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// No invalid cases.
-		}
-	}
-
-	public void testWarnings() throws InvalidDDMSException {
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			RecordsManagementInfo component = getInstance(SUCCESS, getValidElement(sVersion));
+			RecordsManagementInfo component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			RecordsManagementInfo elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			RecordsManagementInfo dataComponent = getInstance(SUCCESS, RecordKeeperTest.getFixture(),
-				ApplicationSoftwareTest.getFixture(), TEST_VITAL);
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			// Base equality
+			RecordsManagementInfo elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			RecordsManagementInfo builderComponent = new RecordsManagementInfo.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+
+			// Different values in each field
+			RecordsManagementInfo.Builder builder = getBaseBuilder();
+			builder.setVitalRecordIndicator(null);
+			assertFalse(elementComponent.equals(builder.commit()));
+
+			builder = getBaseBuilder();
+			builder.setRecordKeeper(null);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setApplicationSoftware(null);
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
+	public void testVersionSpecific() throws InvalidDDMSException {
+		RecordsManagementInfo.Builder builder = new RecordsManagementInfo.Builder();
+		builder.setVitalRecordIndicator(TEST_VITAL);
+		DDMSVersion.setCurrentVersion("2.0");
+		getInstance(builder, "The recordsManagementInfo element cannot");
+	}
+
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			RecordsManagementInfo elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			RecordsManagementInfo dataComponent = getInstance(SUCCESS, RecordKeeperTest.getFixture(),
-				ApplicationSoftwareTest.getFixture(), null);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, RecordKeeperTest.getFixture(), null, TEST_VITAL);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, null, ApplicationSoftwareTest.getFixture(), TEST_VITAL);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			RecordsManagementInfo component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, RecordKeeperTest.getFixture(), ApplicationSoftwareTest.getFixture(),
-				TEST_VITAL);
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			RecordsManagementInfo component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(true), component.toXML());
-
-			component = getInstance(SUCCESS, RecordKeeperTest.getFixture(), ApplicationSoftwareTest.getFixture(),
-				TEST_VITAL);
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
-		}
-	}
-
-	public void testWrongVersion() {
-		try {
-			DDMSVersion.setCurrentVersion("2.0");
-			new RecordsManagementInfo(null, null, TEST_VITAL);
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "The recordsManagementInfo element cannot be used");
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			RecordsManagementInfo component = getInstance(SUCCESS, getValidElement(sVersion));
-			RecordsManagementInfo.Builder builder = new RecordsManagementInfo.Builder(component);
-			assertEquals(component, builder.commit());
+			RecordsManagementInfo elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
 
@@ -281,27 +239,9 @@ public class RecordsManagementInfoTest extends AbstractBaseTestCase {
 			RecordsManagementInfo.Builder builder = new RecordsManagementInfo.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.setVitalRecordIndicator(TEST_VITAL);
 			assertFalse(builder.isEmpty());
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			RecordsManagementInfo.Builder builder = new RecordsManagementInfo.Builder();
-			builder.getApplicationSoftware().setValue("value");
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "classification is required.");
-			}
-			builder.getApplicationSoftware().getSecurityAttributes().setClassification("U");
-			builder.getApplicationSoftware().getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-			builder.commit();
 		}
 	}
 }

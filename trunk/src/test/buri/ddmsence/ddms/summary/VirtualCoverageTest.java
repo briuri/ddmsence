@@ -51,11 +51,11 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 	private String getAccess() {
 		return (DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? TEST_ACCESS : null);
 	}
-	
+
 	private String getNetwork() {
 		return (DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? TEST_NETWORK : null);
 	}
-	
+
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -148,10 +148,10 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 			xml.append(" ").append(getXmlnsISM());
 		String prefix = DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? "virt" : "ddms";
-		xml.append(" ").append(prefix).append(":address=\"").append(TEST_ADDRESS).append("\" ").append(prefix).append(":protocol=\"").append(TEST_PROTOCOL).append(
-			"\"");
+		xml.append(" ").append(prefix).append(":address=\"").append(TEST_ADDRESS).append("\" ").append(prefix).append(
+			":protocol=\"").append(TEST_PROTOCOL).append("\"");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
-			xml.append(" ntk:access=\"namespace1|key1^value1|key2^value1|key2^value2\" virt:network=\"NIPRNet\""); 
+			xml.append(" ntk:access=\"namespace1|key1^value1|key2^value1|key2^value2\" virt:network=\"NIPRNet\"");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 			xml.append(" ism:classification=\"U\" ism:ownerProducer=\"USA\"");
 		xml.append(" />");
@@ -243,16 +243,17 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			VirtualCoverage elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			VirtualCoverage dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_PROTOCOL, getAccess(), getNetwork());
+			VirtualCoverage dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_PROTOCOL, getAccess(),
+				getNetwork());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, TEST_ADDRESS, DIFFERENT_VALUE, getAccess(), getNetwork());
 			assertFalse(elementComponent.equals(dataComponent));
-			
+
 			if (version.isAtLeast("5.0")) {
 				dataComponent = getInstance(SUCCESS, TEST_ADDRESS, TEST_PROTOCOL, null, getNetwork());
 				assertFalse(elementComponent.equals(dataComponent));
-				
+
 				dataComponent = getInstance(SUCCESS, TEST_ADDRESS, TEST_PROTOCOL, getAccess(), DIFFERENT_VALUE);
 				assertFalse(elementComponent.equals(dataComponent));
 			}

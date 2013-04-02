@@ -173,9 +173,7 @@ public final class Dates extends AbstractBaseComponent {
 		if (!getDDMSVersion().isAtLeast("4.0.1") && !Util.isEmpty(getReceivedOnString())) {
 			throw new InvalidDDMSException("This component cannot have a receivedOn date until DDMS 4.0.1 or later.");
 		}
-		if (!getDDMSVersion().isAtLeast("4.1") && !getAcquiredOns().isEmpty()) {
-			throw new InvalidDDMSException("This component cannot have an acquiredOn date until DDMS 4.1 or later.");
-		}
+		// Check for acquiredOn is implicit, since the class cannot be instantiated before 4.1.
 		if (!Util.isEmpty(getCreatedString()))
 			Util.requireDDMSDateFormat(getCreatedString(), getNamespace());
 		if (!Util.isEmpty(getPostedString()))

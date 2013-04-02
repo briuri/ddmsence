@@ -25,7 +25,6 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributes;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -74,7 +73,7 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 	 * @param element the element to build from
 	 * @return a valid object
 	 */
-	private RelatedResource getInstance(String message, Element element) {
+	private RelatedResource getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		RelatedResource component = null;
 		try {
@@ -91,21 +90,16 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param links a list of links
-	 * @param relationship the relationship attribute (required)
-	 * @param direction the relationship direction (optional)
-	 * @param qualifier the qualifier value
-	 * @param value the value
+	 * 
 	 * @return a valid object
 	 */
-	private RelatedResource getInstance(String message, List<Link> links, String relationship, String direction,
-		String qualifier, String value) {
+	private RelatedResource getInstance(RelatedResource.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		RelatedResource component = null;
 		try {
-			component = new RelatedResource(links, relationship, direction, qualifier, value,
-				SecurityAttributesTest.getFixture());
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -113,6 +107,17 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private RelatedResource.Builder getBaseBuilder() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		RelatedResource component = getInstance(getValidElement(version.getVersion()), SUCCESS);
+		return (new RelatedResource.Builder(component));
 	}
 
 	/**
@@ -138,53 +143,60 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		if (version.isAtLeast("4.0.1")) {
 			xml.append("<ddms:relatedResource ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
 			xml.append("ddms:relationship=\"http://purl.org/dc/terms/references\" ddms:direction=\"outbound\" ");
 			xml.append("ddms:qualifier=\"http://purl.org/dc/terms/URI\" ddms:value=\"http://en.wikipedia.org/wiki/Tank\" ");
-			xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">\n");
-			xml.append("\t<ddms:link xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"locator\" ");
-			xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:label=\"tank\" />\n");
+			xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">");
+			xml.append("<ddms:link xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"locator\" ");
+			xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:label=\"tank\" />");
 			xml.append("</ddms:relatedResource>");
 		}
 		else {
 			xml.append("<ddms:relatedResources ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
 			xml.append("ddms:relationship=\"http://purl.org/dc/terms/references\" ddms:direction=\"outbound\" ");
-			xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">\n");
-			xml.append("\t<ddms:RelatedResource ddms:qualifier=\"http://purl.org/dc/terms/URI\" ");
-			xml.append("ddms:value=\"http://en.wikipedia.org/wiki/Tank\">\n");
-			xml.append("\t\t<ddms:link xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"locator\" ");
-			xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:label=\"tank\" />\n");
-			xml.append("\t</ddms:RelatedResource>\n");
-			xml.append("</ddms:relatedResources>\n");
+			xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">");
+			xml.append("<ddms:RelatedResource ddms:qualifier=\"http://purl.org/dc/terms/URI\" ");
+			xml.append("ddms:value=\"http://en.wikipedia.org/wiki/Tank\">");
+			xml.append("<ddms:link xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"locator\" ");
+			xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:label=\"tank\" />");
+			xml.append("</ddms:RelatedResource>");
+			xml.append("</ddms:relatedResources>");
 		}
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_DDMS_PREFIX,
 				RelatedResource.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			// Element-based
+			getInstance(getValidElement(sVersion), SUCCESS);
+			
+			// Data-based via Builder
+			getBaseBuilder();
+		}
+	}
+	
+	public void testConstructorsMinimal() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// All fields
-			getInstance(SUCCESS, getValidElement(sVersion));
-
-			// No optional fields
+			// Element-based, No optional fields
 			Element element = Util.buildDDMSElement(RelatedResource.getName(version), null);
 			Util.addDDMSAttribute(element, "relationship", TEST_RELATIONSHIP);
 			Element innerElement = version.isAtLeast("4.0.1") ? element
@@ -194,170 +206,75 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
 			innerElement.appendChild(new Element(LinkTest.getFixtureElement()));
-			getInstance(SUCCESS, element);
+			RelatedResource elementComponent = getInstance(element, SUCCESS);
+			
+			// Data-based, No optional fields
+			RelatedResource.Builder builder = new RelatedResource.Builder(elementComponent);
+			getInstance(builder, SUCCESS);
 		}
 	}
 
-	public void testDataConstructorValid() throws InvalidDDMSException {
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-
-			// All fields
-			getInstance(SUCCESS, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION,
-				TEST_QUALIFIER, TEST_VALUE);
-
-			// No optional fields
-			getInstance(SUCCESS, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, null, TEST_QUALIFIER,
-				TEST_VALUE);
-		}
-	}
-
-	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
+			
 			// Missing relationship
-			Element element = Util.buildDDMSElement(RelatedResource.getName(version), null);
-			Element innerElement = version.isAtLeast("4.0.1") ? element
-				: Util.buildDDMSElement("RelatedResource", null);
-			if (!version.isAtLeast("4.0.1"))
-				element.appendChild(innerElement);
-			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
-			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
-			innerElement.appendChild(new Element(LinkTest.getFixtureElement()));
-			getInstance("relationship attribute is required.", element);
-
+			RelatedResource.Builder builder = getBaseBuilder();
+			builder.setRelationship(null);
+			getInstance(builder, "relationship attribute is required.");
+			
+			// Invalid URI relationship
+			builder = getBaseBuilder();
+			builder.setRelationship(INVALID_URI);
+			getInstance(builder, "Invalid URI");
+			
 			// Invalid direction
-			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
-			Util.addDDMSAttribute(element, "relationship", TEST_RELATIONSHIP);
-			Util.addDDMSAttribute(element, "direction", "veeringLeft");
-			innerElement = version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement("RelatedResource", null);
-			if (!version.isAtLeast("4.0.1"))
-				element.appendChild(innerElement);
-			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
-			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
-			innerElement.appendChild(new Element(LinkTest.getFixtureElement()));
-			getInstance("The direction attribute must be one of", element);
-
-			// Relationship not URI
-			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
-			Util.addDDMSAttribute(element, "relationship", INVALID_URI);
-			innerElement = version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement("RelatedResource", null);
-			if (!version.isAtLeast("4.0.1"))
-				element.appendChild(innerElement);
-			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
-			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
-			innerElement.appendChild(new Element(LinkTest.getFixtureElement()));
-			getInstance("Invalid URI", element);
-
+			builder = getBaseBuilder();
+			builder.setDirection("veeringLeft");
+			getInstance(builder, "The direction attribute must be");
+			
 			// Missing qualifier
-			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
-			Util.addDDMSAttribute(element, "relationship", TEST_RELATIONSHIP);
-			innerElement = version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement("RelatedResource", null);
-			if (!version.isAtLeast("4.0.1"))
-				element.appendChild(innerElement);
-			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
-			innerElement.appendChild(new Element(LinkTest.getFixtureElement()));
-			getInstance("qualifier attribute is required.", element);
-
-			// qualifier not URI
-			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
-			Util.addDDMSAttribute(element, "relationship", TEST_RELATIONSHIP);
-			innerElement = version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement("RelatedResource", null);
-			if (!version.isAtLeast("4.0.1"))
-				element.appendChild(innerElement);
-			Util.addDDMSAttribute(innerElement, "qualifier", INVALID_URI);
-			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
-			innerElement.appendChild(new Element(LinkTest.getFixtureElement()));
-			getInstance("Invalid URI", element);
-
+			builder = getBaseBuilder();
+			builder.setQualifier(null);
+			getInstance(builder, "qualifier attribute is required.");
+			
+			// Invalid URI qualifier
+			builder = getBaseBuilder();
+			builder.setQualifier(INVALID_URI);
+			getInstance(builder, "Invalid URI");
+			
 			// Missing value
-			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
-			Util.addDDMSAttribute(element, "relationship", TEST_RELATIONSHIP);
-			innerElement = version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement("RelatedResource", null);
-			if (!version.isAtLeast("4.0.1"))
-				element.appendChild(innerElement);
-			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
-			innerElement.appendChild(new Element(LinkTest.getFixtureElement()));
-			getInstance("value attribute is required.", element);
-
+			builder = getBaseBuilder();
+			builder.setValue(null);
+			getInstance(builder, "value attribute is required.");
+			
 			// Missing link
-			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
-			Util.addDDMSAttribute(element, "relationship", TEST_RELATIONSHIP);
-			innerElement = version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement("RelatedResource", null);
-			if (!version.isAtLeast("4.0.1"))
-				element.appendChild(innerElement);
-			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
-			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
-			getInstance("At least 1 link must exist.", element);
-
-			// Security Attributes
-			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
-			Util.addDDMSAttribute(element, "relationship", TEST_RELATIONSHIP);
-			innerElement = version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement("RelatedResource", null);
-			if (!version.isAtLeast("4.0.1"))
-				element.appendChild(innerElement);
-			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
-			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
-			Link link = new Link(XLinkAttributesTest.getLocatorFixture(), null);
-			Element linkElement = link.getXOMElementCopy();
-			SecurityAttributesTest.getFixture().addTo(linkElement);
-			innerElement.appendChild(linkElement);
-			getInstance("Security attributes cannot be applied", element);
-		}
-	}
-
-	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// Missing relationship
-			getInstance("relationship attribute is required.", LinkTest.getLocatorFixtureList(false), null,
-				TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
-
-			// Invalid direction
-			getInstance("The direction attribute must be one of", LinkTest.getLocatorFixtureList(false),
-				TEST_RELATIONSHIP, "veeringLeft", TEST_QUALIFIER, TEST_VALUE);
-
-			// Relationship not URI
-			getInstance("Invalid URI", LinkTest.getLocatorFixtureList(false), INVALID_URI, TEST_DIRECTION,
-				TEST_QUALIFIER, TEST_VALUE);
-
-			// Missing qualifier
-			getInstance("qualifier attribute is required.", LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP,
-				TEST_DIRECTION, null, TEST_VALUE);
-
-			// Qualifier not URI
-			getInstance("Invalid URI", LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION,
-				INVALID_URI, TEST_VALUE);
-
-			// Missing value
-			getInstance("value attribute is required.", LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP,
-				TEST_DIRECTION, TEST_QUALIFIER, null);
-
-			// Missing link
-			getInstance("At least 1 link must exist.", null, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER,
-				TEST_VALUE);
-
-			// Security Attributes
+			builder = getBaseBuilder();
+			builder.getLinks().clear();
+			getInstance(builder, "At least 1 link must exist.");
+			
+			// Null link list
 			try {
-				Link link = new Link(XLinkAttributesTest.getLocatorFixture(), SecurityAttributesTest.getFixture());
-				List<Link> links = new ArrayList<Link>();
-				links.add(link);
-				new RelatedResource(links, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE, null);
-				fail("Allowed invalid data.");
+				new RelatedResource(null,  TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE, null);
+				fail("Constructor allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "Security attributes cannot be applied");
+				expectMessage(e, "At least 1 link");
 			}
+			
+			// Security Attributes on Link
+			builder = getBaseBuilder();
+			builder.getLinks().get(0).getSecurityAttributes().setClassification("U");
+			getInstance(builder, "Security attributes cannot be applied");
 		}
 	}
 
-	public void testWarnings() throws InvalidDDMSException {
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			
 			// No warnings
-			RelatedResource component = getInstance(SUCCESS, getValidElement(sVersion));
+			RelatedResource component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Pre-DDMS 4.0.1, too many relatedResource children
@@ -368,7 +285,7 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 				child.addAttribute(Util.buildDDMSAttribute("value", "ignoreMe"));
 				child.appendChild(new Element(LinkTest.getFixtureElement()));
 				element.appendChild(child);
-				component = getInstance(SUCCESS, element);
+				component = getInstance(element, SUCCESS);
 				assertEquals(1, component.getValidationWarnings().size());
 				String text = "A ddms:RelatedResources element contains more than 1";
 				String locator = "ddms:relatedResources";
@@ -377,92 +294,55 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			RelatedResource elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			RelatedResource dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(false),
-				TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-		}
-	}
-
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			RelatedResource elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			RelatedResource dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(false),
-				DIFFERENT_VALUE, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, "inbound",
-				TEST_QUALIFIER, TEST_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP,
-				TEST_DIRECTION, DIFFERENT_VALUE, TEST_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP,
-				TEST_DIRECTION, TEST_QUALIFIER, DIFFERENT_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			List<Link> differentLinks = new ArrayList<Link>();
-			differentLinks.add(new Link(XLinkAttributesTest.getLocatorFixture()));
-			differentLinks.add(new Link(XLinkAttributesTest.getLocatorFixture()));
-			dataComponent = getInstance(SUCCESS, differentLinks, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER,
-				TEST_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			RelatedResource component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION,
-				TEST_QUALIFIER, TEST_VALUE);
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			RelatedResource component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
-
-			component = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION,
-				TEST_QUALIFIER, TEST_VALUE);
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
-
-		}
-	}
-
-	public void testLinkReuse() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			List<Link> links = LinkTest.getLocatorFixtureList(false);
-			getInstance(SUCCESS, links, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
-			getInstance(SUCCESS, links, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			RelatedResource component = getInstance(SUCCESS, getValidElement(sVersion));
-			RelatedResource.Builder builder = new RelatedResource.Builder(component);
-			assertEquals(component, builder.commit());
+			// Base equality
+			RelatedResource elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			RelatedResource builderComponent = new RelatedResource.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+			
+			// Different values in each field	
+			RelatedResource.Builder builder = getBaseBuilder();
+			builder.setRelationship(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
+
+			builder = getBaseBuilder();
+			builder.setDirection("inbound");
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setQualifier(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setValue(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			XLinkAttributes attr = XLinkAttributesTest.getLocatorFixture();
+			builder.getLinks().get(1).setXLinkAttributes(new XLinkAttributes.Builder(attr));
+			assertFalse(elementComponent.equals(builder.commit()));			
 		}
 	}
 
+	public void testVersionSpecific() throws InvalidDDMSException {
+		// No tests.
+	}
+	
+	public void testOutput() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			RelatedResource elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
+		}
+	}
+	
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -470,33 +350,10 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			RelatedResource.Builder builder = new RelatedResource.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.setQualifier(TEST_QUALIFIER);
 			assertFalse(builder.isEmpty());
-
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			RelatedResource.Builder builder = new RelatedResource.Builder();
-			builder.setQualifier(TEST_QUALIFIER);
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "relationship attribute is required.");
-			}
-			builder.setRelationship(TEST_RELATIONSHIP);
-			builder.setQualifier(TEST_QUALIFIER);
-			builder.setValue(TEST_VALUE);
-			builder.getLinks().get(0).getXLinkAttributes().setType("locator");
-			builder.getLinks().get(0).getXLinkAttributes().setHref("http://ddmsence.urizone.net/");
-			builder.getLinks().get(0).getXLinkAttributes().setRole("role");
-			builder.commit();
-
+			
 			// Skip empty Links
 			builder = new RelatedResource.Builder();
 			builder.setDirection(TEST_DIRECTION);

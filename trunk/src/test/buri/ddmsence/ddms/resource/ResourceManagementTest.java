@@ -19,12 +19,9 @@
  */
 package buri.ddmsence.ddms.resource;
 
-import java.util.List;
-
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -44,7 +41,7 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 		super("resourceManagement.xml");
 		removeSupportedVersions("2.0 3.0 3.1");
 	}
-	
+
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -61,13 +58,12 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private ResourceManagement getInstance(String message, Element element) {
+	private ResourceManagement getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		ResourceManagement component = null;
 		try {
@@ -84,19 +80,16 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param recordsManagementInfo records management info (optional)
-	 * @param revisionRecall information about revision recalls (optional)
-	 * @param taskingInfos list of tasking info (optional)
-	 * @param processingInfos list of processing info (optional)
+	 * 
+	 * @return a valid object
 	 */
-	private ResourceManagement getInstance(String message, RecordsManagementInfo recordsManagementInfo,
-		RevisionRecall revisionRecall, List<TaskingInfo> taskingInfos, List<ProcessingInfo> processingInfos) {
+	private ResourceManagement getInstance(ResourceManagement.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		ResourceManagement component = null;
 		try {
-			component = new ResourceManagement(recordsManagementInfo, revisionRecall, taskingInfos, processingInfos,
-				SecurityAttributesTest.getFixture());
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -104,6 +97,16 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private ResourceManagement.Builder getBaseBuilder() {
+		ResourceManagement component = getInstance(getValidElement(DDMSVersion.getCurrentVersion().getVersion()), SUCCESS);
+		return (new ResourceManagement.Builder(component));
 	}
 
 	/**
@@ -157,158 +160,103 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_DDMS_PREFIX,
 				ResourceManagement.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			// Element-based
+			getInstance(getValidElement(sVersion), SUCCESS);
+
+			// Data-based via Builder
+			getBaseBuilder();
+		}
+	}
+
+	public void testConstructorsMinimal() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// All fields
-			getInstance(SUCCESS, getValidElement(sVersion));
-
-			// No optional fields
+			// Element-based, no optional fields
 			Element element = Util.buildDDMSElement(ResourceManagement.getName(version), null);
-			getInstance(SUCCESS, element);
-		}
-	}
+			ResourceManagement elementComponent = getInstance(element, SUCCESS);
 
-	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// All fields
-			getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), RevisionRecallTest.getTextFixture(),
-				TaskingInfoTest.getFixtureList(), ProcessingInfoTest.getFixtureList());
-
-			// No optional fields
-			getInstance(SUCCESS, null, null, null, null);
-		}
-	}
-
-	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// No invalid cases
-		}
-	}
-
-	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// Incorrect version of security attributes
-			DDMSVersion.setCurrentVersion("2.0");
-			SecurityAttributes attributes = SecurityAttributesTest.getFixture();
-			DDMSVersion.setCurrentVersion(sVersion);
+			// Data-based via Builder, no optional fields
+			getInstance(new ResourceManagement.Builder(elementComponent), SUCCESS);
+			
+			// Null list parameters
 			try {
-				new ResourceManagement(null, null, null, null, attributes);
-				fail("Allowed invalid data.");
+				new ResourceManagement(null, null, null, null, null);
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "The DDMS version of the parent");
+				checkConstructorFailure(false, e);
 			}
 		}
 	}
-
-	public void testWarnings() throws InvalidDDMSException {
+	
+	public void testValidationErrors() throws InvalidDDMSException {
+		// No tests.
+	}
+	
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			ResourceManagement component = getInstance(SUCCESS, getValidElement(sVersion));
+			ResourceManagement component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ResourceManagement elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			ResourceManagement dataComponent = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(),
-				RevisionRecallTest.getTextFixture(), TaskingInfoTest.getFixtureList(),
-				ProcessingInfoTest.getFixtureList());
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			// Base equality
+			ResourceManagement elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			ResourceManagement builderComponent = new ResourceManagement.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+
+			// Different values in each field
+			ResourceManagement.Builder builder = getBaseBuilder();
+			builder.setRecordsManagementInfo(null);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setRevisionRecall(null);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.getTaskingInfos().clear();			
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.getProcessingInfos().clear();			
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
+	public void testVersionSpecific() throws InvalidDDMSException {
+		ResourceManagement.Builder builder = new ResourceManagement.Builder();
+		builder.getSecurityAttributes().setClassification("U");
+		DDMSVersion.setCurrentVersion("2.0");
+		getInstance(builder, "The resourceManagement element cannot");
+	}
+	
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ResourceManagement elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			ResourceManagement dataComponent = getInstance(SUCCESS, null, RevisionRecallTest.getTextFixture(),
-				TaskingInfoTest.getFixtureList(), ProcessingInfoTest.getFixtureList());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), null,
-				TaskingInfoTest.getFixtureList(), ProcessingInfoTest.getFixtureList());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(),
-				RevisionRecallTest.getTextFixture(), null, ProcessingInfoTest.getFixtureList());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(),
-				RevisionRecallTest.getTextFixture(), TaskingInfoTest.getFixtureList(), null);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			ResourceManagement component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(),
-				RevisionRecallTest.getTextFixture(), TaskingInfoTest.getFixtureList(),
-				ProcessingInfoTest.getFixtureList());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			ResourceManagement component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-
-			component = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(),
-				RevisionRecallTest.getTextFixture(), TaskingInfoTest.getFixtureList(),
-				ProcessingInfoTest.getFixtureList());
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testWrongVersion() {
-		try {
-			DDMSVersion.setCurrentVersion("2.0");
-			new ResourceManagement(null, null, null, null, SecurityAttributesTest.getFixture());
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "The resourceManagement element cannot be used");
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			ResourceManagement component = getInstance(SUCCESS, getValidElement(sVersion));
-			ResourceManagement.Builder builder = new ResourceManagement.Builder(component);
-			assertEquals(component, builder.commit());
+			ResourceManagement elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
 
@@ -319,30 +267,13 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 			ResourceManagement.Builder builder = new ResourceManagement.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.getTaskingInfos().get(1).getSecurityAttributes().setClassification("U");
 			assertFalse(builder.isEmpty());
+			
 			builder = new ResourceManagement.Builder();
 			builder.getProcessingInfos().get(1).getSecurityAttributes().setClassification("U");
 			assertFalse(builder.isEmpty());
-
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			ResourceManagement.Builder builder = new ResourceManagement.Builder();
-			builder.getSecurityAttributes().setClassification("COW");
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "COW is not a valid enumeration token for this attribute");
-			}
-			builder.getSecurityAttributes().setClassification("U");
-			builder.commit();
 		}
 	}
 }

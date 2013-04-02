@@ -210,22 +210,6 @@ public abstract class AbstractBaseTestCase extends TestCase {
 	}
 
 	/**
-	 * Strips tabs and new lines from XML output where appropriate. The unit test samples in the XML files have tabs and
-	 * new lines, but the default implementation of XOM toXML() returns XML on a single line.
-	 * 
-	 * @param string the original string
-	 * @param preserveFormatting true to retain tabs and new lines, false to strip them.
-	 * @return the modified string
-	 */
-	protected static String formatXml(String string, boolean preserveFormatting) {
-		if (!preserveFormatting) {
-			string = string.replaceAll("\t", "");
-			string = string.replaceAll("\n", "");
-		}
-		return (string);
-	}
-
-	/**
 	 * Returns a namespace declaration for DDMS
 	 */
 	protected static String getXmlnsDDMS() {
@@ -259,7 +243,7 @@ public abstract class AbstractBaseTestCase extends TestCase {
 	protected static String getXmlnsVirt() {
 		return ("xmlns:virt=\"" + DDMSVersion.getCurrentVersion().getVirtNamespace() + "\"");
 	}
-	
+
 	/**
 	 * Accessor for a valid DDMS XOM Element constructed from the root element of an XML file, which can be used in
 	 * testing as a "correct base case".

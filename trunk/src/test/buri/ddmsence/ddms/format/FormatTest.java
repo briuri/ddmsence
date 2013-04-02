@@ -60,6 +60,7 @@ public class FormatTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
+	 * 
 	 * @param element the element to build from
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
@@ -81,6 +82,7 @@ public class FormatTest extends AbstractBaseTestCase {
 
 	/**
 	 * Helper method to create an object which is expected to be valid.
+	 * 
 	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 

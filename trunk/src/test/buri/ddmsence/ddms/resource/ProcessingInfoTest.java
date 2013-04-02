@@ -73,12 +73,12 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private ProcessingInfo getInstance(String message, Element element) {
+	private ProcessingInfo getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		ProcessingInfo component = null;
 		try {
@@ -95,16 +95,16 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param value the child text
-	 * @param dateProcessed the processing date
+	 * 
 	 * @return a valid object
 	 */
-	private ProcessingInfo getInstance(String message, String value, String dateProcessed) {
+	private ProcessingInfo getInstance(ProcessingInfo.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		ProcessingInfo component = null;
 		try {
-			component = new ProcessingInfo(value, dateProcessed, SecurityAttributesTest.getFixture());
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -112,6 +112,17 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private ProcessingInfo.Builder getBaseBuilder() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		ProcessingInfo component = getInstance(getValidElement(version.getVersion()), SUCCESS);
+		return (new ProcessingInfo.Builder(component));
 	}
 
 	/**
@@ -142,185 +153,112 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_DDMS_PREFIX,
 				ProcessingInfo.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			// Element-based
+			getInstance(getValidElement(sVersion), SUCCESS);
+
+			// Data-based via Builder
+			getBaseBuilder();
+		}
+	}
+
+	public void testConstructorsMinimal() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// All fields
-			getInstance(SUCCESS, getValidElement(sVersion));
-
-			// No optional fields
+			// Element-based, No optional fields
 			Element element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
 			Util.addDDMSAttribute(element, "dateProcessed", TEST_DATE_PROCESSED);
 			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance(SUCCESS, element);
+			ProcessingInfo elementComponent = getInstance(element, SUCCESS);
+
+			// Data-based, No optional fields
+			ProcessingInfo.Builder builder = new ProcessingInfo.Builder(elementComponent);
+			getInstance(builder, SUCCESS);
 		}
 	}
 
-	public void testDataConstructorValid() {
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// All fields
-			getInstance(SUCCESS, TEST_VALUE, TEST_DATE_PROCESSED);
-
-			// No optional fields
-			getInstance(SUCCESS, "", TEST_DATE_PROCESSED);
-		}
-	}
-
-	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
 			// Missing date
-			Element element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
-			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("dateProcessed is required.", element);
+			ProcessingInfo.Builder builder = getBaseBuilder();
+			builder.setDateProcessed(null);
+			getInstance(builder, "dateProcessed is required.");
 
 			// Wrong date format (using xs:gDay here)
-			element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
-			Util.addDDMSAttribute(element, "dateProcessed", "---31");
-			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("The date datatype must be one of", element);
-		}
-	}
-
-	public void testDataConstructorInvalid() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// Missing date
-			getInstance("dateProcessed is required.", TEST_VALUE, null);
+			builder = getBaseBuilder();
+			builder.setDateProcessed("---31");
+			getInstance(builder, "The date datatype must be one of");
 
 			// Invalid date format
-			getInstance("The date datatype must be one of", TEST_VALUE, "baboon");
-
-			// Wrong date format (using xs:gDay here)
-			getInstance("The date datatype must be one of", TEST_VALUE, "---31");
+			builder = getBaseBuilder();
+			builder.setDateProcessed("soon");
+			getInstance(builder, "The date datatype must be one of");
 
 			// Bad security attributes
-			try {
-				new ProcessingInfo(TEST_VALUE, TEST_DATE_PROCESSED, null);
-				fail("Allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "classification is required.");
-			}
+			builder = getBaseBuilder();
+			builder.setSecurityAttributes(null);
+			getInstance(builder, "classification is required.");
 		}
 	}
 
-	public void testWarnings() throws InvalidDDMSException {
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			ProcessingInfo component = getInstance(SUCCESS, getValidElement(sVersion));
+			ProcessingInfo component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
-
-			// No value
-			if (!version.isAtLeast("5.0")) {
-				Element element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
-				Util.addDDMSAttribute(element, "dateProcessed", TEST_DATE_PROCESSED);
-				SecurityAttributesTest.getFixture().addTo(element);
-				component = getInstance(SUCCESS, element);
-				assertEquals(1, component.getValidationWarnings().size());
-				String text = "A ddms:processingInfo element was found with no value.";
-				String locator = "ddms:processingInfo";
-				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-			}
 		}
 	}
 
-	public void testDeprecatedAccessors() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			ProcessingInfo component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(TEST_DATE_PROCESSED, component.getDateProcessed().toXMLFormat());
-
-			// Not compatible with XMLGregorianCalendar
-			if (version.isAtLeast("4.1")) {
-				component = new ProcessingInfo(TEST_VALUE, "2012-01-01T01:02Z", SecurityAttributesTest.getFixture());
-				assertNull(component.getDateProcessed());
-			}
-		}
-	}
-
-	public void testConstructorEquality() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProcessingInfo elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			ProcessingInfo dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_DATE_PROCESSED);
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			// Base equality
+			ProcessingInfo elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			ProcessingInfo builderComponent = new ProcessingInfo.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+
+			// Different values in each field
+			ProcessingInfo.Builder builder = getBaseBuilder();
+			builder.setValue(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
+
+			builder = getBaseBuilder();
+			builder.setDateProcessed("2011");
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
+	public void testVersionSpecific() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("4.1");
+		ProcessingInfo.Builder builder = getBaseBuilder();
+		DDMSVersion.setCurrentVersion("2.0");
+		getInstance(builder, "The processingInfo element cannot be used");
+	}
+
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProcessingInfo elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			ProcessingInfo dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_DATE_PROCESSED);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, "2011");
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			ProcessingInfo component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, TEST_VALUE, TEST_DATE_PROCESSED);
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			ProcessingInfo component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-
-			component = getInstance(SUCCESS, TEST_VALUE, TEST_DATE_PROCESSED);
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testWrongVersion() {
-		try {
-			DDMSVersion.setCurrentVersion("2.0");
-			new ProcessingInfo(TEST_VALUE, TEST_DATE_PROCESSED, SecurityAttributesTest.getFixture());
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "The processingInfo element cannot be used");
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			ProcessingInfo component = getInstance(SUCCESS, getValidElement(sVersion));
-			ProcessingInfo.Builder builder = new ProcessingInfo.Builder(component);
-			assertEquals(component, builder.commit());
+			ProcessingInfo elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
 
@@ -331,29 +269,24 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 			ProcessingInfo.Builder builder = new ProcessingInfo.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+
 			builder.setValue(TEST_VALUE);
 			assertFalse(builder.isEmpty());
-
 		}
 	}
 
-	public void testBuilderValidation() throws InvalidDDMSException {
+	public void testDeprecatedAccessors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			ProcessingInfo.Builder builder = new ProcessingInfo.Builder();
-			builder.setValue(TEST_VALUE);
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
+			ProcessingInfo component = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(TEST_DATE_PROCESSED, component.getDateProcessed().toXMLFormat());
+
+			// Not compatible with XMLGregorianCalendar
+			if (version.isAtLeast("4.1")) {
+				component = new ProcessingInfo(TEST_VALUE, "2012-01-01T01:02Z", SecurityAttributesTest.getFixture());
+				assertNull(component.getDateProcessed());
 			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "dateProcessed is required.");
-			}
-			builder.setDateProcessed(TEST_DATE_PROCESSED);
-			builder.getSecurityAttributes().setClassification("U");
-			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-			builder.commit();
 		}
 	}
 }

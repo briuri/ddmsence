@@ -22,7 +22,6 @@ package buri.ddmsence.ddms.resource;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -59,13 +58,12 @@ public class SubtitleTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private Subtitle getInstance(String message, Element element) {
+	private Subtitle getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Subtitle component = null;
 		try {
@@ -82,15 +80,16 @@ public class SubtitleTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param value the child text
+	 * 
 	 * @return a valid object
 	 */
-	private Subtitle getInstance(String message, String value) {
+	private Subtitle getInstance(Subtitle.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Subtitle component = null;
 		try {
-			component = new Subtitle(value, SecurityAttributesTest.getFixture());
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -98,6 +97,17 @@ public class SubtitleTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private Subtitle.Builder getBaseBuilder() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		Subtitle component = getInstance(getValidElement(version.getVersion()), SUCCESS);
+		return (new Subtitle.Builder(component));
 	}
 
 	/**
@@ -126,130 +136,99 @@ public class SubtitleTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_DDMS_PREFIX,
 				Subtitle.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			// Element-based
+			getInstance(getValidElement(sVersion), SUCCESS);
+
+			// Data-based via Builder
+			getBaseBuilder();
+		}
+	}
+
+	public void testConstructorsMinimal() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			// All fields
-			getInstance(SUCCESS, getValidElement(sVersion));
 
-			// No optional fields
+			// Element-based, No optional fields
 			Element element = Util.buildDDMSElement(Subtitle.getName(version), null);
 			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance(SUCCESS, element);
+			getInstance(element, SUCCESS);
+
+			// Data-based, No optional fields
+			Subtitle.Builder builder = getBaseBuilder();
+			builder.setValue(null);
+			getInstance(builder, SUCCESS);
 		}
 	}
-
-	public void testDataConstructorValid() {
+	
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			// All fields
-			getInstance(SUCCESS, TEST_VALUE);
-
-			// No optional fields
-			getInstance(SUCCESS, "");
-		}
-	}
-
-	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// Bad security attributes
-			Element element = Util.buildDDMSElement(Subtitle.getName(version), null);
-			getInstance("classification is required.", element);
+			Subtitle.Builder builder = getBaseBuilder();
+			builder.setSecurityAttributes(null);
+			getInstance(builder, "classification is required.");
 		}
 	}
 
-	public void testDataConstructorInvalid() {
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			// Bad security attributes
-			try {
-				new Subtitle(TEST_VALUE, (SecurityAttributes) null);
-				fail("Allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "classification is required.");
-			}
-		}
-	}
 
-	public void testWarnings() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			Subtitle component = getInstance(SUCCESS, getValidElement(sVersion));
+			Subtitle component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 
-			// No value
-			if (!version.isAtLeast("5.0")) {
-				Element element = Util.buildDDMSElement(Subtitle.getName(version), null);
-				SecurityAttributesTest.getFixture().addTo(element);
-				component = getInstance(SUCCESS, element);
-				assertEquals(1, component.getValidationWarnings().size());
-				String text = "A ddms:subtitle element was found with no subtitle value.";
-				String locator = "ddms:subtitle";
-				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-			}
+			// Completely empty
+			Subtitle.Builder builder = getBaseBuilder();
+			builder.setValue(null);
+			component = getInstance(builder, SUCCESS);
+			assertEquals(1, component.getValidationWarnings().size());
+			String text = "A ddms:subtitle element was found with no";
+			String locator = "ddms:subtitle";
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
 
-	public void testConstructorEquality() {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Subtitle elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Subtitle dataComponent = getInstance(SUCCESS, TEST_VALUE);
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+
+			// Base equality
+			Subtitle elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			Subtitle builderComponent = new Subtitle.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+
+			// Different values in each field
+			Subtitle.Builder builder = getBaseBuilder();
+			builder.setValue(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
-
-	public void testConstructorInequalityDifferentValues() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Subtitle elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Subtitle dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
+	
+	public void testVersionSpecific() throws InvalidDDMSException {
+		// No tests.
 	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Subtitle component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, TEST_VALUE);
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Subtitle component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-
-			component = getInstance(SUCCESS, TEST_VALUE);
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
+	
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Subtitle component = getInstance(SUCCESS, getValidElement(sVersion));
-			Subtitle.Builder builder = new Subtitle.Builder(component);
-			assertEquals(component, builder.commit());
+			Subtitle elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
 
@@ -260,28 +239,9 @@ public class SubtitleTest extends AbstractBaseTestCase {
 			Subtitle.Builder builder = new Subtitle.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.setValue(TEST_VALUE);
 			assertFalse(builder.isEmpty());
-
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Subtitle.Builder builder = new Subtitle.Builder();
-			builder.setValue(TEST_VALUE);
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "classification is required.");
-			}
-			builder.getSecurityAttributes().setClassification("U");
-			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-			builder.commit();
 		}
 	}
 }

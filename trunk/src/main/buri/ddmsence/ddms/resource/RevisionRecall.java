@@ -140,12 +140,7 @@ public final class RevisionRecall extends AbstractBaseComponent {
 			}
 			String revisionID = element.getAttributeValue(REVISION_ID_NAME, getNamespace());
 			if (!Util.isEmpty(revisionID)) {
-				try {
-					_revisionID = Integer.valueOf(revisionID);
-				}
-				catch (NumberFormatException e) {
-					// This will be thrown as an InvalidDDMSException during validation
-				}
+				_revisionID = Integer.valueOf(revisionID);
 			}
 			_xlinkAttributes = new XLinkAttributes(element);
 			_securityAttributes = new SecurityAttributes(element);
