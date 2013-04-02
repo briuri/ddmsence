@@ -18,7 +18,7 @@ import com.sun.tools.doclets.Taglet;
 public class TableFooterTaglet extends AbstractInlineTaglet {
 
 	private static final String NAME = "table.footer";
-	
+
 	/**
 	 * Return the name of this custom tag.
 	 */
@@ -37,7 +37,7 @@ public class TableFooterTaglet extends AbstractInlineTaglet {
 		b.append("</td></tr></table>\n");
 		return (b.toString());
 	}
-	
+
 	/**
 	 * Register this Taglet.
 	 * 

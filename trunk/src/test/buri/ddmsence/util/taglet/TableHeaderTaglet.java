@@ -31,7 +31,7 @@ public class TableHeaderTaglet extends AbstractInlineTaglet {
 	static {
 		RULE_TABLES.add("Validation Rules");
 	}
-	
+
 	/**
 	 * Return the name of this custom tag.
 	 */
@@ -54,19 +54,19 @@ public class TableHeaderTaglet extends AbstractInlineTaglet {
 			if (title.startsWith(testTitle)) {
 				b.append("<table class=\"childInfo\" cellspacing=\"0\"><tr class=\"childInfoHeader\">");
 				b.append("<td class=\"name\">Name</td><td class=\"cardinality\">Cardinality</td>");
-				b.append("<td class=\"versions\">Availability</td></tr></table>\n");				
+				b.append("<td class=\"versions\">Availability</td></tr></table>\n");
 			}
 		}
 		for (String testTitle : RULE_TABLES) {
 			if (title.startsWith(testTitle)) {
 				b.append("<table class=\"rules\" cellspacing=\"0\"><tr class=\"rulesHeader\">");
 				b.append("<td class=\"rule\">Rule</td><td class=\"type\">Type</td>");
-				b.append("<td class=\"versions\">Applicability</td></tr></table>\n");				
+				b.append("<td class=\"versions\">Applicability</td></tr></table>\n");
 			}
 		}
 		return (b.toString());
 	}
-	
+
 	/**
 	 * Register this Taglet.
 	 * 
