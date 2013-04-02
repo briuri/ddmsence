@@ -386,7 +386,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * (or higher) components will fail, because some required attributes are missing.</p>
 	 * 
 	 * @param topLevelComponents a list of top level components
-	 * @param extensibleAttributes any extensible attributes (optional)
+	 * @param extensibleAttributes any extensible attributes
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, ExtensibleAttributes extensibleAttributes)
 		throws InvalidDDMSException {
@@ -400,12 +400,11 @@ public final class Resource extends AbstractBaseComponent {
 	 * (or higher) components will fail, because some required attributes are missing.</p>
 	 * 
 	 * @param topLevelComponents a list of top level components
-	 * @param resourceElement value of the resourceElement attribute (required, starting in DDMS 3.0)
-	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required, starting in DDMS 3.0)
-	 * @param ismDESVersion the DES Version as an Integer (required, starting in DDMS 3.0)
-	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in
-	 *        DDMS 3.0)
-	 * @param extensibleAttributes any extensible attributes (optional)
+	 * @param resourceElement value of the resourceElement attribute
+	 * @param createDate the create date as an xs:date (YYYY-MM-DD)
+	 * @param ismDESVersion the DES Version as an Integer
+	 * @param securityAttributes any security attributes
+	 * @param extensibleAttributes any extensible attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed, or if one of the components
 	 *         does not belong at the top-level of the Resource.
 	 */
@@ -423,13 +422,12 @@ public final class Resource extends AbstractBaseComponent {
 	 * (or higher) components will fail, because some required attributes are missing.</p>
 	 * 
 	 * @param topLevelComponents a list of top level components
-	 * @param resourceElement value of the resourceElement attribute (required, starting in DDMS 3.0)
-	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required, starting in DDMS 3.0)
-	 * @param compliesWiths shows what rulesets this resource complies with (optional, starting in DDMS 3.1)
-	 * @param ismDESVersion the DES Version as an Integer (required, starting in DDMS 3.0)
-	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in
-	 *        DDMS 3.0)
-	 * @param extensibleAttributes any extensible attributes (optional)
+	 * @param resourceElement value of the resourceElement attribute
+	 * @param createDate the create date as an xs:date (YYYY-MM-DD)
+	 * @param compliesWiths shows what rulesets this resource complies with
+	 * @param ismDESVersion the DES Version as an Integer
+	 * @param securityAttributes any security attributes
+	 * @param extensibleAttributes any extensible attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed, or if one of the components
 	 *         does not belong at the top-level of the Resource.
 	 */
@@ -458,15 +456,14 @@ public final class Resource extends AbstractBaseComponent {
 	 * schema still allows "any" attributes on the Resource, so the attribute values will be loaded if present. </p>
 	 * 
 	 * @param topLevelComponents a list of top level components
-	 * @param resourceElement value of the resourceElement attribute (required, starting in DDMS 3.0)
-	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required, starting in DDMS 3.0)
-	 * @param compliesWiths shows what rule sets this resource complies with (optional, starting in DDMS 3.1)
-	 * @param ismDESVersion the DES Version as an Integer (required, starting in DDMS 3.0)
-	 * @param ntkDESVersion the DES Version as an Integer (required, starting in DDMS 4.0.1)
-	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in
-	 *        DDMS 3.0)
-	 * @param noticeAttributes any notice attributes (optional, starting in DDMS 4.0.1)
-	 * @param extensibleAttributes any extensible attributes (optional)
+	 * @param resourceElement value of the resourceElement attribute
+	 * @param createDate the create date as an xs:date (YYYY-MM-DD)
+	 * @param compliesWiths shows what rule sets this resource complies with
+	 * @param ismDESVersion the DES Version as an Integer
+	 * @param ntkDESVersion the DES Version as an Integer
+	 * @param securityAttributes any security attributes
+	 * @param noticeAttributes any notice attributes
+	 * @param extensibleAttributes any extensible attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed, or if one of the components
 	 *         does not belong at the top-level of the Resource.
 	 */
@@ -894,7 +891,7 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the MetacardInfo component (exactly 1)
+	 * Accessor for the MetacardInfo component
 	 */
 	public MetacardInfo getMetacardInfo() {
 		return (_metacardInfo);
@@ -915,147 +912,147 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the subtitle components (0-many)
+	 * Accessor for the subtitle components
 	 */
 	public List<Subtitle> getSubtitles() {
 		return (Collections.unmodifiableList(_subtitles));
 	}
 
 	/**
-	 * Accessor for the description component (0-1)
+	 * Accessor for the description component
 	 */
 	public Description getDescription() {
 		return (_description);
 	}
 
 	/**
-	 * Accessor for the language components (0-many)
+	 * Accessor for the language components
 	 */
 	public List<Language> getLanguages() {
 		return (Collections.unmodifiableList(_languages));
 	}
 
 	/**
-	 * Accessor for the dates component (0-1). May return null.
+	 * Accessor for the dates component. May return null.
 	 */
 	public Dates getDates() {
 		return _dates;
 	}
 
 	/**
-	 * Accessor for the rights component (0-1). May return null.
+	 * Accessor for the rights component. May return null.
 	 */
 	public Rights getRights() {
 		return _rights;
 	}
 
 	/**
-	 * Accessor for the source components (0-many)
+	 * Accessor for the source components
 	 */
 	public List<Source> getSources() {
 		return (Collections.unmodifiableList(_sources));
 	}
 
 	/**
-	 * Accessor for the type components (0-many)
+	 * Accessor for the type components
 	 */
 	public List<Type> getTypes() {
 		return (Collections.unmodifiableList(_types));
 	}
 
 	/**
-	 * Accessor for a list of all Creator entities (0-many)
+	 * Accessor for a list of all Creator entities
 	 */
 	public List<Creator> getCreators() {
 		return (Collections.unmodifiableList(_creators));
 	}
 
 	/**
-	 * Accessor for a list of all Publisher entities (0-many)
+	 * Accessor for a list of all Publisher entities
 	 */
 	public List<Publisher> getPublishers() {
 		return (Collections.unmodifiableList(_publishers));
 	}
 
 	/**
-	 * Accessor for a list of all Contributor entities (0-many)
+	 * Accessor for a list of all Contributor entities
 	 */
 	public List<Contributor> getContributors() {
 		return (Collections.unmodifiableList(_contributors));
 	}
 
 	/**
-	 * Accessor for a list of all PointOfContact entities (0-many)
+	 * Accessor for a list of all PointOfContact entities
 	 */
 	public List<PointOfContact> getPointOfContacts() {
 		return (Collections.unmodifiableList(_pointOfContacts));
 	}
 
 	/**
-	 * Accessor for the Format component (0-1). May return null.
+	 * Accessor for the Format component. May return null.
 	 */
 	public Format getFormat() {
 		return (_format);
 	}
 
 	/**
-	 * Accessor for the subjectCoverage component (1-many)
+	 * Accessor for the subjectCoverage component
 	 */
 	public List<SubjectCoverage> getSubjectCoverages() {
 		return _subjectCoverages;
 	}
 
 	/**
-	 * Accessor for the virtualCoverage components (0-many)
+	 * Accessor for the virtualCoverage components
 	 */
 	public List<VirtualCoverage> getVirtualCoverages() {
 		return (Collections.unmodifiableList(_virtualCoverages));
 	}
 
 	/**
-	 * Accessor for the temporalCoverage components (0-many)
+	 * Accessor for the temporalCoverage components
 	 */
 	public List<TemporalCoverage> getTemporalCoverages() {
 		return (Collections.unmodifiableList(_temporalCoverages));
 	}
 
 	/**
-	 * Accessor for the geospatialCoverage components (0-many)
+	 * Accessor for the geospatialCoverage components
 	 */
 	public List<GeospatialCoverage> getGeospatialCoverages() {
 		return (Collections.unmodifiableList(geospatialCoverages));
 	}
 
 	/**
-	 * Accessor for the RelatedResource components (0-many)
+	 * Accessor for the RelatedResource components 
 	 */
 	public List<RelatedResource> getRelatedResources() {
 		return (Collections.unmodifiableList(_relatedResources));
 	}
 
 	/**
-	 * Accessor for the ResourceManagement component (0-1). May return null.
+	 * Accessor for the ResourceManagement component. May return null.
 	 */
 	public ResourceManagement getResourceManagement() {
 		return (_resourceManagement);
 	}
 
 	/**
-	 * Accessor for the security component (exactly 1). May return null but this cannot happen after instantiation.
+	 * Accessor for the security component. May return null.
 	 */
 	public Security getSecurity() {
 		return (_security);
 	}
 
 	/**
-	 * Accessor for the extensible layer elements (0-many in 3.0, 0-1 in 2.0).
+	 * Accessor for the extensible layer elements.
 	 */
 	public List<ExtensibleElement> getExtensibleElements() {
 		return (Collections.unmodifiableList(_extensibleElements));
 	}
 
 	/**
-	 * Accessor for the resourceElement attribute. This may be null for v2.0 Resource components.
+	 * Accessor for the resourceElement attribute. This may be null.
 	 */
 	public Boolean isResourceElement() {
 		String value = getAttributeValue(RESOURCE_ELEMENT_NAME, getDDMSVersion().getIsmNamespace());
@@ -1067,7 +1064,7 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the createDate date (optional). Returns a copy. This may be null for v2.0 Resource components.
+	 * Accessor for the createDate date. Returns a copy. This may be null.
 	 */
 	public XMLGregorianCalendar getCreateDate() {
 		return (_createDate == null ? null : getFactory().newXMLGregorianCalendar(_createDate.toXMLFormat()));

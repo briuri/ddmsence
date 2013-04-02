@@ -89,8 +89,8 @@ public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data. Does not validate.
 	 * 
-	 * @param systemName the system name (required)
-	 * @param securityAttributes security attributes (required)
+	 * @param systemName the system name
+	 * @param securityAttributes security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public AbstractAccessEntity(String name, SystemName systemName, SecurityAttributes securityAttributes)

@@ -98,8 +98,8 @@ public final class Notice extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * @param noticeTexts the notice texts (at least 1 required)
-	 * @param securityAttributes any security attributes (classification and ownerProducer are optional)
+	 * @param noticeTexts the notice texts
+	 * @param securityAttributes any security attributes
 	 * @param noticeAttributes any notice attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */

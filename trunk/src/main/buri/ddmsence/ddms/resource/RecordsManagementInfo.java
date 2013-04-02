@@ -90,9 +90,9 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * @param recordKeeper the record keeper (optional)
-	 * @param applicationSoftware the software (optional)
-	 * @param vitalRecordIndicator whether this is a vital record (optional, defaults to false)
+	 * @param recordKeeper the record keeper
+	 * @param applicationSoftware the software
+	 * @param vitalRecordIndicator whether this is a vital record (defaults to false)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public RecordsManagementInfo(RecordKeeper recordKeeper, ApplicationSoftware applicationSoftware,

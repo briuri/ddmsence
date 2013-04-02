@@ -133,7 +133,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * @param categories list of categories
 	 * @param productionMetrics list of metrics
 	 * @param nonStateActors list of actors
-	 * @param securityAttributes any security attributes (optional)
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public SubjectCoverage(List<Keyword> keywords, List<Category> categories, List<ProductionMetric> productionMetrics,

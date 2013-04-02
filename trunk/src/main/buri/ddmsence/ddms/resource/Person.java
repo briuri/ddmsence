@@ -108,7 +108,7 @@ public final class Person extends AbstractRoleEntity {
 	 * @param emails an ordered list of email addresses
 	 * @param userID optional unique identifier within an organization
 	 * @param affiliations organizational affiliations of the person
-	 * @param extensions extensible attributes (optional)
+	 * @param extensions extensible attributes
 	 */
 	public Person(List<String> names, String surname, List<String> phones, List<String> emails, String userID,
 		List<String> affiliations, ExtensibleAttributes extensions) throws InvalidDDMSException {

@@ -73,7 +73,7 @@ public final class SubOrganization extends AbstractSimpleString {
 	 * Constructor for creating a component from raw data
 	 * 
 	 * @param value the value of the subOrganization child text
-	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public SubOrganization(String value, SecurityAttributes securityAttributes) throws InvalidDDMSException {

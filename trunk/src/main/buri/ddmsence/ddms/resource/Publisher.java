@@ -73,8 +73,8 @@ public class Publisher extends AbstractProducerRole {
 	 * Constructor which builds from raw data.
 	 * 
 	 * @param entity the actual entity fulfilling this role
-	 * @param pocTypes the ISM pocType for this producer (optional, starting in DDMS 4.0.1)
-	 * @param securityAttributes any security attributes (optional)
+	 * @param pocTypes the ISM pocType for this producer
+	 * @param securityAttributes any security attributes
 	 */
 	public Publisher(IRoleEntity entity, List<String> pocTypes, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {

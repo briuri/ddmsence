@@ -139,14 +139,14 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * @param geographicIdentifier an identifier (0-1 optional)
-	 * @param boundingBox a bounding box (0-1 optional)
-	 * @param boundingGeometry a set of bounding geometry (0-1 optional)
-	 * @param postalAddress an address (0-1 optional)
-	 * @param verticalExtent an extent (0-1 optional)
-	 * @param precedence the precedence attribute (optional, starting in DDMS 4.0.1)
-	 * @param order the order attribute (optional, starting in DDMS 4.0.1)
-	 * @param securityAttributes any security attributes (optional)
+	 * @param geographicIdentifier an identifier
+	 * @param boundingBox a bounding box
+	 * @param boundingGeometry a set of bounding geometry
+	 * @param postalAddress an address
+	 * @param verticalExtent an extent
+	 * @param precedence the precedence attribute
+	 * @param order the order attribute
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public GeospatialCoverage(GeographicIdentifier geographicIdentifier, BoundingBox boundingBox,

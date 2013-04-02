@@ -98,8 +98,8 @@ public final class ProfileList extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * @param profiles the list of profiles (at least 1 required)
-	 * @param securityAttributes security attributes (required)
+	 * @param profiles the list of profiles
+	 * @param securityAttributes security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ProfileList(List<Profile> profiles, SecurityAttributes securityAttributes) throws InvalidDDMSException {

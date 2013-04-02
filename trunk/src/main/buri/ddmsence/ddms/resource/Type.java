@@ -88,7 +88,7 @@ public final class Type extends AbstractQualifierValue {
 	 *        activity
 	 * @param qualifier the value of the qualifier attribute
 	 * @param value the value of the value attribute
-	 * @param securityAttributes any security attributes (optional)
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Type(String description, String qualifier, String value, SecurityAttributes securityAttributes)

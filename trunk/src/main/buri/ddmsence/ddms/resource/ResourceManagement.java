@@ -110,11 +110,11 @@ public final class ResourceManagement extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * @param recordsManagementInfo records management info (optional)
-	 * @param revisionRecall information about revision recalls (optional)
-	 * @param taskingInfos list of tasking info (optional)
-	 * @param processingInfos list of processing info (optional)
-	 * @param securityAttributes security attributes (optional)
+	 * @param recordsManagementInfo records management info
+	 * @param revisionRecall information about revision recalls
+	 * @param taskingInfos list of tasking info
+	 * @param processingInfos list of processing info
+	 * @param securityAttributes security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ResourceManagement(RecordsManagementInfo recordsManagementInfo, RevisionRecall revisionRecall,

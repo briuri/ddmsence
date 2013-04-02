@@ -112,10 +112,9 @@ public final class Polygon extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * @param positions the positions of the Polygon (required)
-	 * @param srsAttributes the attribute group containing srsName, srsDimension, axisLabels, and uomLabels (srsName
-	 *        required)
-	 * @param id the id value (required)
+	 * @param positions the positions of the Polygon
+	 * @param srsAttributes the attribute group containing srsName, srsDimension, axisLabels, and uomLabels
+	 * @param id the id value
 	 * 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */

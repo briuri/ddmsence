@@ -92,7 +92,7 @@ public final class Source extends AbstractQualifierValue {
 	 * @param value the value of the value attribute
 	 * @param schemaQualifier the value of the schemaQualifier attribute
 	 * @param schemaHref the value of the schemaHref attribute
-	 * @param securityAttributes any security attributes (optional)
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Source(String qualifier, String value, String schemaQualifier, String schemaHref,

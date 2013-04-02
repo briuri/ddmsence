@@ -96,7 +96,7 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	 * @param names an ordered list of names
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
-	 * @param extensibleAttributes extensible attributes (optional)
+	 * @param extensibleAttributes extensible attributes
 	 */
 	protected AbstractRoleEntity(String entityName, List<String> names, List<String> phones, List<String> emails,
 		ExtensibleAttributes extensibleAttributes) throws InvalidDDMSException {

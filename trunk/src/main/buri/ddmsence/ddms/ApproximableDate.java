@@ -112,11 +112,11 @@ public final class ApproximableDate extends AbstractBaseComponent {
 	 * Constructor for creating a component from raw data
 	 * 
 	 * @param name the name of the element
-	 * @param description the description of this approximable date (optional)
-	 * @param approximableDate the value of the approximable date (optional)
-	 * @param approximation an attribute that decorates the date (optional)
-	 * @param searchableStartDate the lower bound for this approximable date (optional)
-	 * @param searchableEndDate the upper bound for this approximable date (optional)
+	 * @param description the description of this approximable date
+	 * @param approximableDate the value of the approximable date
+	 * @param approximation an attribute that decorates the date
+	 * @param searchableStartDate the lower bound for this approximable date
+	 * @param searchableEndDate the upper bound for this approximable date
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ApproximableDate(String name, String description, String approximableDate, String approximation,
@@ -256,7 +256,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the approximableDate (optional).
+	 * Accessor for the approximableDate.
 	 */
 	public String getApproximableDateString() {
 		Element dateElement = getChild(APPROXIMABLE_DATE_NAME);
@@ -276,7 +276,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the searchableStart date (optional)
+	 * Accessor for the searchableStart date
 	 */
 	public String getSearchableStartString() {
 		String date = "";
@@ -290,7 +290,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the searchableEnd date (optional)
+	 * Accessor for the searchableEnd date
 	 */
 	public String getSearchableEndString() {
 		String date = "";

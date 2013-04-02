@@ -128,12 +128,11 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 * Constructor for creating a component from raw data
 	 * 
 	 * @param streets the street address lines (0-6)
-	 * @param city the city (optional)
-	 * @param stateOrProvince the state or province (optional)
-	 * @param postalCode the postal code (optional)
-	 * @param countryCode the country code (optional)
-	 * @param hasState true if the stateOrProvince is a state, false if it is a province (only 1 of state or province
-	 *        can exist in a postalAddress)
+	 * @param city the city
+	 * @param stateOrProvince the state or province
+	 * @param postalCode the postal code
+	 * @param countryCode the country code
+	 * @param hasState true if the stateOrProvince is a state, false if it is a province
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public PostalAddress(List<String> streets, String city, String stateOrProvince, String postalCode,

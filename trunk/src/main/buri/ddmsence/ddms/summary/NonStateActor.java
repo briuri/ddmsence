@@ -81,7 +81,7 @@ public final class NonStateActor extends AbstractSimpleString {
 	 * 
 	 * @param value the value of the description child text
 	 * @param order the order of this actor
-	 * @param securityAttributes any security attributes (classification and ownerProducer are optional)
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public NonStateActor(String value, Integer order, SecurityAttributes securityAttributes)
@@ -94,8 +94,8 @@ public final class NonStateActor extends AbstractSimpleString {
 	 * 
 	 * @param value the value of the description child text
 	 * @param order the order of this actor
-	 * @param qualifier the qualifier (optional)
-	 * @param securityAttributes any security attributes (classification and ownerProducer are optional)
+	 * @param qualifier the qualifier
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public NonStateActor(String value, Integer order, String qualifier, SecurityAttributes securityAttributes)

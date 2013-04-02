@@ -179,8 +179,8 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	 * output in the order of the list. If only 1 instance can be supported, the last one in the list will be the
 	 * one used.</p>
 	 * 
-	 * @param childComponents any components that belong in this MetacardInfo (required)
-	 * @param securityAttributes security attributes (optional)
+	 * @param childComponents any components that belong in this MetacardInfo
+	 * @param securityAttributes security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public MetacardInfo(List<IDDMSComponent> childComponents, SecurityAttributes securityAttributes)
@@ -379,28 +379,28 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for a list of all Contributor entities (0-many)
+	 * Accessor for a list of all Contributor entities
 	 */
 	public List<Contributor> getContributors() {
 		return (Collections.unmodifiableList(_contributors));
 	}
 
 	/**
-	 * Accessor for a list of all Creator entities (0-many)
+	 * Accessor for a list of all Creator entities
 	 */
 	public List<Creator> getCreators() {
 		return (Collections.unmodifiableList(_creators));
 	}
 
 	/**
-	 * Accessor for a list of all PointOfContact entities (0-many)
+	 * Accessor for a list of all PointOfContact entities
 	 */
 	public List<PointOfContact> getPointOfContacts() {
 		return (Collections.unmodifiableList(_pointOfContacts));
 	}
 
 	/**
-	 * Accessor for a list of all Publisher entities (0-many)
+	 * Accessor for a list of all Publisher entities
 	 */
 	public List<Publisher> getPublishers() {
 		return (Collections.unmodifiableList(_publishers));

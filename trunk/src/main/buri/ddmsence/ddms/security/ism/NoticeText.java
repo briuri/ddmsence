@@ -92,8 +92,8 @@ public final class NoticeText extends AbstractSimpleString {
 	 * Constructor for creating a component from raw data
 	 * 
 	 * @param value the value of the description child text
-	 * @param pocTypes the value of the pocType attribute (optional)
-	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
+	 * @param pocTypes the value of the pocType attribute
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public NoticeText(String value, List<String> pocTypes, SecurityAttributes securityAttributes)

@@ -72,7 +72,7 @@ public final class Description extends AbstractSimpleString {
 	 * Constructor for creating a component from raw data
 	 * 
 	 * @param description the value of the description child text
-	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Description(String description, SecurityAttributes securityAttributes) throws InvalidDDMSException {

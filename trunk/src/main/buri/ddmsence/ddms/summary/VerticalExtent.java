@@ -121,10 +121,10 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * @param minVerticalExtent the minimum (required)
-	 * @param maxVerticalExtent the maximum (required)
-	 * @param unitOfMeasure the unit of measure (required)
-	 * @param datum the datum (required)
+	 * @param minVerticalExtent the minimum
+	 * @param maxVerticalExtent the maximum
+	 * @param unitOfMeasure the unit of measure
+	 * @param datum the datum
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public VerticalExtent(double minVerticalExtent, double maxVerticalExtent, String unitOfMeasure, String datum)

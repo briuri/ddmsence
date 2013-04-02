@@ -104,9 +104,9 @@ public final class Format extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * @param mimeType the mimeType element (required)
-	 * @param extent the extent element (may be null)
-	 * @param medium the medium element (may be null)
+	 * @param mimeType the mimeType element
+	 * @param extent the extent element
+	 * @param medium the medium element
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Format(String mimeType, Extent extent, String medium) throws InvalidDDMSException {

@@ -116,8 +116,8 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 * 
 	 * @param producerType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
 	 * @param entity the actual entity fulfilling this role
-	 * @param pocTypes the pocType attribute (starting in DDMS 4.0.1)
-	 * @param securityAttributes any security attributes (optional)
+	 * @param pocTypes the pocType attribute
+	 * @param securityAttributes any security attributes
 	 */
 	protected AbstractProducerRole(String producerType, IRoleEntity entity, List<String> pocTypes,
 		SecurityAttributes securityAttributes) throws InvalidDDMSException {

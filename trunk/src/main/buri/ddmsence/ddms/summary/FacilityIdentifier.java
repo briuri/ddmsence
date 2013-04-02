@@ -73,8 +73,8 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * @param beNumber the beNumber (required)
-	 * @param osuffix the Osuffix (required, because beNumber is required)
+	 * @param beNumber the beNumber
+	 * @param osuffix the Osuffix
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public FacilityIdentifier(String beNumber, String osuffix) throws InvalidDDMSException {

@@ -160,14 +160,14 @@ public final class RevisionRecall extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data, based on links and details.
 	 * 
-	 * @param links associated links (optional)
-	 * @param details associated details (optional)
-	 * @param revisionID integer ID for this recall (required)
-	 * @param revisionType type of revision (required)
-	 * @param network the network (optional)
-	 * @param otherNetwork another network (optional)
-	 * @param xlinkAttributes simple xlink attributes (optional)
-	 * @param securityAttributes security attributes (required)
+	 * @param links associated links
+	 * @param details associated details
+	 * @param revisionID integer ID for this recall
+	 * @param revisionType type of revision
+	 * @param network the network
+	 * @param otherNetwork another network
+	 * @param xlinkAttributes simple xlink attributes
+	 * @param securityAttributes security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public RevisionRecall(List<Link> links, List<Details> details, Integer revisionID, String revisionType,
@@ -179,13 +179,13 @@ public final class RevisionRecall extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data, based on child text.
 	 * 
-	 * @param value the child text describing this revision (required)
-	 * @param revisionID integer ID for this recall (required)
-	 * @param revisionType type of revision (required)
-	 * @param network the network (optional)
-	 * @param otherNetwork another network (optional)
-	 * @param xlinkAttributes simple xlink attributes (optional)
-	 * @param securityAttributes security attributes (required)
+	 * @param value the child text describing this revision
+	 * @param revisionID integer ID for this recall
+	 * @param revisionType type of revision
+	 * @param network the network
+	 * @param otherNetwork another network
+	 * @param xlinkAttributes simple xlink attributes
+	 * @param securityAttributes security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public RevisionRecall(String value, Integer revisionID, String revisionType, String network, String otherNetwork,
@@ -196,15 +196,15 @@ public final class RevisionRecall extends AbstractBaseComponent {
 	/**
 	 * Private constructor for creating a component from raw data.
 	 * 
-	 * @param value the child text describing this revision (required)
-	 * @param links associated links (optional)
-	 * @param details associated details (optional)
-	 * @param revisionID integer ID for this recall (required)
-	 * @param revisionType type of revision (required)
-	 * @param network the network (optional)
-	 * @param otherNetwork another network (optional)
-	 * @param xlinkAttributes simple xlink attributes (optional)
-	 * @param securityAttributes security attributes (required)
+	 * @param value the child text describing this revision
+	 * @param links associated links
+	 * @param details associated details
+	 * @param revisionID integer ID for this recall
+	 * @param revisionType type of revision
+	 * @param network the network
+	 * @param otherNetwork another network
+	 * @param xlinkAttributes simple xlink attributes
+	 * @param securityAttributes security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	private RevisionRecall(String value, List<Link> links, List<Details> details, Integer revisionID,
@@ -418,7 +418,7 @@ public final class RevisionRecall extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the XDetails Attributes. Will always be non-null, even if it has no values set.
+	 * Accessor for the XLink Attributes. Will always be non-null, even if it has no values set.
 	 */
 	public XLinkAttributes getXLinkAttributes() {
 		return (_xlinkAttributes);

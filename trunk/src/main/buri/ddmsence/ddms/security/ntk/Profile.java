@@ -95,9 +95,9 @@ public final class Profile extends AbstractAccessEntity {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * @param systemName the system name (required)
-	 * @param profileValues the list of values (at least 1 required)
-	 * @param securityAttributes security attributes (required)
+	 * @param systemName the system name
+	 * @param profileValues the list of values
+	 * @param securityAttributes security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Profile(SystemName systemName, List<ProfileValue> profileValues, SecurityAttributes securityAttributes)

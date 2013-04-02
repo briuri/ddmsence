@@ -107,9 +107,9 @@ public final class Security extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * @param noticeList notice list (optional)
-	 * @param access NTK access information (optional)
-	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
+	 * @param noticeList notice list
+	 * @param access NTK access information
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Security(NoticeList noticeList, Access access, SecurityAttributes securityAttributes)

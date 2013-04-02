@@ -73,8 +73,8 @@ public class RequesterInfo extends AbstractTaskingRole {
 	/**
 	 * Constructor which builds from raw data.
 	 * 
-	 * @param entity the actual entity who is the requester (required)
-	 * @param securityAttributes any security attributes (required)
+	 * @param entity the actual entity who is the requester
+	 * @param securityAttributes any security attributes
 	 */
 	public RequesterInfo(IRoleEntity entity, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		super(RequesterInfo.getName(DDMSVersion.getCurrentVersion()), entity, securityAttributes);

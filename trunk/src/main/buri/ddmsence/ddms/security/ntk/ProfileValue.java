@@ -82,10 +82,10 @@ public final class ProfileValue extends AbstractNtkString {
 	 * Constructor which builds from raw data.
 	 * 
 	 * @param value the value of the element's child text
-	 * @param vocabulary the lexicon (required)
-	 * @param id the NTK ID (optional)
-	 * @param idReference a reference to an NTK ID (optional)
-	 * @param qualifier an NTK qualifier (optional)
+	 * @param vocabulary the lexicon
+	 * @param id the NTK ID
+	 * @param idReference a reference to an NTK ID
+	 * @param qualifier an NTK qualifier
 	 * @param securityAttributes the security attributes
 	 */
 	public ProfileValue(String value, String vocabulary, String id, String idReference, String qualifier,

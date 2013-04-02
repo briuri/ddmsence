@@ -103,7 +103,7 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 	 * 
 	 * @param roleType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
 	 * @param entity the actual entity fulfilling this role
-	 * @param securityAttributes any security attributes (optional)
+	 * @param securityAttributes any security attributes
 	 */
 	protected AbstractTaskingRole(String roleType, IRoleEntity entity, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {

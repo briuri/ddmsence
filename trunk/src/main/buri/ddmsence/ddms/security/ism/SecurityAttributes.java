@@ -307,8 +307,8 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * <p> If an attribute mapping appears more than once, the last one in the list will be the one used. If
 	 * classification and ownerProducer are included in the Map of other attributes, they will be ignored. </p>
 	 * 
-	 * @param classification the classification level, which must be a legal classification type (optional)
-	 * @param ownerProducers a list of ownerProducers (optional)
+	 * @param classification the classification level, which must be a legal classification type
+	 * @param ownerProducers a list of ownerProducers
 	 * @param otherAttributes a name/value mapping of other ISM attributes. The value will be a String value, as it
 	 *        appears in XML.
 	 * @throws InvalidDDMSException if any required information is missing or malformed

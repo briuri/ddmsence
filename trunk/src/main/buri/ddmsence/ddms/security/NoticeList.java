@@ -100,8 +100,8 @@ public final class NoticeList extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
-	 * @param notices the notices (at least 1 required)
-	 * @param securityAttributes any security attributes (classification and ownerProducer are optional)
+	 * @param notices the notices
+	 * @param securityAttributes any security attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public NoticeList(List<Notice> notices, SecurityAttributes securityAttributes) throws InvalidDDMSException {
