@@ -193,9 +193,13 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 			getInstance(getFixtureElement(TEST_NAME, false), SUCCESS);
 
 			// Data-based via Builder, no optional fields
-			ApproximableDate.Builder builder = new ApproximableDate.Builder();
-			builder.setName(TEST_NAME);
-			getInstance(builder, SUCCESS);
+			// Data-based, no optional fields
+			try {
+				new ApproximableDate(TEST_NAME, null, null, null, null, null);
+			}
+			catch (InvalidDDMSException e) {
+				checkConstructorFailure(false, e);
+			}
 		}
 	}
 
@@ -225,7 +229,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testVlidationWarnings() throws InvalidDDMSException {
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 

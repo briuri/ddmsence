@@ -159,10 +159,15 @@ public class ExtentTest extends AbstractBaseTestCase {
 
 			// Element-based, no optional fields
 			Element element = Util.buildDDMSElement(Extent.getName(version), null);
-			Extent elementComponent = getInstance(element, SUCCESS);
+			getInstance(element, SUCCESS);
 
-			// Data-based via Builder, no optional fields
-			getInstance(new Extent.Builder(elementComponent), SUCCESS);
+			// Data-based, no optional fields
+			try {
+				new Extent(null, null);
+			}
+			catch (InvalidDDMSException e) {
+				checkConstructorFailure(false, e);
+			}
 		}
 	}
 

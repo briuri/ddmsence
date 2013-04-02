@@ -242,22 +242,12 @@ public final class Resource extends AbstractBaseComponent {
 			_compliesWiths = Util.getXsListAsList(getAttributeValue(COMPLIES_WITH_NAME, compliesNamespace));
 			String ismDESVersion = element.getAttributeValue(DES_VERSION_NAME, ismNamespace);
 			if (!Util.isEmpty(ismDESVersion)) {
-				try {
-					_ismDESVersion = Integer.valueOf(ismDESVersion);
-				}
-				catch (NumberFormatException e) {
-					// This will be thrown as an InvalidDDMSException during validation
-				}
+				_ismDESVersion = Integer.valueOf(ismDESVersion);
 			}
 			if (getDDMSVersion().isAtLeast("4.0.1")) {
 				String ntkDESVersion = element.getAttributeValue(DES_VERSION_NAME, getDDMSVersion().getNtkNamespace());
 				if (!Util.isEmpty(ntkDESVersion)) {
-					try {
-						_ntkDESVersion = Integer.valueOf(ntkDESVersion);
-					}
-					catch (NumberFormatException e) {
-						// This will be thrown as an InvalidDDMSException during validation
-					}
+					_ntkDESVersion = Integer.valueOf(ntkDESVersion);
 				}
 			}
 			_noticeAttributes = new NoticeAttributes(element);
