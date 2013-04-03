@@ -39,8 +39,8 @@ import buri.ddmsence.util.Util;
  * before the component is used. </p>
  * 
  * {@table.header History}
- * <p>This abstract class was introduced to support NTK Access components in DDMS 4.1. Those components are
- * no longer a part of DDMS 5.0.</p>
+ * 		<p>This abstract class was introduced to support NTK Access components in DDMS 4.1. Those components are
+ * 		no longer a part of DDMS 5.0.</p>
  * {@table.footer}
  * {@table.header Nested Elements}
  * 		None.
@@ -238,9 +238,7 @@ public abstract class AbstractNtkString extends AbstractBaseComponent {
 		}
 		
 		/**
-		 * Helper method to determine if any values have been entered for this producer.
-		 * 
-		 * @return true if all values are empty
+		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
 			return (Util.isEmpty(getValue())
