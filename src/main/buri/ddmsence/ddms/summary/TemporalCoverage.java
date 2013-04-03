@@ -271,7 +271,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		// Check for approximableDates is implicit, since they cannot be instantiated before 4.1.
 		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException(
-				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
+				"Security attributes must not be applied to this component until DDMS 3.0 or later.");
 		}
 		super.validate();
 	}
@@ -510,9 +510,9 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 			if (isEmpty())
 				return (null);
 			if (!getApproximableStart().isEmpty() && !Util.isEmpty(getStartString()))
-				throw new InvalidDDMSException("Only 1 of start or approximableStart can be used.");
+				throw new InvalidDDMSException("Only 1 of start or approximableStart must be used.");
 			if (!getApproximableEnd().isEmpty() && !Util.isEmpty(getEndString()))
-				throw new InvalidDDMSException("Only 1 of end or approximableEnd can be used.");
+				throw new InvalidDDMSException("Only 1 of end or approximableEnd must be used.");
 			if (!getApproximableStart().isEmpty() && !getApproximableEnd().isEmpty())
 				return (new TemporalCoverage(getTimePeriodName(), getApproximableStart().commit(),
 					getApproximableEnd().commit(), getSecurityAttributes().commit()));

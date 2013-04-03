@@ -168,12 +168,12 @@ public class ProfileListTest extends AbstractBaseTestCase {
 			// Missing profile
 			ProfileList.Builder builder = getBaseBuilder();
 			builder.getProfiles().clear();
-			getInstance(builder, "At least one profile is required.");
+			getInstance(builder, "At least one profile must exist.");
 
 			// Missing security attributes
 			builder = getBaseBuilder();
 			builder.setSecurityAttributes(null);
-			getInstance(builder, "classification is required.");
+			getInstance(builder, "classification must exist.");
 			
 			// Null profile param
 			try {

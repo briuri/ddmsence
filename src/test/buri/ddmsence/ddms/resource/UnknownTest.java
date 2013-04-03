@@ -261,7 +261,7 @@ public class UnknownTest extends AbstractBaseTestCase {
 	public void testVersionSpecific() throws InvalidDDMSException {
 		Unknown.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(builder, "The Unknown element cannot be used");
+		getInstance(builder, "The Unknown element must not be used");
 	}
 
 	public void testOutput() throws InvalidDDMSException {

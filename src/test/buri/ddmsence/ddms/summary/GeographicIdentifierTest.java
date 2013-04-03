@@ -263,7 +263,7 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 			element = Util.buildDDMSElement(geoIdName, null);
 			element.appendChild(CountryCodeTest.getFixture().getXOMElementCopy());
 			element.appendChild(FacilityIdentifierTest.getFixture().getXOMElementCopy());
-			getInstance(element, "facilityIdentifier cannot be used");
+			getInstance(element, "facilityIdentifier must not be used");
 		}
 	}
 	
@@ -328,7 +328,7 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 		// No subdivisonCode before 4.0.1
 		GeographicIdentifier.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("3.1");
-		getInstance(builder, "The subDivisionCode element cannot");
+		getInstance(builder, "The subDivisionCode element must not ");
 	}
 
 	public void testOutput() throws InvalidDDMSException {

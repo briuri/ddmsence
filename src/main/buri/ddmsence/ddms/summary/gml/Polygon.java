@@ -171,7 +171,7 @@ public final class Polygon extends AbstractBaseComponent {
 			}
 		}
 		if (positions.size() < 4)
-			throw new InvalidDDMSException("At least 4 positions are required for a valid Polygon.");
+			throw new InvalidDDMSException("At least 4 positions must exist for a valid Polygon.");
 		if (!positions.isEmpty() && !positions.get(0).equals(positions.get(positions.size() - 1))) {
 			throw new InvalidDDMSException("The first and last position in the Polygon must be the same.");
 		}

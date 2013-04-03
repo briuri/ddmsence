@@ -284,7 +284,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 				throw new InvalidDDMSException("At least one producer must exist within a ddms:metacardInfo element.");
 			// NoticeList check is implicit, since the class cannot be instantiated after DDMS 4.1.
 			if (getAccess() != null)
-				throw new InvalidDDMSException("The ntk:Access element cannot be used after DDMS 4.1.");
+				throw new InvalidDDMSException("The ntk:Access element must not be used after DDMS 4.1.");
 		}
 		super.validate();
 	}

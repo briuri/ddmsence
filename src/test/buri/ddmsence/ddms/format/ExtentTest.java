@@ -175,7 +175,7 @@ public class ExtentTest extends AbstractBaseTestCase {
 			// Missing qualifier
 			Extent.Builder builder = getBaseBuilder();
 			builder.setQualifier(null);
-			getInstance(builder, "qualifier attribute is required.");
+			getInstance(builder, "qualifier attribute must exist.");
 
 			// Qualifier not URI
 			builder = getBaseBuilder();

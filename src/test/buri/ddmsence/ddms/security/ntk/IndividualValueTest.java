@@ -197,7 +197,7 @@ public class IndividualValueTest extends AbstractBaseTestCase {
 			// Missing security attributes
 			IndividualValue.Builder builder = getBaseBuilder();
 			builder.setSecurityAttributes(null);
-			getInstance(builder, "classification is required.");
+			getInstance(builder, "classification must exist.");
 		}
 	}
 

@@ -161,7 +161,7 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 			// invalid noticeDate
 			builder = getBaseBuilder();
 			builder.setNoticeDate("baboon");
-			getInstance(builder, "The ism:noticeDate attribute is not in a valid");
+			getInstance(builder, "The ism:noticeDate attribute must adhere to a valid");
 						
 			StringBuffer longString = new StringBuffer();
 			for (int i = 0; i < NoticeAttributes.MAX_LENGTH / 10 + 1; i++) {
@@ -237,7 +237,7 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 		Element element = Util.buildDDMSElement(Resource.getName(version), null);
 		Util.addAttribute(element, PropertyReader.getPrefix("ism"), NoticeAttributes.NOTICE_DATE_NAME,
 			version.getIsmNamespace(), "2011-09-15");
-		getInstance(element, "Notice attributes cannot be used");
+		getInstance(element, "Notice attributes must not be used");
 		
 		// Can't attach to a different version.
 		DDMSVersion.setCurrentVersion("4.1");

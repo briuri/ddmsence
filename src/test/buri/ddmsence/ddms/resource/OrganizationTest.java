@@ -272,14 +272,14 @@ public class OrganizationTest extends AbstractBaseTestCase {
 		DDMSVersion.setCurrentVersion("3.1");
 		Organization.Builder builder = getBaseBuilder();
 		builder.setAcronym("test");
-		getInstance(builder, "An organization cannot have an acronym");
+		getInstance(builder, "An organization must not have an acronym");
 		
 		// extensible attributes in 5.0
 		ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
 		DDMSVersion.setCurrentVersion("5.0");
 		builder = getBaseBuilder();
 		builder.setExtensibleAttributes(new ExtensibleAttributes.Builder(attr));
-		getInstance(builder, "ddms:organization cannot have");
+		getInstance(builder, "ddms:organization must not have");
 	}
 
 	public void testOutput() throws InvalidDDMSException {

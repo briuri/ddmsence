@@ -99,7 +99,7 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		if (DDMSVersion.isSupportedDDMSNamespace(getNamespace()))
-			throw new InvalidDDMSException("Extensible elements cannot be defined in the DDMS namespace.");
+			throw new InvalidDDMSException("Extensible elements must not be defined in the DDMS namespace.");
 		super.validate();
 	}
 

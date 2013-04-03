@@ -335,7 +335,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 				return (null);
 			// Check for existence of values before casting to primitives.
 			if (getMinVerticalExtent() == null || getMaxVerticalExtent() == null)
-				throw new InvalidDDMSException("A ddms:verticalExtent requires a minimum and maximum extent value.");
+				throw new InvalidDDMSException("A ddms:verticalExtent must have a minimum and maximum extent value.");
 			return (new VerticalExtent(getMinVerticalExtent().doubleValue(), getMaxVerticalExtent().doubleValue(),
 				getUnitOfMeasure(), getDatum()));
 		}

@@ -194,7 +194,7 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 			// Missing date
 			ProcessingInfo.Builder builder = getBaseBuilder();
 			builder.setDateProcessed(null);
-			getInstance(builder, "dateProcessed is required.");
+			getInstance(builder, "dateProcessed must exist.");
 
 			// Wrong date format (using xs:gDay here)
 			builder = getBaseBuilder();
@@ -209,7 +209,7 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 			// Bad security attributes
 			builder = getBaseBuilder();
 			builder.setSecurityAttributes(null);
-			getInstance(builder, "classification is required.");
+			getInstance(builder, "classification must exist.");
 		}
 	}
 
@@ -248,7 +248,7 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 		DDMSVersion.setCurrentVersion("4.1");
 		ProcessingInfo.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(builder, "The processingInfo element cannot be used");
+		getInstance(builder, "The processingInfo element must not be used");
 	}
 
 	public void testOutput() throws InvalidDDMSException {

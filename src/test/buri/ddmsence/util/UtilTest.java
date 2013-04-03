@@ -115,7 +115,7 @@ public class UtilTest extends AbstractBaseTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "parent element is required.");
+			expectMessage(e, "parent element must exist.");
 		}
 	}
 
@@ -125,7 +125,7 @@ public class UtilTest extends AbstractBaseTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "child name is required.");
+			expectMessage(e, "child name must exist.");
 		}
 	}
 
@@ -169,7 +169,7 @@ public class UtilTest extends AbstractBaseTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "parent element is required.");
+			expectMessage(e, "parent element must exist.");
 		}
 	}
 
@@ -179,7 +179,7 @@ public class UtilTest extends AbstractBaseTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "child name is required.");
+			expectMessage(e, "child name must exist.");
 		}
 	}
 
@@ -242,7 +242,7 @@ public class UtilTest extends AbstractBaseTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "description is required.");
+			expectMessage(e, "description must exist.");
 		}
 	}
 
@@ -252,7 +252,7 @@ public class UtilTest extends AbstractBaseTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "description is required.");
+			expectMessage(e, "description must exist.");
 		}
 	}
 
@@ -408,7 +408,7 @@ public class UtilTest extends AbstractBaseTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "description is required.");
+			expectMessage(e, "description must exist.");
 		}
 	}
 
@@ -418,7 +418,7 @@ public class UtilTest extends AbstractBaseTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "description is required.");
+			expectMessage(e, "description must exist.");
 		}
 	}
 
@@ -440,7 +440,7 @@ public class UtilTest extends AbstractBaseTestCase {
 			fail("Allowed illegal argument data.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "parent element is required.");
+			expectMessage(e, "parent element must exist.");
 		}
 	}
 
@@ -453,7 +453,7 @@ public class UtilTest extends AbstractBaseTestCase {
 			fail("Allowed illegal argument data.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "child name is required.");
+			expectMessage(e, "child name must exist.");
 		}
 	}
 
@@ -501,7 +501,7 @@ public class UtilTest extends AbstractBaseTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			assertEquals("No more than 1 phone element can exist.", e.getMessage());
+			assertEquals("No more than 1 phone element must exist.", e.getMessage());
 		}
 	}
 
@@ -515,7 +515,7 @@ public class UtilTest extends AbstractBaseTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			assertEquals("No more than 2 phone elements can exist.", e.getMessage());
+			assertEquals("No more than 2 phone elements must exist.", e.getMessage());
 		}
 	}
 
@@ -636,7 +636,7 @@ public class UtilTest extends AbstractBaseTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "uri is required.");
+			expectMessage(e, "uri must exist.");
 		}
 	}
 
@@ -850,7 +850,7 @@ public class UtilTest extends AbstractBaseTestCase {
 			fail("Method allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "name is required.");
+			expectMessage(e, "name must exist.");
 		}
 	}
 
@@ -906,7 +906,7 @@ public class UtilTest extends AbstractBaseTestCase {
 			fail("Method allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "name is required.");
+			expectMessage(e, "name must exist.");
 		}
 	}
 
@@ -916,7 +916,7 @@ public class UtilTest extends AbstractBaseTestCase {
 			fail("Method allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "value is required.");
+			expectMessage(e, "value must exist.");
 		}
 	}
 
@@ -1003,7 +1003,7 @@ public class UtilTest extends AbstractBaseTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "input stream is required.");
+			expectMessage(e, "input stream must exist.");
 		}
 
 		try {

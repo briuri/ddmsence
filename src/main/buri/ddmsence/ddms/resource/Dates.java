@@ -168,10 +168,10 @@ public final class Dates extends AbstractBaseComponent {
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Dates.getName(getDDMSVersion()));
 		if (!getDDMSVersion().isAtLeast("3.1") && !Util.isEmpty(getApprovedOnString())) {
-			throw new InvalidDDMSException("This component cannot have an approvedOn date until DDMS 3.1 or later.");
+			throw new InvalidDDMSException("This component must not have an approvedOn date until DDMS 3.1 or later.");
 		}
 		if (!getDDMSVersion().isAtLeast("4.0.1") && !Util.isEmpty(getReceivedOnString())) {
-			throw new InvalidDDMSException("This component cannot have a receivedOn date until DDMS 4.0.1 or later.");
+			throw new InvalidDDMSException("This component must not have a receivedOn date until DDMS 4.0.1 or later.");
 		}
 		// Check for acquiredOn is implicit, since the class cannot be instantiated before 4.1.
 		if (!Util.isEmpty(getCreatedString()))

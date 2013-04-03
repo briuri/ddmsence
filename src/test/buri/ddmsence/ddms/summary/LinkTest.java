@@ -235,7 +235,7 @@ public class LinkTest extends AbstractBaseTestCase {
 
 			// Missing href
 			Element element = buildComponentElement(TEST_TYPE, null);
-			getInstance(element, "href attribute is required.");
+			getInstance(element, "href attribute must exist.");
 
 			// invalid type
 			element = buildComponentElement("simple", TEST_HREF);
@@ -247,13 +247,13 @@ public class LinkTest extends AbstractBaseTestCase {
 				fail("Constructor allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "type attribute is required.");
+				expectMessage(e, "type attribute must exist.");
 			}
 			
 			// Missing href
 			Link.Builder builder = getBaseBuilder();
 			builder.getXLinkAttributes().setHref(null);
-			getInstance(builder, "href attribute is required");
+			getInstance(builder, "href attribute must exist");
 			
 			// Invalid type
 			builder = getBaseBuilder();

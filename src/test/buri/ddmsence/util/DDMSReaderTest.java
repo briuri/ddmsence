@@ -56,7 +56,7 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "file is required.");
+			expectMessage(e, "file must exist.");
 		}
 	}
 
@@ -69,7 +69,7 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "XML string is required.");
+			expectMessage(e, "XML string must exist.");
 		}
 	}
 
@@ -82,7 +82,7 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "input stream is required.");
+			expectMessage(e, "input stream must exist.");
 		}
 	}
 
@@ -95,7 +95,7 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "reader is required.");
+			expectMessage(e, "reader must exist.");
 		}
 	}
 

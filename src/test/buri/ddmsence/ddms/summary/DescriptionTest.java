@@ -177,7 +177,7 @@ public class DescriptionTest extends AbstractBaseTestCase {
 			// Bad security attributes
 			Description.Builder builder = getBaseBuilder();
 			builder.setSecurityAttributes(null);
-			getInstance(builder, "classification is required.");
+			getInstance(builder, "classification must exist.");
 		}
 	}
 

@@ -339,19 +339,19 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			// invalid declassDate date
 			builder = getBaseBuilder();
 			builder.setDeclassDate("baboon");
-			getInstance(builder, "The ism:declassDate attribute is not in a valid date format");
+			getInstance(builder, "The ism:declassDate attribute must adhere to a valid date format");
 			
 			// wrong dateOfExemptedSource date format
 			builder = getBaseBuilder();
 			builder.setDateOfExemptedSource("2001");
-			String message = (version.isAtLeast("3.1") ? "The dateOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0."
+			String message = (version.isAtLeast("3.1") ? "The dateOfExemptedSource attribute must only be used in DDMS 2.0 or 3.0."
 				: "The dateOfExemptedSource attribute must be in the xs:date format");
 			getInstance(builder, message);
 			
 			// invalid dateOfExemptedSource
 			builder = getBaseBuilder();
 			builder.setDateOfExemptedSource("baboon");
-			getInstance(builder, "The ism:dateOfExemptedSource attribute is not in a valid date format");
+			getInstance(builder, "The ism:dateOfExemptedSource attribute must adhere to a valid date format");
 			
 			// Invalid classification
 			builder = getBaseBuilder();
@@ -366,7 +366,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "classification is required.");
+				expectMessage(e, "classification must exist.");
 			}
 			
 			// No ownerProducers
@@ -377,7 +377,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "At least 1 ownerProducer must be set.");
+				expectMessage(e, "At least 1 ownerProducer must exist.");
 			}
 
 			// No non-empty ownerProducers
@@ -574,7 +574,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			fail("Allowed DDMS 3.0 attributes to be used in DDMS 2.0.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The compilationReason attribute cannot be used");
+			expectMessage(e, "The compilationReason attribute must not be used");
 		}
 	}
 
@@ -587,7 +587,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			fail("Allowed DDMS 2.0 attributes to be used in DDMS 3.0.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The declassManualReview attribute can only be used in DDMS 2.0.");
+			expectMessage(e, "The declassManualReview attribute must only be used in DDMS 2.0.");
 		}
 
 		DDMSVersion.setCurrentVersion("2.0");
@@ -605,7 +605,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			fail("Allowed 3.0 attributes in 3.1.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The typeOfExemptedSource attribute can only be used");
+			expectMessage(e, "The typeOfExemptedSource attribute must only be used");
 		}
 
 		others = getOtherAttributes(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2010-01-01");
@@ -614,7 +614,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			fail("Allowed 3.0 attributes in 3.1.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The dateOfExemptedSource attribute can only be used");
+			expectMessage(e, "The dateOfExemptedSource attribute must only be used");
 		}
 	}
 	
@@ -626,7 +626,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			fail("Allowed 3.1 attributes in 3.0.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The atomicEnergyMarkings attribute cannot be used");
+			expectMessage(e, "The atomicEnergyMarkings attribute must not be used");
 		}
 
 		others = getOtherAttributes(SecurityAttributes.DISPLAY_ONLY_TO_NAME, "AIA");
@@ -635,7 +635,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			fail("Allowed 3.1 attributes in 3.0.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The displayOnlyTo attribute cannot be used");
+			expectMessage(e, "The displayOnlyTo attribute must not be used");
 		}
 
 		others = getOtherAttributes(SecurityAttributes.NON_US_CONTROLS_NAME, "ATOMAL");
@@ -644,7 +644,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			fail("Allowed 3.1 attributes in 3.0.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The nonUSControls attribute cannot be used");
+			expectMessage(e, "The nonUSControls attribute must not be used");
 		}
 	}
 	

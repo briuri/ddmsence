@@ -446,18 +446,18 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		DDMSVersion.setCurrentVersion("3.1");
 		GeospatialCoverage.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(builder, "Security attributes cannot be applied");
+		getInstance(builder, "Security attributes must not be applied");
 
 		// No precedence before 4.0.1
 		DDMSVersion.setCurrentVersion("3.1");
 		builder = getBaseBuilder();
 		builder.setPrecedence(TEST_PRECEDENCE);
-		getInstance(builder, "The ddms:precedence attribute cannot be used");
+		getInstance(builder, "The ddms:precedence attribute must not be used");
 
 		// No order before 4.0.1
 		builder = getBaseBuilder();
 		builder.setOrder(TEST_ORDER);
-		getInstance(builder, "The ddms:order attribute cannot be used");
+		getInstance(builder, "The ddms:order attribute must not be used");
 	}
 
 	public void testOutput() throws InvalidDDMSException {
@@ -546,7 +546,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The ddms:precedence attribute should only be applied");
+			expectMessage(e, "The ddms:precedence attribute must only be applied");
 		}
 	}
 }

@@ -146,7 +146,7 @@ public final class TaskID extends AbstractBaseComponent {
 		if (getDDMSVersion().isAtLeast("5.0")) {
 			// Check for network is implicit in schema validation.			
 			if (!Util.isEmpty(getOtherNetwork()))
-				throw new InvalidDDMSException("The otherNetwork attribute cannot be used after DDMS 4.1.");
+				throw new InvalidDDMSException("The otherNetwork attribute must not be used after DDMS 4.1.");
 		}
 		super.validate();
 	}

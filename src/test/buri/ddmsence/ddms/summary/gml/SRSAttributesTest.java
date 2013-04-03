@@ -199,12 +199,12 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 			// axisLabels without srsName
 			builder = getBaseBuilder();
 			builder.setSrsName(null);
-			getInstance(builder, "The axisLabels attribute can only be used");
+			getInstance(builder, "The axisLabels attribute must only be used");
 
 			// uomLabels without axisLabels
 			builder = getBaseBuilder();
 			builder.setAxisLabels(null);
-			getInstance(builder, "The uomLabels attribute can only be used");
+			getInstance(builder, "The uomLabels attribute must only be used");
 
 			// Non-NCNames in axisLabels
 			builder = getBaseBuilder();

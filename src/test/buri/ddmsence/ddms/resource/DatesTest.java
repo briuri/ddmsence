@@ -339,13 +339,13 @@ public class DatesTest extends AbstractBaseTestCase {
 		DDMSVersion.setCurrentVersion("3.0");
 		Dates.Builder builder = getBaseBuilder();
 		builder.setApprovedOn(TEST_APPROVED);
-		getInstance(builder, "This component cannot have a");
+		getInstance(builder, "This component must not have a");
 		
 		// receivedOn before 3.1
 		DDMSVersion.setCurrentVersion("3.0");
 		builder = getBaseBuilder();
 		builder.setReceivedOn(TEST_RECEIVED);
-		getInstance(builder, "This component cannot have a");		
+		getInstance(builder, "This component must not have a");		
 	}
 	
 	public void testOutput() throws InvalidDDMSException {

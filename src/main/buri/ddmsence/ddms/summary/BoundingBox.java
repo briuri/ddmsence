@@ -277,7 +277,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 				return (null);
 			// Check for existence of values before casting to primitives.
 			if (getWestBL() == null || getEastBL() == null || getSouthBL() == null || getNorthBL() == null)
-				throw new InvalidDDMSException("A ddms:boundingBox requires two latitude and two longitude values.");
+				throw new InvalidDDMSException("A ddms:boundingBox must have two latitude and two longitude values.");
 			return (new BoundingBox(getWestBL().doubleValue(), getEastBL().doubleValue(), getSouthBL().doubleValue(),
 				getNorthBL().doubleValue()));
 		}

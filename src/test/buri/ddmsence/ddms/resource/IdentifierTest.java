@@ -163,12 +163,12 @@ public class IdentifierTest extends AbstractBaseTestCase {
 			// Missing qualifier
 			Identifier.Builder builder = getBaseBuilder();
 			builder.setQualifier(null);
-			getInstance(builder, "qualifier attribute is required.");
+			getInstance(builder, "qualifier attribute must exist.");
 
 			// Missing value
 			builder = getBaseBuilder();
 			builder.setValue(null);
-			getInstance(builder, "value attribute is required.");
+			getInstance(builder, "value attribute must exist.");
 			
 			// Qualifier not URI
 			builder = getBaseBuilder();

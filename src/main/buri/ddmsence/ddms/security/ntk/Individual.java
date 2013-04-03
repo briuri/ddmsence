@@ -125,7 +125,7 @@ public final class Individual extends AbstractAccessEntity {
 	protected void validate() throws InvalidDDMSException {
 		Util.requireQName(getXOMElement(), getNamespace(), Individual.getName(getDDMSVersion()));
 		if (getIndividualValues().isEmpty())
-			throw new InvalidDDMSException("At least one individual value is required.");
+			throw new InvalidDDMSException("At least one individual value must exist.");
 		super.validate();
 	}
 

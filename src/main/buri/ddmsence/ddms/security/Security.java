@@ -150,7 +150,7 @@ public final class Security extends AbstractBaseComponent {
 					+ FIXED_ROLLUP + "\".");
 		}
 		else if (getExcludeFromRollup() != null)
-			throw new InvalidDDMSException("The excludeFromRollup attribute cannot be used until DDMS 3.0 or later.");
+			throw new InvalidDDMSException("The excludeFromRollup attribute must not be used until DDMS 3.0 or later.");
 		getSecurityAttributes().requireClassification();
 		super.validate();
 	}

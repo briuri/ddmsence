@@ -358,7 +358,7 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 		DDMSVersion.setCurrentVersion("3.1");
 		SubjectCoverage.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(builder, "Security attributes cannot be applied");
+		getInstance(builder, "Security attributes must not be applied");
 	}
 		
 	public void testOutput() throws InvalidDDMSException {

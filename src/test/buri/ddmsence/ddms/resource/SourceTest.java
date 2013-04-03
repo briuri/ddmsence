@@ -247,7 +247,7 @@ public class SourceTest extends AbstractBaseTestCase {
 		// No security attributes in DDMS 2.0
 		Source.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(builder, "Security attributes cannot be applied");
+		getInstance(builder, "Security attributes must not be applied");
 	}
 	
 	public void testOutput() throws InvalidDDMSException {

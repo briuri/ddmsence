@@ -177,7 +177,7 @@ public class SubtitleTest extends AbstractBaseTestCase {
 			// Bad security attributes
 			Subtitle.Builder builder = getBaseBuilder();
 			builder.setSecurityAttributes(null);
-			getInstance(builder, "classification is required.");
+			getInstance(builder, "classification must exist.");
 		}
 	}
 

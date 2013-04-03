@@ -172,9 +172,9 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 		if (getSrsDimension() != null && getSrsDimension().intValue() < 0)
 			throw new InvalidDDMSException("The srsDimension must be a positive integer.");
 		if (Util.isEmpty(getSrsName()) && !getAxisLabels().isEmpty())
-			throw new InvalidDDMSException("The axisLabels attribute can only be used in tandem with an srsName.");
+			throw new InvalidDDMSException("The axisLabels attribute must only be used in tandem with an srsName.");
 		if (getAxisLabels().isEmpty() && !getUomLabels().isEmpty())
-			throw new InvalidDDMSException("The uomLabels attribute can only be used in tandem with axisLabels.");
+			throw new InvalidDDMSException("The uomLabels attribute must only be used in tandem with axisLabels.");
 		Util.requireValidNCNames(getAxisLabels());
 		Util.requireValidNCNames(getUomLabels());
 		super.validate(version);

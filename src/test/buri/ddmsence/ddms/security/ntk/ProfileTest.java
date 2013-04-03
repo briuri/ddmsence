@@ -180,17 +180,17 @@ public class ProfileTest extends AbstractBaseTestCase {
 			// Missing systemName
 			Profile.Builder builder = getBaseBuilder();
 			builder.setSystemName(null);
-			getInstance(builder, "systemName is required.");
+			getInstance(builder, "systemName must exist.");
 
 			// Missing groupValue
 			builder = getBaseBuilder();
 			builder.getProfileValues().clear();
-			getInstance(builder, "At least one profile value is required.");
+			getInstance(builder, "At least one profile value must exist.");
 
 			// Missing security attributes
 			builder = getBaseBuilder();
 			builder.setSecurityAttributes(null);
-			getInstance(builder, "classification is required.");
+			getInstance(builder, "classification must exist.");
 			
 			// Null groupValue param
 			try {

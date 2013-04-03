@@ -183,7 +183,7 @@ public class ContributorTest extends AbstractBaseTestCase {
 			Contributor.Builder builder = getBaseBuilder();
 			builder.setEntityType(null);
 			builder.setOrganization(null);
-			getInstance(builder, "entity is required.");
+			getInstance(builder, "entity must exist.");
 
 			if (version.isAtLeast("4.0.1")) {
 				// Invalid pocType
@@ -239,7 +239,7 @@ public class ContributorTest extends AbstractBaseTestCase {
 		DDMSVersion.setCurrentVersion("3.1");
 		Contributor.Builder builder = getBaseBuilder();
 		builder.setPocTypes(Util.getXsListAsList("DoD-Dist-B"));
-		getInstance(builder, "This component cannot have a pocType");
+		getInstance(builder, "This component must not have a pocType");
 	}
 
 	public void testOutput() throws InvalidDDMSException {

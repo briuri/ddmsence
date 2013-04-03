@@ -94,7 +94,7 @@ public class PropertyReader {
 	}
 
 	/**
-	 * Locates a property and returns it. Assumes that the property is required.
+	 * Locates a property and returns it. Assumes that the property must exist.
 	 * 
 	 * @param name the simple name of the property, without "buri.ddmsence."
 	 * @return the property specified

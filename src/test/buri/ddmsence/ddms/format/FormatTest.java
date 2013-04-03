@@ -208,7 +208,7 @@ public class FormatTest extends AbstractBaseTestCase {
 			// Missing mimeType
 			Format.Builder builder = getBaseBuilder();
 			builder.setMimeType(null);
-			getInstance(builder, "mimeType is required.");
+			getInstance(builder, "mimeType must exist.");
 		}
 	}
 

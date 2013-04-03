@@ -130,7 +130,7 @@ public final class ProfileList extends AbstractBaseComponent {
 	protected void validate() throws InvalidDDMSException {
 		Util.requireQName(getXOMElement(), getNamespace(), ProfileList.getName(getDDMSVersion()));
 		if (getProfiles().isEmpty())
-			throw new InvalidDDMSException("At least one profile is required.");
+			throw new InvalidDDMSException("At least one profile must exist.");
 		getSecurityAttributes().requireClassification();
 
 		super.validate();

@@ -515,7 +515,7 @@ public final class Resource extends AbstractBaseComponent {
 					_createDate = getFactory().newXMLGregorianCalendar(createDate);
 				}
 				catch (IllegalArgumentException e) {
-					throw new InvalidDDMSException("The ism:createDate attribute is not in a valid date format.");
+					throw new InvalidDDMSException("The ism:createDate attribute must adhere to a valid date format.");
 				}
 				Util.addAttribute(element, ismPrefix, CREATE_DATE_NAME, version.getIsmNamespace(),
 					getCreateDate().toXMLFormat());
@@ -690,12 +690,12 @@ public final class Resource extends AbstractBaseComponent {
 			Util.requireBoundedChildCount(getXOMElement(), MetacardInfo.getName(getDDMSVersion()), 1, 1);
 	
 		if (getIdentifiers().size() < 1)
-			throw new InvalidDDMSException("At least 1 identifier is required.");
+			throw new InvalidDDMSException("At least 1 identifier must exist.");
 		if (getTitles().size() < 1)
-			throw new InvalidDDMSException("At least 1 title is required.");	
+			throw new InvalidDDMSException("At least 1 title must exist.");	
 		if (getCreators().size() + getContributors().size() + getPublishers().size() + getPointOfContacts().size() == 0)
 			throw new InvalidDDMSException(
-				"At least 1 producer (creator, contributor, publisher, or pointOfContact) is required.");
+				"At least 1 producer (creator, contributor, publisher, or pointOfContact) must exist.");
 		Util.requireBoundedChildCount(getXOMElement(), Description.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), Dates.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), Rights.getName(getDDMSVersion()), 0, 1);
@@ -703,14 +703,14 @@ public final class Resource extends AbstractBaseComponent {
 		Util.requireBoundedChildCount(getXOMElement(), ResourceManagement.getName(getDDMSVersion()), 0, 1);
 		if (isAtLeast401) {
 			if (getSubjectCoverages().size() < 1)
-				throw new InvalidDDMSException("At least 1 subjectCoverage is required.");
+				throw new InvalidDDMSException("At least 1 subjectCoverage must exist.");
 		}
 		else
 			Util.requireBoundedChildCount(getXOMElement(), SubjectCoverage.getName(getDDMSVersion()), 1, 1);
 		if (!isAtLeast50)
 			Util.requireBoundedChildCount(getXOMElement(), Security.getName(getDDMSVersion()), 1, 1);
 		if (!isAtLeast30 && getExtensibleElements().size() > 1) {
-			throw new InvalidDDMSException("Only 1 extensible element is allowed in DDMS 2.0.");
+			throw new InvalidDDMSException("Only 1 extensible element must exist in DDMS 2.0.");
 		}
 		
 		validateOrderAttributes();
@@ -728,7 +728,7 @@ public final class Resource extends AbstractBaseComponent {
 		}
 		
 		if (!getDDMSVersion().isAtLeast("3.1") && !getCompliesWiths().isEmpty())
-			throw new InvalidDDMSException("The compliesWith attribute cannot be used until DDMS 3.1 or later.");
+			throw new InvalidDDMSException("The compliesWith attribute must not be used until DDMS 3.1 or later.");
 		if (getDDMSVersion().isAtLeast("3.1") && !isAtLeast50) {
 			// ism:compliesWith
 			for (String with : getCompliesWiths())
@@ -738,9 +738,9 @@ public final class Resource extends AbstractBaseComponent {
 		if (isAtLeast50) {
 			if (isResourceElement() != null || getCreateDate() != null || getIsmDESVersion() != null || getNtkDESVersion() != null
 				|| !getSecurityAttributes().isEmpty() || !getNoticeAttributes().isEmpty())
-				throw new InvalidDDMSException("The resource cannot have ISM or NTK attributes, starting in DDMS 5.0.");
+				throw new InvalidDDMSException("The resource must not have ISM or NTK attributes, starting in DDMS 5.0.");
 			if (!getExtensibleAttributes().isEmpty() || !getExtensibleElements().isEmpty())
-				throw new InvalidDDMSException("The resource cannot have extensible elements or attributes, starting in DDMS 5.0.");
+				throw new InvalidDDMSException("The resource must not have extensible elements or attributes, starting in DDMS 5.0.");
 		}
 
 		super.validate();

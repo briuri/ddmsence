@@ -263,7 +263,7 @@ public class NoticeTest extends AbstractBaseTestCase {
 	}
 
 	public void testVersionSpecific() throws InvalidDDMSException {
-		// Implicit, since 1 NoticeText is required and that requires DDMS 4.0.1 or greater.
+		// Implicit, since 1 NoticeText must exist and that requires DDMS 4.0.1 or greater.
 	}
 	
 	public void testOutput() throws InvalidDDMSException {

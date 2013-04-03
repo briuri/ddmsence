@@ -180,17 +180,17 @@ public class IndividualTest extends AbstractBaseTestCase {
 			// Missing systemName
 			Individual.Builder builder = getBaseBuilder();
 			builder.setSystemName(null);
-			getInstance(builder, "systemName is required.");
+			getInstance(builder, "systemName must exist.");
 
 			// Missing groupValue
 			builder = getBaseBuilder();
 			builder.getIndividualValues().clear();
-			getInstance(builder, "At least one individual value is required.");
+			getInstance(builder, "At least one individual value must exist.");
 
 			// Missing security attributes
 			builder = getBaseBuilder();
 			builder.setSecurityAttributes(null);
-			getInstance(builder, "classification is required.");
+			getInstance(builder, "classification must exist.");
 			
 			// Null individualValue param
 			try {

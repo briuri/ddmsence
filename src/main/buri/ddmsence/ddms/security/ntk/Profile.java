@@ -124,7 +124,7 @@ public final class Profile extends AbstractAccessEntity {
 	protected void validate() throws InvalidDDMSException {
 		Util.requireQName(getXOMElement(), getNamespace(), Profile.getName(getDDMSVersion()));
 		if (getProfileValues().isEmpty())
-			throw new InvalidDDMSException("At least one profile value is required.");
+			throw new InvalidDDMSException("At least one profile value must exist.");
 		super.validate();
 	}
 

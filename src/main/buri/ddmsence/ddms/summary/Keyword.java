@@ -130,10 +130,10 @@ public final class Keyword extends AbstractBaseComponent {
 		Util.requireDDMSValue("value attribute", getValue());
 		if (!getDDMSVersion().isAtLeast("4.0.1") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException(
-				"Security attributes cannot be applied to this component until DDMS 4.0.1 or later.");
+				"Security attributes must not be applied to this component until DDMS 4.0.1 or later.");
 		}
 		if (!getDDMSVersion().isAtLeast("3.0") && !getExtensibleAttributes().isEmpty())
-			throw new InvalidDDMSException("xs:anyAttribute cannot be applied to ddms:keyword until DDMS 3.0 or later.");
+			throw new InvalidDDMSException("xs:anyAttribute must not be applied to ddms:keyword until DDMS 3.0 or later.");
 		super.validate();
 	}
 

@@ -153,7 +153,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		Util.requireBoundedChildCount(getXOMElement(), Service.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), Unknown.getName(getDDMSVersion()), 0, 1);
 		if (!getDDMSVersion().isAtLeast("4.0.1") && !getPocTypes().isEmpty()) {
-			throw new InvalidDDMSException("This component cannot have a pocType until DDMS 4.0.1 or later.");
+			throw new InvalidDDMSException("This component must not have a pocType until DDMS 4.0.1 or later.");
 		}
 		for (String pocType : getPocTypes())
 			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_POC_TYPE, pocType);

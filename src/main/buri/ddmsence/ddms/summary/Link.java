@@ -131,7 +131,7 @@ public final class Link extends AbstractBaseComponent {
 		Util.requireDDMSValue("href attribute", getXLinkAttributes().getHref());
 		if (!getDDMSVersion().isAtLeast("4.0.1") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException(
-				"Security attributes cannot be applied to this component until DDMS 4.0.1 or later.");
+				"Security attributes must not be applied to this component until DDMS 4.0.1 or later.");
 		}
 		super.validate();
 	}

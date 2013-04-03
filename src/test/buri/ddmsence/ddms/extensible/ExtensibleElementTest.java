@@ -137,7 +137,7 @@ public class ExtensibleElementTest extends AbstractBaseTestCase {
 
 			// Using the DDMS namespace
 			Element element = Util.buildDDMSElement("name", null);
-			getInstance(element, "Extensible elements cannot be defined in the DDMS namespace.");
+			getInstance(element, "Extensible elements must not be defined in the DDMS namespace.");
 
 			// Bad XML
 			ExtensibleElement.Builder builder = new ExtensibleElement.Builder();

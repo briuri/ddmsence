@@ -221,7 +221,7 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			// Missing relationship
 			RelatedResource.Builder builder = getBaseBuilder();
 			builder.setRelationship(null);
-			getInstance(builder, "relationship attribute is required.");
+			getInstance(builder, "relationship attribute must exist.");
 			
 			// Invalid URI relationship
 			builder = getBaseBuilder();
@@ -236,7 +236,7 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			// Missing qualifier
 			builder = getBaseBuilder();
 			builder.setQualifier(null);
-			getInstance(builder, "qualifier attribute is required.");
+			getInstance(builder, "qualifier attribute must exist.");
 			
 			// Invalid URI qualifier
 			builder = getBaseBuilder();
@@ -246,7 +246,7 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			// Missing value
 			builder = getBaseBuilder();
 			builder.setValue(null);
-			getInstance(builder, "value attribute is required.");
+			getInstance(builder, "value attribute must exist.");
 			
 			// Missing link
 			builder = getBaseBuilder();
@@ -265,7 +265,7 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			// Security Attributes on Link
 			builder = getBaseBuilder();
 			builder.getLinks().get(0).getSecurityAttributes().setClassification("U");
-			getInstance(builder, "Security attributes cannot be applied");
+			getInstance(builder, "Security attributes must not be applied");
 		}
 	}
 
