@@ -19,15 +19,11 @@
  */
 package buri.ddmsence.ddms.security.ntk;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
-import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -61,13 +57,12 @@ public class ProfileListTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private ProfileList getInstance(String message, Element element) {
+	private ProfileList getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		ProfileList component = null;
 		try {
@@ -84,14 +79,16 @@ public class ProfileListTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param profiles the profiles in this list (required)
+	 * 
+	 * @return a valid object
 	 */
-	private ProfileList getInstance(String message, List<Profile> profiles) {
+	private ProfileList getInstance(ProfileList.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		ProfileList component = null;
 		try {
-			component = new ProfileList(profiles, SecurityAttributesTest.getFixture());
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -99,6 +96,17 @@ public class ProfileListTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private ProfileList.Builder getBaseBuilder() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		ProfileList component = getInstance(getValidElement(version.getVersion()), SUCCESS);
+		return (new ProfileList.Builder(component));
 	}
 
 	/**
@@ -118,12 +126,12 @@ public class ProfileListTest extends AbstractBaseTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ntk:AccessProfileList ").append(getXmlnsNTK()).append(" ").append(getXmlnsISM()).append(" ");
-		xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">\n");
-		xml.append("\t<ntk:AccessProfile ism:classification=\"U\" ism:ownerProducer=\"USA\">\n");
-		xml.append("\t\t<ntk:AccessSystemName ism:classification=\"U\" ism:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
-		xml.append("\t\t<ntk:AccessProfileValue ism:classification=\"U\" ism:ownerProducer=\"USA\" ntk:vocabulary=\"vocabulary\">profile</ntk:AccessProfileValue>\n");
-		xml.append("\t</ntk:AccessProfile>\n");
-		xml.append("</ntk:AccessProfileList>\n");
+		xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">");
+		xml.append("<ntk:AccessProfile ism:classification=\"U\" ism:ownerProducer=\"USA\">");
+		xml.append("<ntk:AccessSystemName ism:classification=\"U\" ism:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>");
+		xml.append("<ntk:AccessProfileValue ism:classification=\"U\" ism:ownerProducer=\"USA\" ntk:vocabulary=\"vocabulary\">profile</ntk:AccessProfileValue>");
+		xml.append("</ntk:AccessProfile>");
+		xml.append("</ntk:AccessProfileList>");
 		return (xml.toString());
 	}
 
@@ -131,131 +139,95 @@ public class ProfileListTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_NTK_PREFIX,
 				ProfileList.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// All fields
-			getInstance(SUCCESS, getValidElement(sVersion));
+			// Element-based
+			getInstance(getValidElement(sVersion), SUCCESS);
+
+			// Data-based via Builder
+			getBaseBuilder();
 		}
 	}
 
-	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// All fields
-			getInstance(SUCCESS, ProfileTest.getFixtureList());
-		}
+	public void testConstructorsMinimal() throws InvalidDDMSException {
+		// No tests.
 	}
 
-	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			String ntkPrefix = PropertyReader.getPrefix("ntk");
-
-			// Missing profile
-			Element element = Util.buildElement(ntkPrefix, ProfileList.getName(version), version.getNtkNamespace(),
-				null);
-			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("At least one profile is required.", element);
-
-			// Missing security attributes
-			element = Util.buildElement(ntkPrefix, ProfileList.getName(version), version.getNtkNamespace(), null);
-			for (Profile profile : ProfileTest.getFixtureList())
-				element.appendChild(profile.getXOMElementCopy());
-			getInstance("classification is required.", element);
-		}
-	}
-
-	public void testDataConstructorInvalid() throws InvalidDDMSException {
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing profile
-			getInstance("At least one profile is required.", (List) null);
+			ProfileList.Builder builder = getBaseBuilder();
+			builder.getProfiles().clear();
+			getInstance(builder, "At least one profile is required.");
 
 			// Missing security attributes
+			builder = getBaseBuilder();
+			builder.setSecurityAttributes(null);
+			getInstance(builder, "classification is required.");
+			
+			// Null profile param
 			try {
-				new ProfileList(ProfileTest.getFixtureList(), null);
-				fail("Allowed invalid data.");
+				new ProfileList(null, SecurityAttributesTest.getFixture());
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "classification is required.");
+				expectMessage(e, "At least one profile");
 			}
 		}
 	}
 
-	public void testWarnings() throws InvalidDDMSException {
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			ProfileList component = getInstance(SUCCESS, getValidElement(sVersion));
+			ProfileList component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProfileList elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			ProfileList dataComponent = getInstance(SUCCESS, ProfileTest.getFixtureList());
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			// Base equality
+			ProfileList elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			ProfileList builderComponent = new ProfileList.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+
+			// Different values in each field
+			ProfileList.Builder builder = getBaseBuilder();
+			builder.getProfiles().get(0).getSystemName().setValue(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			ProfileList elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			List<Profile> profiles = ProfileTest.getFixtureList();
-			List<ProfileValue> valueList = new ArrayList<ProfileValue>();
-			valueList.add(ProfileValueTest.getFixture("profile2"));
-			profiles.add(new Profile(SystemNameTest.getFixture(), valueList, SecurityAttributesTest.getFixture()));
-			ProfileList dataComponent = getInstance(SUCCESS, profiles);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			ProfileList component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, ProfileTest.getFixtureList());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testWrongVersion() {
+	public void testVersionSpecific() {
 		// Pre-4.0.1 test is implicit, since NTK namespace did not exist.
 		// Post-4.1 test is handled in MetacardInfoTest.
 	}
 
-	public void testBuilderEquality() throws InvalidDDMSException {
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProfileList component = getInstance(SUCCESS, getValidElement(sVersion));
-			ProfileList.Builder builder = new ProfileList.Builder(component);
-			assertEquals(component, builder.commit());
+			ProfileList elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
-
+	
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -265,39 +237,9 @@ public class ProfileListTest extends AbstractBaseTestCase {
 			assertTrue(builder.isEmpty());
 			builder.getProfiles().get(0);
 			assertTrue(builder.isEmpty());
+			
 			builder.getProfiles().get(1).getSecurityAttributes().setClassification("U");
 			assertFalse(builder.isEmpty());
-
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			ProfileList.Builder builder = new ProfileList.Builder();
-			builder.getSecurityAttributes().setClassification("U");
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "At least one profile is required.");
-			}
-			builder.getProfiles().get(0).getSystemName().setValue("TEST");
-			builder.getProfiles().get(0).getProfileValues().get(0).setVocabulary("vocab");
-			builder.getProfiles().get(0).getProfileValues().get(0).setValue("TEST");
-			builder.getProfiles().get(0).getSystemName().getSecurityAttributes().setClassification("U");
-			builder.getProfiles().get(0).getSystemName().getSecurityAttributes().setOwnerProducers(
-				Util.getXsListAsList("USA"));
-			builder.getProfiles().get(0).getProfileValues().get(0).getSecurityAttributes().setClassification("U");
-			builder.getProfiles().get(0).getProfileValues().get(0).getSecurityAttributes().setOwnerProducers(
-				Util.getXsListAsList("USA"));
-			builder.getProfiles().get(0).getSecurityAttributes().setClassification("U");
-			builder.getProfiles().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-			builder.getSecurityAttributes().setClassification("U");
-			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-			builder.commit();
 		}
 	}
 

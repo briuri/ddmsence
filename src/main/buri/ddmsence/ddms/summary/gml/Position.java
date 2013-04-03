@@ -80,7 +80,7 @@ public final class Position extends AbstractBaseComponent {
 			List<String> tuple = Util.getXsListAsList(getCoordinatesAsXsList());
 			_coordinates = new ArrayList<Double>();
 			for (String coordinate : tuple) {
-				_coordinates.add(getStringAsDouble(coordinate));
+				_coordinates.add(Double.valueOf(coordinate));
 			}
 			_srsAttributes = new SRSAttributes(element);
 			setXOMElement(element, true);
@@ -227,8 +227,9 @@ public final class Position extends AbstractBaseComponent {
 		 */
 		public Builder(Position position) {
 			setSrsAttributes(new SRSAttributes.Builder(position.getSRSAttributes()));
-			for (Double coord : position.getCoordinates())
+			for (Double coord : position.getCoordinates()) {
 				getCoordinates().add(new DoubleBuilder(coord));
+			}
 		}
 
 		/**

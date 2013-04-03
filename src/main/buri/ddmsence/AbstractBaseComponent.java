@@ -340,8 +340,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	}
 
 	/**
-	 * Convenience method to convert one of the lat/lon fields into a Double. Returns null if the field does not exist
-	 * or cannot be converted into a Double.
+	 * Convenience method to convert one of the lat/lon fields into a Double. Returns null if the field does not exist.
 	 * 
 	 * @param element the parent element
 	 * @param name the local name of the child
@@ -353,22 +352,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 		Element childElement = element.getFirstChildElement(name, element.getNamespaceURI());
 		if (childElement == null)
 			return (null);
-		return (getStringAsDouble(childElement.getValue()));
-	}
-
-	/**
-	 * Helper method to assist with string to double conversion
-	 * 
-	 * @param string the double as a string
-	 * @return a Double if possible, or null if the string cannot be converted
-	 */
-	protected static Double getStringAsDouble(String string) {
-		try {
-			return (Double.valueOf(string));
-		}
-		catch (NumberFormatException e) {
-			return (null);
-		}
+		return (Double.valueOf(childElement.getValue()));
 	}
 
 	/**

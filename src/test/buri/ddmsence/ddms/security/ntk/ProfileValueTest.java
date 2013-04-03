@@ -78,13 +78,12 @@ public class ProfileValueTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private ProfileValue getInstance(String message, Element element) {
+	private ProfileValue getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		ProfileValue component = null;
 		try {
@@ -101,21 +100,16 @@ public class ProfileValueTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param value the value of the element's child text
-	 * @param vocabulary the vocabulary (required)
-	 * @param id the NTK ID (optional)
-	 * @param idReference a reference to an NTK ID (optional)
-	 * @param qualifier an NTK qualifier (optional)
+	 * 
 	 * @return a valid object
 	 */
-	private ProfileValue getInstance(String message, String value, String vocabulary, String id, String idReference,
-		String qualifier) {
+	private ProfileValue getInstance(ProfileValue.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		ProfileValue component = null;
 		try {
-			component = new ProfileValue(value, vocabulary, id, idReference, qualifier,
-				SecurityAttributesTest.getFixture());
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -123,6 +117,17 @@ public class ProfileValueTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private ProfileValue.Builder getBaseBuilder() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		ProfileValue component = getInstance(getValidElement(version.getVersion()), SUCCESS);
+		return (new ProfileValue.Builder(component));
 	}
 
 	/**
@@ -156,86 +161,68 @@ public class ProfileValueTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_NTK_PREFIX,
 				ProfileValue.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			// Element-based
+			getInstance(getValidElement(sVersion), SUCCESS);
+
+			// Data-based via Builder
+			getBaseBuilder();
+		}
+	}
+	
+	public void testConstructorsMinimal() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String ntkPrefix = PropertyReader.getPrefix("ntk");
-
-			// All fields
-			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildElement(ntkPrefix, ProfileValue.getName(version), version.getNtkNamespace(),
 				TEST_VALUE);
 			Util.addAttribute(element, ntkPrefix, "vocabulary", version.getNtkNamespace(), TEST_VOCABULARY);
 			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance(SUCCESS, element);
+			ProfileValue elementComponent = getInstance(element, SUCCESS);
+			
+			getInstance(new ProfileValue.Builder(elementComponent), SUCCESS);
 		}
 	}
 
-	public void testDataConstructorValid() {
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-
-			// All fields
-			getInstance(SUCCESS, TEST_VALUE, TEST_VOCABULARY, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
-
-			// No optional fields
-			getInstance(SUCCESS, TEST_VALUE, TEST_VOCABULARY, null, null, null);
-		}
-	}
-
-	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			String ntkPrefix = PropertyReader.getPrefix("ntk");
-
+			
 			// Missing vocabulary
-			Element element = Util.buildElement(ntkPrefix, ProfileValue.getName(version), version.getNtkNamespace(),
-				TEST_VALUE);
-			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("\"\" is not a valid NMTOKEN.", element);
-
+			ProfileValue.Builder builder = getBaseBuilder();
+			builder.setVocabulary(null);
+			getInstance(builder, "\"\" is not a valid NMTOKEN.");
+			
 			// Missing security attributes
-			element = Util.buildElement(ntkPrefix, ProfileValue.getName(version), version.getNtkNamespace(), TEST_VALUE);
-			Util.addAttribute(element, ntkPrefix, "vocabulary", version.getNtkNamespace(), TEST_VOCABULARY);
-			getInstance("classification is required.", element);
+			builder = getBaseBuilder();
+			builder.setSecurityAttributes(null);
+			getInstance(builder, "classification is required.");
 		}
 	}
-
-	public void testDataConstructorInvalid() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// Missing vocabulary
-			getInstance("\"\" is not a valid NMTOKEN.", TEST_VALUE, null, null, null, null);
-			// Missing security attributes
-			try {
-				new ProfileValue(TEST_VALUE, TEST_VOCABULARY, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER, null);
-				fail("Allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "classification is required.");
-			}
-		}
-	}
-
-	public void testWarnings() throws InvalidDDMSException {
+	
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			ProfileValue component = getInstance(SUCCESS, getValidElement(sVersion));
+			ProfileValue component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// No value
-			component = getInstance(SUCCESS, null, TEST_VOCABULARY, null, null, null);
+			ProfileValue.Builder builder = getBaseBuilder();
+			builder.setValue(null);
+			component = builder.commit();			
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "A ntk:AccessProfileValue element was found with no value.";
 			String locator = "ntk:AccessProfileValue";
@@ -243,82 +230,52 @@ public class ProfileValueTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testConstructorEquality() {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProfileValue elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			ProfileValue dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_VOCABULARY, TEST_ID, TEST_ID_REFERENCE,
-				TEST_QUALIFIER);
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			// Base equality
+			ProfileValue elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			ProfileValue builderComponent = new ProfileValue.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+
+			// Different values in each field
+			ProfileValue.Builder builder = getBaseBuilder();
+			builder.setValue(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
+
+			builder = getBaseBuilder();
+			builder.setVocabulary(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setID(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setIDReference(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setQualifier(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			ProfileValue elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			ProfileValue dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_VOCABULARY, TEST_ID,
-				TEST_ID_REFERENCE, TEST_QUALIFIER);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, DIFFERENT_VALUE, TEST_ID, TEST_ID_REFERENCE,
-				TEST_QUALIFIER);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_VOCABULARY, DIFFERENT_VALUE, TEST_ID_REFERENCE,
-				TEST_QUALIFIER);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_VOCABULARY, TEST_ID, DIFFERENT_VALUE, TEST_QUALIFIER);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_VOCABULARY, TEST_ID, TEST_ID_REFERENCE,
-				DIFFERENT_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			ProfileValue component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, TEST_VALUE, TEST_VOCABULARY, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			ProfileValue component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-
-			component = getInstance(SUCCESS, TEST_VALUE, TEST_VOCABULARY, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testWrongVersion() {
+	public void testVersionSpecific() {
 		// Pre-4.0.1 test is implicit, since NTK namespace did not exist.
 		// Post-4.1 test is handled in MetacardInfoTest.
 	}
 
-	public void testBuilderEquality() throws InvalidDDMSException {
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProfileValue component = getInstance(SUCCESS, getValidElement(sVersion));
-			ProfileValue.Builder builder = new ProfileValue.Builder(component);
-			assertEquals(component, builder.commit());
+			ProfileValue elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
 
@@ -329,28 +286,9 @@ public class ProfileValueTest extends AbstractBaseTestCase {
 			ProfileValue.Builder builder = new ProfileValue.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.setValue(TEST_VALUE);
 			assertFalse(builder.isEmpty());
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			ProfileValue.Builder builder = new ProfileValue.Builder();
-			builder.setValue(TEST_VALUE);
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "\"\" is not a valid NMTOKEN.");
-			}
-			builder.setVocabulary("test");
-			builder.getSecurityAttributes().setClassification("U");
-			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-			builder.commit();
 		}
 	}
 }

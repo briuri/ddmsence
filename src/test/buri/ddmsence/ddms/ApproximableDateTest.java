@@ -236,7 +236,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 			ApproximableDate component = getInstance(getFixtureElement(TEST_NAME, true), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 
-			// Empty element
+			// Completely empty
 			component = getInstance(getFixtureElement(TEST_NAME, false), SUCCESS);
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "A completely empty ddms:acquiredOn";

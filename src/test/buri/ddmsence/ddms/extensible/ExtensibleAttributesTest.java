@@ -176,10 +176,10 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Element-based, no optional fields
-			ExtensibleAttributes elementComponent = getInstance(getTestElement(), SUCCESS);
+			ExtensibleAttributes elementAttributes = getInstance(getTestElement(), SUCCESS);
 
 			// Data-based via Builder, no optional fields
-			getInstance(new ExtensibleAttributes.Builder(elementComponent), SUCCESS);
+			getInstance(new ExtensibleAttributes.Builder(elementAttributes), SUCCESS);
 		}
 	}
 
@@ -206,34 +206,34 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 			// Base equality
 			Element element = getTestElement();
 			element.addAttribute(new Attribute(getTestAttribute()));
-			ExtensibleAttributes elementComponent = getInstance(element, SUCCESS);
-			ExtensibleAttributes builderComponent = new ExtensibleAttributes.Builder(elementComponent).commit();
-			assertEquals(elementComponent, builderComponent);
-			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+			ExtensibleAttributes elementAttributes = getInstance(element, SUCCESS);
+			ExtensibleAttributes builderAttributes = new ExtensibleAttributes.Builder(elementAttributes).commit();
+			assertEquals(elementAttributes, builderAttributes);
+			assertEquals(elementAttributes.hashCode(), builderAttributes.hashCode());
 
 			// Wrong class
 			Rights wrongComponent = new Rights(true, true, true);
-			assertFalse(elementComponent.equals(wrongComponent));
+			assertFalse(elementAttributes.equals(wrongComponent));
 
 			// Different attribute list sizes
 			ExtensibleAttributes.Builder builder = getBaseBuilder();
 			Attribute attr = new Attribute("essence:confidence", "http://essence/", "test");
 			builder.getAttributes().add(new ExtensibleAttributes.AttributeBuilder(attr));
-			assertFalse(elementComponent.equals(builder.commit()));
+			assertFalse(elementAttributes.equals(builder.commit()));
 
 			// Different attribute name
 			builder = getBaseBuilder();
 			builder.getAttributes().clear();
 			attr = new Attribute("ddmsence:confidence", TEST_NAMESPACE, "95");
 			builder.getAttributes().add(new ExtensibleAttributes.AttributeBuilder(attr));
-			assertFalse(elementComponent.equals(builder.commit()));
+			assertFalse(elementAttributes.equals(builder.commit()));
 
 			// Different attribute namespace
 			builder = getBaseBuilder();
 			builder.getAttributes().clear();
 			attr = new Attribute("essence:relevance", "http://essence/", "95");
 			builder.getAttributes().add(new ExtensibleAttributes.AttributeBuilder(attr));
-			assertFalse(elementComponent.equals(builder.commit()));
+			assertFalse(elementAttributes.equals(builder.commit()));
 		}
 	}
 
@@ -247,9 +247,9 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 
 			Element element = getTestElement();
 			element.addAttribute(new Attribute(getTestAttribute()));
-			ExtensibleAttributes elementComponent = getInstance(element, SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false), elementComponent.getOutput(false, ""));
+			ExtensibleAttributes elementAttributes = getInstance(element, SUCCESS);
+			assertEquals(getExpectedOutput(true), elementAttributes.getOutput(true, ""));
+			assertEquals(getExpectedOutput(false), elementAttributes.getOutput(false, ""));
 		}
 	}
 

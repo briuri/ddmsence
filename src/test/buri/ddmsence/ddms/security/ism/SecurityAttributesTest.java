@@ -297,10 +297,10 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			Element element = Util.buildDDMSElement(Security.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
 			getFullFixture().addTo(element);
-			SecurityAttributes elementComponent = getInstance(element, SUCCESS);
+			SecurityAttributes elementAttributes = getInstance(element, SUCCESS);
 
 			// Data-based via Builder
-			getInstance(new SecurityAttributes.Builder(elementComponent), SUCCESS);
+			getInstance(new SecurityAttributes.Builder(elementAttributes), SUCCESS);
 			
 			// Extra fields
 			getInstance(TEST_CLASS, TEST_OWNERS, getOtherAttributes("notAnAttribute", "test"), SUCCESS);
@@ -402,14 +402,14 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// Base equality
-			SecurityAttributes elementComponent = getFullFixture();
-			SecurityAttributes builderComponent = new SecurityAttributes.Builder(elementComponent).commit();
-			assertEquals(elementComponent, builderComponent);
-			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+			SecurityAttributes elementAttributes = getFullFixture();
+			SecurityAttributes builderAttributes = new SecurityAttributes.Builder(elementAttributes).commit();
+			assertEquals(elementAttributes, builderAttributes);
+			assertEquals(elementAttributes.hashCode(), builderAttributes.hashCode());
 
 			// Wrong class
 			Rights wrongComponent = new Rights(true, true, true);
-			assertFalse(elementComponent.equals(wrongComponent));
+			assertFalse(elementAttributes.equals(wrongComponent));
 
 			// Different values in each field
 			SecurityAttributes expected = getFullFixture();

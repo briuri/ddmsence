@@ -75,13 +75,12 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private SRSAttributes getInstance(String message, Element element) {
+	private SRSAttributes getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		SRSAttributes attributes = null;
 		try {
@@ -98,28 +97,34 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param srsName the srsName (optional)
-	 * @param srsDimension the srsDimension (optional)
-	 * @param axisLabels the axis labels (optional, but should be omitted if no srsName is set)
-	 * @param uomLabels the labels for UOM (required when axisLabels is set)
+	 * 
 	 * @return a valid object
 	 */
-	private SRSAttributes getInstance(String message, String srsName, Integer srsDimension, List<String> axisLabels,
-		List<String> uomLabels) {
+	private SRSAttributes getInstance(SRSAttributes.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
-		SRSAttributes attributes = null;
+		SRSAttributes component = null;
 		try {
-			attributes = new SRSAttributes(srsName, srsDimension, axisLabels, uomLabels);
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 			expectMessage(e, message);
 		}
-		return (attributes);
+		return (component);
 	}
 
+	/**
+	 * Returns a builder, pre-populated with base data from the test attribute.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private SRSAttributes.Builder getBaseBuilder() {
+		return (new SRSAttributes.Builder(getFixture()));
+	}
+	
 	/**
 	 * Returns the expected HTML or Text output for this unit test
 	 */
@@ -152,232 +157,130 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 		Util.addAttribute(element, SRSAttributes.NO_PREFIX, "uomLabels", SRSAttributes.NO_NAMESPACE, uomLabels);
 	}
 
-	public void testElementConstructorValid() {
+	public void testConstructors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			// All fields
+
+			// Element-based
 			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
 				version.getGmlNamespace(), null);
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
 				Util.getXsList(TEST_UOM_LABELS));
-			getInstance(SUCCESS, element);
+			getInstance(element, SUCCESS);
 
-			// No optional fields
-			element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
+			// Data-based via Builder
+			getBaseBuilder();
+		}
+	}
+
+	public void testConstructorsMinimal() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+
+			// Element-based, no optional fields
+			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
 				version.getGmlNamespace(), null);
-			getInstance(SUCCESS, element);
+			SRSAttributes elementAttributes = getInstance(element, SUCCESS);
+
+			// Data-based via Builder, no optional fields
+			getInstance(new SRSAttributes.Builder(elementAttributes), SUCCESS);
 		}
 	}
 
-	public void testDataConstructorValid() {
+	public void testValidationErrors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			// All fields
-			getInstance(SUCCESS, TEST_SRS_NAME, TEST_SRS_DIMENSION, TEST_AXIS_LABELS, TEST_UOM_LABELS);
-
-			// No optional fields
-			getInstance(SUCCESS, null, null, null, null);
-		}
-	}
-
-	public void testElementConstructorInvalid() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			
 			// srsName not a URI
-			Element element = Util.buildDDMSElement(Position.getName(version), null);
-			addAttributes(element, INVALID_URI, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
-				Util.getXsList(TEST_UOM_LABELS));
-			getInstance("Invalid URI", element);
+			SRSAttributes.Builder builder = getBaseBuilder();
+			builder.setSrsName(INVALID_URI);
+			getInstance(builder, "Invalid URI");
 
 			// axisLabels without srsName
-			element = Util.buildDDMSElement(Position.getName(version), null);
-			addAttributes(element, null, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
-				Util.getXsList(TEST_UOM_LABELS));
-			getInstance("The axisLabels attribute can only be used", element);
+			builder = getBaseBuilder();
+			builder.setSrsName(null);
+			getInstance(builder, "The axisLabels attribute can only be used");
 
 			// uomLabels without axisLabels
-			element = Util.buildDDMSElement(Position.getName(version), null);
-			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, null, Util.getXsList(TEST_UOM_LABELS));
-			getInstance("The uomLabels attribute can only be used", element);
+			builder = getBaseBuilder();
+			builder.setAxisLabels(null);
+			getInstance(builder, "The uomLabels attribute can only be used");
 
 			// Non-NCNames in axisLabels
-			List<String> newLabels = new ArrayList<String>(TEST_AXIS_LABELS);
-			newLabels.add("1TEST");
-			element = Util.buildDDMSElement(Position.getName(version), null);
-			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(newLabels),
-				Util.getXsList(TEST_UOM_LABELS));
-			getInstance("\"1TEST\" is not a valid NCName.", element);
+			builder = getBaseBuilder();
+			builder.getAxisLabels().add("1TEST");
+			getInstance(builder, "\"1TEST\" is not a valid NCName.");
 
 			// Non-NCNames in uomLabels
-			newLabels = new ArrayList<String>(TEST_UOM_LABELS);
-			newLabels.add("TEST:TEST");
-			element = Util.buildDDMSElement(Position.getName(version), null);
-			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
-				Util.getXsList(newLabels));
-			getInstance("\"TEST:TEST\" is not a valid NCName.", element);
-
+			builder = getBaseBuilder();
+			builder.getUomLabels().add("TEST:TEST");
+			getInstance(builder, "\"TEST:TEST\" is not a valid NCName.");
+			
 			// Dimension is a positive integer
-			element = Util.buildDDMSElement(Position.getName(version), null);
-			addAttributes(element, TEST_SRS_NAME, Integer.valueOf(-1), null, Util.getXsList(TEST_UOM_LABELS));
-			getInstance("The srsDimension must be a positive integer.", element);
+			builder = getBaseBuilder();
+			builder.setSrsDimension(Integer.valueOf(-1));
+			getInstance(builder, "The srsDimension must be a positive integer.");
 		}
 	}
 
-	public void testDataConstructorInvalid() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			// srsName not a URI
-			getInstance("Invalid URI", INVALID_URI, TEST_SRS_DIMENSION, TEST_AXIS_LABELS, TEST_UOM_LABELS);
-
-			// axisLabels without srsName
-			getInstance("The axisLabels attribute can only be used", null, TEST_SRS_DIMENSION, TEST_AXIS_LABELS,
-				TEST_UOM_LABELS);
-
-			// uomLabels without axisLabels
-			getInstance("The uomLabels attribute can only be used", TEST_SRS_NAME, TEST_SRS_DIMENSION, null,
-				TEST_UOM_LABELS);
-
-			// Non-NCNames in axisLabels
-			List<String> newLabels = new ArrayList<String>(TEST_AXIS_LABELS);
-			newLabels.add("TEST:TEST");
-			getInstance("\"TEST:TEST\" is not a valid NCName.", TEST_SRS_NAME, TEST_SRS_DIMENSION, newLabels,
-				TEST_UOM_LABELS);
-
-			// Non-NCNames in uomLabels
-			newLabels = new ArrayList<String>(TEST_UOM_LABELS);
-			newLabels.add("TEST:TEST");
-			getInstance("\"TEST:TEST\" is not a valid NCName.", TEST_SRS_NAME, TEST_SRS_DIMENSION, TEST_AXIS_LABELS,
-				newLabels);
-
-			// Dimension is a positive integer
-			getInstance("The srsDimension must be a positive integer.", TEST_SRS_NAME, Integer.valueOf(-1),
-				TEST_AXIS_LABELS, TEST_UOM_LABELS);
-		}
-	}
-
-	public void testWarnings() {
+	public void testValidationWarnings() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			
 			// No warnings
 			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
 				version.getGmlNamespace(), null);
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
 				Util.getXsList(TEST_UOM_LABELS));
-			SRSAttributes component = getInstance(SUCCESS, element);
+			SRSAttributes component = getInstance(element, SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
-				version.getGmlNamespace(), null);
-			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
-				Util.getXsList(TEST_UOM_LABELS));
-			SRSAttributes elementAttributes = getInstance(SUCCESS, element);
-			SRSAttributes dataAttributes = getInstance(SUCCESS, TEST_SRS_NAME, TEST_SRS_DIMENSION, TEST_AXIS_LABELS,
-				TEST_UOM_LABELS);
-
-			assertEquals(elementAttributes, dataAttributes);
-			assertEquals(elementAttributes.hashCode(), dataAttributes.hashCode());
-		}
-	}
-
-	public void testConstructorInequalityDifferentValues() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
-				version.getGmlNamespace(), null);
-			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
-				Util.getXsList(TEST_UOM_LABELS));
-			SRSAttributes elementAttributes = getInstance(SUCCESS, element);
-			SRSAttributes dataAttributes = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_SRS_DIMENSION, TEST_AXIS_LABELS,
-				TEST_UOM_LABELS);
-			assertFalse(elementAttributes.equals(dataAttributes));
-
-			dataAttributes = getInstance(SUCCESS, TEST_SRS_NAME, null, TEST_AXIS_LABELS, TEST_UOM_LABELS);
-			assertFalse(elementAttributes.equals(dataAttributes));
-
-			List<String> newLabels = new ArrayList<String>(TEST_AXIS_LABELS);
-			newLabels.add("NewLabel");
-			dataAttributes = getInstance(SUCCESS, TEST_SRS_NAME, TEST_SRS_DIMENSION, newLabels, TEST_UOM_LABELS);
-			assertFalse(elementAttributes.equals(dataAttributes));
-
-			dataAttributes = getInstance(SUCCESS, TEST_SRS_NAME, TEST_SRS_DIMENSION, TEST_AXIS_LABELS, null);
-			assertFalse(elementAttributes.equals(dataAttributes));
-		}
-	}
-
-	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
-				version.getGmlNamespace(), null);
-			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
-				Util.getXsList(TEST_UOM_LABELS));
-			SRSAttributes attributes = new SRSAttributes(element);
-			Rights wrongComponent = new Rights(true, true, true);
-			assertFalse(attributes.equals(wrongComponent));
-		}
-	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
-				version.getGmlNamespace(), null);
-			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
-				Util.getXsList(TEST_UOM_LABELS));
-			SRSAttributes attributes = new SRSAttributes(element);
-			assertEquals(getExpectedOutput(true), attributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false), attributes.getOutput(false, ""));
-
-			SRSAttributes dataAttributes = getInstance(SUCCESS, TEST_SRS_NAME, TEST_SRS_DIMENSION, TEST_AXIS_LABELS,
-				TEST_UOM_LABELS);
-			assertEquals(getExpectedOutput(true), dataAttributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false), dataAttributes.getOutput(false, ""));
-		}
-	}
-
-	public void testAddTo() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			SRSAttributes component = getFixture();
-
-			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), "sample", version.getGmlNamespace(),
-				null);
-			component.addTo(element);
-			SRSAttributes output = new SRSAttributes(element);
-			assertEquals(component, output);
-		}
-	}
-
-	public void testGetNonNull() throws InvalidDDMSException {
-		SRSAttributes component = new SRSAttributes(null, null, null, null);
-		SRSAttributes output = SRSAttributes.getNonNullInstance(null);
-		assertEquals(component, output);
-
-		output = SRSAttributes.getNonNullInstance(getFixture());
-		assertEquals(getFixture(), output);
-	}
-
-	public void testWrongVersionAttributes() throws InvalidDDMSException {
-		DDMSVersion.setCurrentVersion("3.0");
-		SRSAttributes attr = getFixture();
-		DDMSVersion.setCurrentVersion("2.0");
-		// Cross version attributes are allowed, because the version is not set until they are added onto an element.
-		new Position(PositionTest.TEST_COORDS, attr);
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			SRSAttributes component = getFixture();
-			SRSAttributes.Builder builder = new SRSAttributes.Builder(component);
-			assertEquals(component, builder.commit());
+			// Base equality
+			SRSAttributes elementAttributes = getFixture();
+			SRSAttributes builderAttributes = new SRSAttributes.Builder(elementAttributes).commit();
+			assertEquals(elementAttributes, builderAttributes);
+			assertEquals(elementAttributes.hashCode(), builderAttributes.hashCode());
+			
+			// Wrong class
+			Rights wrongComponent = new Rights(true, true, true);
+			assertFalse(elementAttributes.equals(wrongComponent));
+			
+			// Different values in each field
+			SRSAttributes.Builder builder = getBaseBuilder();
+			builder.setSrsName(DIFFERENT_VALUE);
+			assertFalse(elementAttributes.equals(builder.commit()));
+
+			builder = getBaseBuilder();
+			builder.setSrsDimension(null);
+			assertFalse(elementAttributes.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.getAxisLabels().add("NewLabel");
+			assertFalse(elementAttributes.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setUomLabels(null);
+			assertFalse(elementAttributes.equals(builder.commit()));
+		}
+	}
+
+	public void testVersionSpecific() throws InvalidDDMSException {
+		// No tests.
+	}
+
+	public void testOutput() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			SRSAttributes attributes = getFixture();
+			assertEquals(getExpectedOutput(true), attributes.getOutput(true, ""));
+			assertEquals(getExpectedOutput(false), attributes.getOutput(false, ""));
 		}
 	}
 
@@ -407,24 +310,6 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			SRSAttributes.Builder builder = new SRSAttributes.Builder();
-			builder.setSrsDimension(Integer.valueOf(-1));
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "The srsDimension must be a positive integer.");
-			}
-			builder.setSrsDimension(Integer.valueOf(1));
-			builder.commit();
-		}
-	}
-
 	public void testBuilderLazyList() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -432,5 +317,27 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 			assertNotNull(builder.getUomLabels().get(1));
 			assertNotNull(builder.getAxisLabels().get(1));
 		}
+	}
+	
+	public void testAddTo() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			SRSAttributes component = getFixture();
+
+			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), "sample", version.getGmlNamespace(),
+				null);
+			component.addTo(element);
+			SRSAttributes output = new SRSAttributes(element);
+			assertEquals(component, output);
+		}
+	}
+
+	public void testGetNonNull() throws InvalidDDMSException {
+		SRSAttributes component = new SRSAttributes(null, null, null, null);
+		SRSAttributes output = SRSAttributes.getNonNullInstance(null);
+		assertEquals(component, output);
+
+		output = SRSAttributes.getNonNullInstance(getFixture());
+		assertEquals(getFixture(), output);
 	}
 }
