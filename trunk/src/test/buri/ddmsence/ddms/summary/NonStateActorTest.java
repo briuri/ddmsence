@@ -25,6 +25,7 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -268,6 +269,10 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 			assertEquals(elementComponent, builderComponent);
 			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
 
+			// Wrong class
+			Rights wrongComponent = new Rights(true, true, true);
+			assertFalse(elementComponent.equals(wrongComponent));
+			
 			// Different values in each field
 			NonStateActor.Builder builder = getBaseBuilder();
 			builder.setValue(DIFFERENT_VALUE);
@@ -289,7 +294,6 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 		NonStateActor.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("2.0");
 		getInstance(builder, "The nonStateActor element cannot be used");
-
 	}
 
 	public void testOutput() throws InvalidDDMSException {

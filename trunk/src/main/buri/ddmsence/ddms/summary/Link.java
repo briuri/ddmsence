@@ -229,7 +229,11 @@ public final class Link extends AbstractBaseComponent {
 		 * @see IBuilder#commit()
 		 */
 		public Link commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Link(getXLinkAttributes().commit(), getSecurityAttributes().commit()));
+			if (isEmpty())
+				return (null);
+			if (getSecurityAttributes().isEmpty())
+				return new Link(getXLinkAttributes().commit());
+			return (new Link(getXLinkAttributes().commit(), getSecurityAttributes().commit()));
 		}
 
 		/**

@@ -29,7 +29,6 @@ import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.ddms.resource.Rights;
-import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
@@ -68,13 +67,12 @@ public class KeywordTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private Keyword getInstance(String message, Element element) {
+	private Keyword getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Keyword component = null;
 		try {
@@ -91,16 +89,16 @@ public class KeywordTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param value the value child text
+	 * 
 	 * @return a valid object
 	 */
-	private Keyword getInstance(String message, String value) {
+	private Keyword getInstance(Keyword.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Keyword component = null;
 		try {
-			component = new Keyword(value, version.isAtLeast("4.0.1") ? SecurityAttributesTest.getFixture() : null);
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -108,6 +106,17 @@ public class KeywordTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private Keyword.Builder getBaseBuilder() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		Keyword component = getInstance(getValidElement(version.getVersion()), SUCCESS);
+		return (new Keyword.Builder(component));
 	}
 
 	/**
@@ -144,130 +153,82 @@ public class KeywordTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_DDMS_PREFIX,
 				Keyword.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() {
+	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			getInstance(SUCCESS, getValidElement(sVersion));
+
+			// Element-based
+			getInstance(getValidElement(sVersion), SUCCESS);
+			
+			// Data-based via Builder
+			getBaseBuilder();
 		}
 	}
-
-	public void testDataConstructorValid() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			getInstance(SUCCESS, TEST_VALUE);
-		}
+	
+	public void testConstructorsMinimal() {
+		// No tests.
 	}
 
-	public void testElementConstructorInvalid() {
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+
 			// Missing value
 			Element element = Util.buildDDMSElement(Keyword.getName(version), null);
-			getInstance("value attribute is required.", element);
-
-			// Empty value
-			element = Util.buildDDMSElement(Keyword.getName(version), "");
-			getInstance("value attribute is required.", element);
+			getInstance(element, "value attribute is required.");
 		}
 	}
 
-	public void testDataConstructorInvalid() {
+	public void testValidationWarnings() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			// Missing value
-			getInstance("value attribute is required.", (String) null);
-
-			// Empty value
-			getInstance("value attribute is required.", "");
-		}
-	}
-
-	public void testWarnings() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			
 			// No warnings
-			Keyword component = getInstance(SUCCESS, getValidElement(sVersion));
+			Keyword component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Keyword elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Keyword dataComponent = getInstance(SUCCESS, TEST_VALUE);
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-		}
-	}
 
-	public void testConstructorInequalityDifferentValues() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Keyword elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Keyword dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Keyword elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			// Base equality
+			Keyword elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			Keyword builderComponent = new Keyword.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+			
+			// Wrong class
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
+			
+			// Different values in each field
+			Keyword.Builder builder = getBaseBuilder();
+			builder.setValue(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Keyword component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, TEST_VALUE);
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Keyword component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-
-			component = getInstance(SUCCESS, TEST_VALUE);
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testExtensibleSuccess() throws InvalidDDMSException {
-		// Extensible attribute added
-		DDMSVersion.setCurrentVersion("3.0");
-		ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
-		new Keyword("xml", null, attr);
-	}
-
-	public void testExtensibleFailure() throws InvalidDDMSException {
-		// Wrong DDMS Version
+	public void testVersionSpecific() throws InvalidDDMSException {
+		// No security attributes in DDMS 3.1
+		Keyword.Builder builder = getBaseBuilder();
+		DDMSVersion.setCurrentVersion("3.1");
+		getInstance(builder, "Security attributes cannot be applied");
+		
+		// No attributes in 2.0
 		DDMSVersion.setCurrentVersion("2.0");
 		ExtensibleAttributes attributes = ExtensibleAttributesTest.getFixture();
-		try {
-			new Keyword(TEST_VALUE, null, attributes);
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "xs:anyAttribute cannot be applied");
-		}
-
+		builder = getBaseBuilder();
+		builder.setExtensibleAttributes(new ExtensibleAttributes.Builder(attributes));
+		getInstance(builder, "xs:anyAttribute cannot be applied");
+		
 		DDMSVersion version = DDMSVersion.setCurrentVersion("3.0");
 		Attribute attr = new Attribute("ddms:value", version.getNamespace(), "dog");
 
@@ -275,36 +236,22 @@ public class KeywordTest extends AbstractBaseTestCase {
 		List<Attribute> extAttributes = new ArrayList<Attribute>();
 		extAttributes.add(attr);
 		attributes = new ExtensibleAttributes(extAttributes);
-		try {
-			new Keyword(TEST_VALUE, null, attributes);
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "The extensible attribute with the name, ddms:value");
-		}
+		builder = getBaseBuilder();
+		builder.setExtensibleAttributes(new ExtensibleAttributes.Builder(attributes));
+		getInstance(builder, "The extensible attribute with the name, ddms:value");
 	}
-
-	public void testWrongVersionSecurityAttributes() throws InvalidDDMSException {
-		DDMSVersion.setCurrentVersion("3.1");
-		try {
-			new Keyword(TEST_VALUE, SecurityAttributesTest.getFixture());
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "Security attributes cannot be applied");
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
+	
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Keyword component = getInstance(SUCCESS, getValidElement(sVersion));
-			Keyword.Builder builder = new Keyword.Builder(component);
-			assertEquals(component, builder.commit());
+			Keyword elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
-
+	
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -312,17 +259,9 @@ public class KeywordTest extends AbstractBaseTestCase {
 			Keyword.Builder builder = new Keyword.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.setValue(TEST_VALUE);
 			assertFalse(builder.isEmpty());
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// No invalid cases that span all versions of DDMS. The only field is "value" and if that is missing, the
-			// builder is empty.
 		}
 	}
 }

@@ -46,9 +46,7 @@ public class LinkTest extends AbstractBaseTestCase {
 
 	private static final String TEST_TYPE = "locator";
 	private static final String TEST_HREF = "http://en.wikipedia.org/wiki/Tank";
-	private static final String TEST_ROLE = "tank";
-	private static final String TEST_TITLE = "Tank Page";
-	private static final String TEST_LABEL = "tank";
+	private static final String TEST_ROLE = "tank";;
 
 	/**
 	 * Constructor
@@ -108,7 +106,7 @@ public class LinkTest extends AbstractBaseTestCase {
 	 * @param element the element to build from
 	 * @return a valid object
 	 */
-	private Link getInstance(String message, Element element) {
+	private Link getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Link component = null;
 		try {
@@ -125,15 +123,16 @@ public class LinkTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param attributes the XLink Attributes
+	 * 
 	 * @return a valid object
 	 */
-	private Link getInstance(String message, XLinkAttributes attributes) {
+	private Link getInstance(Link.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Link component = null;
 		try {
-			component = new Link(attributes);
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -141,6 +140,16 @@ public class LinkTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private Link.Builder getBaseBuilder() {
+		Link component = getInstance(getFixtureElement(), SUCCESS);
+		return (new Link.Builder(component));
 	}
 
 	/**
@@ -158,8 +167,8 @@ public class LinkTest extends AbstractBaseTestCase {
 	private String getExpectedXMLOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:link ").append(getXmlnsDDMS()).append(" xmlns:xlink=\"").append(version.getXlinkNamespace()).append(
-			"\" ");
+		xml.append("<ddms:link ").append(getXmlnsDDMS()).append(" ");
+		xml.append("xmlns:xlink=\"").append(version.getXlinkNamespace()).append("\" ");
 		xml.append("xlink:type=\"locator\" xlink:href=\"http://en.wikipedia.org/wiki/Tank\" ");
 		xml.append("xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:label=\"tank\" />");
 		return (xml.toString());
@@ -189,141 +198,116 @@ public class LinkTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getFixtureElement(), SUCCESS), DEFAULT_DDMS_PREFIX,
 				Link.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			// All fields
-			getInstance(SUCCESS, getFixtureElement());
 
-			// No optional fields
+			// Element-based
+			getInstance(getFixtureElement(), SUCCESS);
+
+			// Data-based via Builder
+			getBaseBuilder();
+		}
+	}
+	
+	public void testConstructorsMinimal() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			// Element-based, No optional fields
 			Element element = buildComponentElement(TEST_TYPE, TEST_HREF);
-			getInstance(SUCCESS, element);
+			Link elementComponent = getInstance(element, SUCCESS);
+
+			// Data-based, No optional fields
+			getInstance(new Link.Builder(elementComponent), SUCCESS);
 		}
 	}
-
-	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			// All fields
-			getInstance(SUCCESS, XLinkAttributesTest.getLocatorFixture());
-
-			// No optional fields
-			getInstance(SUCCESS, new XLinkAttributes(TEST_HREF, null, null, null));
-		}
-	}
-
-	public void testElementConstructorInvalid() {
+	
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing href
 			Element element = buildComponentElement(TEST_TYPE, null);
-			getInstance("href attribute is required.", element);
+			getInstance(element, "href attribute is required.");
 
 			// invalid type
 			element = buildComponentElement("simple", TEST_HREF);
-			getInstance("The type attribute must have a fixed value", element);
-		}
-	}
-
-	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// Missing attributes
-			getInstance("type attribute is required.", (XLinkAttributes) null);
-
+			getInstance(element, "The type attribute must have a fixed value");
+			
+			// Null attributes
+			try {
+				new Link((XLinkAttributes) null);
+				fail("Constructor allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				expectMessage(e, "type attribute is required.");
+			}
+			
 			// Missing href
-			getInstance("href attribute is required.", new XLinkAttributes("", TEST_ROLE, TEST_TITLE, TEST_LABEL));
+			Link.Builder builder = getBaseBuilder();
+			builder.getXLinkAttributes().setHref(null);
+			getInstance(builder, "href attribute is required");
+			
+			// Invalid type
+			builder = getBaseBuilder();
+			builder.getXLinkAttributes().setType("simple");
+			getInstance(builder, "The type attribute must have a fixed value");
 		}
 	}
 
-	public void testWarnings() throws InvalidDDMSException {
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+			
 			// No warnings
-			Link component = getInstance(SUCCESS, getFixtureElement());
+			Link component = getInstance(getFixtureElement(), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Link elementComponent = getInstance(SUCCESS, getFixtureElement());
-			Link dataComponent = getInstance(SUCCESS, XLinkAttributesTest.getLocatorFixture());
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-		}
-	}
 
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Link elementComponent = getInstance(SUCCESS, getFixtureElement());
-			Link dataComponent = getInstance(SUCCESS, new XLinkAttributes(DIFFERENT_VALUE, TEST_ROLE, TEST_TITLE,
-				TEST_LABEL));
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
+			// Base equality
+			Link elementComponent = getInstance(getFixtureElement(), SUCCESS);
+			Link builderComponent = new Link.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
 
-	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Link elementComponent = getInstance(SUCCESS, getFixtureElement());
+			// Wrong class
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
+			
+			// Different values in each field
+			Link.Builder builder = getBaseBuilder();
+			builder.getXLinkAttributes().setHref(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Link component = getInstance(SUCCESS, getFixtureElement());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, XLinkAttributesTest.getLocatorFixture());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
+	
+	public void testVersionSpecific() {
+		// No tests.
 	}
 
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Link component = getInstance(SUCCESS, getFixtureElement());
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-
-			component = getInstance(SUCCESS, XLinkAttributesTest.getLocatorFixture());
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testWrongLinkType() throws InvalidDDMSException {
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			getInstance("The type attribute must have a fixed value", XLinkAttributesTest.getSimpleFixture());
+			Link elementComponent = getInstance(getFixtureElement(), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Link component = getInstance(SUCCESS, getFixtureElement());
-			Link.Builder builder = new Link.Builder(component);
-			assertEquals(component, builder.commit());
-		}
-	}
-
+	
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -331,27 +315,9 @@ public class LinkTest extends AbstractBaseTestCase {
 			Link.Builder builder = new Link.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.getXLinkAttributes().setRole(TEST_ROLE);
 			assertFalse(builder.isEmpty());
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Link.Builder builder = new Link.Builder();
-			builder.getXLinkAttributes().setRole(TEST_ROLE);
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "type attribute is required.");
-			}
-			builder.getXLinkAttributes().setType("locator");
-			builder.getXLinkAttributes().setHref(TEST_HREF);
-			builder.commit();
 		}
 	}
 }

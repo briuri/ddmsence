@@ -26,7 +26,7 @@ import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.ddms.summary.gml.PointTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -84,12 +84,12 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private GeospatialCoverage getInstance(String message, Element element) {
+	private GeospatialCoverage getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		GeospatialCoverage component = null;
 		try {
@@ -108,26 +108,16 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param geographicIdentifier an identifier (0-1 optional)
-	 * @param boundingBox a bounding box (0-1 optional)
-	 * @param boundingGeometry a set of bounding geometry (0-1 optional)
-	 * @param postalAddress an address (0-1 optional)
-	 * @param verticalExtent an extent (0-1 optional)
-	 * @param precedence the precedence value (optional, DDMS 4.0.1)
-	 * @param order the order value (optional, DDMS 4.0.1)
+	 * 
 	 * @return a valid object
 	 */
-	private GeospatialCoverage getInstance(String message, GeographicIdentifier geographicIdentifier,
-		BoundingBox boundingBox, BoundingGeometry boundingGeometry, PostalAddress postalAddress,
-		VerticalExtent verticalExtent, String precedence, Integer order) {
+	private GeospatialCoverage getInstance(GeospatialCoverage.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		GeospatialCoverage component = null;
 		try {
-			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0")) ? null
-				: SecurityAttributesTest.getFixture();
-			component = new GeospatialCoverage(geographicIdentifier, boundingBox, boundingGeometry, postalAddress,
-				verticalExtent, precedence, order, attr);
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -135,6 +125,17 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private GeospatialCoverage.Builder getBaseBuilder() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		GeospatialCoverage component = getInstance(getValidElement(version.getVersion()), SUCCESS);
+		return (new GeospatialCoverage.Builder(component));
 	}
 
 	/**
@@ -194,16 +195,16 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		xml.append(">\n\t");
 		if (version.isAtLeast("5.0")) {
 			xml.append("<ddms:geographicIdentifier>\n\t\t");
-			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getTestQualifierName()).append(
-				"=\"urn:us:gov:dod:nga:def:geo-political:GENC:3:ed1\" ddms:").append(CountryCodeTest.getTestValueName()).append(
-				"=\"USA\" />\n\t");
+			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getTestQualifierName());
+			xml.append("=\"urn:us:gov:dod:nga:def:geo-political:GENC:3:ed1\" ");
+			xml.append("ddms:").append(CountryCodeTest.getTestValueName()).append("=\"USA\" />\n\t");
 			xml.append("</ddms:geographicIdentifier>\n");
 		}
 		else if (version.isAtLeast("4.0.1")) {
 			xml.append("<ddms:geographicIdentifier>\n\t\t");
-			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getTestQualifierName()).append(
-				"=\"urn:us:gov:ic:cvenum:irm:coverage:iso3166:trigraph:v1\" ddms:").append(
-				CountryCodeTest.getTestValueName()).append("=\"LAO\" />\n\t");
+			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getTestQualifierName());
+			xml.append("=\"urn:us:gov:ic:cvenum:irm:coverage:iso3166:trigraph:v1\" ");
+			xml.append("ddms:").append(CountryCodeTest.getTestValueName()).append("=\"LAO\" />\n\t");
 			xml.append("</ddms:geographicIdentifier>\n");
 		}
 		else {
@@ -251,94 +252,85 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_DDMS_PREFIX,
 				GeospatialCoverage.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			// geographicIdentifier
-			getInstance(SUCCESS, getValidElement(sVersion));
+
+			// Element-based, geographicIdentifier
+			getInstance(getValidElement(sVersion), SUCCESS);
+
+			// Data-based via Builder, geographicIdentifier
+			getBaseBuilder();
 
 			if (!version.isAtLeast("5.0")) {
-				// boundingBox
+				// Element-based, boundingBox
 				Element element = buildComponentElement(BoundingBoxTest.getFixture());
-				getInstance(SUCCESS, element);
+				GeospatialCoverage elementComponent = getInstance(element, SUCCESS);
 
-				// verticalExtent
+				// Data-based via Builder, boundingBox
+				getInstance(new GeospatialCoverage.Builder(elementComponent), SUCCESS);
+
+				// Element-based, verticalExtent
 				element = buildComponentElement(VerticalExtentTest.getFixture());
-				getInstance(SUCCESS, element);
+				elementComponent = getInstance(element, SUCCESS);
+
+				// Data-based via Builder, verticalExtent
+				getInstance(new GeospatialCoverage.Builder(elementComponent), SUCCESS);
 			}
 
-			// boundingGeometry
+			// Element-based, boundingGeometry
 			Element element = buildComponentElement(BoundingGeometryTest.getFixture());
-			getInstance(SUCCESS, element);
+			GeospatialCoverage elementComponent = getInstance(element, SUCCESS);
 
-			// postalAddress
+			// Data-based via Builder, boundingGeometry
+			getInstance(new GeospatialCoverage.Builder(elementComponent), SUCCESS);
+
+			// Element-based, postalAddress
 			element = buildComponentElement(PostalAddressTest.getFixture());
-			getInstance(SUCCESS, element);
+			elementComponent = getInstance(element, SUCCESS);
 
-			// everything
+			// Data-based via Builder, postalAddress
+			getInstance(new GeospatialCoverage.Builder(elementComponent), SUCCESS);
+
+			// Element-based, everything
 			List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
 			list.add(BoundingBoxTest.getFixture());
 			list.add(BoundingGeometryTest.getFixture());
 			list.add(PostalAddressTest.getFixture());
 			list.add(VerticalExtentTest.getFixture());
 			element = buildComponentElement(list);
-			getInstance(SUCCESS, element);
+			elementComponent = getInstance(element, SUCCESS);
+
+			// Data-based, everything
+			getInstance(new GeospatialCoverage.Builder(elementComponent), SUCCESS);
 		}
 	}
 
-	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			// geographicIdentifier
-			getInstance(SUCCESS, GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null, null, null, null,
-				null);
-
-			// geographicIdentifier with DDMS 4.0.1 attributes
-			if (version.isAtLeast("4.0.1")) {
-				getInstance(SUCCESS, GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null, null, null,
-					TEST_PRECEDENCE, TEST_ORDER);
-			}
-
-			if (!version.isAtLeast("5.0")) {
-				// boundingBox
-				getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
-
-				// verticalExtent
-				getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
-			}
-
-			// boundingGeometry
-			getInstance(SUCCESS, null, null, BoundingGeometryTest.getFixture(), null, null, null, null);
-
-			// postalAddress
-			getInstance(SUCCESS, null, null, null, PostalAddressTest.getFixture(), null, null, null);
-
-			// everything
-			getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), BoundingGeometryTest.getFixture(),
-				PostalAddressTest.getFixture(), VerticalExtentTest.getFixture(), null, null);
-		}
+	public void testConstructorsMinimal() {
+		// No tests.
 	}
 
-	public void testElementConstructorInvalid() throws InvalidDDMSException {
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+
 			// At least 1 of geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent
 			// must be used.
 			Element element = buildComponentElement((IDDMSComponent) null);
-			getInstance("At least 1 of ", element);
+			getInstance(element, "At least 1 of ");
 
 			// Too many geographicIdentifier
 			List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
 			list.add(GeographicIdentifierTest.getCountryCodeBasedFixture());
 			list.add(GeographicIdentifierTest.getCountryCodeBasedFixture());
 			element = buildComponentElement(list);
-			getInstance("No more than 1 geographicIdentifier", element);
+			getInstance(element, "No more than 1 geographicIdentifier");
 
 			if (!version.isAtLeast("5.0")) {
 				// Too many boundingBox
@@ -346,14 +338,14 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 				list.add(BoundingBoxTest.getFixture());
 				list.add(BoundingBoxTest.getFixture());
 				element = buildComponentElement(list);
-				getInstance("No more than 1 boundingBox", element);
+				getInstance(element, "No more than 1 boundingBox");
 
 				// Too many verticalExtent
 				list = new ArrayList<IDDMSComponent>();
 				list.add(VerticalExtentTest.getFixture());
 				list.add(VerticalExtentTest.getFixture());
 				element = buildComponentElement(list);
-				getInstance("No more than 1 verticalExtent", element);
+				getInstance(element, "No more than 1 verticalExtent");
 			}
 
 			// Too many boundingGeometry
@@ -361,46 +353,35 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			list.add(BoundingGeometryTest.getFixture());
 			list.add(BoundingGeometryTest.getFixture());
 			element = buildComponentElement(list);
-			getInstance("No more than 1 boundingGeometry", element);
+			getInstance(element, "No more than 1 boundingGeometry");
 
 			// Too many postalAddress
 			list = new ArrayList<IDDMSComponent>();
 			list.add(PostalAddressTest.getFixture());
 			list.add(PostalAddressTest.getFixture());
 			element = buildComponentElement(list);
-			getInstance("No more than 1 postalAddress", element);
+			getInstance(element, "No more than 1 postalAddress");
 
 			// If facilityIdentifier is used, nothing else can.
 			list = new ArrayList<IDDMSComponent>();
 			list.add(GeographicIdentifierTest.getFacIdBasedFixture());
 			list.add(BoundingGeometryTest.getFixture());
 			element = buildComponentElement(list);
-			getInstance("A geographicIdentifier containing a facilityIdentifier", element);
+			getInstance(element, "A geographicIdentifier containing a facilityIdentifier");
 		}
 	}
 
-	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			// At least 1 of geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent
-			// must be used.
-			getInstance("At least 1 of ", null, null, null, null, null, null, null);
-
-			// If facilityIdentifier is used, nothing else can.
-			getInstance("A geographicIdentifier containing a facilityIdentifier",
-				GeographicIdentifierTest.getFacIdBasedFixture(), null, BoundingGeometryTest.getFixture(), null, null,
-				null, null);
-		}
-	}
-
-	public void testWarnings() {
+	public void testValidationWarnings() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			// No warnings
-			int expectedWarningCount = (version.isAtLeast("5.0") ? 1 : 0);
-			GeospatialCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(expectedWarningCount, component.getValidationWarnings().size());
-			if (version.isAtLeast("5.0")) {
+			GeospatialCoverage component = getInstance(getValidElement(sVersion), SUCCESS);
+
+			if (!version.isAtLeast("5.0")) {
+				// No warnings
+				assertEquals(0, component.getValidationWarnings().size());
+			}
+			else {
+				assertEquals(1, component.getValidationWarnings().size());
 				String text = "The ddms:countryCode is syntactically correct";
 				String locator = "ddms:geospatialCoverage/ddms:geographicIdentifier";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
@@ -408,221 +389,145 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testConstructorEquality() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			String precedence = version.isAtLeast("4.0.1") ? TEST_PRECEDENCE : null;
-			Integer order = version.isAtLeast("4.0.1") ? TEST_ORDER : null;
 
-			GeospatialCoverage elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			GeospatialCoverage dataComponent = getInstance(SUCCESS,
-				GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null, null, null, precedence, order);
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			// Base equality, countryCode
+			GeospatialCoverage elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			GeospatialCoverage builderComponent = new GeospatialCoverage.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
 
-			if (!version.isAtLeast("5.0")) {
-				// boundingBox
-				Element element = buildComponentElement(BoundingBoxTest.getFixture());
-				elementComponent = getInstance(SUCCESS, element);
-				dataComponent = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
-				assertEquals(elementComponent, dataComponent);
-				assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			// Wrong class
+			Rights wrongComponent = new Rights(true, true, true);
+			assertFalse(elementComponent.equals(wrongComponent));
 
-				// verticalExtent
-				element = buildComponentElement(VerticalExtentTest.getFixture());
-				elementComponent = getInstance(SUCCESS, element);
-				dataComponent = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null,
-					null);
-				assertEquals(elementComponent, dataComponent);
-				assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-			}
-
-			// boundingGeometry
-			Element element = buildComponentElement(BoundingGeometryTest.getFixture());
-			elementComponent = getInstance(SUCCESS, element);
-			dataComponent = getInstance(SUCCESS, null, null, BoundingGeometryTest.getFixture(), null, null, null, null);
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-
-			// postalAddress
-			element = buildComponentElement(PostalAddressTest.getFixture());
-			elementComponent = getInstance(SUCCESS, element);
-			dataComponent = getInstance(SUCCESS, null, null, null, PostalAddressTest.getFixture(), null, null, null);
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-		}
-	}
-
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			GeospatialCoverage elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			GeospatialCoverage dataComponent = null;
+			// Different values in each field
 			if (version.isAtLeast("4.0.1")) {
-				dataComponent = getInstance(SUCCESS, GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null,
-					null, null, TEST_PRECEDENCE, null);
-				assertFalse(elementComponent.equals(dataComponent));
-
-				dataComponent = getInstance(SUCCESS, GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null,
-					null, null, null, TEST_ORDER);
-				assertFalse(elementComponent.equals(dataComponent));
-			}
+				GeospatialCoverage.Builder builder = getBaseBuilder();
+				builder.setOrder(Integer.valueOf(2));
+				assertFalse(elementComponent.equals(builder.commit()));
+			
+				builder = getBaseBuilder();
+				builder.setPrecedence("Secondary");
+				assertFalse(elementComponent.equals(builder.commit()));
+			}			
 			if (!version.isAtLeast("5.0")) {
-				dataComponent = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
-				assertFalse(elementComponent.equals(dataComponent));
+				GeospatialCoverage.Builder builder = getBaseBuilder();
+				builder.setGeographicIdentifier(null);
+				builder.setPrecedence(null);
+				builder.setBoundingBox(new BoundingBox.Builder(BoundingBoxTest.getFixture()));
+				assertFalse(elementComponent.equals(builder.commit()));
 
-				dataComponent = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null,
-					null);
-				assertFalse(elementComponent.equals(dataComponent));
+				builder = getBaseBuilder();
+				builder.setGeographicIdentifier(null);
+				builder.setPrecedence(null);
+				builder.setVerticalExtent(new VerticalExtent.Builder(VerticalExtentTest.getFixture()));
+				assertFalse(elementComponent.equals(builder.commit()));
 			}
 
-			dataComponent = getInstance(SUCCESS, null, null, BoundingGeometryTest.getFixture(), null, null, null, null);
-			assertFalse(elementComponent.equals(dataComponent));
+			GeospatialCoverage.Builder builder = getBaseBuilder();
+			builder.setGeographicIdentifier(null);
+			builder.setPrecedence(null);
+			builder.setBoundingGeometry(new BoundingGeometry.Builder(BoundingGeometryTest.getFixture()));
+			assertFalse(elementComponent.equals(builder.commit()));
 
-			dataComponent = getInstance(SUCCESS, null, null, null, PostalAddressTest.getFixture(), null, null, null);
-			assertFalse(elementComponent.equals(dataComponent));
+			builder = getBaseBuilder();
+			builder.setGeographicIdentifier(null);
+			builder.setPrecedence(null);
+			builder.setPostalAddress(new PostalAddress.Builder(PostalAddressTest.getFixture()));
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testHTMLTextOutput() throws InvalidDDMSException {
+	public void testVersionSpecific() throws InvalidDDMSException {
+		// No security attributes in DDMS 2.0
+		DDMSVersion.setCurrentVersion("3.1");
+		GeospatialCoverage.Builder builder = getBaseBuilder();
+		DDMSVersion.setCurrentVersion("2.0");
+		getInstance(builder, "Security attributes cannot be applied");
+
+		// No precedence before 4.0.1
+		DDMSVersion.setCurrentVersion("3.1");
+		builder = getBaseBuilder();
+		builder.setPrecedence(TEST_PRECEDENCE);
+		getInstance(builder, "The ddms:precedence attribute cannot be used");
+
+		// No order before 4.0.1
+		builder = getBaseBuilder();
+		builder.setOrder(TEST_ORDER);
+		getInstance(builder, "The ddms:order attribute cannot be used");
+	}
+
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String prefix = "geospatialCoverage.";
 			if (!version.isAtLeast("4.0.1"))
 				prefix += "GeospatialExtent.";
-			String precedence = version.isAtLeast("4.0.1") ? TEST_PRECEDENCE : null;
-			Integer order = version.isAtLeast("4.0.1") ? TEST_ORDER : null;
 
-			GeospatialCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null, null,
-				null, precedence, order);
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
+			// geographicIdentifier
+			GeospatialCoverage elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 
 			if (!version.isAtLeast("5.0")) {
-				component = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
+				// boundingBox
+				Element element = buildComponentElement(BoundingBoxTest.getFixture());
+				elementComponent = getInstance(element, SUCCESS);
 				assertEquals(BoundingBoxTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(),
-					component.toHTML());
+					elementComponent.toHTML());
 				assertEquals(BoundingBoxTest.getFixture().getOutput(false, prefix, "") + getTextIcism(),
-					component.toText());
+					elementComponent.toText());
 
-				component = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
+				// verticalExtent
+				element = buildComponentElement(VerticalExtentTest.getFixture());
+				elementComponent = getInstance(element, SUCCESS);
 				assertEquals(VerticalExtentTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(),
-					component.toHTML());
+					elementComponent.toHTML());
 				assertEquals(VerticalExtentTest.getFixture().getOutput(false, prefix, "") + getTextIcism(),
-					component.toText());
+					elementComponent.toText());
 			}
 
-			component = getInstance(SUCCESS, null, null, BoundingGeometryTest.getFixture(), null, null, null, null);
+			// boundingGeometry
+			Element element = buildComponentElement(BoundingGeometryTest.getFixture());
+			elementComponent = getInstance(element, SUCCESS);
 			assertEquals(BoundingGeometryTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(),
-				component.toHTML());
+				elementComponent.toHTML());
 			assertEquals(BoundingGeometryTest.getFixture().getOutput(false, prefix, "") + getTextIcism(),
-				component.toText());
+				elementComponent.toText());
 
-			component = getInstance(SUCCESS, null, null, null, PostalAddressTest.getFixture(), null, null, null);
+			// postalAddress
+			element = buildComponentElement(PostalAddressTest.getFixture());
+			elementComponent = getInstance(element, SUCCESS);
 			assertEquals(PostalAddressTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(),
-				component.toHTML());
+				elementComponent.toHTML());
 			assertEquals(PostalAddressTest.getFixture().getOutput(false, prefix, "") + getTextIcism(),
-				component.toText());
+				elementComponent.toText());
 		}
 	}
 
-	public void testGeographicIdentifierReuse() throws InvalidDDMSException {
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			GeographicIdentifier geoId = GeographicIdentifierTest.getCountryCodeBasedFixture();
-			getInstance(SUCCESS, geoId, null, null, null, null, null, null);
-			getInstance(SUCCESS, geoId, null, null, null, null, null, null);
+
+			GeospatialCoverage.Builder builder = new GeospatialCoverage.Builder();
+			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+
+			builder.setOrder(TEST_ORDER);
+			assertFalse(builder.isEmpty());
 		}
 	}
 
-	public void testBoundingBoxReuse() throws InvalidDDMSException {
+	public void testGetLocatorSuffix() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("5.0")) {
-				BoundingBox box = BoundingBoxTest.getFixture();
-				getInstance(SUCCESS, null, box, null, null, null, null, null);
-				getInstance(SUCCESS, null, box, null, null, null, null, null);
-			}
-		}
-	}
-
-	public void testBoundingGeometryReuse() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			BoundingGeometry geo = BoundingGeometryTest.getFixture();
-			getInstance(SUCCESS, null, null, geo, null, null, null, null);
-			getInstance(SUCCESS, null, null, geo, null, null, null, null);
-		}
-	}
-
-	public void testPostalAddressReuse() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			PostalAddress address = PostalAddressTest.getFixture();
-			getInstance(SUCCESS, null, null, null, address, null, null, null);
-			getInstance(SUCCESS, null, null, null, address, null, null, null);
-		}
-	}
-
-	public void testVerticalExtentReuse() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("5.0")) {
-				VerticalExtent extent = VerticalExtentTest.getFixture();
-				getInstance(SUCCESS, null, null, null, null, extent, null, null);
-				getInstance(SUCCESS, null, null, null, null, extent, null, null);
-			}
-		}
-	}
-
-	public void testSecurityAttributes() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			SecurityAttributes attr = (!version.isAtLeast("3.0") ? null : SecurityAttributesTest.getFixture());
-			GeospatialCoverage component = new GeospatialCoverage(
-				GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null, null, null, null, null, attr);
-			if (!version.isAtLeast("3.0"))
-				assertTrue(component.getSecurityAttributes().isEmpty());
-			else
-				assertEquals(attr, component.getSecurityAttributes());
-		}
-	}
-
-	public void testWrongVersionSecurityAttributes() throws InvalidDDMSException {
-		DDMSVersion.setCurrentVersion("2.0");
-		try {
-			new GeospatialCoverage(GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null, null, null, null,
-				null, SecurityAttributesTest.getFixture());
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "Security attributes cannot be applied");
-		}
-	}
-
-	public void testWrongVersionPrecedenceOrder() {
-		DDMSVersion.setCurrentVersion("2.0");
-		try {
-			new GeospatialCoverage(GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null, null, null,
-				TEST_PRECEDENCE, null, null);
-			fail("Allowed different versions.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "The ddms:precedence attribute cannot be used");
-		}
-		try {
-			new GeospatialCoverage(GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null, null, null, null,
-				TEST_ORDER, null);
-			fail("Allowed different versions.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "The ddms:order attribute cannot be used");
+			GeospatialCoverage component = getInstance(getValidElement(sVersion), SUCCESS);
+			String suffix = version.isAtLeast("4.0.1") ? "" : "/ddms:GeospatialExtent";
+			assertEquals(suffix, component.getLocatorSuffix());
 		}
 	}
 
@@ -642,77 +547,6 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			expectMessage(e, "The ddms:precedence attribute should only be applied");
-		}
-	}
-
-	public void testGetLocatorSuffix() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			GeospatialCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
-			String suffix = version.isAtLeast("4.0.1") ? "" : "/ddms:GeospatialExtent";
-			assertEquals(suffix, component.getLocatorSuffix());
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			GeospatialCoverage component = getInstance(SUCCESS, GeographicIdentifierTest.getCountryCodeBasedFixture(),
-				null, null, null, null, null, null);
-			GeospatialCoverage.Builder builder = new GeospatialCoverage.Builder(component);
-			assertEquals(component, builder.commit());
-
-			if (!version.isAtLeast("5.0")) {
-				component = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
-				builder = new GeospatialCoverage.Builder(component);
-				assertEquals(component, builder.commit());
-
-				component = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
-				builder = new GeospatialCoverage.Builder(component);
-				assertEquals(component, builder.commit());
-			}
-
-			component = getInstance(SUCCESS, null, null, BoundingGeometryTest.getFixture(), null, null, null, null);
-			builder = new GeospatialCoverage.Builder(component);
-			assertEquals(component, builder.commit());
-
-			component = getInstance(SUCCESS, null, null, null, PostalAddressTest.getFixture(), null, null, null);
-			builder = new GeospatialCoverage.Builder(component);
-			assertEquals(component, builder.commit());
-		}
-	}
-
-	public void testBuilderIsEmpty() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			GeospatialCoverage.Builder builder = new GeospatialCoverage.Builder();
-			assertNull(builder.commit());
-			assertTrue(builder.isEmpty());
-			builder.setOrder(TEST_ORDER);
-			assertFalse(builder.isEmpty());
-
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			GeospatialCoverage.Builder builder = new GeospatialCoverage.Builder();
-			builder.getVerticalExtent().setDatum("AGL");
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "A ddms:verticalExtent requires ");
-			}
-			builder.setVerticalExtent(null);
-			builder.getGeographicIdentifier().getFacilityIdentifier().setBeNumber("beNumber");
-			builder.getGeographicIdentifier().getFacilityIdentifier().setOsuffix("osuffix");
-			builder.commit();
 		}
 	}
 }

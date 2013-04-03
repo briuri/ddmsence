@@ -1,10 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--  Represents a single ddms:postalAddress element, for unit testing -->
-<ddms:postalAddress xmlns:ddms="urn:us:mil:ces:metadata:ddms:5">
-	<ddms:street>1600 Pennsylvania Avenue, NW</ddms:street>
-	<ddms:city>Washington</ddms:city>
-	<ddms:state>DC</ddms:state>
-	<ddms:postalCode>20500</ddms:postalCode>
-	<ddms:countryCode ddms:codespace="http://api.nsgreg.nga.mil/geo-political/GENC/2/ed1" ddms:code="US"/>
-</ddms:postalAddress>
+<ddms:postalAddress xmlns:ddms="urn:us:mil:ces:metadata:ddms:5"><ddms:street>1600 Pennsylvania Avenue, NW</ddms:street><ddms:city>Washington</ddms:city><ddms:state>DC</ddms:state><ddms:postalCode>20500</ddms:postalCode><ddms:countryCode ddms:codespace="http://api.nsgreg.nga.mil/geo-political/GENC/2/ed1" ddms:code="US"/></ddms:postalAddress>
 				
