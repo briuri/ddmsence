@@ -27,7 +27,6 @@ import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
-import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -71,13 +70,12 @@ public class GroupTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private Group getInstance(String message, Element element) {
+	private Group getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Group component = null;
 		try {
@@ -94,15 +92,16 @@ public class GroupTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param systemName the system (required)
-	 * @param values the values (1 required)
+	 * 
+	 * @return a valid object
 	 */
-	private Group getInstance(String message, SystemName systemName, List<GroupValue> values) {
+	private Group getInstance(Group.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Group component = null;
 		try {
-			component = new Group(systemName, values, SecurityAttributesTest.getFixture());
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -110,6 +109,17 @@ public class GroupTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private Group.Builder getBaseBuilder() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		Group component = getInstance(getValidElement(version.getVersion()), SUCCESS);
+		return (new Group.Builder(component));
 	}
 
 	/**
@@ -130,10 +140,10 @@ public class GroupTest extends AbstractBaseTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ntk:AccessGroup ").append(getXmlnsNTK()).append(" ").append(getXmlnsISM()).append(" ");
-		xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">\n");
-		xml.append("\t<ntk:AccessSystemName ism:classification=\"U\" ism:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
-		xml.append("\t<ntk:AccessGroupValue ism:classification=\"U\" ism:ownerProducer=\"USA\">WISE/RODCA</ntk:AccessGroupValue>\n");
-		xml.append("</ntk:AccessGroup>\n");
+		xml.append("ism:classification=\"U\" ism:ownerProducer=\"USA\">");
+		xml.append("<ntk:AccessSystemName ism:classification=\"U\" ism:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>");
+		xml.append("<ntk:AccessGroupValue ism:classification=\"U\" ism:ownerProducer=\"USA\">WISE/RODCA</ntk:AccessGroupValue>");
+		xml.append("</ntk:AccessGroup>");
 		return (xml.toString());
 	}
 
@@ -141,141 +151,101 @@ public class GroupTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_NTK_PREFIX,
 				Group.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// All fields
-			getInstance(SUCCESS, getValidElement(sVersion));
+			// Element-based
+			getInstance(getValidElement(sVersion), SUCCESS);
+
+			// Data-based via Builder
+			getBaseBuilder();
 		}
 	}
-
-	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// All fields
-			getInstance(SUCCESS, SystemNameTest.getFixture(), GroupValueTest.getFixtureList());
-		}
+	
+	public void testConstructorsMinimal() throws InvalidDDMSException {
+		// No tests.
 	}
 
-	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			String ntkPrefix = PropertyReader.getPrefix("ntk");
-
-			// Missing systemName
-			Element element = Util.buildElement(ntkPrefix, Group.getName(version), version.getNtkNamespace(), null);
-			for (GroupValue value : GroupValueTest.getFixtureList())
-				element.appendChild(value.getXOMElementCopy());
-			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("systemName is required.", element);
-
-			// Missing groupValue
-			element = Util.buildElement(ntkPrefix, Group.getName(version), version.getNtkNamespace(), null);
-			element.appendChild(SystemNameTest.getFixture().getXOMElementCopy());
-			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("At least one group value is required.", element);
-
-			// Missing security attributes
-			element = Util.buildElement(ntkPrefix, Group.getName(version), version.getNtkNamespace(), null);
-			element.appendChild(SystemNameTest.getFixture().getXOMElementCopy());
-			for (GroupValue value : GroupValueTest.getFixtureList())
-				element.appendChild(value.getXOMElementCopy());
-			getInstance("classification is required.", element);
-		}
-	}
-
-	public void testDataConstructorInvalid() throws InvalidDDMSException {
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing systemName
-			getInstance("systemName is required.", null, GroupValueTest.getFixtureList());
+			Group.Builder builder = getBaseBuilder();
+			builder.setSystemName(null);
+			getInstance(builder, "systemName is required.");
 
 			// Missing groupValue
-			getInstance("At least one group value is required.", SystemNameTest.getFixture(), null);
+			builder = getBaseBuilder();
+			builder.getGroupValues().clear();
+			getInstance(builder, "At least one group value is required.");
 
 			// Missing security attributes
+			builder = getBaseBuilder();
+			builder.setSecurityAttributes(null);
+			getInstance(builder, "classification is required.");
+			
+			// Null groupValue param
 			try {
-				new Group(SystemNameTest.getFixture(), GroupValueTest.getFixtureList(), null);
-				fail("Allowed invalid data.");
+				new Group(SystemNameTest.getFixture(), null, SecurityAttributesTest.getFixture());
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "classification is required.");
+				expectMessage(e, "At least one group value");
 			}
 		}
 	}
-
-	public void testWarnings() throws InvalidDDMSException {
+	
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			Group component = getInstance(SUCCESS, getValidElement(sVersion));
+			Group component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Group elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Group dataComponent = getInstance(SUCCESS, SystemNameTest.getFixture(), GroupValueTest.getFixtureList());
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			// Base equality
+			Group elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			Group builderComponent = new Group.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+
+			// Different values in each field
+			Group.Builder builder = getBaseBuilder();
+			builder.getSystemName().setValue(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.getGroupValues().get(0).setValue(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Group elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Group dataComponent = getInstance(SUCCESS, new SystemName("MDR", null, null, null,
-				SecurityAttributesTest.getFixture()), GroupValueTest.getFixtureList());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			List<GroupValue> list = new ArrayList<GroupValue>();
-			list.add(new GroupValue("newUser", null, null, null, SecurityAttributesTest.getFixture()));
-			dataComponent = getInstance(SUCCESS, SystemNameTest.getFixture(), list);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Group component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, SystemNameTest.getFixture(), GroupValueTest.getFixtureList());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testWrongVersion() {
+	public void testVersionSpecific() {
 		// Pre-4.0.1 test is implicit, since NTK namespace did not exist.
 		// Post-4.1 test is handled in MetacardInfoTest.
 	}
 
-	public void testBuilderEquality() throws InvalidDDMSException {
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Group component = getInstance(SUCCESS, getValidElement(sVersion));
-			Group.Builder builder = new Group.Builder(component);
-			assertEquals(component, builder.commit());
+			Group elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
 
@@ -288,34 +258,9 @@ public class GroupTest extends AbstractBaseTestCase {
 			assertTrue(builder.isEmpty());
 			builder.getGroupValues().get(0);
 			assertTrue(builder.isEmpty());
+			
 			builder.getGroupValues().get(1).setValue("TEST");
 			assertFalse(builder.isEmpty());
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Group.Builder builder = new Group.Builder();
-			builder.getSecurityAttributes().setClassification("U");
-			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-			builder.getSystemName().setValue("value");
-			builder.getSystemName().getSecurityAttributes().setClassification("U");
-			builder.getSystemName().getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "At least one group value is required.");
-			}
-			builder.getGroupValues().get(0).setQualifier("test");
-			builder.getGroupValues().get(0).setValue("test");
-			builder.getGroupValues().get(0).getSecurityAttributes().setClassification("U");
-			builder.getGroupValues().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-			builder.commit();
 		}
 	}
 

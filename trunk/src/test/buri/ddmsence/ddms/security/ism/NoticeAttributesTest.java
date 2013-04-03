@@ -137,10 +137,10 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 
 			// Element-based, no optional fields
 			Element element = Util.buildDDMSElement(Resource.getName(version), null);
-			NoticeAttributes elementComponent = getInstance(element, SUCCESS);
+			NoticeAttributes elementAttributes = getInstance(element, SUCCESS);
 
 			// Data-based via Builder, no optional fields
-			getInstance(new NoticeAttributes.Builder(elementComponent), SUCCESS);
+			getInstance(new NoticeAttributes.Builder(elementAttributes), SUCCESS);
 		}
 	}
 	
@@ -197,36 +197,36 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// Base equality
-			NoticeAttributes elementComponent = getFixture();
-			NoticeAttributes builderComponent = new NoticeAttributes.Builder(elementComponent).commit();
-			assertEquals(elementComponent, builderComponent);
-			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+			NoticeAttributes elementAttributes = getFixture();
+			NoticeAttributes builderAttributes = new NoticeAttributes.Builder(elementAttributes).commit();
+			assertEquals(elementAttributes, builderAttributes);
+			assertEquals(elementAttributes.hashCode(), builderAttributes.hashCode());
 
 			// Wrong class
 			Rights wrongComponent = new Rights(true, true, true);
-			assertFalse(elementComponent.equals(wrongComponent));
+			assertFalse(elementAttributes.equals(wrongComponent));
 			
 			// Different values in each field
 			NoticeAttributes.Builder builder = getBaseBuilder();
 			builder.setNoticeType("DoD-Dist-C");
-			assertFalse(elementComponent.equals(builder.commit()));
+			assertFalse(elementAttributes.equals(builder.commit()));
 			
 			builder = getBaseBuilder();
 			builder.setNoticeReason(DIFFERENT_VALUE);
-			assertFalse(elementComponent.equals(builder.commit()));
+			assertFalse(elementAttributes.equals(builder.commit()));
 			
 			builder = getBaseBuilder();
 			builder.setNoticeDate("2011-08-15");
-			assertFalse(elementComponent.equals(builder.commit()));
+			assertFalse(elementAttributes.equals(builder.commit()));
 			
 			builder = getBaseBuilder();
 			builder.setUnregisteredNoticeType(DIFFERENT_VALUE);
-			assertFalse(elementComponent.equals(builder.commit()));
+			assertFalse(elementAttributes.equals(builder.commit()));
 
 			if (version.isAtLeast("4.1")) {
 				builder = getBaseBuilder();
 				builder.setExternalNotice(null);
-				assertFalse(elementComponent.equals(builder.commit()));
+				assertFalse(elementAttributes.equals(builder.commit()));
 			}
 		}
 	}

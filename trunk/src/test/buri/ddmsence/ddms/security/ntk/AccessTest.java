@@ -19,8 +19,6 @@
  */
 package buri.ddmsence.ddms.security.ntk;
 
-import java.util.List;
-
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -62,21 +60,13 @@ public class AccessTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns a dummy value for the externalReference attribute, based upon the current DDMS version.
-	 */
-	private static Boolean getExternalReference() {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("4.1") ? TEST_EXTERNAL : null);
-	}
-
-	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private Access getInstance(String message, Element element) {
+	private Access getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Access component = null;
 		try {
@@ -93,19 +83,16 @@ public class AccessTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param individuals the individuals
-	 * @param groups the groups
-	 * @param profileList the profilesprofiles the profiles in this list (required)
-	 * @param externalReference the external reference attribute
+	 * 
+	 * @return a valid object
 	 */
-	private Access getInstance(String message, List<Individual> individuals, List<Group> groups,
-		ProfileList profileList, Boolean externalReference) {
+	private Access getInstance(Access.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Access component = null;
 		try {
-			component = new Access(individuals, groups, profileList, externalReference,
-				SecurityAttributesTest.getFixture());
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -113,6 +100,17 @@ public class AccessTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private Access.Builder getBaseBuilder() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		Access component = getInstance(getValidElement(version.getVersion()), SUCCESS);
+		return (new Access.Builder(component));
 	}
 
 	/**
@@ -170,86 +168,80 @@ public class AccessTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_NTK_PREFIX,
 				Access.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			// Element-based
+			getInstance(getValidElement(sVersion), SUCCESS);
+
+			// Data-based via Builder
+			getBaseBuilder();
+		}
+	}
+	
+	public void testConstructorsMinimal() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String ntkPrefix = PropertyReader.getPrefix("ntk");
-
-			// All fields
-			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildElement(ntkPrefix, Access.getName(version), version.getNtkNamespace(), null);
 			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance(SUCCESS, element);
-		}
-	}
-
-	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// All fields
-			getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
-				ProfileListTest.getFixture(), getExternalReference());
-
+			Access elementComponent = getInstance(element, SUCCESS);
+			
 			// No optional fields
-			getInstance(SUCCESS, null, null, null, null);
-		}
-	}
-
-	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			String ntkPrefix = PropertyReader.getPrefix("ntk");
-
-			// Missing security attributes
-			Element element = Util.buildElement(ntkPrefix, Access.getName(version), version.getNtkNamespace(), null);
-			getInstance("classification is required.", element);
-		}
-	}
-
-	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// Missing security attributes
+			getInstance(new Access.Builder(elementComponent), SUCCESS);
+						
+			// Null list params
 			try {
-				new Access(null, null, null, null);
-				fail("Allowed invalid data.");
+				new Access(null, null, null, SecurityAttributesTest.getFixture());
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "classification is required.");
+				checkConstructorFailure(false, e);
 			}
 		}
 	}
 
-	public void testWarnings() throws InvalidDDMSException {
+	public void testValidationErrors() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			// Missing security attributes
+			Access.Builder builder = getBaseBuilder();
+			builder.setSecurityAttributes(null);
+			getInstance(builder, "classification is required.");
+		}
+	}
+
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			Access component = getInstance(getValidElement(sVersion), SUCCESS);
 
-			Access component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// 4.1 ntk:externalReference used
-			if (version.isAtLeast("4.1")) {
+			if (!version.isAtLeast("4.1")) {
+				// No warnings
+				assertEquals(0, component.getValidationWarnings().size());				
+			}
+			else {
+				// 4.1 ntk:externalReference used
 				assertEquals(1, component.getValidationWarnings().size());
 				String text = "The ntk:externalReference attribute in this DDMS component";
 				String locator = "ntk:Access";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
-			// No warnings
-			else {
-				assertEquals(0, component.getValidationWarnings().size());
-			}
 
-			// Empty
-			component = getInstance(SUCCESS, null, null, null, null);
+			// Completely Empty
+			Access.Builder builder = new Access.Builder();
+			builder.getSecurityAttributes().setClassification("U");
+			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			component = builder.commit();
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "An ntk:Access element was found with no";
 			String locator = "ntk:Access";
@@ -257,75 +249,50 @@ public class AccessTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testDeprecatedConstructor() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Access component = new Access(IndividualTest.getFixtureList(), null, null,
-				SecurityAttributesTest.getFixture());
-			assertNull(component.isExternalReference());
-		}
-	}
-
-	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Access elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Access dataComponent = getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
-				ProfileListTest.getFixture(), getExternalReference());
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-		}
-	}
-
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			Access elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Access dataComponent = getInstance(SUCCESS, null, GroupTest.getFixtureList(), ProfileListTest.getFixture(),
-				getExternalReference());
-			assertFalse(elementComponent.equals(dataComponent));
+			// Base equality
+			Access elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			Access builderComponent = new Access.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
 
-			dataComponent = getInstance(SUCCESS, IndividualTest.getFixtureList(), null, ProfileListTest.getFixture(),
-				getExternalReference());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(), null,
-				getExternalReference());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			if (version.isAtLeast("4.1")) {
-				dataComponent = getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
-					ProfileListTest.getFixture(), Boolean.FALSE);
-				assertFalse(elementComponent.equals(dataComponent));
+			// Different values in each field
+			Access.Builder builder = getBaseBuilder();
+			builder.getIndividuals().clear();
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.getGroups().clear();
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setProfileList(null);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			if (version.isAtLeast("4.0.1")) {
+				builder = getBaseBuilder();
+				builder.setExternalReference(Boolean.FALSE);
+				assertFalse(elementComponent.equals(builder.commit()));
 			}
 		}
 	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Access component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
-				ProfileListTest.getFixture(), getExternalReference());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
+	
+	public void testVersionSpecific() {
+		// Pre-4.0.1 test is implicit, since NTK namespace did not exist.
+		// Post-4.1 test is handled in MetacardInfoTest.
 	}
 
-	public void testBuilderEquality() throws InvalidDDMSException {
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Access component = getInstance(SUCCESS, getValidElement(sVersion));
-			Access.Builder builder = new Access.Builder(component);
-			assertEquals(component, builder.commit());
+			Access elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
 
@@ -338,32 +305,10 @@ public class AccessTest extends AbstractBaseTestCase {
 			assertTrue(builder.isEmpty());
 			builder.getIndividuals().get(0);
 			assertTrue(builder.isEmpty());
+			
 			builder.getGroups().get(1).getSecurityAttributes().setClassification("U");
 			assertFalse(builder.isEmpty());
 		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Access.Builder builder = new Access.Builder();
-			builder.getSecurityAttributes().setClassification("U");
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "At least 1 ownerProducer must be set.");
-			}
-			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-			builder.commit();
-		}
-	}
-
-	public void testWrongVersion() {
-		// Pre-4.0.1 test is implicit, since NTK namespace did not exist.
-		// Post-4.1 test is handled in MetacardInfoTest.
 	}
 
 	public void testBuilderLazyList() throws InvalidDDMSException {
@@ -372,6 +317,16 @@ public class AccessTest extends AbstractBaseTestCase {
 			Access.Builder builder = new Access.Builder();
 			assertNotNull(builder.getIndividuals().get(1));
 			assertNotNull(builder.getGroups().get(1));
+		}
+	}
+	
+	public void testDeprecatedConstructor() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Access component = new Access(IndividualTest.getFixtureList(), null, null,
+				SecurityAttributesTest.getFixture());
+			assertNull(component.isExternalReference());
 		}
 	}
 }
