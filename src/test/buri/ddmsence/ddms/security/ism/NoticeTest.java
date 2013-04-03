@@ -87,13 +87,12 @@ public class NoticeTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private Notice getInstance(String message, Element element) {
+	private Notice getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Notice component = null;
 		try {
@@ -110,15 +109,16 @@ public class NoticeTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param noticeTexts the notice texts (at least 1 required)
+	 * 
 	 * @return a valid object
 	 */
-	private Notice getInstance(String message, List<NoticeText> noticeTexts) {
+	private Notice getInstance(Notice.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Notice component = null;
 		try {
-			component = new Notice(noticeTexts, SecurityAttributesTest.getFixture(), NoticeAttributesTest.getFixture());
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -126,6 +126,16 @@ public class NoticeTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private Notice.Builder getBaseBuilder() {
+		Notice component = getInstance(getFixtureElement(), SUCCESS);
+		return (new Notice.Builder(component));
 	}
 
 	/**
@@ -169,139 +179,101 @@ public class NoticeTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_ISM_PREFIX,
+			assertNameAndNamespace(getInstance(getFixtureElement(), SUCCESS), DEFAULT_ISM_PREFIX,
 				Notice.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// All fields
-			getInstance(SUCCESS, getFixtureElement());
+			// Element-based
+			getInstance(getFixtureElement(), SUCCESS);
+
+			// Data-based via Builder
+			getBaseBuilder();
 		}
 	}
 
-	public void testDataConstructorValid() throws InvalidDDMSException {
+	public void testConstructorsMinimal() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-
-			// All fields
-			getInstance(SUCCESS, NoticeTextTest.getFixtureList());
 
 			// No attributes
+			new Notice(NoticeTextTest.getFixtureList(), null, null);
+		}
+	}
+	public void testValidationErrors() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			// No NoticeTexts
+			Notice.Builder builder = getBaseBuilder();
+			builder.getNoticeTexts().clear();
+			getInstance(builder, "At least one ism:NoticeText");
+			
+			// null list parameter
 			try {
-				new Notice(NoticeTextTest.getFixtureList(), null, null);
+				new Notice(null, SecurityAttributesTest.getFixture(), null);
+				fail("Constructor allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				fail("Prevented valid data.");
-			}
+				expectMessage(e, "At least one ism:Notice");
+			}	
 		}
 	}
 
-	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// No NoticeTexts
-			Element element = new Element(getFixtureElement());
-			element.removeChildren();
-			getInstance("At least one ism:NoticeText", element);
-		}
-	}
-
-	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// No NoticeTexts
-			getInstance("At least one ism:NoticeText", (List) null);
-		}
-	}
-
-	public void testWarnings() throws InvalidDDMSException {
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			Notice component = getInstance(SUCCESS, getFixtureElement());
+			Notice component = getInstance(getFixtureElement(), SUCCESS);
 
-			// 4.1 ism:Notice used
-			if (version.isAtLeast("4.1")) {
+			if (!version.isAtLeast("4.1")) {
+				// No warnings
+				assertEquals(0, component.getValidationWarnings().size());
+			}
+			else {
+				// 4.1 ism:Notice used
 				assertEquals(1, component.getValidationWarnings().size());
 				String text = "The ism:externalNotice attribute in this DDMS component";
 				String locator = "ism:Notice";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
-			// No warnings
-			else {
-				assertEquals(0, component.getValidationWarnings().size());
-			}
 		}
 	}
 
-	public void testConstructorEquality() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Notice elementComponent = getInstance(SUCCESS, getFixtureElement());
-			Notice dataComponent = getInstance(SUCCESS, NoticeTextTest.getFixtureList());
+			// Base equality
+			Notice elementComponent = getInstance(getFixtureElement(), SUCCESS);
+			Notice builderComponent = new Notice.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
 
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			// Different values in each field
+			Notice.Builder builder = getBaseBuilder();
+			builder.getNoticeTexts().get(0).setValue(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			List<NoticeText> list = NoticeTextTest.getFixtureList();
-			list.add(new NoticeText(NoticeTextTest.getFixtureElement()));
-			Notice elementComponent = getInstance(SUCCESS, getFixtureElement());
-			Notice dataComponent = getInstance(SUCCESS, list);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Notice component = getInstance(SUCCESS, getFixtureElement());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, NoticeTextTest.getFixtureList());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Notice component = getInstance(SUCCESS, getFixtureElement());
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-
-			component = getInstance(SUCCESS, NoticeTextTest.getFixtureList());
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testWrongVersion() {
+	public void testVersionSpecific() throws InvalidDDMSException {
 		// Implicit, since 1 NoticeText is required and that requires DDMS 4.0.1 or greater.
 	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
+	
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Notice component = getInstance(SUCCESS, getFixtureElement());
-			Notice.Builder builder = new Notice.Builder(component);
-			assertEquals(component, builder.commit());
+			Notice elementComponent = getInstance(getFixtureElement(), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
 
@@ -312,29 +284,9 @@ public class NoticeTest extends AbstractBaseTestCase {
 			Notice.Builder builder = new Notice.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.getNoticeTexts().get(1).setValue("TEST");
 			assertFalse(builder.isEmpty());
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Notice.Builder builder = new Notice.Builder();
-			builder.getSecurityAttributes().setClassification("U");
-			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-			try {
-				builder.commit();
-				fail("Allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "At least one ism:NoticeText");
-			}
-			builder.getNoticeTexts().get(0).setValue("TEST");
-			builder.getNoticeTexts().get(0).getSecurityAttributes().setClassification("U");
-			builder.getNoticeTexts().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-			builder.commit();
 		}
 	}
 

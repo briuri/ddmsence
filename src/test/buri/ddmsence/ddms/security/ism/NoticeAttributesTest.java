@@ -24,7 +24,6 @@ import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.resource.Rights;
-import buri.ddmsence.ddms.security.Security;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -41,7 +40,6 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 	private static final String TEST_NOTICE_REASON = "noticeReason";
 	private static final String TEST_NOTICE_DATE = "2011-09-15";
 	private static final String TEST_UNREGISTERED_NOTICE_TYPE = "unregisteredNoticeType";
-	private static final Boolean TEST_EXTERNAL = Boolean.FALSE;
 
 	/**
 	 * Constructor
@@ -68,21 +66,13 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns a dummy value for the externalNotice attribute, based upon the current DDMS version.
-	 */
-	private static Boolean getExternalNotice() {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("4.1") ? TEST_EXTERNAL : null);
-	}
-
-	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private NoticeAttributes getInstance(String message, Element element) {
+	private NoticeAttributes getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		NoticeAttributes attributes = null;
 		try {
@@ -99,207 +89,200 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param noticeType the notice type (with a value from the CVE)
-	 * @param noticeReason the reason associated with a notice
-	 * @param noticeDate the date associated with a notice
-	 * @param unregisteredNoticeType a notice type not in the CVE
-	 * @param externalNotice the external notice attribute
+	 * 
 	 * @return a valid object
 	 */
-	private NoticeAttributes getInstance(String message, String noticeType, String noticeReason, String noticeDate,
-		String unregisteredNoticeType, Boolean externalNotice) {
+	private NoticeAttributes getInstance(NoticeAttributes.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
-		NoticeAttributes attributes = null;
+		NoticeAttributes component = null;
 		try {
-			attributes = new NoticeAttributes(noticeType, noticeReason, noticeDate, unregisteredNoticeType,
-				externalNotice);
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 			expectMessage(e, message);
 		}
-		return (attributes);
+		return (component);
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	/**
+	 * Returns a builder, pre-populated with base data from the test attribute.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private NoticeAttributes.Builder getBaseBuilder() {
+		return (new NoticeAttributes.Builder(getFixture()));
+	}
+
+	public void testConstructors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// All fields
+			// Element-based
 			Element element = Util.buildDDMSElement(Resource.getName(version), null);
 			getFixture().addTo(element);
-			getInstance(SUCCESS, element);
+			getInstance(element, SUCCESS);
 
-			// No optional fields
-			element = Util.buildDDMSElement(Resource.getName(version), null);
-			getInstance(SUCCESS, element);
+			// Data-based via Builder
+			getBaseBuilder();
 		}
 	}
 
-	public void testDataConstructorValid() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// All fields
-			getInstance(SUCCESS, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE,
-				getExternalNotice());
-
-			// No optional fields
-			getInstance(SUCCESS, null, null, null, null, getExternalNotice());
-		}
-	}
-
-	public void testElementConstructorInvalid() {
+	public void testConstructorsMinimal() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			String ismPrefix = PropertyReader.getPrefix("ism");
-			String icNamespace = version.getIsmNamespace();
 
-			// invalid noticeType
+			// Element-based, no optional fields
 			Element element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, NoticeAttributes.NOTICE_TYPE_NAME, icNamespace, "Unknown");
-			getInstance("Unknown is not a valid enumeration token", element);
+			NoticeAttributes elementComponent = getInstance(element, SUCCESS);
 
-			// invalid noticeDate
-			element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, NoticeAttributes.NOTICE_DATE_NAME, icNamespace, "2001");
-			getInstance("The noticeDate attribute must be in the xs:date format", element);
-
-			StringBuffer longString = new StringBuffer();
-			for (int i = 0; i < NoticeAttributes.MAX_LENGTH / 10 + 1; i++) {
-				longString.append("0123456789");
-			}
-
-			// too long noticeReason
-			element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, NoticeAttributes.NOTICE_REASON_NAME, icNamespace,
-				longString.toString());
-			getInstance("The noticeReason attribute must be shorter", element);
-
-			// too long unregisteredNoticeType
-			element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, NoticeAttributes.UNREGISTERED_NOTICE_TYPE_NAME, icNamespace,
-				longString.toString());
-			getInstance("The unregisteredNoticeType attribute must be shorter", element);
+			// Data-based via Builder, no optional fields
+			getInstance(new NoticeAttributes.Builder(elementComponent), SUCCESS);
 		}
 	}
-
-	public void testDataConstructorInvalid() {
+	
+	public void testValidationErrors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// invalid noticeType
-			getInstance("Unknown is not a valid enumeration token", "Unknown", TEST_NOTICE_REASON, "2001",
-				TEST_UNREGISTERED_NOTICE_TYPE, getExternalNotice());
+			NoticeAttributes.Builder builder = getBaseBuilder();
+			builder.setNoticeType("Unknown");
+			getInstance(builder, "Unknown is not a valid enumeration token");
 
-			// horribly invalid noticeDate
-			getInstance("The ism:noticeDate attribute is not in a valid date format.", TEST_NOTICE_TYPE,
-				TEST_NOTICE_REASON, "baboon", TEST_UNREGISTERED_NOTICE_TYPE, getExternalNotice());
+			// wrong noticeDate date format
+			builder = getBaseBuilder();
+			builder.setNoticeDate("2001");
+			getInstance(builder, "The noticeDate attribute must be in the xs:date format");
 
 			// invalid noticeDate
-			getInstance("The noticeDate attribute must be in the xs:date format", TEST_NOTICE_TYPE, TEST_NOTICE_REASON,
-				"2001", TEST_UNREGISTERED_NOTICE_TYPE, getExternalNotice());
-
+			builder = getBaseBuilder();
+			builder.setNoticeDate("baboon");
+			getInstance(builder, "The ism:noticeDate attribute is not in a valid");
+						
 			StringBuffer longString = new StringBuffer();
 			for (int i = 0; i < NoticeAttributes.MAX_LENGTH / 10 + 1; i++) {
 				longString.append("0123456789");
 			}
 
 			// too long noticeReason
-			getInstance("The noticeReason attribute must be shorter", TEST_NOTICE_TYPE, longString.toString(),
-				TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE, getExternalNotice());
+			builder = getBaseBuilder();
+			builder.setNoticeReason(longString.toString());
+			getInstance(builder, "The noticeReason attribute must be shorter");
 
 			// too long unregisteredNoticeType
-			getInstance("The unregisteredNoticeType attribute must be shorter", TEST_NOTICE_TYPE, TEST_NOTICE_REASON,
-				TEST_NOTICE_DATE, longString.toString(), getExternalNotice());
+			builder = getBaseBuilder();
+			builder.setUnregisteredNoticeType(longString.toString());
+			getInstance(builder, "The unregisteredNoticeType attribute must be shorter");
 		}
 	}
 
-	public void testWarnings() throws InvalidDDMSException {
+	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
 			Element element = Util.buildDDMSElement(Resource.getName(version), null);
-
 			getFixture().addTo(element);
-			NoticeAttributes attr = getInstance(SUCCESS, element);
+			NoticeAttributes attr = getInstance(element, SUCCESS);
 			assertEquals(0, attr.getValidationWarnings().size());
 		}
 	}
-
-	public void testDeprecatedConstructor() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			NoticeAttributes attr = new NoticeAttributes(TEST_NOTICE_TYPE, null, null, null);
-			assertNull(attr.isExternalReference());
-		}
-	}
-
-	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			String icNamespace = version.getIsmNamespace();
-
-			Element element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, PropertyReader.getPrefix("ism"), Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace,
-				"true");
-			getFixture().addTo(element);
-			NoticeAttributes elementAttributes = getInstance(SUCCESS, element);
-			NoticeAttributes dataAttributes = getInstance(SUCCESS, TEST_NOTICE_TYPE, TEST_NOTICE_REASON,
-				TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE, getExternalNotice());
-
-			assertEquals(elementAttributes, elementAttributes);
-			assertEquals(elementAttributes, dataAttributes);
-			assertEquals(elementAttributes.hashCode(), dataAttributes.hashCode());
-		}
-	}
-
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
+	
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			Element element = Util.buildDDMSElement(Resource.getName(version), null);
-			getFixture().addTo(element);
-			NoticeAttributes expected = getInstance(SUCCESS, element);
+			// Base equality
+			NoticeAttributes elementComponent = getFixture();
+			NoticeAttributes builderComponent = new NoticeAttributes.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
 
-			NoticeAttributes test = getInstance(SUCCESS, "DoD-Dist-C", TEST_NOTICE_REASON, TEST_NOTICE_DATE,
-				TEST_UNREGISTERED_NOTICE_TYPE, getExternalNotice());
-			assertFalse(expected.equals(test));
-
-			test = getInstance(SUCCESS, TEST_NOTICE_TYPE, DIFFERENT_VALUE, TEST_NOTICE_DATE,
-				TEST_UNREGISTERED_NOTICE_TYPE, getExternalNotice());
-			assertFalse(expected.equals(test));
-
-			test = getInstance(SUCCESS, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, "2011-08-15",
-				TEST_UNREGISTERED_NOTICE_TYPE, getExternalNotice());
-			assertFalse(expected.equals(test));
-
-			test = getInstance(SUCCESS, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE, DIFFERENT_VALUE,
-				getExternalNotice());
-			assertFalse(expected.equals(test));
+			// Wrong class
+			Rights wrongComponent = new Rights(true, true, true);
+			assertFalse(elementComponent.equals(wrongComponent));
+			
+			// Different values in each field
+			NoticeAttributes.Builder builder = getBaseBuilder();
+			builder.setNoticeType("DoD-Dist-C");
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setNoticeReason(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setNoticeDate("2011-08-15");
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setUnregisteredNoticeType(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
 
 			if (version.isAtLeast("4.1")) {
-				test = getInstance(SUCCESS, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE,
-					TEST_UNREGISTERED_NOTICE_TYPE, null);
-				assertFalse(expected.equals(test));
+				builder = getBaseBuilder();
+				builder.setExternalNotice(null);
+				assertFalse(elementComponent.equals(builder.commit()));
 			}
 		}
 	}
 
-	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
+	public void testVersionSpecific() throws InvalidDDMSException {
+		// No attributes in 2.0.
+		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
+		Element element = Util.buildDDMSElement(Resource.getName(version), null);
+		Util.addAttribute(element, PropertyReader.getPrefix("ism"), NoticeAttributes.NOTICE_DATE_NAME,
+			version.getIsmNamespace(), "2011-09-15");
+		getInstance(element, "Notice attributes cannot be used");
+		
+		// Can't attach to a different version.
+		DDMSVersion.setCurrentVersion("4.1");
+		NoticeAttributes attr = getFixture();
+		version = DDMSVersion.setCurrentVersion("2.0");
+		element = Util.buildDDMSElement(Resource.getName(version), null);
+		try {
+			attr.addTo(element);
+			fail("Method allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			expectMessage(e, "The DDMS version of the parent ");
+		}
+	}
+		
+	public void testOutput() {
+		// Tested by parent components.
+	}
+	
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NoticeAttributes elementAttributes = getFixture();
-			Rights wrongComponent = new Rights(true, true, true);
-			assertFalse(elementAttributes.equals(wrongComponent));
+			NoticeAttributes.Builder builder = new NoticeAttributes.Builder();
+			assertNotNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setNoticeType("");
+			assertTrue(builder.isEmpty());
+			
+			builder.setNoticeReason(TEST_NOTICE_REASON);
+			assertFalse(builder.isEmpty());
 		}
 	}
 
+	public void testIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			NoticeAttributes dataAttributes = new NoticeAttributes(null, null, null, null);
+			assertTrue(dataAttributes.isEmpty());
+			dataAttributes = new NoticeAttributes(TEST_NOTICE_TYPE, null, null, null);
+			assertFalse(dataAttributes.isEmpty());
+		}
+	}
+	
 	public void testAddTo() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -321,85 +304,25 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 		output = NoticeAttributes.getNonNullInstance(getFixture());
 		assertEquals(getFixture(), output);
 	}
-
-	public void testWrongVersion() throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
-		Element element = Util.buildDDMSElement(Resource.getName(version), null);
-		Util.addAttribute(element, PropertyReader.getPrefix("ism"), NoticeAttributes.NOTICE_DATE_NAME,
-			version.getIsmNamespace(), "2011-09-15");
-		getInstance("Notice attributes cannot be used", element);
-
-		DDMSVersion.setCurrentVersion("4.0.1");
-		NoticeAttributes attributes = getFixture();
-		try {
-			attributes.addTo(element);
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "The DDMS version of the parent");
-		}
-	}
-
-	public void testIsEmpty() {
+	
+	public void testDeprecatedConstructor() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NoticeAttributes dataAttributes = getInstance(SUCCESS, null, null, null, null, null);
-			assertTrue(dataAttributes.isEmpty());
-			dataAttributes = getInstance(SUCCESS, null, null, null, TEST_UNREGISTERED_NOTICE_TYPE, null);
-			assertFalse(dataAttributes.isEmpty());
+			NoticeAttributes attr = new NoticeAttributes(TEST_NOTICE_TYPE, null, null, null);
+			assertNull(attr.isExternalReference());
 		}
 	}
-
+	
 	public void testDateOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NoticeAttributes dataAttributes = getInstance(SUCCESS, null, null, "2005-10-10", null, null);
+			NoticeAttributes.Builder builder = new NoticeAttributes.Builder();
+			builder.setNoticeDate("2005-10-10");
+			NoticeAttributes dataAttributes = builder.commit();
 			assertEquals(buildOutput(true, "noticeDate", "2005-10-10"), dataAttributes.getOutput(true, ""));
 			assertEquals(buildOutput(false, "noticeDate", "2005-10-10"), dataAttributes.getOutput(false, ""));
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			NoticeAttributes component = getFixture();
-			NoticeAttributes.Builder builder = new NoticeAttributes.Builder(component);
-			assertEquals(component, builder.commit());
-		}
-	}
-
-	public void testBuilderIsEmpty() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			NoticeAttributes.Builder builder = new NoticeAttributes.Builder();
-			assertNotNull(builder.commit());
-			assertTrue(builder.isEmpty());
-			builder.setNoticeType("");
-			assertTrue(builder.isEmpty());
-			builder.setNoticeReason(TEST_NOTICE_REASON);
-			assertFalse(builder.isEmpty());
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			NoticeAttributes.Builder builder = new NoticeAttributes.Builder();
-			builder.setNoticeDate("2001");
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "The noticeDate attribute must be in the xs:date format");
-			}
-			builder.setNoticeDate("2011-01-20");
-			builder.commit();
 		}
 	}
 }

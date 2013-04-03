@@ -138,7 +138,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 	/**
 	 * Returns a test element that can be decorated with extensible attributes.
 	 */
-	private Element getElement() {
+	private Element getTestElement() {
 		try {
 			return (new Keyword("testValue", null).getXOMElementCopy());
 		}
@@ -162,7 +162,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Element-based
-			Element element = getElement();
+			Element element = getTestElement();
 			element.addAttribute(new Attribute(getTestAttribute()));
 			getInstance(element, SUCCESS);
 
@@ -176,7 +176,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Element-based, no optional fields
-			ExtensibleAttributes elementComponent = getInstance(getElement(), SUCCESS);
+			ExtensibleAttributes elementComponent = getInstance(getTestElement(), SUCCESS);
 
 			// Data-based via Builder, no optional fields
 			getInstance(new ExtensibleAttributes.Builder(elementComponent), SUCCESS);
@@ -192,7 +192,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			Element element = getElement();
+			Element element = getTestElement();
 			element.addAttribute(new Attribute(getTestAttribute()));
 			ExtensibleAttributes component = getInstance(element, SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
@@ -204,7 +204,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Base equality
-			Element element = getElement();
+			Element element = getTestElement();
 			element.addAttribute(new Attribute(getTestAttribute()));
 			ExtensibleAttributes elementComponent = getInstance(element, SUCCESS);
 			ExtensibleAttributes builderComponent = new ExtensibleAttributes.Builder(elementComponent).commit();
@@ -245,7 +245,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Element element = getElement();
+			Element element = getTestElement();
 			element.addAttribute(new Attribute(getTestAttribute()));
 			ExtensibleAttributes elementComponent = getInstance(element, SUCCESS);
 			assertEquals(getExpectedOutput(true), elementComponent.getOutput(true, ""));
@@ -287,7 +287,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 			assertEquals(component, output);
 
 			// Duplicate
-			element = getElement();
+			element = getTestElement();
 			element.addAttribute(getTestAttribute());
 			try {
 				component.addTo(element);
@@ -312,7 +312,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ExtensibleAttributes component = getInstance(getElement(), SUCCESS);
+			ExtensibleAttributes component = getInstance(getTestElement(), SUCCESS);
 			assertTrue(component.isEmpty());
 		}
 	}

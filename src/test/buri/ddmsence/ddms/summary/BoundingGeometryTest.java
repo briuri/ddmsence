@@ -19,11 +19,10 @@
  */
 package buri.ddmsence.ddms.summary;
 
-import java.util.List;
-
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.summary.gml.Point;
 import buri.ddmsence.ddms.summary.gml.PointTest;
 import buri.ddmsence.ddms.summary.gml.Polygon;
@@ -69,7 +68,7 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 	 * @param element the element to build from
 	 * @return a valid object
 	 */
-	private BoundingGeometry getInstance(String message, Element element) {
+	private BoundingGeometry getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		BoundingGeometry component = null;
 		try {
@@ -86,16 +85,16 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param polygons an ordered list of the polygons used in this geometry
-	 * @param points an ordered list of the points used in this geometry
+	 * 
 	 * @return a valid object
 	 */
-	private BoundingGeometry getInstance(String message, List<Polygon> polygons, List<Point> points) {
+	private BoundingGeometry getInstance(BoundingGeometry.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		BoundingGeometry component = null;
 		try {
-			component = new BoundingGeometry(polygons, points);
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -103,6 +102,17 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private BoundingGeometry.Builder getBaseBuilder() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		BoundingGeometry component = getInstance(getValidElement(version.getVersion()), SUCCESS);
+		return (new BoundingGeometry.Builder(component));
 	}
 
 	/**
@@ -121,9 +131,8 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:boundingGeometry ").append(getXmlnsDDMS()).append(">\n\t");
 		xml.append("<gml:Point ").append(getXmlnsGML()).append(" ");
-		xml.append(
-			"gml:id=\"IDValue\" srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" ").append(
-			"axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\">\n\t\t");
+		xml.append("gml:id=\"IDValue\" srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" ");
+		xml.append("srsDimension=\"10\" axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\">\n\t\t");
 		xml.append("<gml:pos>32.1 40.1</gml:pos>\n\t");
 		xml.append("</gml:Point>\n");
 		xml.append("</ddms:boundingGeometry>");
@@ -134,131 +143,124 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_DDMS_PREFIX,
 				BoundingGeometry.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() throws InvalidDDMSException {
+	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			// Point
-			getInstance(SUCCESS, getValidElement(sVersion));
 
-			// Polygon
+			// Element-based, Point
+			getInstance(getValidElement(sVersion), SUCCESS);
+
+			// Data-based via Builder, Point
+			getBaseBuilder();
+			
+			// Element-based, Polygon
 			Element element = Util.buildDDMSElement(BoundingGeometry.getName(version), null);
 			element.appendChild(PolygonTest.getFixtureList().get(0).getXOMElementCopy());
-			getInstance(SUCCESS, element);
-
-			// Both
+			BoundingGeometry elementComponent = getInstance(element, SUCCESS);
+			
+			// Data-based via Builder, Polygon
+			getInstance(new BoundingGeometry.Builder(elementComponent), SUCCESS);
+			
+			// Element-based, Both
 			element = Util.buildDDMSElement(BoundingGeometry.getName(version), null);
 			element.appendChild(PolygonTest.getFixtureList().get(0).getXOMElementCopy());
 			element.appendChild(PointTest.getFixtureList().get(0).getXOMElementCopy());
-			getInstance(SUCCESS, element);
+			elementComponent = getInstance(element, SUCCESS);
+			
+			// Data-based via Builder, Both
+			getInstance(new BoundingGeometry.Builder(elementComponent), SUCCESS);
 		}
 	}
-
-	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			// Point
-			getInstance(SUCCESS, null, PointTest.getFixtureList());
-
-			// Polygon
-			getInstance(SUCCESS, PolygonTest.getFixtureList(), null);
-
-			// Both
-			getInstance(SUCCESS, PolygonTest.getFixtureList(), PointTest.getFixtureList());
-		}
+	
+	public void testConstructorsMinimal() {
+		// No tests.
 	}
-
-	public void testElementConstructorInvalid() {
+	
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			
 			// No polygons or points
 			Element element = Util.buildDDMSElement(BoundingGeometry.getName(version), null);
-			getInstance("At least 1 of ", element);
+			getInstance(element, "At least 1 of ");
+			
+			// null list parameter
+			try {
+				new BoundingGeometry(null, null);
+				fail("Constructor allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				expectMessage(e, "At least 1 of");
+			}
 		}
 	}
 
-	public void testDataConstructorInvalid() {
+	public void testValidationWarnings() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			// No polygons or points
-			getInstance("At least 1 of ", null, null);
-		}
-	}
-
-	public void testWarnings() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			
 			// No warnings
-			BoundingGeometry component = getInstance(SUCCESS, getValidElement(sVersion));
+			BoundingGeometry component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() throws InvalidDDMSException {
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			BoundingGeometry elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			BoundingGeometry dataComponent = getInstance(SUCCESS, null, PointTest.getFixtureList());
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+
+			// Base equality
+			BoundingGeometry elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			BoundingGeometry builderComponent = new BoundingGeometry.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+
+			// Wrong class
+			Rights wrongComponent = new Rights(true, true, true);
+			assertFalse(elementComponent.equals(wrongComponent));
+			
+			// Different values in each field
+			Polygon polygon = PolygonTest.getFixtureList().get(0);
+			BoundingGeometry.Builder builder = getBaseBuilder();
+			builder.getPolygons().add(new Polygon.Builder(polygon));
+			assertFalse(elementComponent.equals(builder.commit()));
+
+			builder = getBaseBuilder();
+			builder.getPoints().clear();
+			builder.getPolygons().add(new Polygon.Builder(polygon));
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
-
-	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			BoundingGeometry elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			BoundingGeometry dataComponent = getInstance(SUCCESS, PolygonTest.getFixtureList(),
-				PointTest.getFixtureList());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, PolygonTest.getFixtureList(), null);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
+	
+	public void testVersionSpecific() throws InvalidDDMSException {
+		// No tests yet.
 	}
 
-	public void testHTMLTextOutput() throws InvalidDDMSException {
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			BoundingGeometry component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, null, PointTest.getFixtureList());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, PolygonTest.getFixtureList(), null);
+			BoundingGeometry elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
+			
+			Element element = Util.buildDDMSElement(BoundingGeometry.getName(version), null);
+			element.appendChild(PolygonTest.getFixtureList().get(0).getXOMElementCopy());
+			elementComponent = getInstance(element, SUCCESS);
 			assertEquals(PolygonTest.getFixtureList().get(0).getOutput(true, "boundingGeometry.", ""),
-				component.toHTML());
+				elementComponent.toHTML());
 			assertEquals(PolygonTest.getFixtureList().get(0).getOutput(false, "boundingGeometry.", ""),
-				component.toText());
+				elementComponent.toText());
 		}
 	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			BoundingGeometry component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building (Point-based)
-			BoundingGeometry.Builder builder = new BoundingGeometry.Builder(component);
-			assertEquals(component, builder.commit());
-
-			// Equality after Building (Polygon-based)
-			component = new BoundingGeometry(PolygonTest.getFixtureList(), null);
-			builder = new BoundingGeometry.Builder(component);
-			assertEquals(component, builder.commit());
-		}
-	}
-
+	
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -268,32 +270,7 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 			assertTrue(builder.isEmpty());
 			builder.getPoints().get(0).setId(TEST_ID);
 			assertFalse(builder.isEmpty());
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			BoundingGeometry.Builder builder = new BoundingGeometry.Builder();
-			for (Point point : PointTest.getFixtureList()) {
-				Point.Builder pointBuilder = new Point.Builder(point);
-				pointBuilder.setId("");
-				builder.getPoints().add(pointBuilder);
-			}
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "id is required.");
-			}
-			builder = new BoundingGeometry.Builder();
-			for (Polygon polygon : PolygonTest.getFixtureList()) {
-				builder.getPolygons().add(new Polygon.Builder(polygon));
-			}
-			builder.commit();
-
+			
 			// Skip empty Points
 			builder = new BoundingGeometry.Builder();
 			Point.Builder emptyBuilder = new Point.Builder();
@@ -333,7 +310,7 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 			assertEquals(1, builder.commit().getPolygons().size());
 		}
 	}
-
+	
 	public void testBuilderLazyList() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

@@ -29,7 +29,6 @@ import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.ddms.resource.Rights;
-import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
@@ -69,13 +68,12 @@ public class CategoryTest extends AbstractBaseTestCase {
 
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * 
 	 * @return a valid object
 	 */
-	private Category getInstance(String message, Element element) {
+	private Category getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Category component = null;
 		try {
@@ -92,19 +90,16 @@ public class CategoryTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
+	 * @param builder the builder to commit
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * @param qualifier the qualifier (optional)
-	 * @param code the code (optional)
-	 * @param label the label (required)
+	 * 
 	 * @return a valid object
 	 */
-	private Category getInstance(String message, String qualifier, String code, String label) {
+	private Category getInstance(Category.Builder builder, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Category component = null;
 		try {
-			component = new Category(qualifier, code, label,
-				version.isAtLeast("4.0.1") ? SecurityAttributesTest.getFixture() : null);
+			component = builder.commit();
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -112,6 +107,17 @@ public class CategoryTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+
+	/**
+	 * Returns a builder, pre-populated with base data from the XML sample.
+	 * 
+	 * This builder can then be modified to test various conditions.
+	 */
+	private Category.Builder getBaseBuilder() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		Category component = getInstance(getValidElement(version.getVersion()), SUCCESS);
+		return (new Category.Builder(component));
 	}
 
 	/**
@@ -154,141 +160,105 @@ public class CategoryTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_DDMS_PREFIX,
 				Category.getName(version));
-			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
+			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
 
-	public void testElementConstructorValid() {
+	public void testConstructors() {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			// Element-based
+			getInstance(getValidElement(sVersion), SUCCESS);
+			
+			// Data-based via Builder
+			getBaseBuilder();
+		}
+	}
+	
+	public void testConstructorsMinimal() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			// All fields
-			getInstance(SUCCESS, getValidElement(sVersion));
 
-			// No optional fields
+			// Element-based, No optional fields
 			Element element = Util.buildDDMSElement(Category.getName(version), null);
 			Util.addDDMSAttribute(element, "label", TEST_LABEL);
-			getInstance(SUCCESS, element);
+			Category elementComponent = getInstance(element, SUCCESS);
+
+			// Data-based, No optional fields
+			getInstance(new Category.Builder(elementComponent), SUCCESS);
 		}
 	}
-
-	public void testDataConstructorValid() {
+	
+	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			// All fields
-			getInstance(SUCCESS, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
 
-			// No optional fields
-			getInstance(SUCCESS, "", "", TEST_LABEL);
-		}
-	}
-
-	public void testElementConstructorInvalid() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// Missing label
-			Element element = Util.buildDDMSElement(Category.getName(version), null);
-			getInstance("label attribute is required.", element);
-		}
-	}
-
-	public void testDataConstructorInvalid() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			// Missing label
-			getInstance("label attribute is required.", TEST_QUALIFIER, TEST_CODE, null);
+			Category.Builder builder = getBaseBuilder();
+			builder.setLabel(null);
+			getInstance(builder, "label attribute is required.");	
 
 			// Qualifier not URI
-			getInstance("Invalid URI", INVALID_URI, TEST_CODE, TEST_LABEL);
+			builder = getBaseBuilder();
+			builder.setQualifier(INVALID_URI);
+			getInstance(builder, "Invalid URI");
 		}
 	}
 
-	public void testWarnings() {
+	public void testValidationWarnings() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+			
 			// No warnings
-			Category component = getInstance(SUCCESS, getValidElement(sVersion));
+			Category component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
-
-	public void testConstructorEquality() throws InvalidDDMSException {
+	
+	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Category elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Category dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-		}
-	}
 
-	public void testConstructorInequalityDifferentValues() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Category elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Category dataComponent = getInstance(SUCCESS, "", TEST_CODE, TEST_LABEL);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, "", TEST_LABEL);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, TEST_CODE, DIFFERENT_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Category elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			// Base equality
+			Category elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			Category builderComponent = new Category.Builder(elementComponent).commit();
+			assertEquals(elementComponent, builderComponent);
+			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
+			
+			// Wrong class
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
+			
+			// Different values in each field
+			Category.Builder builder = getBaseBuilder();
+			builder.setQualifier(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));	
+
+			builder = getBaseBuilder();
+			builder.setCode(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
+			
+			builder = getBaseBuilder();
+			builder.setLabel(DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(builder.commit()));
 		}
 	}
 
-	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Category component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = getInstance(SUCCESS, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
-			assertEquals(getExpectedOutput(true), component.toHTML());
-			assertEquals(getExpectedOutput(false), component.toText());
-		}
-	}
-
-	public void testXMLOutput() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Category component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-
-			component = getInstance(SUCCESS, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testExtensibleSuccess() throws InvalidDDMSException {
-		// Extensible attribute added
-		DDMSVersion.setCurrentVersion("3.0");
-		ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
-		new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, null, attr);
-	}
-
-	public void testExtensibleFailure() throws InvalidDDMSException {
-		// Wrong DDMS Version
+	public void testVersionSpecific() throws InvalidDDMSException {
+		// No security attributes in DDMS 3.1
+		Category.Builder builder = getBaseBuilder();
+		DDMSVersion.setCurrentVersion("3.1");
+		getInstance(builder, "Security attributes cannot be applied");
+		
+		// No attributes in 2.0
 		DDMSVersion.setCurrentVersion("2.0");
 		ExtensibleAttributes attributes = ExtensibleAttributesTest.getFixture();
-		try {
-			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, null, attributes);
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "xs:anyAttribute cannot be applied");
-		}
+		builder = getBaseBuilder();
+		builder.setExtensibleAttributes(new ExtensibleAttributes.Builder(attributes));
+		getInstance(builder, "xs:anyAttribute cannot be applied");
 
 		DDMSVersion version = DDMSVersion.setCurrentVersion("3.0");
 
@@ -296,71 +266,46 @@ public class CategoryTest extends AbstractBaseTestCase {
 		List<Attribute> extAttributes = new ArrayList<Attribute>();
 		extAttributes.add(new Attribute("ddms:qualifier", version.getNamespace(), "dog"));
 		attributes = new ExtensibleAttributes(extAttributes);
-		try {
-			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, null, attributes);
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "The extensible attribute with the name, ddms:qualifier");
-		}
-
+		builder = getBaseBuilder();
+		builder.setExtensibleAttributes(new ExtensibleAttributes.Builder(attributes));
+		getInstance(builder, "The extensible attribute with the name, ddms:qualifier");
+		
 		// Using ddms:code as the extension (data)
 		extAttributes = new ArrayList<Attribute>();
 		extAttributes.add(new Attribute("ddms:code", version.getNamespace(), "dog"));
 		attributes = new ExtensibleAttributes(extAttributes);
-		try {
-			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, null, attributes);
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "The extensible attribute with the name, ddms:code");
-		}
+		builder = getBaseBuilder();
+		builder.setExtensibleAttributes(new ExtensibleAttributes.Builder(attributes));
+		getInstance(builder, "The extensible attribute with the name, ddms:code");
 
 		// Using ddms:label as the extension (data)
 		extAttributes = new ArrayList<Attribute>();
 		extAttributes.add(new Attribute("ddms:label", version.getNamespace(), "dog"));
 		attributes = new ExtensibleAttributes(extAttributes);
-		try {
-			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, null, attributes);
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "The extensible attribute with the name, ddms:label");
-		}
-
+		builder = getBaseBuilder();
+		builder.setExtensibleAttributes(new ExtensibleAttributes.Builder(attributes));
+		getInstance(builder, "The extensible attribute with the name, ddms:label");
+		
 		// Using icism:classification as the extension (data)
 		extAttributes = new ArrayList<Attribute>();
-		extAttributes.add(new Attribute("icism:classification", version.getIsmNamespace(), "U"));
+		extAttributes.add(new Attribute("ism:classification", version.getIsmNamespace(), "U"));
 		attributes = new ExtensibleAttributes(extAttributes);
-		try {
-			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, null, attributes);
-		}
-		catch (InvalidDDMSException e) {
-			fail("Prevented valid data.");
-		}
+		builder = getBaseBuilder();
+		builder.setExtensibleAttributes(new ExtensibleAttributes.Builder(attributes));
+		getInstance(builder, SUCCESS);		
 	}
-
-	public void testWrongVersionSecurityAttributes() throws InvalidDDMSException {
-		DDMSVersion.setCurrentVersion("3.1");
-		try {
-			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, SecurityAttributesTest.getFixture());
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "Security attributes cannot be applied");
-		}
-	}
-
-	public void testBuilderEquality() throws InvalidDDMSException {
+	
+	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Category component = getInstance(SUCCESS, getValidElement(sVersion));
-			Category.Builder builder = new Category.Builder(component);
-			assertEquals(component, builder.commit());
+			Category elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}
-
+	
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -368,27 +313,9 @@ public class CategoryTest extends AbstractBaseTestCase {
 			Category.Builder builder = new Category.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
+			
 			builder.setLabel(TEST_LABEL);
 			assertFalse(builder.isEmpty());
-
-		}
-	}
-
-	public void testBuilderValidation() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Category.Builder builder = new Category.Builder();
-			builder.setQualifier(TEST_QUALIFIER);
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "label attribute is required.");
-			}
-			builder.setLabel(TEST_LABEL);
-			builder.commit();
 		}
 	}
 }
