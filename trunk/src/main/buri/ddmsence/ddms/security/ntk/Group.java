@@ -125,7 +125,7 @@ public final class Group extends AbstractAccessEntity {
 	protected void validate() throws InvalidDDMSException {
 		Util.requireQName(getXOMElement(), getNamespace(), Group.getName(getDDMSVersion()));
 		if (getGroupValues().isEmpty())
-			throw new InvalidDDMSException("At least one group value is required.");
+			throw new InvalidDDMSException("At least one group value must exist.");
 		super.validate();
 	}
 

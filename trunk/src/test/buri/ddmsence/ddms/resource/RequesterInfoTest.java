@@ -205,12 +205,12 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 			RequesterInfo.Builder builder = getBaseBuilder(true);
 			builder.setEntityType(null);
 			builder.setOrganization(null);
-			getInstance(builder, "entity is required.");
+			getInstance(builder, "entity must exist.");
 
 			// Missing security attributes
 			builder = getBaseBuilder(true);
 			builder.setSecurityAttributes(null);
-			getInstance(builder, "classification is required.");
+			getInstance(builder, "classification must exist.");
 
 			// Wrong entity
 			try {
@@ -251,7 +251,7 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 
 	public void testVersionSpecific() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(getFixtureElement(true), "The requesterInfo element cannot");
+		getInstance(getFixtureElement(true), "The requesterInfo element must not ");
 	}
 
 	public void testOutput() throws InvalidDDMSException {

@@ -200,7 +200,7 @@ public class ApplicationSoftwareTest extends AbstractBaseTestCase {
 			// Bad security attributes
 			ApplicationSoftware.Builder builder = getBaseBuilder();
 			builder.setSecurityAttributes(null);
-			getInstance(builder, "classification is required.");
+			getInstance(builder, "classification must exist.");
 		}
 	}
 
@@ -242,7 +242,7 @@ public class ApplicationSoftwareTest extends AbstractBaseTestCase {
 
 	public void testVersionSpecific() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(getFixtureElement(), "The applicationSoftware element cannot");
+		getInstance(getFixtureElement(), "The applicationSoftware element must not ");
 	}
 
 	public void testOutput() throws InvalidDDMSException {

@@ -260,7 +260,7 @@ public final class RevisionRecall extends AbstractBaseComponent {
 		boolean hasNestedElements = (!getLinks().isEmpty() || !getDetails().isEmpty());
 		if (hasChildText && hasNestedElements) {
 			throw new InvalidDDMSException(
-				"A ddms:revisionRecall element cannot have both child text and nested elements.");
+				"A ddms:revisionRecall element must not have both child text and nested elements.");
 		}		
 		for (Link link : getLinks()) {
 			Util.requireDDMSValue("link security attributes", link.getSecurityAttributes());
@@ -277,7 +277,7 @@ public final class RevisionRecall extends AbstractBaseComponent {
 		if (getDDMSVersion().isAtLeast("5.0")) {
 			// Check for network is implicit in schema validation.
 			if (!Util.isEmpty(getOtherNetwork()))
-				throw new InvalidDDMSException("The otherNetwork attribute cannot be used after DDMS 4.1.");
+				throw new InvalidDDMSException("The otherNetwork attribute must not be used after DDMS 4.1.");
 		}
 		getSecurityAttributes().requireClassification();
 		super.validate();

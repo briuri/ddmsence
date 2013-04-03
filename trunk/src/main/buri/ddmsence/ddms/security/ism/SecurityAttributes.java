@@ -333,7 +333,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 				_dateOfExemptedSource = getFactory().newXMLGregorianCalendar(dateOfExemptedSource);
 			}
 			catch (IllegalArgumentException e) {
-				throw new InvalidDDMSException("The ism:dateOfExemptedSource attribute is not in a valid date format.");
+				throw new InvalidDDMSException("The ism:dateOfExemptedSource attribute must adhere to a valid date format.");
 			}
 		}
 		String declassDate = otherAttributes.get(DECLASS_DATE_NAME);
@@ -342,7 +342,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 				_declassDate = getFactory().newXMLGregorianCalendar(declassDate);
 			}
 			catch (IllegalArgumentException e) {
-				throw new InvalidDDMSException("The ism:declassDate attribute is not in a valid date format.");
+				throw new InvalidDDMSException("The ism:declassDate attribute must adhere to a valid date format.");
 			}
 		}
 		_declassEvent = otherAttributes.get(DECLASS_EVENT_NAME);
@@ -455,20 +455,20 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		if (!isAtLeast31) {
 			if (!getAtomicEnergyMarkings().isEmpty())
 				throw new InvalidDDMSException(
-					"The atomicEnergyMarkings attribute cannot be used until DDMS 3.1 or later.");
+					"The atomicEnergyMarkings attribute must not be used until DDMS 3.1 or later.");
 			if (!getDisplayOnlyTo().isEmpty())
-				throw new InvalidDDMSException("The displayOnlyTo attribute cannot be used until DDMS 3.1 or later.");
+				throw new InvalidDDMSException("The displayOnlyTo attribute must not be used until DDMS 3.1 or later.");
 			if (!getNonUSControls().isEmpty())
-				throw new InvalidDDMSException("The nonUSControls attribute cannot be used until DDMS 3.1 or later.");
+				throw new InvalidDDMSException("The nonUSControls attribute must not be used until DDMS 3.1 or later.");
 		}
 		if (!isAtLeast30 && !Util.isEmpty(getCompilationReason()))
-			throw new InvalidDDMSException("The compilationReason attribute cannot be used until DDMS 3.0 or later.");
+			throw new InvalidDDMSException("The compilationReason attribute must not be used until DDMS 3.0 or later.");
 		if (isAtLeast31 && getDateOfExemptedSource() != null)
-			throw new InvalidDDMSException("The dateOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0.");
+			throw new InvalidDDMSException("The dateOfExemptedSource attribute must only be used in DDMS 2.0 or 3.0.");
 		if (isAtLeast31 && !Util.isEmpty(getTypeOfExemptedSource()))
-			throw new InvalidDDMSException("The typeOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0.");
+			throw new InvalidDDMSException("The typeOfExemptedSource attribute must only be used in DDMS 2.0 or 3.0.");
 		if (isAtLeast30 && getDeclassManualReview() != null)
-			throw new InvalidDDMSException("The declassManualReview attribute can only be used in DDMS 2.0.");
+			throw new InvalidDDMSException("The declassManualReview attribute must only be used in DDMS 2.0.");
 
 		for (String atomic : getAtomicEnergyMarkings())
 			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_ATOMIC_ENERGY_MARKINGS, atomic);
@@ -533,7 +533,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	public void requireClassification() throws InvalidDDMSException {
 		Util.requireDDMSValue(CLASSIFICATION_NAME, getClassification());
 		if (getOwnerProducers().size() == 0)
-			throw new InvalidDDMSException("At least 1 ownerProducer must be set.");
+			throw new InvalidDDMSException("At least 1 ownerProducer must exist.");
 	}
 
 	/**

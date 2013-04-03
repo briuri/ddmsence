@@ -177,7 +177,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		if (hasFacilityIdentifier()) {
 			if (!getNames().isEmpty() || !getRegions().isEmpty() || getCountryCode() != null
 				|| getSubDivisionCode() != null)
-				throw new InvalidDDMSException("facilityIdentifier cannot be used in tandem with other components.");
+				throw new InvalidDDMSException("facilityIdentifier must not be used in tandem with other components.");
 		}
 		if (getDDMSVersion().isAtLeast("5.0") && getCountryCode() != null) {
 			validateGencCountryCode(getCountryCode());

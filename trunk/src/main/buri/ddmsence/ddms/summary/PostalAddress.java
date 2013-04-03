@@ -180,7 +180,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 		Util.requireDDMSQName(getXOMElement(), PostalAddress.getName(getDDMSVersion()));
 		Util.requireBoundedChildCount(getXOMElement(), STREET_NAME, 0, 6);
 		if (!Util.isEmpty(getState()) && !Util.isEmpty(getProvince())) {
-			throw new InvalidDDMSException("Only 1 of state or province can be used.");
+			throw new InvalidDDMSException("Only 1 of state or province must be used.");
 		}
 		super.validate();
 	}
@@ -343,7 +343,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 				return (null);
 			boolean hasStateAndProvince = (!Util.isEmpty(getState()) && !Util.isEmpty(getProvince()));
 			if (hasStateAndProvince)
-				throw new InvalidDDMSException("Only 1 of state or province can be used.");
+				throw new InvalidDDMSException("Only 1 of state or province must be used.");
 			boolean hasState = !Util.isEmpty(getState());
 			String stateOrProvince = hasState ? getState() : getProvince();
 			return (new PostalAddress(getStreets(), getCity(), stateOrProvince, getPostalCode(),

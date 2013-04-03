@@ -195,7 +195,7 @@ public class PointTest extends AbstractBaseTestCase {
 			builder.getSrsAttributes().setSrsName(null);
 			builder.getSrsAttributes().setAxisLabels(null);
 			builder.getSrsAttributes().setUomLabels(null);
-			getInstance(builder, "srsName is required.");
+			getInstance(builder, "srsName must exist.");
 
 			// Point SRS Name doesn't match pos SRS Name
 			builder = getBaseBuilder();
@@ -205,7 +205,7 @@ public class PointTest extends AbstractBaseTestCase {
 			// Missing ID
 			builder = getBaseBuilder();
 			builder.setId(null);
-			getInstance(builder, "id is required.");
+			getInstance(builder, "id must exist.");
 
 			// ID not NCName
 			builder = getBaseBuilder();
@@ -215,7 +215,7 @@ public class PointTest extends AbstractBaseTestCase {
 			// Missing position
 			builder = getBaseBuilder();
 			builder.setPosition(null);
-			getInstance(builder, "position is required.");
+			getInstance(builder, "position must exist.");
 		}
 	}
 

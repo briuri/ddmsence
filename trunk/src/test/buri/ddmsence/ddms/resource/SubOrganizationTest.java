@@ -195,7 +195,7 @@ public class SubOrganizationTest extends AbstractBaseTestCase {
 			// Missing child text
 			SubOrganization.Builder builder = getBaseBuilder();
 			builder.setValue(null);
-			getInstance(builder, "subOrganization value is required");
+			getInstance(builder, "subOrganization value must exist");
 		}
 	}
 	
@@ -229,7 +229,7 @@ public class SubOrganizationTest extends AbstractBaseTestCase {
 	public void testVersionSpecific() throws InvalidDDMSException {
 		SubOrganization.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(builder, "The subOrganization element cannot be used");
+		getInstance(builder, "The subOrganization element must not be used");
 	}
 	
 	public void testOutput() throws InvalidDDMSException {

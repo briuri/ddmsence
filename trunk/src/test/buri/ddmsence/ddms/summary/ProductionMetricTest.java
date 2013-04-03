@@ -178,12 +178,12 @@ public class ProductionMetricTest extends AbstractBaseTestCase {
 			// Missing subject
 			ProductionMetric.Builder builder = getBaseBuilder();
 			builder.setSubject(null);
-			getInstance(builder, "subject attribute is required.");
+			getInstance(builder, "subject attribute must exist.");
 
 			// Missing coverage
 			builder = getBaseBuilder();
 			builder.setCoverage(null);
-			getInstance(builder, "coverage attribute is required.");
+			getInstance(builder, "coverage attribute must exist.");
 		}
 	}
 
@@ -225,7 +225,7 @@ public class ProductionMetricTest extends AbstractBaseTestCase {
 	public void testVersionSpecific() throws InvalidDDMSException {
 		ProductionMetric.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(builder, "The productionMetric element cannot be used");
+		getInstance(builder, "The productionMetric element must not be used");
 	}
 	
 	public void testOutput() throws InvalidDDMSException {

@@ -244,12 +244,12 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 			// Missing taskID
 			TaskingInfo.Builder builder = getBaseBuilder();
 			builder.setTaskID(null);
-			getInstance(builder, "taskID is required.");
+			getInstance(builder, "taskID must exist.");
 
 			// Missing security attributes
 			builder = getBaseBuilder();
 			builder.setSecurityAttributes(null);
-			getInstance(builder, "classification is required.");
+			getInstance(builder, "classification must exist.");
 		}
 	}
 

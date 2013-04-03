@@ -211,7 +211,7 @@ public class DetailsTest extends AbstractBaseTestCase {
 			// Bad security attributes
 			Details.Builder builder = getBaseBuilder();
 			builder.setSecurityAttributes(null);
-			getInstance(builder, "classification is required.");
+			getInstance(builder, "classification must exist.");
 		}
 	}
 
@@ -253,7 +253,7 @@ public class DetailsTest extends AbstractBaseTestCase {
 
 	public void testVersionSpecific() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(getFixtureElement(), "The details element cannot");
+		getInstance(getFixtureElement(), "The details element must not ");
 	}
 	
 	public void testOutput() throws InvalidDDMSException {

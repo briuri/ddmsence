@@ -218,7 +218,7 @@ public class RecordsManagementInfoTest extends AbstractBaseTestCase {
 		RecordsManagementInfo.Builder builder = new RecordsManagementInfo.Builder();
 		builder.setVitalRecordIndicator(TEST_VITAL);
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(builder, "The recordsManagementInfo element cannot");
+		getInstance(builder, "The recordsManagementInfo element must not ");
 	}
 
 	public void testOutput() throws InvalidDDMSException {

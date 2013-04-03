@@ -218,16 +218,16 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		Util.requireBoundedChildCount(extElement, PostalAddress.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(extElement, VerticalExtent.getName(getDDMSVersion()), 0, 1);
 		if (hasFacilityIdentifier() && validComponents > 1) {
-			throw new InvalidDDMSException("A geographicIdentifier containing a facilityIdentifier cannot be used in "
+			throw new InvalidDDMSException("A geographicIdentifier containing a facilityIdentifier must not be used in "
 				+ "tandem with any other coverage elements.");
 		}
 		if (!getDDMSVersion().isAtLeast("4.0.1")) {
 			if (getOrder() != null) {
-				throw new InvalidDDMSException("The ddms:order attribute cannot be used until DDMS 4.0.1 or later.");
+				throw new InvalidDDMSException("The ddms:order attribute must not be used until DDMS 4.0.1 or later.");
 			}
 			if (!Util.isEmpty(getPrecedence())) {
 				throw new InvalidDDMSException(
-					"The ddms:precedence attribute cannot be used until DDMS 4.0.1 or later.");
+					"The ddms:precedence attribute must not be used until DDMS 4.0.1 or later.");
 			}
 		}
 		if (!Util.isEmpty(getPrecedence())) {
@@ -236,13 +236,13 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 					+ VALID_PRECEDENCE_VALUES);
 			}
 			if (getGeographicIdentifier() == null || getGeographicIdentifier().getCountryCode() == null) {
-				throw new InvalidDDMSException("The ddms:precedence attribute should only be applied to a "
+				throw new InvalidDDMSException("The ddms:precedence attribute must only be applied to a "
 					+ "geospatialCoverage containing a country code.");
 			}
 		}
 		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException(
-				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
+				"Security attributes must not be applied to this component until DDMS 3.0 or later.");
 		}
 		super.validate();
 	}

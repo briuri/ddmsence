@@ -198,7 +198,7 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 			// address without protocol
 			VirtualCoverage.Builder builder = getBaseBuilder();
 			builder.setProtocol(null);
-			getInstance(builder, "protocol is required.");
+			getInstance(builder, "protocol must exist.");
 		}
 	}
 
@@ -260,7 +260,7 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 		DDMSVersion.setCurrentVersion("3.1");
 		VirtualCoverage.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(builder, "Security attributes cannot be applied");
+		getInstance(builder, "Security attributes must not be applied");
 		
 		// Check for access and network attributes implicit in constructor (ignored)
 	}

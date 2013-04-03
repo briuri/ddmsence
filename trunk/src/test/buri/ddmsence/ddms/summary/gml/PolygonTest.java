@@ -251,7 +251,7 @@ public class PolygonTest extends AbstractBaseTestCase {
 			builder.getSrsAttributes().setSrsName(null);
 			builder.getSrsAttributes().setAxisLabels(null);
 			builder.getSrsAttributes().setUomLabels(null);
-			getInstance(builder, "srsName is required.");
+			getInstance(builder, "srsName must exist.");
 
 			// Polygon SRS Name doesn't match pos SRS Name
 			builder = getBaseBuilder();
@@ -261,7 +261,7 @@ public class PolygonTest extends AbstractBaseTestCase {
 			// Missing ID
 			builder = getBaseBuilder();
 			builder.setId(null);
-			getInstance(builder, "id is required.");
+			getInstance(builder, "id must exist.");
 
 			// ID not NCName
 			builder = getBaseBuilder();
@@ -281,7 +281,7 @@ public class PolygonTest extends AbstractBaseTestCase {
 			// Not enough positions
 			builder = getBaseBuilder();
 			builder.getPositions().remove(1);
-			getInstance(builder, "At least 4 positions are required");
+			getInstance(builder, "At least 4 positions");
 			
 			// Null coords param
 			try {

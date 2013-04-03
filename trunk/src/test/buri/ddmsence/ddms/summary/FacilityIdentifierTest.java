@@ -163,12 +163,12 @@ public class FacilityIdentifierTest extends AbstractBaseTestCase {
 			// Missing beNumber
 			FacilityIdentifier.Builder builder = getBaseBuilder();
 			builder.setBeNumber(null);
-			getInstance(builder, "beNumber is required.");
+			getInstance(builder, "beNumber must exist.");
 
 			// Missing osuffix
 			builder = getBaseBuilder();
 			builder.setOsuffix(null);
-			getInstance(builder, "osuffix is required.");
+			getInstance(builder, "osuffix must exist.");
 		}
 	}
 

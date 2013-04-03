@@ -118,10 +118,10 @@ public final class Type extends AbstractQualifierValue {
 		if (!getDDMSVersion().isAtLeast("4.0.1")) {
 			if (!Util.isEmpty(getDescription()))
 				throw new InvalidDDMSException(
-					"This component cannot contain description child text until DDMS 4.0.1 or later.");
+					"This component must not contain description child text until DDMS 4.0.1 or later.");
 			if (!getSecurityAttributes().isEmpty())
 				throw new InvalidDDMSException(
-					"Security attributes cannot be applied to this component until DDMS 4.0.1 or later.");
+					"Security attributes must not be applied to this component until DDMS 4.0.1 or later.");
 		}
 		super.validate();
 	}

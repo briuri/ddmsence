@@ -179,7 +179,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 				_noticeDate = getFactory().newXMLGregorianCalendar(noticeDate);
 			}
 			catch (IllegalArgumentException e) {
-				throw new InvalidDDMSException("The ism:noticeDate attribute is not in a valid date format.");
+				throw new InvalidDDMSException("The ism:noticeDate attribute must adhere to a valid date format.");
 			}
 		}
 		_externalNotice = externalNotice;
@@ -240,7 +240,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 */
 	protected void validate(DDMSVersion version) throws InvalidDDMSException {
 		if (!version.isAtLeast("4.0.1") && !isEmpty())
-			throw new InvalidDDMSException("Notice attributes cannot be used until DDMS 4.0.1 or later.");
+			throw new InvalidDDMSException("Notice attributes must not be used until DDMS 4.0.1 or later.");
 		if (!Util.isEmpty(getNoticeType()))
 			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_NOTICE_TYPE, getNoticeType());
 		if (!Util.isEmpty(getNoticeReason()) && getNoticeReason().length() > MAX_LENGTH)

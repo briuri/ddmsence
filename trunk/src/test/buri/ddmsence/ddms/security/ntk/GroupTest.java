@@ -180,17 +180,17 @@ public class GroupTest extends AbstractBaseTestCase {
 			// Missing systemName
 			Group.Builder builder = getBaseBuilder();
 			builder.setSystemName(null);
-			getInstance(builder, "systemName is required.");
+			getInstance(builder, "systemName must exist.");
 
 			// Missing groupValue
 			builder = getBaseBuilder();
 			builder.getGroupValues().clear();
-			getInstance(builder, "At least one group value is required.");
+			getInstance(builder, "At least one group value must exist.");
 
 			// Missing security attributes
 			builder = getBaseBuilder();
 			builder.setSecurityAttributes(null);
-			getInstance(builder, "classification is required.");
+			getInstance(builder, "classification must exist.");
 			
 			// Null groupValue param
 			try {

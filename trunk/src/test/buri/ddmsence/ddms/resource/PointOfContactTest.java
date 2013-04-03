@@ -204,7 +204,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 			builder.setEntityType(null);
 			builder.setService(null);
 			builder.setUnknown(null);
-			getInstance(builder, "entity is required.");
+			getInstance(builder, "entity must exist.");
 
 			if (version.isAtLeast("4.0.1")) {
 				// Invalid pocType
@@ -260,7 +260,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 		DDMSVersion.setCurrentVersion("3.1");
 		PointOfContact.Builder builder = getBaseBuilder();
 		builder.setPocTypes(Util.getXsListAsList("DoD-Dist-B"));
-		getInstance(builder, "This component cannot have a pocType");
+		getInstance(builder, "This component must not have a pocType");
 	}
 
 	public void testOutput() throws InvalidDDMSException {

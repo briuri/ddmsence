@@ -173,7 +173,7 @@ public class LanguageTest extends AbstractBaseTestCase {
 			// Missing qualifier
 			Language.Builder builder = getBaseBuilder();
 			builder.setQualifier(null);
-			getInstance(builder, "qualifier attribute is required.");	
+			getInstance(builder, "qualifier attribute must exist.");	
 		}
 	}
 	

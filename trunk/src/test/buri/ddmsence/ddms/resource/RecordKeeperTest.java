@@ -185,12 +185,12 @@ public class RecordKeeperTest extends AbstractBaseTestCase {
 			// Missing recordKeeperID
 			RecordKeeper.Builder builder = getBaseBuilder();
 			builder.setRecordKeeperID(null);			
-			getInstance(builder, "record keeper ID is required.");
+			getInstance(builder, "record keeper ID must exist.");
 			
 			// Missing organization
 			builder = getBaseBuilder();
 			builder.setOrganization(null);			
-			getInstance(builder, "organization is required.");
+			getInstance(builder, "organization must exist.");
 		}
 	}
 	
@@ -227,7 +227,7 @@ public class RecordKeeperTest extends AbstractBaseTestCase {
 
 	public void testVersionSpecific() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(getFixtureElement(), "The recordKeeper element cannot");
+		getInstance(getFixtureElement(), "The recordKeeper element must not ");
 	}
 	
 	public void testOutput() throws InvalidDDMSException {

@@ -214,7 +214,7 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 			Element element = Util.buildDDMSElement(postalName, null);
 			element.appendChild(Util.buildDDMSElement("state", TEST_STATE));
 			element.appendChild(Util.buildDDMSElement("province", TEST_PROVINCE));
-			getInstance(element, "Only 1 of state or province can be used.");
+			getInstance(element, "Only 1 of state or province must be used.");
 
 			// Data-based, Either a state or a province but not both.
 			PostalAddress.Builder builder = getBaseBuilder();
@@ -225,7 +225,7 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 			 builder = getBaseBuilder();
 			for (int i = 0; i < 7; i++)
 				builder.getStreets().add("Street " + i);
-			getInstance(builder, "No more than 6 street elements can exist.");
+			getInstance(builder, "No more than 6 street elements must exist.");
 		}
 	}
 

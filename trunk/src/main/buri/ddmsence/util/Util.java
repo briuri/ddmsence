@@ -246,7 +246,7 @@ public class Util {
 	 */
 	public static void requireDDMSValue(String description, Object value) throws InvalidDDMSException {
 		if (value == null || (value instanceof String && isEmpty((String) value)))
-			throw new InvalidDDMSException(description + " is required.");
+			throw new InvalidDDMSException(description + " must exist.");
 	}
 
 	/**
@@ -324,7 +324,7 @@ public class Util {
 	 */
 	public static void requireValue(String description, Object value) {
 		if (value == null || (value instanceof String && isEmpty((String) value)))
-			throw new IllegalArgumentException(description + " is required.");
+			throw new IllegalArgumentException(description + " must exist.");
 	}
 
 	/**
@@ -353,7 +353,7 @@ public class Util {
 				error.append("No more than ").append(highBound).append(" ").append(childName).append(" element");
 				if (highBound != 1)
 					error.append("s");
-				error.append(" can exist.");
+				error.append(" must exist.");
 			}
 			else {
 				error.append("The number of ").append(childName).append(" elements must be between ").append(lowBound).append(

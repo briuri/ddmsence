@@ -206,7 +206,7 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 			// Missing values
 			BoundingBox.Builder builder = getBaseBuilder();
 			builder.setWestBL(null);
-			getInstance(builder, "A ddms:boundingBox requires two latitude");
+			getInstance(builder, "A ddms:boundingBox must have two latitude");
 
 			// Longitude too small
 			builder = getBaseBuilder();
@@ -293,7 +293,7 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 		DDMSVersion.setCurrentVersion("4.1");
 		BoundingBox.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("5.0");
-		getInstance(builder, "The boundingBox element cannot be used");
+		getInstance(builder, "The boundingBox element must not be used");
 	}
 
 	public void testOutput() throws InvalidDDMSException {

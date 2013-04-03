@@ -246,7 +246,7 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 		ResourceManagement.Builder builder = new ResourceManagement.Builder();
 		builder.getSecurityAttributes().setClassification("U");
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(builder, "The resourceManagement element cannot");
+		getInstance(builder, "The resourceManagement element must not ");
 	}
 	
 	public void testOutput() throws InvalidDDMSException {

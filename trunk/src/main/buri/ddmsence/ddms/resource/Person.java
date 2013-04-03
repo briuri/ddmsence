@@ -167,7 +167,7 @@ public final class Person extends AbstractRoleEntity {
 		if (!getDDMSVersion().isAtLeast("5.0"))
 			Util.requireBoundedChildCount(getXOMElement(), AFFILIATION_NAME, 0, 1);
 		if (getDDMSVersion().isAtLeast("4.0.1") && !getExtensibleAttributes().isEmpty())
-			throw new InvalidDDMSException("ddms:" + getName() + " cannot have extensible attributes after DDMS 3.1.");
+			throw new InvalidDDMSException("ddms:" + getName() + " must not have extensible attributes after DDMS 3.1.");
 		super.validate();
 	}
 

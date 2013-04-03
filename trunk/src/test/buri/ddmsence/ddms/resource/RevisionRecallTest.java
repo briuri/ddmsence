@@ -269,17 +269,17 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			// Both text AND links/details
 			builder = getBaseBuilder();
 			builder.setValue(TEST_VALUE);
-			getInstance(builder, "A ddms:revisionRecall element cannot have both");
+			getInstance(builder, "A ddms:revisionRecall element must not have both");
 			
 			// Links without security attributes
 			builder = getBaseBuilder();
 			builder.getLinks().get(0).setSecurityAttributes(null);
-			getInstance(builder, "classification is required.");
+			getInstance(builder, "classification must exist.");
 
 			// Missing revisionID
 			builder = getBaseBuilder();
 			builder.setRevisionID(null);
-			getInstance(builder, "revision ID is required.");
+			getInstance(builder, "revision ID must exist.");
 
 			// Missing revisionType
 			builder = getBaseBuilder();
@@ -301,7 +301,7 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 				// Invalid otherNetwork
 				builder = getBaseBuilder();
 				builder.setOtherNetwork(TEST_OTHER_NETWORK);				
-				getInstance(builder, "The otherNetwork attribute cannot");
+				getInstance(builder, "The otherNetwork attribute must not ");
 			}
 		}
 	}
@@ -405,7 +405,7 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 		builder.getLinks().clear();
 		builder.getDetails().clear();		
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(builder, "The revisionRecall element cannot");
+		getInstance(builder, "The revisionRecall element must not ");
 	}
 	
 	public void testOutput() throws InvalidDDMSException {

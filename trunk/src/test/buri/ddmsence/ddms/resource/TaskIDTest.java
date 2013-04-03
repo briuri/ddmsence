@@ -252,7 +252,7 @@ public class TaskIDTest extends AbstractBaseTestCase {
 			// Missing value
 			builder = getBaseBuilder();
 			builder.setValue(null);
-			getInstance(builder, "value is required.");
+			getInstance(builder, "value must exist.");
 
 			if (!version.isAtLeast("5.0")) {
 				// Bad network
@@ -264,7 +264,7 @@ public class TaskIDTest extends AbstractBaseTestCase {
 				// Invalid otherNetwork
 				builder = getBaseBuilder();
 				builder.setOtherNetwork(TEST_OTHER_NETWORK);				
-				getInstance(builder, "The otherNetwork attribute cannot");
+				getInstance(builder, "The otherNetwork attribute must not ");
 			}
 		}
 	}
@@ -320,7 +320,7 @@ public class TaskIDTest extends AbstractBaseTestCase {
 	
 	public void testVersionSpecific() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(getFixtureElement(), "The taskID element cannot");
+		getInstance(getFixtureElement(), "The taskID element must not ");
 	}
 
 	public void testOutput() throws InvalidDDMSException {

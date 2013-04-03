@@ -213,7 +213,7 @@ public class NoticeListTest extends AbstractBaseTestCase {
 			// No attributes
 			NoticeList.Builder builder = getBaseBuilder();
 			builder.setSecurityAttributes(null);
-			getInstance(builder, "classification is required");
+			getInstance(builder, "classification must exist");
 			
 			// Null notice parameter
 			try {
@@ -263,7 +263,7 @@ public class NoticeListTest extends AbstractBaseTestCase {
 	}
 	
 	public void testVersionSpecific() throws InvalidDDMSException {
-		// Implicit, since 1 Notice is required and that requires DDMS 4.0.1 or greater.
+		// Implicit, since 1 Notice must exist and that requires DDMS 4.0.1 or greater.
 	}
 	
 	public void testOutput() throws InvalidDDMSException {

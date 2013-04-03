@@ -216,7 +216,7 @@ public class AccessTest extends AbstractBaseTestCase {
 			// Missing security attributes
 			Access.Builder builder = getBaseBuilder();
 			builder.setSecurityAttributes(null);
-			getInstance(builder, "classification is required.");
+			getInstance(builder, "classification must exist.");
 		}
 	}
 

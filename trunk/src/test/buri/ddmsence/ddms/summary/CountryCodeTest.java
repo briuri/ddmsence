@@ -180,12 +180,12 @@ public class CountryCodeTest extends AbstractBaseTestCase {
 			// Missing qualifier
 			CountryCode.Builder builder = getBaseBuilder();
 			builder.setQualifier(null);
-			getInstance(builder, getTestQualifierName() + " attribute is required.");
+			getInstance(builder, getTestQualifierName() + " attribute must exist.");
 
 			// Missing value
 			builder = getBaseBuilder();
 			builder.setValue(null);
-			getInstance(builder, getTestValueName() + " attribute is required.");
+			getInstance(builder, getTestValueName() + " attribute must exist.");
 			
 			// GENC tests are tested in GeographicIdentifier.
 		}

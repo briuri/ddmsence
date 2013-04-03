@@ -165,7 +165,7 @@ public class TitleTest extends AbstractBaseTestCase {
 			// Missing child text
 			Title.Builder builder = getBaseBuilder();
 			builder.setValue(null);
-			getInstance(builder, "title value is required");
+			getInstance(builder, "title value must exist");
 		}
 	}
 	

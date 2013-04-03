@@ -319,7 +319,7 @@ public class SecurityTest extends AbstractBaseTestCase {
 		Security.Builder builder = getBaseBuilder();
 		builder.setNoticeList(null);
 		DDMSVersion.setCurrentVersion("5.0");
-		getInstance(builder, "The security element cannot be used");
+		getInstance(builder, "The security element must not be used");
 		
 		// No excludeFromRollup in 2.0
 		DDMSVersion.setCurrentVersion("2.0");
@@ -330,7 +330,7 @@ public class SecurityTest extends AbstractBaseTestCase {
 		Util.addAttribute(element, icPrefix, "classification", icNamespace, "U");
 		Util.addAttribute(element, icPrefix, "ownerProducer", icNamespace, "USA");
 		Util.addAttribute(element, icPrefix, "excludeFromRollup", icNamespace, "true");
-		getInstance(element, "The excludeFromRollup attribute cannot be used");
+		getInstance(element, "The excludeFromRollup attribute must not be used");
 	}
 	
 	public void testOutput() throws InvalidDDMSException {

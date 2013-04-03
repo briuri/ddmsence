@@ -199,7 +199,7 @@ public class CategoryTest extends AbstractBaseTestCase {
 			// Missing label
 			Category.Builder builder = getBaseBuilder();
 			builder.setLabel(null);
-			getInstance(builder, "label attribute is required.");	
+			getInstance(builder, "label attribute must exist.");	
 
 			// Qualifier not URI
 			builder = getBaseBuilder();
@@ -251,14 +251,14 @@ public class CategoryTest extends AbstractBaseTestCase {
 		// No security attributes in DDMS 3.1
 		Category.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("3.1");
-		getInstance(builder, "Security attributes cannot be applied");
+		getInstance(builder, "Security attributes must not be applied");
 		
 		// No attributes in 2.0
 		DDMSVersion.setCurrentVersion("2.0");
 		ExtensibleAttributes attributes = ExtensibleAttributesTest.getFixture();
 		builder = getBaseBuilder();
 		builder.setExtensibleAttributes(new ExtensibleAttributes.Builder(attributes));
-		getInstance(builder, "xs:anyAttribute cannot be applied");
+		getInstance(builder, "xs:anyAttribute must not be applied");
 
 		DDMSVersion version = DDMSVersion.setCurrentVersion("3.0");
 

@@ -179,12 +179,12 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 			// Missing qualifier
 			SubDivisionCode.Builder builder = getBaseBuilder();
 			builder.setQualifier(null);
-			getInstance(builder, getTestQualifierName() + " attribute is required.");
+			getInstance(builder, getTestQualifierName() + " attribute must exist.");
 
 			// Missing value
 			builder = getBaseBuilder();
 			builder.setValue(null);
-			getInstance(builder, getTestValueName() + " attribute is required.");
+			getInstance(builder, getTestValueName() + " attribute must exist.");
 		}
 	}
 	
@@ -222,7 +222,7 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 	public void testVersionSpecific() throws InvalidDDMSException {
 		SubDivisionCode.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(builder, "The subDivisionCode element cannot be used");
+		getInstance(builder, "The subDivisionCode element must not be used");
 	}
 
 	public void testOutput() throws InvalidDDMSException {

@@ -784,17 +784,17 @@ public class ResourceTest extends AbstractBaseTestCase {
 				// Missing resourceHeader
 				Resource.Builder builder = getBaseBuilder();
 				builder.setResourceElement(null);
-				getInstance(builder, "resourceElement is required.");
+				getInstance(builder, "resourceElement must exist.");
 
 				// Missing createDate
 				builder = getBaseBuilder();
 				builder.setCreateDate(null);
-				getInstance(builder, "createDate is required.");
+				getInstance(builder, "createDate must exist.");
 
 				// Invalid createDate
 				builder = getBaseBuilder();
 				builder.setCreateDate("soon");
-				getInstance(builder, "The ism:createDate attribute is not in a valid");
+				getInstance(builder, "The ism:createDate attribute must adhere to a valid");
 
 				// Almost valid createDate
 				builder = getBaseBuilder();
@@ -804,14 +804,14 @@ public class ResourceTest extends AbstractBaseTestCase {
 				// Missing ISM DESVersion
 				builder = getBaseBuilder();
 				builder.setIsmDESVersion(null);
-				getInstance(builder, "ism:DESVersion is required.");
+				getInstance(builder, "ism:DESVersion must exist.");
 			}
 
 			if (isAtLeast401 && !isAtLeast50) {
 				// Missing NTK DESVersion
 				Resource.Builder builder = getBaseBuilder();
 				builder.setNtkDESVersion(null);
-				getInstance(builder, "ntk:DESVersion is required.");
+				getInstance(builder, "ntk:DESVersion must exist.");
 			}
 
 			// Missing identifier
@@ -954,25 +954,25 @@ public class ResourceTest extends AbstractBaseTestCase {
 		DDMSVersion.setCurrentVersion("3.0");
 		Resource.Builder builder = getBaseBuilder();
 		builder.setCompliesWiths(TEST_ISM_COMPLIES_WITH);
-		getInstance(builder, "The compliesWith attribute cannot");
+		getInstance(builder, "The compliesWith attribute must not");
 
 		// ISM/NTK in DDMS 5.0
 		DDMSVersion.setCurrentVersion("5.0");
 		builder = getBaseBuilder();
 		builder.setCreateDate("2012-01-01");
-		getInstance(builder, "The resource cannot have ISM");
+		getInstance(builder, "The resource must not have ISM");
 
 		// Extensible Elements in DDMS 5.0
 		DDMSVersion.setCurrentVersion("5.0");
 		builder = getBaseBuilder();
 		builder.getExtensibleElements().get(0).setXml(ExtensibleElementTest.getFixtureElement().toXML());
-		getInstance(builder, "The resource cannot have extensible");
+		getInstance(builder, "The resource must not have extensible");
 
 		// Extensible Attributes in DDMS 5.0
 		DDMSVersion.setCurrentVersion("5.0");
 		builder = getBaseBuilder();
 		builder.setExtensibleAttributes(new ExtensibleAttributes.Builder(ExtensibleAttributesTest.getFixture()));
-		getInstance(builder, "The resource cannot have extensible");
+		getInstance(builder, "The resource must not have extensible");
 	}
 
 	public void testOutput() throws InvalidDDMSException {
@@ -1132,7 +1132,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 
 		// Transform back to 2.0 fails on 3.0-specific fields
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(builder, "The Unknown element cannot");
+		getInstance(builder, "The Unknown element must not");
 
 		// Wiping of 3.0-specific fields works
 		builder.getPointOfContacts().clear();
@@ -1147,7 +1147,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 
 		// Transform up to 3.0 fails on 3.0-specific fields
 		DDMSVersion.setCurrentVersion("3.0");
-		getInstance(builder, "resourceElement is required");
+		getInstance(builder, "resourceElement must exist");
 
 		// Adding 3.0-specific fields works
 		builder.setResourceElement(getTestResourceElement());
@@ -1202,7 +1202,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 
 		// Transform up to 5.0 fails on 4.1-specific fields
 		DDMSVersion.setCurrentVersion("5.0");
-		getInstance(builder, "The security element cannot");
+		getInstance(builder, "The security element must not");
 
 		// Adding 5.0-specific fields works
 		builder.setResourceElement(null);
@@ -1394,7 +1394,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		Resource.Builder builder = getBaseBuilder();
 		builder.getExtensibleElements().get(0).setXml(ExtensibleElementTest.getFixtureElement().toXML());
 		builder.getExtensibleElements().get(1).setXml(ExtensibleElementTest.getFixtureElement().toXML());
-		getInstance(builder, "Only 1 extensible element is allowed in DDMS 2.0.");
+		getInstance(builder, "Only 1 extensible element must exist in DDMS 2.0.");
 
 		// Okay later
 		DDMSVersion.setCurrentVersion("3.0");

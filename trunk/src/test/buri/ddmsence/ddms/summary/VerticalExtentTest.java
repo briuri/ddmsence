@@ -192,7 +192,7 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 			// Missing UOM
 			VerticalExtent.Builder builder = getBaseBuilder();
 			builder.setUnitOfMeasure(null);
-			getInstance(builder, "unitOfMeasure is required.");
+			getInstance(builder, "unitOfMeasure must exist.");
 
 			// Invalid UOM
 			builder = getBaseBuilder();
@@ -202,7 +202,7 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 			// Missing Datum
 			builder = getBaseBuilder();
 			builder.setDatum(null);
-			getInstance(builder, "datum is required");
+			getInstance(builder, "datum must exist");
 			
 			// Invalid Datum
 			builder = getBaseBuilder();
@@ -212,12 +212,12 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 			// Missing MinVerticalExtent
 			builder = getBaseBuilder();
 			builder.setMinVerticalExtent(null);
-			getInstance(builder, "A ddms:verticalExtent requires a minimum and maximum extent value.");
+			getInstance(builder, "A ddms:verticalExtent must have a minimum and maximum extent value.");
 
 			// Missing MaxVerticalExtent
 			builder = getBaseBuilder();
 			builder.setMaxVerticalExtent(null);
-			getInstance(builder, "A ddms:verticalExtent requires a minimum and maximum extent value.");
+			getInstance(builder, "A ddms:verticalExtent must have a minimum and maximum extent value.");
 			
 			// MinVerticalExtent is not less than MaxVerticalExtent
 			builder = getBaseBuilder();
@@ -324,7 +324,7 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 		DDMSVersion.setCurrentVersion("4.1");
 		VerticalExtent.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("5.0");
-		getInstance(builder, "The verticalExtent element cannot be used");
+		getInstance(builder, "The verticalExtent element must not be used");
 	}
 	
 	public void testOutput() throws InvalidDDMSException {

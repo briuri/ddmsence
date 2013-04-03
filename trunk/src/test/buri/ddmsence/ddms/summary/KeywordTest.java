@@ -181,7 +181,7 @@ public class KeywordTest extends AbstractBaseTestCase {
 
 			// Missing value
 			Element element = Util.buildDDMSElement(Keyword.getName(version), null);
-			getInstance(element, "value attribute is required.");
+			getInstance(element, "value attribute must exist.");
 		}
 	}
 
@@ -220,14 +220,14 @@ public class KeywordTest extends AbstractBaseTestCase {
 		// No security attributes in DDMS 3.1
 		Keyword.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("3.1");
-		getInstance(builder, "Security attributes cannot be applied");
+		getInstance(builder, "Security attributes must not be applied");
 		
 		// No attributes in 2.0
 		DDMSVersion.setCurrentVersion("2.0");
 		ExtensibleAttributes attributes = ExtensibleAttributesTest.getFixture();
 		builder = getBaseBuilder();
 		builder.setExtensibleAttributes(new ExtensibleAttributes.Builder(attributes));
-		getInstance(builder, "xs:anyAttribute cannot be applied");
+		getInstance(builder, "xs:anyAttribute must not be applied");
 		
 		DDMSVersion version = DDMSVersion.setCurrentVersion("3.0");
 		Attribute attr = new Attribute("ddms:value", version.getNamespace(), "dog");

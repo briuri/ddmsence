@@ -227,7 +227,7 @@ public class PersonTest extends AbstractBaseTestCase {
 			// Missing surname
 			builder = getBaseBuilder();
 			builder.setSurname(null);
-			getInstance(builder, "surname is required");
+			getInstance(builder, "surname must exist");
 			
 			// Too many affiliations
 			if (!version.isAtLeast("5.0")) {
@@ -241,7 +241,7 @@ public class PersonTest extends AbstractBaseTestCase {
 				new Person(null, null, null, null, null, null);
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "surname is required");
+				expectMessage(e, "surname must exist");
 			}
 		}
 	}
@@ -291,7 +291,7 @@ public class PersonTest extends AbstractBaseTestCase {
 		DDMSVersion.setCurrentVersion("4.0.1");
 		Person.Builder builder = getBaseBuilder();
 		builder.setExtensibleAttributes(new ExtensibleAttributes.Builder(attr));
-		getInstance(builder, "ddms:person cannot have");
+		getInstance(builder, "ddms:person must not have");
 	}
 	
 	public void testOutput() throws InvalidDDMSException {

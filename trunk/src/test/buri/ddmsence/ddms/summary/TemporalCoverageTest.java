@@ -391,7 +391,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 		DDMSVersion.setCurrentVersion("3.1");
 		TemporalCoverage.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(builder, "Security attributes cannot be applied");
+		getInstance(builder, "Security attributes must not be applied");
 		
 		// No approximable before 4.1
 		DDMSVersion.setCurrentVersion("4.1");
@@ -400,7 +400,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 		builder.setApproximableStart(getTestApproximableStart());
 		DDMSVersion.setCurrentVersion("3.0");
 		
-		getInstance(builder, "The approximableStart element cannot be used");
+		getInstance(builder, "The approximableStart element must not be used");
 	}
 	
 	public void testOutput() throws InvalidDDMSException {

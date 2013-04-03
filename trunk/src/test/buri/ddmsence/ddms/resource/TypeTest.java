@@ -192,7 +192,7 @@ public class TypeTest extends AbstractBaseTestCase {
 			// Missing qualifier
 			Type.Builder builder = getBaseBuilder();
 			builder.setQualifier(null);
-			getInstance(builder, "qualifier attribute is required");
+			getInstance(builder, "qualifier attribute must exist");
 		}
 	}
 
@@ -255,13 +255,13 @@ public class TypeTest extends AbstractBaseTestCase {
 		Type.Builder builder = getBaseBuilder();
 		builder.setDescription(null);
 		DDMSVersion.setCurrentVersion("3.1");
-		getInstance(builder, "Security attributes cannot be applied");
+		getInstance(builder, "Security attributes must not be applied");
 
 		// No description until DDMS 4.0.1
 		DDMSVersion.setCurrentVersion("3.1");
 		builder = getBaseBuilder();
 		builder.setDescription(TEST_DESCRIPTION);
-		getInstance(builder, "This component cannot contain description");
+		getInstance(builder, "This component must not contain description");
 	}
 
 	public void testOutput() throws InvalidDDMSException {

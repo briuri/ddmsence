@@ -190,7 +190,7 @@ public class SystemNameTest extends AbstractBaseTestCase {
 			// Missing security attributes
 			builder = getBaseBuilder();
 			builder.setSecurityAttributes(null);
-			getInstance(builder, "classification is required.");
+			getInstance(builder, "classification must exist.");
 		}
 	}
 

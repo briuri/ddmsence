@@ -197,7 +197,7 @@ public class GroupValueTest extends AbstractBaseTestCase {
 			// Missing security attributes
 			GroupValue.Builder builder = getBaseBuilder();
 			builder.setSecurityAttributes(null);
-			getInstance(builder, "classification is required.");
+			getInstance(builder, "classification must exist.");
 		}
 	}
 

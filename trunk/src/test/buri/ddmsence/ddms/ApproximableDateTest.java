@@ -290,7 +290,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		// TODO: Extend coverage
 		ApproximableDate.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(builder, "The acquiredOn element cannot");
+		getInstance(builder, "The acquiredOn element must not ");
 	}
 
 	public void testOutput() throws InvalidDDMSException {

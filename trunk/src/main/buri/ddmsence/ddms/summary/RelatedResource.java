@@ -208,7 +208,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 			throw new InvalidDDMSException("At least 1 link must exist.");
 		for (Link link : getLinks()) {
 			if (!link.getSecurityAttributes().isEmpty())
-				throw new InvalidDDMSException("Security attributes cannot be applied to links in a related resource.");
+				throw new InvalidDDMSException("Security attributes must not be applied to links in a related resource.");
 		}
 		super.validate();
 	}

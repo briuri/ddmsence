@@ -142,9 +142,9 @@ public final class Organization extends AbstractRoleEntity {
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Organization.getName(getDDMSVersion()));
 		if (!getDDMSVersion().isAtLeast("4.0.1") && !Util.isEmpty(getAcronym()))
-			throw new InvalidDDMSException("An organization cannot have an acronym until DDMS 4.0.1 or later.");
+			throw new InvalidDDMSException("An organization must not have an acronym until DDMS 4.0.1 or later.");
 		if (getDDMSVersion().isAtLeast("5.0") && !getExtensibleAttributes().isEmpty())
-			throw new InvalidDDMSException("ddms:" + getName() + " cannot have extensible attributes after DDMS 4.1.");
+			throw new InvalidDDMSException("ddms:" + getName() + " must not have extensible attributes after DDMS 4.1.");
 		super.validate();
 	}
 

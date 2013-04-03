@@ -293,7 +293,7 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 	public void testVersionSpecific() throws InvalidDDMSException {
 		NonStateActor.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("2.0");
-		getInstance(builder, "The nonStateActor element cannot be used");
+		getInstance(builder, "The nonStateActor element must not be used");
 	}
 
 	public void testOutput() throws InvalidDDMSException {
