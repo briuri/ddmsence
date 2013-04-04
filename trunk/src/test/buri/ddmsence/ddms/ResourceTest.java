@@ -448,13 +448,15 @@ public class ResourceTest extends AbstractBaseTestCase {
 		text.append(buildOutput(isHTML, temporalPrefix + "name", "Unknown"));
 		text.append(buildOutput(isHTML, temporalPrefix + "start", "1979-09-15"));
 		text.append(buildOutput(isHTML, temporalPrefix + "end", "Not Applicable"));
-		text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.id", "IDValue"));
-		text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.srsName",
-			"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D"));
-		text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.srsDimension", "10"));
-		text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.axisLabels", "A B C"));
-		text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.uomLabels", "Meter Meter Meter"));
-		text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.pos", "32.1 40.1"));
+		if (!isAtLeast50) {
+			text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.id", "IDValue"));
+			text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.srsName",
+				"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D"));
+			text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.srsDimension", "10"));
+			text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.axisLabels", "A B C"));
+			text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.uomLabels", "Meter Meter Meter"));
+			text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.pos", "32.1 40.1"));
+		}
 		text.append(buildOutput(isHTML, relatedPrefix + "relationship", "http://purl.org/dc/terms/references"));
 		text.append(buildOutput(isHTML, relatedPrefix + "direction", "outbound"));
 		text.append(buildOutput(isHTML, relatedPrefix + "qualifier", "http://purl.org/dc/terms/URI"));
@@ -462,7 +464,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		text.append(buildOutput(isHTML, relatedPrefix + "link.type", "locator"));
 		text.append(buildOutput(isHTML, relatedPrefix + "link.href", "http://en.wikipedia.org/wiki/Tank"));
 		text.append(buildOutput(isHTML, relatedPrefix + "link.role", "role"));
-
+		
 		if (isAtLeast401) {
 			text.append(buildOutput(isHTML, "resourceManagement.processingInfo",
 				"XSLT Transformation to convert DDMS 2.0 to DDMS 3.1."));
@@ -604,28 +606,30 @@ public class ResourceTest extends AbstractBaseTestCase {
 			xml.append("\t\t</ddms:TimePeriod>\n");
 		}
 		xml.append("\t</ddms:temporalCoverage>\n");
-		xml.append("\t<ddms:geospatialCoverage>\n");
-		if (isAtLeast401) {
-			xml.append("\t\t<ddms:boundingGeometry>\n");
-			xml.append("\t\t\t<gml:Point xmlns:gml=\"").append(version.getGmlNamespace()).append("\" ");
-			xml.append("gml:id=\"IDValue\" srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" ");
-			xml.append("srsDimension=\"10\" axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\">\n");
-			xml.append("\t\t\t\t<gml:pos>32.1 40.1</gml:pos>\n");
-			xml.append("\t\t\t</gml:Point>\n");
-			xml.append("\t\t</ddms:boundingGeometry>\n");
+		if (!isAtLeast50) {
+			xml.append("\t<ddms:geospatialCoverage>\n");
+			if (isAtLeast401) {
+				xml.append("\t\t<ddms:boundingGeometry>\n");
+				xml.append("\t\t\t<gml:Point xmlns:gml=\"").append(version.getGmlNamespace()).append("\" ");
+				xml.append("gml:id=\"IDValue\" srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" ");
+				xml.append("srsDimension=\"10\" axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\">\n");
+				xml.append("\t\t\t\t<gml:pos>32.1 40.1</gml:pos>\n");
+				xml.append("\t\t\t</gml:Point>\n");
+				xml.append("\t\t</ddms:boundingGeometry>\n");
+			}
+			else {
+				xml.append("\t\t<ddms:GeospatialExtent>\n");
+				xml.append("\t\t\t<ddms:boundingGeometry>\n");
+				xml.append("\t\t\t\t<gml:Point xmlns:gml=\"").append(version.getGmlNamespace()).append("\" ");
+				xml.append("gml:id=\"IDValue\" srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" ");
+				xml.append("srsDimension=\"10\" axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\">\n");
+				xml.append("\t\t\t\t\t<gml:pos>32.1 40.1</gml:pos>\n");
+				xml.append("\t\t\t\t</gml:Point>\n");
+				xml.append("\t\t\t</ddms:boundingGeometry>\n");
+				xml.append("\t\t</ddms:GeospatialExtent>\n");
+			}
+			xml.append("\t</ddms:geospatialCoverage>\n");
 		}
-		else {
-			xml.append("\t\t<ddms:GeospatialExtent>\n");
-			xml.append("\t\t\t<ddms:boundingGeometry>\n");
-			xml.append("\t\t\t\t<gml:Point xmlns:gml=\"").append(version.getGmlNamespace()).append("\" ");
-			xml.append("gml:id=\"IDValue\" srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" ");
-			xml.append("srsDimension=\"10\" axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\">\n");
-			xml.append("\t\t\t\t\t<gml:pos>32.1 40.1</gml:pos>\n");
-			xml.append("\t\t\t\t</gml:Point>\n");
-			xml.append("\t\t\t</ddms:boundingGeometry>\n");
-			xml.append("\t\t</ddms:GeospatialExtent>\n");
-		}
-		xml.append("\t</ddms:geospatialCoverage>\n");
 		if (isAtLeast401) {
 			xml.append("\t<ddms:relatedResource ddms:relationship=\"http://purl.org/dc/terms/references\" ");
 			xml.append("ddms:direction=\"outbound\" ddms:qualifier=\"http://purl.org/dc/terms/URI\" ");
@@ -692,9 +696,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 				// Valid orders
 				builder = getBaseBuilder();
 				builder.getSubjectCoverages().add(new SubjectCoverage.Builder(SubjectCoverageTest.getFixture(1)));
-				builder.getGeospatialCoverages().add(
-					new GeospatialCoverage.Builder(GeospatialCoverageTest.getFixture(2)));
-				builder.getSubjectCoverages().add(new SubjectCoverage.Builder(SubjectCoverageTest.getFixture(3)));
+				builder.getSubjectCoverages().add(new SubjectCoverage.Builder(SubjectCoverageTest.getFixture(2)));
 				getInstance(builder, SUCCESS);
 			}
 			if (!version.isAtLeast("5.0")) {
@@ -841,15 +843,13 @@ public class ResourceTest extends AbstractBaseTestCase {
 				// Duplicate orders
 				builder = getBaseBuilder();
 				builder.getSubjectCoverages().add(new SubjectCoverage.Builder(SubjectCoverageTest.getFixture(1)));
-				builder.getGeospatialCoverages().add(
-					new GeospatialCoverage.Builder(GeospatialCoverageTest.getFixture(1)));
+				builder.getSubjectCoverages().add(new SubjectCoverage.Builder(SubjectCoverageTest.getFixture(1)));
 				getInstance(builder, "The ddms:order attributes throughout this resource");
 
 				// Skipped orders
 				builder = getBaseBuilder();
 				builder.getSubjectCoverages().add(new SubjectCoverage.Builder(SubjectCoverageTest.getFixture(1)));
-				builder.getGeospatialCoverages().add(
-					new GeospatialCoverage.Builder(GeospatialCoverageTest.getFixture(3)));
+				builder.getSubjectCoverages().add(new SubjectCoverage.Builder(SubjectCoverageTest.getFixture(3)));
 				getInstance(builder, "The ddms:order attributes throughout this resource");
 			}
 			else {
@@ -1213,6 +1213,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		builder.setSecurityAttributes(null);
 		builder.setNoticeAttributes(null);
 		builder.setSecurity(null);
+		builder.getGeospatialCoverages().clear();
 		getInstance(builder, SUCCESS);
 	}
 

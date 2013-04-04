@@ -53,6 +53,8 @@ import buri.ddmsence.ddms.security.ism.ISMVocabulary;
  * <li><code>&lt;versionNumber&gt;.ism.xmlNamespace</code>: i.e. "urn:us:gov:ic:ism"</li>
  * <li><code>&lt;versionNumber&gt;.ntk.xmlNamespace</code>: i.e. "urn:us:gov:ic:ntk"</li>
  * <li><code>&lt;versionNumber&gt;.ntk.xsdLocation</code>: i.e. "/schemas/5.0/NTK/IC-NTK.xsd"</li>
+ * <li><code>&lt;versionNumber&gt;.tspi.xmlNamespace</code>: i.e. "http://metadata.ces.mil/mdr/ns/GSIP/tspi/2.0"</li>
+ * <li><code>&lt;versionNumber&gt;.tspi.xsdLocation</code>: i.e. "/schemas/5.0/tspi/2.0.0/tspi.xsd"</li>
  * <li><code>&lt;versionNumber&gt;.virt.xmlNamespace</code>: i.e. "urn:us:gov:ic:virt"</li>
  * <li><code>&lt;versionNumber&gt;.xlink.xmlNamespace</code>: i.e. "http://www.w3.org/1999/xlink"</li>
  * 
@@ -91,6 +93,8 @@ public class DDMSVersion {
 	private String _ismNamespace;
 	private String _ntkNamespace;
 	private String _ntkSchema;
+	private String _tspiNamespace;
+	private String _tspiSchema;
 	private String _virtNamespace;
 	private String _xlinkNamespace;
 
@@ -120,6 +124,8 @@ public class DDMSVersion {
 		_ismNamespace = PropertyReader.getProperty(version + ".ism.xmlNamespace");
 		_ntkNamespace = PropertyReader.getProperty(version + ".ntk.xmlNamespace");
 		_ntkSchema = PropertyReader.getProperty(version + ".ntk.xsdLocation");
+		_tspiNamespace = PropertyReader.getProperty(version + ".tspi.xmlNamespace");
+		_tspiSchema = PropertyReader.getProperty(version + ".tspi.xsdLocation");
 		_virtNamespace = PropertyReader.getProperty(version + ".virt.xmlNamespace");
 		_xlinkNamespace = PropertyReader.getProperty(version + ".xlink.xmlNamespace");
 	}
@@ -211,7 +217,8 @@ public class DDMSVersion {
 		for (DDMSVersion version : versions) {
 			if (version.getNamespace().equals(namespace) || version.getIsmNamespace().equals(namespace)
 				|| version.getNtkNamespace().equals(namespace) || version.getGmlNamespace().equals(namespace)
-				|| version.getVirtNamespace().equals(namespace) || version.getXlinkNamespace().equals(namespace)) {
+				|| version.getTspiNamespace().equals(namespace) || version.getVirtNamespace().equals(namespace)
+				|| version.getXlinkNamespace().equals(namespace)) {
 				return (version);
 			}
 		}
@@ -336,6 +343,20 @@ public class DDMSVersion {
 		return _ntkSchema;
 	}
 
+	/**
+	 * Accessor for the tspi namespace
+	 */
+	public String getTspiNamespace() {
+		return _tspiNamespace;
+	}
+	
+	/**
+	 * Accessor for the tspi schema location
+	 */
+	public String getTspiSchema() {
+		return _tspiSchema;
+	}
+	
 	/**
 	 * Accessor for the virt namespace
 	 */

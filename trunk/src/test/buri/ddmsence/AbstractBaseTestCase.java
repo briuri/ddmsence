@@ -58,6 +58,7 @@ public abstract class AbstractBaseTestCase extends TestCase {
 	protected static final String DEFAULT_GML_PREFIX = PropertyReader.getPrefix("gml");
 	protected static final String DEFAULT_ISM_PREFIX = PropertyReader.getPrefix("ism");
 	protected static final String DEFAULT_NTK_PREFIX = PropertyReader.getPrefix("ntk");
+	protected static final String DEFAULT_TSPI_PREFIX = PropertyReader.getPrefix("tspi");
 
 	/**
 	 * Resets the in-use version of DDMS.
@@ -84,11 +85,9 @@ public abstract class AbstractBaseTestCase extends TestCase {
 		if (validDocumentFile == null)
 			return;
 		try {
-			DDMSReader reader = null;
 			for (String sVersion : getSupportedVersions()) {
 				if (getValidElement(sVersion) == null) {
-					if (reader == null)
-						reader = new DDMSReader();
+					DDMSReader reader = new DDMSReader(DDMSVersion.getVersionFor(sVersion));
 					File file = new File(PropertyReader.getProperty("test.unit.data") + sVersion, validDocumentFile);
 					if (file.exists()) {
 						Element element = reader.getElement(file);
@@ -112,8 +111,6 @@ public abstract class AbstractBaseTestCase extends TestCase {
 	 * @param message the beginning of the expected message (enough to confirm its accuracy).
 	 */
 	protected void expectMessage(Exception e, String message) {
-		if (e.getMessage().indexOf(" must ") == -1)
-			System.out.println(e.getMessage());
 		if (!e.getMessage().startsWith(message)) {
 			System.out.println(DDMSVersion.getCurrentVersion() + ": " + e.getMessage());
 			fail("Test failed for the wrong reason.");

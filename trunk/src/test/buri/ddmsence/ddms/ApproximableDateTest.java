@@ -287,7 +287,6 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 	}
 
 	public void testVersionSpecific() {
-		// TODO: Extend coverage
 		ApproximableDate.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("2.0");
 		getInstance(builder, "The acquiredOn element must not ");

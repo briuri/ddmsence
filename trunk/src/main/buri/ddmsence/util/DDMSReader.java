@@ -70,18 +70,16 @@ public class DDMSReader {
 	 * 
 	 * Creates a DDMSReader which can process various versions of DDMS and GML
 	 */
-	public DDMSReader() throws SAXException {
+	public DDMSReader(DDMSVersion version) throws SAXException {
 		_reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xml.reader.class"));
 		StringBuffer schemas = new StringBuffer();
 		List<String> versions = new ArrayList<String>(DDMSVersion.getSupportedVersions());
 		Collections.reverse(versions);
 		Set<String> processedNamespaces = new HashSet<String>();
-		for (String versionString : versions) {
-			DDMSVersion version = DDMSVersion.getVersionFor(versionString);
-			loadSchema(version.getNamespace(), version.getSchema(), schemas, processedNamespaces);
-			loadSchema(version.getGmlNamespace(), version.getGmlSchema(), schemas, processedNamespaces);
-			loadSchema(version.getNtkNamespace(), version.getNtkSchema(), schemas, processedNamespaces);
-		}
+		loadSchema(version.getNamespace(), version.getSchema(), schemas, processedNamespaces);
+		loadSchema(version.getGmlNamespace(), version.getGmlSchema(), schemas, processedNamespaces);
+		loadSchema(version.getNtkNamespace(), version.getNtkSchema(), schemas, processedNamespaces);
+		loadSchema(version.getTspiNamespace(), version.getTspiSchema(), schemas, processedNamespaces);
 		getReader().setFeature(PROP_XERCES_VALIDATION, true);
 		getReader().setFeature(PROP_XERCES_SCHEMA_VALIDATION, true);
 		getReader().setProperty(PROP_XERCES_EXTERNAL_LOCATION, schemas.toString().trim());
@@ -128,12 +126,13 @@ public class DDMSReader {
 	 * loads it. This method allows the data-driven constructors for a Resource to do
 	 * a final confirmation that none of the data breaks any schema rules.
 	 * 
+	 * @param version the DDMSVersion of the resource
 	 * @param resourceXML the XML of the resource to check
 	 * @throws InvalidDDMSException if the resource is invalid
 	 */
-	public static void validateWithSchema(String resourceXML) throws InvalidDDMSException {
+	public static void validateWithSchema(DDMSVersion version, String resourceXML) throws InvalidDDMSException {
 		try {
-			new DDMSReader().getElement(resourceXML);
+			new DDMSReader(version).getElement(resourceXML);
 		}
 		catch (SAXException e) {
 			throw new InvalidDDMSException(e);
