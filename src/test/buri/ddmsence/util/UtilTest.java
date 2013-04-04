@@ -992,8 +992,8 @@ public class UtilTest extends AbstractBaseTestCase {
 	}
 
 	public void testBuildXmlDocument() throws Exception {
-		File testFile = new File(PropertyReader.getProperty("test.unit.data") + "3.0/", "resource.xml");
-		String expectedXmlOutput = new DDMSReader().getDDMSResource(testFile).toXML();
+		File testFile = new File(PropertyReader.getProperty("test.unit.data") + "5.0/", "resource.xml");
+		String expectedXmlOutput = new DDMSReader(DDMSVersion.getVersionFor("5.0")).getDDMSResource(testFile).toXML();
 		assertEquals(expectedXmlOutput, Util.buildXmlDocument(new FileInputStream(testFile)).getRootElement().toXML());
 	}
 

@@ -593,7 +593,7 @@ public final class Resource extends AbstractBaseComponent {
 				element.appendChild(component.getXOMElementCopy());
 			}
 			setXOMElement(element, true);
-			DDMSReader.validateWithSchema(toXML());
+			DDMSReader.validateWithSchema(version, toXML());
 		}
 		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());

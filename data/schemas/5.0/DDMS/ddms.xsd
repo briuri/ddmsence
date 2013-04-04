@@ -2,8 +2,8 @@
 <xs:schema
    xmlns:common="urn:us:gov:ic:common"
    xmlns:ddms="urn:us:mil:ces:metadata:ddms:5"
-   xmlns:gml="http://www.opengis.net/gml/3.2"
    xmlns:ICISM="urn:us:gov:ic:ism"
+   xmlns:tspi="http://metadata.ces.mil/mdr/ns/GSIP/tspi/2.0"
    xmlns:virt="urn:us:gov:ic:virt"
    xmlns:xs="http://www.w3.org/2001/XMLSchema"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -16,9 +16,9 @@
    		As individual enhancements are added to the codebase, these schemas will be updated or replaced until DDMS 5.0 is fully supported.  
    -->
    
-   <xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="gml.xsd" />
    <xs:import namespace="urn:us:gov:ic:ism" schemaLocation="../ISM/IC-ISM.xsd" />
    <xs:import namespace="urn:us:gov:ic:virt" schemaLocation="../VIRT/VIRT.xsd" />
+   <xs:import namespace="http://metadata.ces.mil/mdr/ns/GSIP/tspi/2.0" schemaLocation="../tspi/2.0.0/tspi.xsd"/>
    <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="../w3/1999/xlink/xlink.xsd" />
    
    <xs:element name="affiliation" type="simpleTokenType" />
@@ -83,14 +83,7 @@
 
    <xs:group name="postalAddressGroup">
       <xs:sequence>
-         <xs:element name="street" type="xs:string" minOccurs="0" maxOccurs="6" />
-         <xs:element name="city" type="xs:string" minOccurs="0" />
-         <xs:choice minOccurs="0">
-            <xs:element name="state" type="xs:string" />
-            <xs:element name="province" type="xs:string" />
-         </xs:choice>
-         <xs:element name="postalCode" type="xs:string" minOccurs="0" />
-         <xs:element ref="ddms:countryCode" minOccurs="0" />
+	     <xs:element ref="tspi:AbstractPhysicalAddress"/>
       </xs:sequence>
    </xs:group>
 
@@ -188,10 +181,9 @@
       </xs:all>
    </xs:complexType>
    <xs:complexType name="BoundingGeometryType">
-      <xs:choice maxOccurs="unbounded">
-         <xs:element ref="gml:Polygon" />
-         <xs:element ref="gml:Point" />
-      </xs:choice>
+      <xs:simpleContent>
+         <xs:extension base="xs:string" />
+      </xs:simpleContent>
    </xs:complexType>
    <xs:complexType name="CompoundCategoryIdentifierType">
       <xs:attribute name="qualifier" type="xs:anyURI" use="optional" />

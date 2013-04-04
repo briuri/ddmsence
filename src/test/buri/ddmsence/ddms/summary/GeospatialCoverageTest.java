@@ -48,6 +48,8 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 	 */
 	public GeospatialCoverageTest() throws InvalidDDMSException {
 		super("geospatialCoverage.xml");
+		// TODO: Restore 5.0 after postalAddress is ready.
+		removeSupportedVersions("5.0");
 	}
 
 	/**

@@ -47,6 +47,8 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 	 */
 	public BoundingGeometryTest() throws InvalidDDMSException {
 		super("boundingGeometry.xml");
+		// TODO: Temporary removal until TSPI is online.
+		removeSupportedVersions("5.0");
 	}
 
 	/**
