@@ -172,6 +172,11 @@ public class USPSGeneralDeliveryOfficeTest extends AbstractBaseTestCase {
 			USPSGeneralDeliveryOffice.Builder builder = getBaseBuilder();
 			builder.setXml(xml);
 			getInstance(builder, "The action attribute must be one of");
+			
+			// Invalid XML
+			builder = getBaseBuilder();
+			builder.setXml("wrong");
+			getInstance(builder, "Could not create a valid element");
 		}
 	}
 
@@ -195,12 +200,21 @@ public class USPSGeneralDeliveryOfficeTest extends AbstractBaseTestCase {
 			assertEquals(elementComponent, builderComponent);
 			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
 
+			// Wrong class
+			assertFalse(elementComponent.equals(Integer.valueOf(1)));
+			
 			// Different values in each field
 			USPSGeneralDeliveryOffice.Builder builder = getBaseBuilder();
 			String xml = getExpectedXMLOutput();
 			xml = xml.replace("\"ADD\"", "\"DELETE\"");
 			builder.setXml(xml);
 			assertFalse(elementComponent.equals(builder.commit()));			
+			
+			builder = getBaseBuilder();
+			xml = getExpectedXMLOutput();
+			xml = xml.replace("20102", "20121");
+			builder.setXml(xml);
+			assertFalse(elementComponent.equals(builder.commit()));	
 		}
 	}
 

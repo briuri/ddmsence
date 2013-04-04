@@ -102,7 +102,7 @@ public class SchematronValidationTest extends AbstractBaseTestCase {
 			for (String sVersion : getSupportedVersions()) {
 				DDMSVersion version = DDMSVersion.getVersionFor(sVersion);
 				
-				// TODO: Fix this test for 5.0 when the new positions are available.
+				// TODO: Restore 5.0 after TSPI shapes are ready.
 				if (version.isAtLeast("5.0"))
 					continue;
 				Resource resource = versionToResourceMap.get(sVersion);

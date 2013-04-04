@@ -695,6 +695,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 
 				// Valid orders
 				builder = getBaseBuilder();
+				// TODO: Restore GeospatialCoverage checks after TSPI shapes are ready.
 				builder.getSubjectCoverages().add(new SubjectCoverage.Builder(SubjectCoverageTest.getFixture(1)));
 				builder.getSubjectCoverages().add(new SubjectCoverage.Builder(SubjectCoverageTest.getFixture(2)));
 				getInstance(builder, SUCCESS);
