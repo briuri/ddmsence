@@ -51,7 +51,6 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 	 */
 	public PostalAddressTest() throws InvalidDDMSException {
 		super("postalAddress.xml");
-		// TODO: Restore 5.0 after postalAddress is ready.
 		removeSupportedVersions("5.0");
 	}
 

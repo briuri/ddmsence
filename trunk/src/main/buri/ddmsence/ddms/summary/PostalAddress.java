@@ -26,9 +26,19 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.AbstractTspiAddress;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.summary.tspi.GeneralAddressClass;
+import buri.ddmsence.ddms.summary.tspi.IntersectionAddress;
+import buri.ddmsence.ddms.summary.tspi.LandmarkAddress;
+import buri.ddmsence.ddms.summary.tspi.TwoNumberAddressRange;
+import buri.ddmsence.ddms.summary.tspi.NumberedThoroughfareAddress;
+import buri.ddmsence.ddms.summary.tspi.USPSGeneralDeliveryOffice;
+import buri.ddmsence.ddms.summary.tspi.USPSPostalDeliveryBox;
+import buri.ddmsence.ddms.summary.tspi.USPSPostalDeliveryRoute;
+import buri.ddmsence.ddms.summary.tspi.UnnumberedThoroughfareAddress;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
@@ -83,7 +93,8 @@ public final class PostalAddress extends AbstractBaseComponent {
 	private String _province = null;
 	private String _postalCode = null;
 	private CountryCode _countryCode = null;
-
+	private AbstractTspiAddress _tspiAddress = null;
+	
 	private static final String STREET_NAME = "street";
 	private static final String CITY_NAME = "city";
 	private static final String STATE_NAME = "state";
@@ -99,23 +110,64 @@ public final class PostalAddress extends AbstractBaseComponent {
 	public PostalAddress(Element element) throws InvalidDDMSException {
 		try {
 			setXOMElement(element, false);
-			_streets = Util.getDDMSChildValues(element, STREET_NAME);
-			Element cityElement = element.getFirstChildElement(CITY_NAME, getNamespace());
-			if (cityElement != null)
-				_city = cityElement.getValue();
-			Element stateElement = element.getFirstChildElement(STATE_NAME, getNamespace());
-			if (stateElement != null)
-				_state = stateElement.getValue();
-			Element provinceElement = element.getFirstChildElement(PROVINCE_NAME, getNamespace());
-			if (provinceElement != null)
-				_province = provinceElement.getValue();
-			Element postalCodeElement = element.getFirstChildElement(POSTAL_CODE_NAME, getNamespace());
-			if (postalCodeElement != null)
-				_postalCode = postalCodeElement.getValue();
-			Element countryCodeElement = element.getFirstChildElement(CountryCode.getName(getDDMSVersion()),
-				getNamespace());
-			if (countryCodeElement != null)
-				_countryCode = new CountryCode(countryCodeElement);
+			if (!getDDMSVersion().isAtLeast("5.0")) {
+				_streets = Util.getDDMSChildValues(element, STREET_NAME);
+				Element cityElement = element.getFirstChildElement(CITY_NAME, getNamespace());
+				if (cityElement != null)
+					_city = cityElement.getValue();
+				Element stateElement = element.getFirstChildElement(STATE_NAME, getNamespace());
+				if (stateElement != null)
+					_state = stateElement.getValue();
+				Element provinceElement = element.getFirstChildElement(PROVINCE_NAME, getNamespace());
+				if (provinceElement != null)
+					_province = provinceElement.getValue();
+				Element postalCodeElement = element.getFirstChildElement(POSTAL_CODE_NAME, getNamespace());
+				if (postalCodeElement != null)
+					_postalCode = postalCodeElement.getValue();
+				Element countryCodeElement = element.getFirstChildElement(CountryCode.getName(getDDMSVersion()),
+					getNamespace());
+				if (countryCodeElement != null)
+					_countryCode = new CountryCode(countryCodeElement);
+			}
+			else {
+				Element generalAddressClassElement = element.getFirstChildElement(
+					GeneralAddressClass.getName(getDDMSVersion()), getNamespace());
+				if (generalAddressClassElement != null)
+					_tspiAddress = new GeneralAddressClass(generalAddressClassElement);
+				Element intersectionAddressElement = element.getFirstChildElement(
+					IntersectionAddress.getName(getDDMSVersion()), getNamespace());
+				if (intersectionAddressElement != null)
+					_tspiAddress = new IntersectionAddress(intersectionAddressElement);
+				Element landmarkAddressElement = element.getFirstChildElement(
+					LandmarkAddress.getName(getDDMSVersion()), getNamespace());
+				if (landmarkAddressElement != null)
+					_tspiAddress = new LandmarkAddress(landmarkAddressElement);
+				Element numberedThoroughfareAddressElement = element.getFirstChildElement(
+					NumberedThoroughfareAddress.getName(getDDMSVersion()), getNamespace());
+				if (numberedThoroughfareAddressElement != null)
+					_tspiAddress = new NumberedThoroughfareAddress(numberedThoroughfareAddressElement);
+				Element twoNumberAddressRangeElement = element.getFirstChildElement(
+					TwoNumberAddressRange.getName(getDDMSVersion()), getNamespace());
+				if (twoNumberAddressRangeElement != null)
+					_tspiAddress = new TwoNumberAddressRange(twoNumberAddressRangeElement);
+				Element unnumberedThoroughfareAddressElement = element.getFirstChildElement(
+					UnnumberedThoroughfareAddress.getName(getDDMSVersion()), getNamespace());
+				if (unnumberedThoroughfareAddressElement != null)
+					_tspiAddress = new UnnumberedThoroughfareAddress(
+						unnumberedThoroughfareAddressElement);
+				Element uspsGeneralDeliveryOfficeElement = element.getFirstChildElement(
+					USPSGeneralDeliveryOffice.getName(getDDMSVersion()), getNamespace());
+				if (uspsGeneralDeliveryOfficeElement != null)
+					_tspiAddress = new USPSGeneralDeliveryOffice(uspsGeneralDeliveryOfficeElement);
+				Element uspsPostalDeliveryBoxElement = element.getFirstChildElement(
+					USPSPostalDeliveryBox.getName(getDDMSVersion()), getNamespace());
+				if (uspsPostalDeliveryBoxElement != null)
+					_tspiAddress = new USPSPostalDeliveryBox(uspsPostalDeliveryBoxElement);
+				Element uspsPostalDeliveryRouteElement = element.getFirstChildElement(
+					USPSPostalDeliveryRoute.getName(getDDMSVersion()), getNamespace());
+				if (uspsPostalDeliveryRouteElement != null)
+					_tspiAddress = new USPSPostalDeliveryRoute(uspsPostalDeliveryRouteElement);
+			}
 			validate();
 		}
 		catch (InvalidDDMSException e) {
@@ -167,20 +219,61 @@ public final class PostalAddress extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Validates the component.
+	 * Constructor for creating a component from raw data
 	 * 
-	 * {@table.header Rules}
-
-
-	 * 
-	 * @see AbstractBaseComponent#validate()
+	 * @param address a TSPI address
 	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	public PostalAddress(AbstractTspiAddress address) throws InvalidDDMSException {
+		try {
+			Element element = Util.buildDDMSElement(PostalAddress.getName(DDMSVersion.getCurrentVersion()), null);
+			if (address != null) {
+				element.appendChild(address.getXOMElementCopy());
+				if (address instanceof GeneralAddressClass)
+					_tspiAddress = (GeneralAddressClass) address;
+				if (address instanceof IntersectionAddress)
+					_tspiAddress = (IntersectionAddress) address;
+				if (address instanceof LandmarkAddress)
+					_tspiAddress = (LandmarkAddress) address;
+				if (address instanceof NumberedThoroughfareAddress)
+					_tspiAddress = (NumberedThoroughfareAddress) address;
+				if (address instanceof TwoNumberAddressRange)
+					_tspiAddress = (TwoNumberAddressRange) address;
+				if (address instanceof UnnumberedThoroughfareAddress)
+					_tspiAddress = (UnnumberedThoroughfareAddress) address;
+				if (address instanceof USPSGeneralDeliveryOffice)
+					_tspiAddress = (USPSGeneralDeliveryOffice) address;
+				if (address instanceof USPSPostalDeliveryBox)
+					_tspiAddress = (USPSPostalDeliveryBox) address;
+				if (address instanceof USPSPostalDeliveryRoute)
+					_tspiAddress = (USPSPostalDeliveryRoute) address;		
+			}
+			setXOMElement(element, true);
+		}
+		catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
+	}
+	
+	/**
+	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), PostalAddress.getName(getDDMSVersion()));
-		Util.requireBoundedChildCount(getXOMElement(), STREET_NAME, 0, 6);
-		if (!Util.isEmpty(getState()) && !Util.isEmpty(getProvince())) {
-			throw new InvalidDDMSException("Only 1 of state or province must be used.");
+		if (!getDDMSVersion().isAtLeast("5.0")) {
+			Util.requireBoundedChildCount(getXOMElement(), STREET_NAME, 0, 6);
+			if (!Util.isEmpty(getState()) && !Util.isEmpty(getProvince())) {
+				throw new InvalidDDMSException("Only 1 of state or province must be used.");
+			}
+			// Check for TSPI components is implicit, since they cannot be instantiated before DDMS 5.0.
+		}
+		else {
+			if (!getStreets().isEmpty() || !Util.isEmpty(getCity()) || !Util.isEmpty(getState())
+				|| !Util.isEmpty(getProvince()) || !Util.isEmpty(getPostalCode()) || getCountryCode() != null) {
+				throw new InvalidDDMSException("postalAddress must be defined with a TSPI address.");
+			}
+			Util.requireDDMSValue("TSPI address", getTspiAddress());
 		}
 		super.validate();
 	}
@@ -189,7 +282,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validateWarnings()
 	 */
 	protected void validateWarnings() {
-		if (getStreets().isEmpty() && Util.isEmpty(getCity()) && Util.isEmpty(getState())
+		if (!getDDMSVersion().isAtLeast("5.0") && getStreets().isEmpty() && Util.isEmpty(getCity()) && Util.isEmpty(getState())
 			&& Util.isEmpty(getProvince()) && Util.isEmpty(getPostalCode()) && getCountryCode() == null) {
 			addWarning("A completely empty ddms:postalAddress element was found.");
 		}
@@ -202,13 +295,18 @@ public final class PostalAddress extends AbstractBaseComponent {
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + STREET_NAME, getStreets()));
-		text.append(buildOutput(isHTML, localPrefix + CITY_NAME, getCity()));
-		text.append(buildOutput(isHTML, localPrefix + STATE_NAME, getState()));
-		text.append(buildOutput(isHTML, localPrefix + PROVINCE_NAME, getProvince()));
-		text.append(buildOutput(isHTML, localPrefix + POSTAL_CODE_NAME, getPostalCode()));
-		if (getCountryCode() != null)
-			text.append(getCountryCode().getOutput(isHTML, localPrefix, ""));
+		if (!getDDMSVersion().isAtLeast("5.0")) {
+			text.append(buildOutput(isHTML, localPrefix + STREET_NAME, getStreets()));
+			text.append(buildOutput(isHTML, localPrefix + CITY_NAME, getCity()));
+			text.append(buildOutput(isHTML, localPrefix + STATE_NAME, getState()));
+			text.append(buildOutput(isHTML, localPrefix + PROVINCE_NAME, getProvince()));
+			text.append(buildOutput(isHTML, localPrefix + POSTAL_CODE_NAME, getPostalCode()));
+			if (getCountryCode() != null)
+				text.append(getCountryCode().getOutput(isHTML, localPrefix, ""));
+		}
+		else {
+			text.append(getTspiAddress().getOutput(isHTML, localPrefix, ""));
+		}
 		return (text.toString());
 	}
 
@@ -218,6 +316,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 	protected List<IDDMSComponent> getNestedComponents() {
 		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
 		list.add(getCountryCode());
+		list.add(getTspiAddress());
 		return (list);
 	}
 
@@ -300,7 +399,77 @@ public final class PostalAddress extends AbstractBaseComponent {
 	public CountryCode getCountryCode() {
 		return (_countryCode);
 	}
+	
+	/**
+	 * Accessor for the underlying TSPI address
+	 */
+	private AbstractTspiAddress getTspiAddress() {
+		return (_tspiAddress);
+	}
+	
+	/**
+	 * Accessor for the generalAddressClass
+	 */
+	public GeneralAddressClass getGeneralAddressClass() {
+		return ((GeneralAddressClass) getTspiAddress());
+	}
 
+	/**
+	 * Accessor for the intersectionAddress
+	 */
+	public IntersectionAddress getIntersectionAddress() {
+		return ((IntersectionAddress) getTspiAddress());
+	}
+	
+	/**
+	 * Accessor for the landmarkAddress
+	 */
+	public LandmarkAddress getLandmarkAddress() {
+		return ((LandmarkAddress) getTspiAddress());
+	}
+	
+	/**
+	 * Accessor for the numberedThoroughfareAddress
+	 */
+	public NumberedThoroughfareAddress getNumberedThoroughfareAddress() {
+		return ((NumberedThoroughfareAddress) getTspiAddress());
+	}
+	
+	/**
+	 * Accessor for the twoNumberAddressRange
+	 */
+	public TwoNumberAddressRange getTwoNumberAddressRange() {
+		return ((TwoNumberAddressRange) getTspiAddress());
+	}
+		
+	/**
+	 * Accessor for the unnumberedThoroughfareAddress
+	 */
+	public UnnumberedThoroughfareAddress getUnnumberedThoroughfareAddress() {
+		return ((UnnumberedThoroughfareAddress) getTspiAddress());
+	}
+	
+	/**
+	 * Accessor for the uspsGeneralDeliveryOffice
+	 */
+	public USPSGeneralDeliveryOffice getUSPSGeneralDeliveryOffice() {
+		return ((USPSGeneralDeliveryOffice) getTspiAddress());
+	}
+	
+	/**
+	 * Accessor for the uspsPostalDeliveryBox
+	 */
+	public USPSPostalDeliveryBox getUSPSPostalDeliveryBox() {
+		return ((USPSPostalDeliveryBox) getTspiAddress());
+	}
+	
+	/**
+	 * Accessor for the uspsPostalDeliveryRoute
+	 */
+	public USPSPostalDeliveryRoute getUSPSPostalDeliveryRoute() {
+		return ((USPSPostalDeliveryRoute) getTspiAddress());
+	}
+	
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -316,6 +485,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 		private String _province;
 		private String _postalCode;
 		private CountryCode.Builder _countryCode;
+		private GeneralAddressClass.Builder _generalAddressClass;
 
 		/**
 		 * Empty constructor
@@ -333,6 +503,8 @@ public final class PostalAddress extends AbstractBaseComponent {
 			setPostalCode(address.getPostalCode());
 			if (address.getCountryCode() != null)
 				setCountryCode(new CountryCode.Builder(address.getCountryCode()));
+			if (address.getGeneralAddressClass() != null)
+				setGeneralAddressClass(new GeneralAddressClass.Builder(address.getGeneralAddressClass()));
 		}
 
 		/**
@@ -341,13 +513,19 @@ public final class PostalAddress extends AbstractBaseComponent {
 		public PostalAddress commit() throws InvalidDDMSException {
 			if (isEmpty())
 				return (null);
-			boolean hasStateAndProvince = (!Util.isEmpty(getState()) && !Util.isEmpty(getProvince()));
-			if (hasStateAndProvince)
-				throw new InvalidDDMSException("Only 1 of state or province must be used.");
-			boolean hasState = !Util.isEmpty(getState());
-			String stateOrProvince = hasState ? getState() : getProvince();
-			return (new PostalAddress(getStreets(), getCity(), stateOrProvince, getPostalCode(),
-				getCountryCode().commit(), hasState));
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
+				boolean hasStateAndProvince = (!Util.isEmpty(getState()) && !Util.isEmpty(getProvince()));
+				if (hasStateAndProvince)
+					throw new InvalidDDMSException("Only 1 of state or province must be used.");
+				boolean hasState = !Util.isEmpty(getState());
+				String stateOrProvince = hasState ? getState() : getProvince();
+				return (new PostalAddress(getStreets(), getCity(), stateOrProvince, getPostalCode(),
+					getCountryCode().commit(), hasState));
+			}
+			else {
+				// TSPI
+				return (null);
+			}
 		}
 
 		/**
@@ -359,7 +537,8 @@ public final class PostalAddress extends AbstractBaseComponent {
 				&& Util.isEmpty(getState())
 				&& Util.isEmpty(getProvince())
 				&& Util.isEmpty(getPostalCode())
-				&& getCountryCode().isEmpty());
+				&& getCountryCode().isEmpty()
+				&& getGeneralAddressClass().isEmpty());
 		}
 
 		/**
@@ -449,6 +628,23 @@ public final class PostalAddress extends AbstractBaseComponent {
 		 */
 		public void setCountryCode(CountryCode.Builder countryCode) {
 			_countryCode = countryCode;
+		}
+		
+		/**
+		 * Builder accessor for the generalAddressClass
+		 */
+		public GeneralAddressClass.Builder getGeneralAddressClass() {
+			if (_generalAddressClass == null) {
+				_generalAddressClass = new GeneralAddressClass.Builder();
+			}
+			return _generalAddressClass;
+		}
+
+		/**
+		 * Builder accessor for the generalAddressClass
+		 */
+		public void setGeneralAddressClass(GeneralAddressClass.Builder generalAddressClass) {
+			_generalAddressClass = generalAddressClass;
 		}
 	}
 }
