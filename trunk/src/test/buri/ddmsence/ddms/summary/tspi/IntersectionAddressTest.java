@@ -44,6 +44,21 @@ public class IntersectionAddressTest extends AbstractBaseTestCase {
 	}
 
 	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static IntersectionAddress getFixture() {
+		try {
+			IntersectionAddress.Builder builder = new IntersectionAddress.Builder();
+			builder.setXml(getExpectedXMLOutput());
+			return (builder.commit());
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
+	/**
 	 * Attempts to build a component from a XOM element.
 	 * @param element the element to build from
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
@@ -109,7 +124,7 @@ public class IntersectionAddressTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
-	private String getExpectedXMLOutput() {
+	private static String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<tspi:IntersectionAddress ");
 		xml.append("xmlns:tspi=\"http://metadata.ces.mil/mdr/ns/GSIP/tspi/2.0\" ");
