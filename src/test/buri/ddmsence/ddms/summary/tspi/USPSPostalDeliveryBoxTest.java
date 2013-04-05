@@ -42,7 +42,22 @@ public class USPSPostalDeliveryBoxTest extends AbstractBaseTestCase {
 		super("uspsPostalDeliveryBox.xml");
 		removeSupportedVersions("2.0 3.0 3.1 4.1");
 	}
-
+	
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static USPSPostalDeliveryBox getFixture() {
+		try {
+			USPSPostalDeliveryBox.Builder builder = new USPSPostalDeliveryBox.Builder();
+			builder.setXml(getExpectedXMLOutput());
+			return (builder.commit());
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * @param element the element to build from
@@ -109,7 +124,7 @@ public class USPSPostalDeliveryBoxTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
-	private String getExpectedXMLOutput() {
+	private static String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<tspi:USPSPostalDeliveryBox ");
 		xml.append("xmlns:tspi=\"").append(DDMSVersion.getCurrentVersion().getTspiNamespace()).append("\" ");

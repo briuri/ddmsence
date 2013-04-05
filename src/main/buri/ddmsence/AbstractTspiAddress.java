@@ -31,6 +31,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import buri.ddmsence.ddms.IBuilder;
+import buri.ddmsence.ddms.ITspiAddress;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -66,7 +67,7 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 2.2.0
  */
-public abstract class AbstractTspiAddress extends AbstractBaseComponent {
+public abstract class AbstractTspiAddress extends AbstractBaseComponent implements ITspiAddress {
 	
 	/** The prefix of the action attribute */
 	public static final String NO_PREFIX = "";

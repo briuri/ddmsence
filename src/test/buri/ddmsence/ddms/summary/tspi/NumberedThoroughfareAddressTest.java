@@ -42,6 +42,21 @@ public class NumberedThoroughfareAddressTest extends AbstractBaseTestCase {
 		super("numberedThoroughfareAddress.xml");
 		removeSupportedVersions("2.0 3.0 3.1 4.1");
 	}
+	
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static NumberedThoroughfareAddress getFixture() {
+		try {
+			NumberedThoroughfareAddress.Builder builder = new NumberedThoroughfareAddress.Builder();
+			builder.setXml(getExpectedXMLOutput());
+			return (builder.commit());
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
 
 	/**
 	 * Attempts to build a component from a XOM element.
@@ -109,7 +124,7 @@ public class NumberedThoroughfareAddressTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
-	private String getExpectedXMLOutput() {
+	private static String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<tspi:NumberedThoroughfareAddress ");
 		xml.append("xmlns:tspi=\"").append(DDMSVersion.getCurrentVersion().getTspiNamespace()).append("\" ");

@@ -52,6 +52,7 @@ import nu.xom.Nodes;
 import nu.xom.ParsingException;
 import nu.xom.xslt.XSLException;
 import nu.xom.xslt.XSLTransform;
+import buri.ddmsence.AbstractTspiAddress;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.Notice;
@@ -399,6 +400,9 @@ public class Util {
 		}
 		if (child instanceof Notice) {
 			parentNamespace = DDMSVersion.getVersionForNamespace(parentNamespace).getIsmNamespace();
+		}
+		if (child instanceof AbstractTspiAddress) {
+			parentNamespace = DDMSVersion.getVersionForNamespace(parentNamespace).getTspiNamespace();
 		}
 		String childNamespace = child.getNamespace();
 		if (!parentNamespace.equals(childNamespace)) {

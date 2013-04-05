@@ -26,15 +26,15 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
-import buri.ddmsence.AbstractTspiAddress;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
+import buri.ddmsence.ddms.ITspiAddress;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.summary.tspi.GeneralAddressClass;
 import buri.ddmsence.ddms.summary.tspi.IntersectionAddress;
 import buri.ddmsence.ddms.summary.tspi.LandmarkAddress;
-import buri.ddmsence.ddms.summary.tspi.TwoNumberAddressRange;
 import buri.ddmsence.ddms.summary.tspi.NumberedThoroughfareAddress;
+import buri.ddmsence.ddms.summary.tspi.TwoNumberAddressRange;
 import buri.ddmsence.ddms.summary.tspi.USPSGeneralDeliveryOffice;
 import buri.ddmsence.ddms.summary.tspi.USPSPostalDeliveryBox;
 import buri.ddmsence.ddms.summary.tspi.USPSPostalDeliveryRoute;
@@ -93,7 +93,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 	private String _province = null;
 	private String _postalCode = null;
 	private CountryCode _countryCode = null;
-	private AbstractTspiAddress _tspiAddress = null;
+	private ITspiAddress _tspiAddress = null;
 	
 	private static final String STREET_NAME = "street";
 	private static final String CITY_NAME = "city";
@@ -130,41 +130,43 @@ public final class PostalAddress extends AbstractBaseComponent {
 					_countryCode = new CountryCode(countryCodeElement);
 			}
 			else {
+				String tspiNamespace = getDDMSVersion().getTspiNamespace();
 				Element generalAddressClassElement = element.getFirstChildElement(
-					GeneralAddressClass.getName(getDDMSVersion()), getNamespace());
-				if (generalAddressClassElement != null)
+					GeneralAddressClass.getName(getDDMSVersion()), tspiNamespace);
+				if (generalAddressClassElement != null) {
 					_tspiAddress = new GeneralAddressClass(generalAddressClassElement);
+				}
 				Element intersectionAddressElement = element.getFirstChildElement(
-					IntersectionAddress.getName(getDDMSVersion()), getNamespace());
+					IntersectionAddress.getName(getDDMSVersion()), tspiNamespace);
 				if (intersectionAddressElement != null)
 					_tspiAddress = new IntersectionAddress(intersectionAddressElement);
 				Element landmarkAddressElement = element.getFirstChildElement(
-					LandmarkAddress.getName(getDDMSVersion()), getNamespace());
+					LandmarkAddress.getName(getDDMSVersion()), tspiNamespace);
 				if (landmarkAddressElement != null)
 					_tspiAddress = new LandmarkAddress(landmarkAddressElement);
 				Element numberedThoroughfareAddressElement = element.getFirstChildElement(
-					NumberedThoroughfareAddress.getName(getDDMSVersion()), getNamespace());
+					NumberedThoroughfareAddress.getName(getDDMSVersion()), tspiNamespace);
 				if (numberedThoroughfareAddressElement != null)
 					_tspiAddress = new NumberedThoroughfareAddress(numberedThoroughfareAddressElement);
 				Element twoNumberAddressRangeElement = element.getFirstChildElement(
-					TwoNumberAddressRange.getName(getDDMSVersion()), getNamespace());
+					TwoNumberAddressRange.getName(getDDMSVersion()), tspiNamespace);
 				if (twoNumberAddressRangeElement != null)
 					_tspiAddress = new TwoNumberAddressRange(twoNumberAddressRangeElement);
 				Element unnumberedThoroughfareAddressElement = element.getFirstChildElement(
-					UnnumberedThoroughfareAddress.getName(getDDMSVersion()), getNamespace());
+					UnnumberedThoroughfareAddress.getName(getDDMSVersion()), tspiNamespace);
 				if (unnumberedThoroughfareAddressElement != null)
 					_tspiAddress = new UnnumberedThoroughfareAddress(
 						unnumberedThoroughfareAddressElement);
 				Element uspsGeneralDeliveryOfficeElement = element.getFirstChildElement(
-					USPSGeneralDeliveryOffice.getName(getDDMSVersion()), getNamespace());
+					USPSGeneralDeliveryOffice.getName(getDDMSVersion()), tspiNamespace);
 				if (uspsGeneralDeliveryOfficeElement != null)
 					_tspiAddress = new USPSGeneralDeliveryOffice(uspsGeneralDeliveryOfficeElement);
 				Element uspsPostalDeliveryBoxElement = element.getFirstChildElement(
-					USPSPostalDeliveryBox.getName(getDDMSVersion()), getNamespace());
+					USPSPostalDeliveryBox.getName(getDDMSVersion()), tspiNamespace);
 				if (uspsPostalDeliveryBoxElement != null)
 					_tspiAddress = new USPSPostalDeliveryBox(uspsPostalDeliveryBoxElement);
 				Element uspsPostalDeliveryRouteElement = element.getFirstChildElement(
-					USPSPostalDeliveryRoute.getName(getDDMSVersion()), getNamespace());
+					USPSPostalDeliveryRoute.getName(getDDMSVersion()), tspiNamespace);
 				if (uspsPostalDeliveryRouteElement != null)
 					_tspiAddress = new USPSPostalDeliveryRoute(uspsPostalDeliveryRouteElement);
 			}
@@ -224,7 +226,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 * @param address a TSPI address
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public PostalAddress(AbstractTspiAddress address) throws InvalidDDMSException {
+	public PostalAddress(ITspiAddress address) throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(PostalAddress.getName(DDMSVersion.getCurrentVersion()), null);
 			if (address != null) {
@@ -362,6 +364,8 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 * Accessor for the street addresses (max 6)
 	 */
 	public List<String> getStreets() {
+		if (_streets == null)
+			_streets = Collections.emptyList();
 		return (Collections.unmodifiableList(_streets));
 	}
 
@@ -401,75 +405,12 @@ public final class PostalAddress extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Accessor for the underlying TSPI address
+	 * Accessor for the TSPI address
 	 */
-	private AbstractTspiAddress getTspiAddress() {
+	public ITspiAddress getTspiAddress() {
 		return (_tspiAddress);
 	}
-	
-	/**
-	 * Accessor for the generalAddressClass
-	 */
-	public GeneralAddressClass getGeneralAddressClass() {
-		return ((GeneralAddressClass) getTspiAddress());
-	}
-
-	/**
-	 * Accessor for the intersectionAddress
-	 */
-	public IntersectionAddress getIntersectionAddress() {
-		return ((IntersectionAddress) getTspiAddress());
-	}
-	
-	/**
-	 * Accessor for the landmarkAddress
-	 */
-	public LandmarkAddress getLandmarkAddress() {
-		return ((LandmarkAddress) getTspiAddress());
-	}
-	
-	/**
-	 * Accessor for the numberedThoroughfareAddress
-	 */
-	public NumberedThoroughfareAddress getNumberedThoroughfareAddress() {
-		return ((NumberedThoroughfareAddress) getTspiAddress());
-	}
-	
-	/**
-	 * Accessor for the twoNumberAddressRange
-	 */
-	public TwoNumberAddressRange getTwoNumberAddressRange() {
-		return ((TwoNumberAddressRange) getTspiAddress());
-	}
 		
-	/**
-	 * Accessor for the unnumberedThoroughfareAddress
-	 */
-	public UnnumberedThoroughfareAddress getUnnumberedThoroughfareAddress() {
-		return ((UnnumberedThoroughfareAddress) getTspiAddress());
-	}
-	
-	/**
-	 * Accessor for the uspsGeneralDeliveryOffice
-	 */
-	public USPSGeneralDeliveryOffice getUSPSGeneralDeliveryOffice() {
-		return ((USPSGeneralDeliveryOffice) getTspiAddress());
-	}
-	
-	/**
-	 * Accessor for the uspsPostalDeliveryBox
-	 */
-	public USPSPostalDeliveryBox getUSPSPostalDeliveryBox() {
-		return ((USPSPostalDeliveryBox) getTspiAddress());
-	}
-	
-	/**
-	 * Accessor for the uspsPostalDeliveryRoute
-	 */
-	public USPSPostalDeliveryRoute getUSPSPostalDeliveryRoute() {
-		return ((USPSPostalDeliveryRoute) getTspiAddress());
-	}
-	
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -485,7 +426,16 @@ public final class PostalAddress extends AbstractBaseComponent {
 		private String _province;
 		private String _postalCode;
 		private CountryCode.Builder _countryCode;
+		private String _addressType;
 		private GeneralAddressClass.Builder _generalAddressClass;
+		private IntersectionAddress.Builder _intersectionAddress;
+		private LandmarkAddress.Builder _landmarkAddress;
+		private NumberedThoroughfareAddress.Builder _numberedThoroughfareAddress;
+		private TwoNumberAddressRange.Builder _twoNumberAddressRange;
+		private UnnumberedThoroughfareAddress.Builder _unnumberedThoroughfareAddress;
+		private USPSGeneralDeliveryOffice.Builder _uspsGeneralDeliveryOffice;
+		private USPSPostalDeliveryBox.Builder _uspsPostalDeliveryBox;
+		private USPSPostalDeliveryRoute.Builder _uspsPostalDeliveryRoute;
 
 		/**
 		 * Empty constructor
@@ -496,6 +446,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(PostalAddress address) {
+			DDMSVersion version = address.getDDMSVersion();
 			setStreets(address.getStreets());
 			setCity(address.getCity());
 			setState(address.getState());
@@ -503,8 +454,35 @@ public final class PostalAddress extends AbstractBaseComponent {
 			setPostalCode(address.getPostalCode());
 			if (address.getCountryCode() != null)
 				setCountryCode(new CountryCode.Builder(address.getCountryCode()));
-			if (address.getGeneralAddressClass() != null)
-				setGeneralAddressClass(new GeneralAddressClass.Builder(address.getGeneralAddressClass()));
+			if (address.getTspiAddress() != null) {
+				setAddressType(address.getTspiAddress().getName());
+				if (GeneralAddressClass.getName(version).equals(getAddressType()))
+					setGeneralAddressClass(new GeneralAddressClass.Builder(
+						(GeneralAddressClass) address.getTspiAddress()));
+				if (IntersectionAddress.getName(version).equals(getAddressType()))
+					setIntersectionAddress(new IntersectionAddress.Builder(
+						(IntersectionAddress) address.getTspiAddress()));
+				if (LandmarkAddress.getName(version).equals(getAddressType()))
+					setLandmarkAddress(new LandmarkAddress.Builder((LandmarkAddress) address.getTspiAddress()));
+				if (NumberedThoroughfareAddress.getName(version).equals(getAddressType()))
+					setNumberedThoroughfareAddress(new NumberedThoroughfareAddress.Builder(
+						(NumberedThoroughfareAddress) address.getTspiAddress()));
+				if (TwoNumberAddressRange.getName(version).equals(getAddressType()))
+					setTwoNumberAddressRange(new TwoNumberAddressRange.Builder(
+						(TwoNumberAddressRange) address.getTspiAddress()));
+				if (UnnumberedThoroughfareAddress.getName(version).equals(getAddressType()))
+					setUnnumberedThoroughfareAddress(new UnnumberedThoroughfareAddress.Builder(
+						(UnnumberedThoroughfareAddress) address.getTspiAddress()));
+				if (USPSGeneralDeliveryOffice.getName(version).equals(getAddressType()))
+					setUSPSGeneralDeliveryOffice(new USPSGeneralDeliveryOffice.Builder(
+						(USPSGeneralDeliveryOffice) address.getTspiAddress()));
+				if (USPSPostalDeliveryBox.getName(version).equals(getAddressType()))
+					setUSPSPostalDeliveryBox(new USPSPostalDeliveryBox.Builder(
+						(USPSPostalDeliveryBox) address.getTspiAddress()));
+				if (USPSPostalDeliveryRoute.getName(version).equals(getAddressType()))
+					setUSPSPostalDeliveryRoute(new USPSPostalDeliveryRoute.Builder(
+						(USPSPostalDeliveryRoute) address.getTspiAddress()));
+			}
 		}
 
 		/**
@@ -522,23 +500,49 @@ public final class PostalAddress extends AbstractBaseComponent {
 				return (new PostalAddress(getStreets(), getCity(), stateOrProvince, getPostalCode(),
 					getCountryCode().commit(), hasState));
 			}
-			else {
-				// TSPI
-				return (null);
+			else {		
+				return (new PostalAddress(commitSelectedAddress()));
 			}
+		}
+
+		/**
+		 * Commits the address which is active in this builder, based on the addressType.
+		 * 
+		 * @return the address
+		 */
+		protected ITspiAddress commitSelectedAddress() throws InvalidDDMSException {
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			if (GeneralAddressClass.getName(version).equals(getAddressType()))
+				return (getGeneralAddressClass().commit());
+			if (IntersectionAddress.getName(version).equals(getAddressType()))
+				return (getIntersectionAddress().commit());
+			if (LandmarkAddress.getName(version).equals(getAddressType()))
+				return (getLandmarkAddress().commit());
+			if (NumberedThoroughfareAddress.getName(version).equals(getAddressType()))
+				return (getNumberedThoroughfareAddress().commit());
+			if (TwoNumberAddressRange.getName(version).equals(getAddressType()))
+				return (getTwoNumberAddressRange().commit());
+			if (UnnumberedThoroughfareAddress.getName(version).equals(getAddressType()))
+				return (getUnnumberedThoroughfareAddress().commit());
+			if (USPSGeneralDeliveryOffice.getName(version).equals(getAddressType()))
+				return (getUSPSGeneralDeliveryOffice().commit());
+			if (USPSPostalDeliveryBox.getName(version).equals(getAddressType()))
+				return (getUSPSPostalDeliveryBox().commit());
+			if (USPSPostalDeliveryRoute.getName(version).equals(getAddressType()))
+				return (getUSPSPostalDeliveryRoute().commit());
+			throw new InvalidDDMSException("Unknown address type: " + getAddressType());
 		}
 
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
-			return (Util.containsOnlyEmptyValues(getStreets())
-				&& Util.isEmpty(getCity())
-				&& Util.isEmpty(getState())
-				&& Util.isEmpty(getProvince())
-				&& Util.isEmpty(getPostalCode())
-				&& getCountryCode().isEmpty()
-				&& getGeneralAddressClass().isEmpty());
+			return (Util.containsOnlyEmptyValues(getStreets()) && Util.isEmpty(getCity()) && Util.isEmpty(getState())
+				&& Util.isEmpty(getProvince()) && Util.isEmpty(getPostalCode()) && getCountryCode().isEmpty()
+				&& getGeneralAddressClass().isEmpty() && getIntersectionAddress().isEmpty()
+				&& getLandmarkAddress().isEmpty() && getNumberedThoroughfareAddress().isEmpty()
+				&& getTwoNumberAddressRange().isEmpty() && getUnnumberedThoroughfareAddress().isEmpty()
+				&& getUSPSGeneralDeliveryOffice().isEmpty() && getUSPSPostalDeliveryBox().isEmpty() && getUSPSPostalDeliveryRoute().isEmpty());
 		}
 
 		/**
@@ -629,7 +633,21 @@ public final class PostalAddress extends AbstractBaseComponent {
 		public void setCountryCode(CountryCode.Builder countryCode) {
 			_countryCode = countryCode;
 		}
-		
+
+		/**
+		 * Builder accessor for the addressType
+		 */
+		public String getAddressType() {
+			return _addressType;
+		}
+
+		/**
+		 * Builder accessor for the addressType
+		 */
+		public void setAddressType(String addressType) {
+			_addressType = addressType;
+		}
+
 		/**
 		 * Builder accessor for the generalAddressClass
 		 */
@@ -645,6 +663,142 @@ public final class PostalAddress extends AbstractBaseComponent {
 		 */
 		public void setGeneralAddressClass(GeneralAddressClass.Builder generalAddressClass) {
 			_generalAddressClass = generalAddressClass;
+		}
+
+		/**
+		 * Builder accessor for the intersectionAddress
+		 */
+		public IntersectionAddress.Builder getIntersectionAddress() {
+			if (_intersectionAddress == null) {
+				_intersectionAddress = new IntersectionAddress.Builder();
+			}
+			return _intersectionAddress;
+		}
+
+		/**
+		 * Builder accessor for the intersectionAddress
+		 */
+		public void setIntersectionAddress(IntersectionAddress.Builder intersectionAddress) {
+			_intersectionAddress = intersectionAddress;
+		}
+
+		/**
+		 * Builder accessor for the landmarkAddress
+		 */
+		public LandmarkAddress.Builder getLandmarkAddress() {
+			if (_landmarkAddress == null) {
+				_landmarkAddress = new LandmarkAddress.Builder();
+			}
+			return _landmarkAddress;
+		}
+
+		/**
+		 * Builder accessor for the landmarkAddress
+		 */
+		public void setLandmarkAddress(LandmarkAddress.Builder landmarkAddress) {
+			_landmarkAddress = landmarkAddress;
+		}
+
+		/**
+		 * Builder accessor for the numberedThoroughfareAddress
+		 */
+		public NumberedThoroughfareAddress.Builder getNumberedThoroughfareAddress() {
+			if (_numberedThoroughfareAddress == null) {
+				_numberedThoroughfareAddress = new NumberedThoroughfareAddress.Builder();
+			}
+			return _numberedThoroughfareAddress;
+		}
+
+		/**
+		 * Builder accessor for the numberedThoroughfareAddress
+		 */
+		public void setNumberedThoroughfareAddress(NumberedThoroughfareAddress.Builder numberedThoroughfareAddress) {
+			_numberedThoroughfareAddress = numberedThoroughfareAddress;
+		}
+
+		/**
+		 * Builder accessor for the twoNumberAddressRange
+		 */
+		public TwoNumberAddressRange.Builder getTwoNumberAddressRange() {
+			if (_twoNumberAddressRange == null) {
+				_twoNumberAddressRange = new TwoNumberAddressRange.Builder();
+			}
+			return _twoNumberAddressRange;
+		}
+
+		/**
+		 * Builder accessor for the twoNumberAddressRange
+		 */
+		public void setTwoNumberAddressRange(TwoNumberAddressRange.Builder twoNumberAddressRange) {
+			_twoNumberAddressRange = twoNumberAddressRange;
+		}
+
+		/**
+		 * Builder accessor for the unnumberedThoroughfareAddress
+		 */
+		public UnnumberedThoroughfareAddress.Builder getUnnumberedThoroughfareAddress() {
+			if (_unnumberedThoroughfareAddress == null) {
+				_unnumberedThoroughfareAddress = new UnnumberedThoroughfareAddress.Builder();
+			}
+			return _unnumberedThoroughfareAddress;
+		}
+
+		/**
+		 * Builder accessor for the unnumberedThoroughfareAddress
+		 */
+		public void setUnnumberedThoroughfareAddress(UnnumberedThoroughfareAddress.Builder unnumberedThoroughfareAddress) {
+			_unnumberedThoroughfareAddress = unnumberedThoroughfareAddress;
+		}
+
+		/**
+		 * Builder accessor for the uspsGeneralDeliveryOffice
+		 */
+		public USPSGeneralDeliveryOffice.Builder getUSPSGeneralDeliveryOffice() {
+			if (_uspsGeneralDeliveryOffice == null) {
+				_uspsGeneralDeliveryOffice = new USPSGeneralDeliveryOffice.Builder();
+			}
+			return _uspsGeneralDeliveryOffice;
+		}
+
+		/**
+		 * Builder accessor for the uspsGeneralDeliveryOffice
+		 */
+		public void setUSPSGeneralDeliveryOffice(USPSGeneralDeliveryOffice.Builder uspsGeneralDeliveryOffice) {
+			_uspsGeneralDeliveryOffice = uspsGeneralDeliveryOffice;
+		}
+
+		/**
+		 * Builder accessor for the uspsPostalDeliveryBox
+		 */
+		public USPSPostalDeliveryBox.Builder getUSPSPostalDeliveryBox() {
+			if (_uspsPostalDeliveryBox == null) {
+				_uspsPostalDeliveryBox = new USPSPostalDeliveryBox.Builder();
+			}
+			return _uspsPostalDeliveryBox;
+		}
+
+		/**
+		 * Builder accessor for the uspsPostalDeliveryBox
+		 */
+		public void setUSPSPostalDeliveryBox(USPSPostalDeliveryBox.Builder uspsPostalDeliveryBox) {
+			_uspsPostalDeliveryBox = uspsPostalDeliveryBox;
+		}
+
+		/**
+		 * Builder accessor for the uspsPostalDeliveryRoute
+		 */
+		public USPSPostalDeliveryRoute.Builder getUSPSPostalDeliveryRoute() {
+			if (_uspsPostalDeliveryRoute == null) {
+				_uspsPostalDeliveryRoute = new USPSPostalDeliveryRoute.Builder();
+			}
+			return _uspsPostalDeliveryRoute;
+		}
+
+		/**
+		 * Builder accessor for the uspsPostalDeliveryRoute
+		 */
+		public void setUSPSPostalDeliveryRoute(USPSPostalDeliveryRoute.Builder uspsPostalDeliveryRoute) {
+			_uspsPostalDeliveryRoute = uspsPostalDeliveryRoute;
 		}
 	}
 }
