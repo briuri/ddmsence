@@ -181,9 +181,13 @@
       </xs:all>
    </xs:complexType>
    <xs:complexType name="BoundingGeometryType">
-      <xs:simpleContent>
-         <xs:extension base="xs:string" />
-      </xs:simpleContent>
+		<xs:choice maxOccurs="unbounded">
+			<xs:element ref="tspi:Polygon"/>
+			<xs:element ref="tspi:Point"/>
+			<xs:element ref="tspi:Envelope"/>
+			<xs:element ref="tspi:Circle"/>
+			<xs:element ref="tspi:Ellipse"/>
+		</xs:choice>
    </xs:complexType>
    <xs:complexType name="CompoundCategoryIdentifierType">
       <xs:attribute name="qualifier" type="xs:anyURI" use="optional" />

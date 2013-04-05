@@ -42,6 +42,13 @@
 		<ddms:start>1979-09-15</ddms:start>
 		<ddms:end>Not Applicable</ddms:end>
 	</ddms:temporalCoverage>
+	<ddms:geospatialCoverage>
+		<ddms:boundingGeometry>
+			<tspi:Point xmlns:tspi="http://metadata.ces.mil/mdr/ns/GSIP/tspi/2.0" xmlns:gml="http://www.opengis.net/gml/3.2" gml:id="PointMinimalExample" srsDimension="3" srsName="http://metadata.ces.mil/mdr/ns/GSIP/crs/WGS84E_MSL_H">
+				<gml:pos>32.1 40.1</gml:pos>
+			</tspi:Point>
+		</ddms:boundingGeometry>
+	</ddms:geospatialCoverage>
 	<ddms:relatedResource ddms:relationship="http://purl.org/dc/terms/references" ddms:direction="outbound" ddms:qualifier="http://purl.org/dc/terms/URI" ddms:value="http://en.wikipedia.org/wiki/Tank">
 		<ddms:link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="locator" xlink:href="http://en.wikipedia.org/wiki/Tank" xlink:role="role"/>
 	</ddms:relatedResource>

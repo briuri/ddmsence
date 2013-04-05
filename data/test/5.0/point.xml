@@ -1,8 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Represents a single gml:Point element, for unit testing -->
-<gml:Point xmlns:gml="http://www.opengis.net/gml/3.2"
-	gml:id="IDValue"
-	srsName="http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D"
-	srsDimension="10" axisLabels="A B C" uomLabels="Meter Meter Meter">
-	<gml:pos srsName="http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D" srsDimension="10" axisLabels="A B C" uomLabels="Meter Meter Meter">32.1 40.1</gml:pos>
-</gml:Point>
+<!--  Represents a single tspi:Point element, for unit testing -->
+<tspi:Point xmlns:tspi="http://metadata.ces.mil/mdr/ns/GSIP/tspi/2.0" xmlns:gml="http://www.opengis.net/gml/3.2" gml:id="PointMinimalExample" srsDimension="3" srsName="http://metadata.ces.mil/mdr/ns/GSIP/crs/WGS84E_MSL_H"><gml:pos>53.8093938 -2.12955 4572</gml:pos></tspi:Point>

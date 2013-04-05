@@ -25,6 +25,7 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.IDDMSComponent;
+import buri.ddmsence.ddms.ITspiShape;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -48,8 +49,6 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 	 */
 	public GeospatialCoverageTest() throws InvalidDDMSException {
 		super("geospatialCoverage.xml");
-		// TODO: Restore 5.0 after TSPI shapes/addresses are ready.
-		removeSupportedVersions("5.0");
 	}
 
 	/**
@@ -74,8 +73,15 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 	 */
 	public static GeospatialCoverage getFixture() {
 		try {
-			return (new GeospatialCoverage(null, null, new BoundingGeometry(null, PointTest.getFixtureList()), null,
-				null, null, null, null));
+			BoundingGeometry geometry = null;
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
+				geometry = new BoundingGeometry(null, PointTest.getFixtureList());
+			else {
+				List<ITspiShape> shapes = new ArrayList<ITspiShape>();
+				shapes.add(buri.ddmsence.ddms.summary.tspi.PointTest.getFixture());
+				geometry = new BoundingGeometry(shapes);
+			}
+			return (new GeospatialCoverage(null, null, geometry, null, null, null, null, null));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());

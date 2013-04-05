@@ -333,7 +333,6 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 				builder.setAddressType("IntersectionAddress");
 				builder.setIntersectionAddress(new IntersectionAddress.Builder(IntersectionAddressTest.getFixture()));
 				assertFullConversionEquality(builder);
-
 				
 				builder = new PostalAddress.Builder();
 				builder.setAddressType("LandmarkAddress");

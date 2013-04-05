@@ -188,10 +188,7 @@ public class USPSGeneralDeliveryOfficeTest extends AbstractBaseTestCase {
 			builder.setXml(xml);
 			getInstance(builder, "The action attribute must be one of");
 			
-			// Invalid XML
-			builder = getBaseBuilder();
-			builder.setXml("wrong");
-			getInstance(builder, "Could not create a valid element");
+			// Invalid XML case is implicit in Util.commitXml() test.
 		}
 	}
 

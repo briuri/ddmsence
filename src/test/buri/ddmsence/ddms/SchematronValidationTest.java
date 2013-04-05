@@ -102,12 +102,10 @@ public class SchematronValidationTest extends AbstractBaseTestCase {
 			for (String sVersion : getSupportedVersions()) {
 				DDMSVersion version = DDMSVersion.getVersionFor(sVersion);
 				
-				// TODO: Restore 5.0 after TSPI shapes are ready.
-				if (version.isAtLeast("5.0"))
-					continue;
 				Resource resource = versionToResourceMap.get(sVersion);
 				String ddmsNamespace = resource.getNamespace();
 				String gmlNamespace = version.getGmlNamespace();
+				String tspiNamespace = version.getTspiNamespace();
 				List<ValidationMessage> messages = resource.validateWithSchematron(new File("data/test/" + sVersion
 					+ "/testSchematronXslt2.sch"));
 				assertEquals(1, messages.size());
@@ -116,10 +114,11 @@ public class SchematronValidationTest extends AbstractBaseTestCase {
 				String extent = version.isAtLeast("4.0.1") ? "" : "/*:GeospatialExtent[namespace-uri()='"
 					+ ddmsNamespace + "'][1]";
 				String resourceName = Resource.getName(version);
+				String pointNamespace = (!version.isAtLeast("5.0") ? gmlNamespace : tspiNamespace); 
 				String locator = "/*:" + resourceName + "[namespace-uri()='" + ddmsNamespace + "'][1]"
 					+ "/*:geospatialCoverage[namespace-uri()='" + ddmsNamespace + "'][1]" + extent
-					+ "/*:boundingGeometry[namespace-uri()='" + ddmsNamespace + "'][1]" + "/*:Point[namespace-uri()='"
-					+ gmlNamespace + "'][1]" + "/*:pos[namespace-uri()='" + gmlNamespace + "'][1]";
+					+ "/*:boundingGeometry[namespace-uri()='" + ddmsNamespace + "'][1]"
+					+ "/*:Point[namespace-uri()='" + pointNamespace + "'][1]" + "/*:pos[namespace-uri()='" + gmlNamespace + "'][1]";
 				assertErrorEquality(text, locator, messages.get(0));
 			}
 		}
