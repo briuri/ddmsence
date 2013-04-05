@@ -43,6 +43,7 @@ public class PolygonTest extends AbstractBaseTestCase {
 	 */
 	public PolygonTest() throws InvalidDDMSException {
 		super("polygon.xml");
+		removeSupportedVersions("5.0");
 	}
 
 	/**

@@ -43,6 +43,7 @@ public class PointTest extends AbstractBaseTestCase {
 	 */
 	public PointTest() throws InvalidDDMSException {
 		super("point.xml");
+		removeSupportedVersions("5.0");
 	}
 
 	/**

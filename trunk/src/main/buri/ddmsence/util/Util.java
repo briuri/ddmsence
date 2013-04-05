@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -52,8 +53,13 @@ import nu.xom.Nodes;
 import nu.xom.ParsingException;
 import nu.xom.xslt.XSLException;
 import nu.xom.xslt.XSLTransform;
-import buri.ddmsence.AbstractTspiAddress;
+
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
+
 import buri.ddmsence.ddms.IDDMSComponent;
+import buri.ddmsence.ddms.ITspiAddress;
+import buri.ddmsence.ddms.ITspiShape;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.Notice;
 import buri.ddmsence.ddms.security.ntk.Access;
@@ -401,7 +407,7 @@ public class Util {
 		if (child instanceof Notice) {
 			parentNamespace = DDMSVersion.getVersionForNamespace(parentNamespace).getIsmNamespace();
 		}
-		if (child instanceof AbstractTspiAddress) {
+		if (child instanceof ITspiAddress || child instanceof ITspiShape) {
 			parentNamespace = DDMSVersion.getVersionForNamespace(parentNamespace).getTspiNamespace();
 		}
 		String childNamespace = child.getNamespace();
@@ -672,6 +678,24 @@ public class Util {
 		}
 	}
 
+	/**
+	 * Attempts to convert arbitrary XML into an Element.
+	 * 
+	 * @param xml the XML string
+	 * @return a XOM element based upon the XML string
+	 * @throws InvalidDDMSException if the element could not be created.
+	 */
+	public static Element commitXml(String xml) throws InvalidDDMSException {
+		try {
+			XMLReader reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xml.reader.class"));
+			nu.xom.Builder builder = new nu.xom.Builder(reader, false);
+			Document doc = builder.build(new StringReader(xml));
+			return (doc.getRootElement());
+		}
+		catch (Exception e) {
+			throw new InvalidDDMSException("Could not create a valid element from XML string: " + e.getMessage());
+		}
+	}
 	/**
 	 * Locates the queryBinding attribute in an ISO Schematron file and returns it.
 	 * 

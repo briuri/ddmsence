@@ -26,29 +26,27 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p> Tests related to tspi:GeneralAddressClass elements </p>
+ * <p> Tests related to tspi:Envelope elements </p>
  * 
  * @author Brian Uri!
  * @since 2.2.0
  */
-public class GeneralAddressClassTest extends AbstractBaseTestCase {
-
-	private static final String TEST_ACTION = "ADD";
+public class EnvelopeTest extends AbstractBaseTestCase {
 
 	/**
 	 * Constructor
 	 */
-	public GeneralAddressClassTest() {
-		super("generalAddressClass.xml");
+	public EnvelopeTest() {
+		super("envelope.xml");
 		removeSupportedVersions("2.0 3.0 3.1 4.1");
 	}
 
 	/**
 	 * Returns a fixture object for testing.
 	 */
-	public static GeneralAddressClass getFixture() {
+	public static Envelope getFixture() {
 		try {
-			GeneralAddressClass.Builder builder = new GeneralAddressClass.Builder();
+			Envelope.Builder builder = new Envelope.Builder();
 			builder.setXml(getExpectedXMLOutput());
 			return (builder.commit());
 		}
@@ -65,33 +63,11 @@ public class GeneralAddressClassTest extends AbstractBaseTestCase {
 	 * 
 	 * @return a valid object
 	 */
-	private GeneralAddressClass getInstance(Element element, String message) {
+	private Envelope getInstance(Element element, String message) {
 		boolean expectFailure = !Util.isEmpty(message);
-		GeneralAddressClass component = null;
+		Envelope component = null;
 		try {
-			component = new GeneralAddressClass(element);
-			checkConstructorSuccess(expectFailure);
-		}
-		catch (InvalidDDMSException e) {
-			checkConstructorFailure(expectFailure, e);
-			expectMessage(e, message);
-		}
-		return (component);
-	}
-
-	/**
-	 * Helper method to create an object which is expected to be valid.
-	 * 
-	 * @param builder the builder to commit
-	 * @param message an expected error message. If empty, the constructor is expected to succeed.
-	 * 
-	 * @return a valid object
-	 */
-	private GeneralAddressClass getInstance(GeneralAddressClass.Builder builder, String message) {
-		boolean expectFailure = !Util.isEmpty(message);
-		GeneralAddressClass component = null;
-		try {
-			component = builder.commit();
+			component = new Envelope(element);
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -106,10 +82,10 @@ public class GeneralAddressClassTest extends AbstractBaseTestCase {
 	 * 
 	 * This builder can then be modified to test various conditions.
 	 */
-	private GeneralAddressClass.Builder getBaseBuilder() {
+	private Envelope.Builder getBaseBuilder() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		GeneralAddressClass component = getInstance(getValidElement(version.getVersion()), SUCCESS);
-		return (new GeneralAddressClass.Builder(component));
+		Envelope component = getInstance(getValidElement(version.getVersion()), SUCCESS);
+		return (new Envelope.Builder(component));
 	}
 
 	/**
@@ -117,7 +93,7 @@ public class GeneralAddressClassTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "addressType", "GeneralAddressClass"));
+		text.append(buildOutput(isHTML, "shapeType", "Envelope"));
 		return (text.toString());
 	}
 
@@ -126,12 +102,18 @@ public class GeneralAddressClassTest extends AbstractBaseTestCase {
 	 */
 	private static String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<tspi:GeneralAddressClass ");
+		xml.append("<tspi:Envelope ");
 		xml.append("xmlns:tspi=\"").append(DDMSVersion.getCurrentVersion().getTspiNamespace()).append("\" ");
-		xml.append("xmlns:addr=\"http://www.fgdc.gov/schema/address/addr\" ");
-		xml.append("action=\"").append(TEST_ACTION).append("\">");
-		xml.append("<addr:GeneralAddress>Deliver care of John Doe, Postmaster, Bald Mountain Station</addr:GeneralAddress>");
-		xml.append("</tspi:GeneralAddressClass>");
+		xml.append("xmlns:tspi-core=\"http://metadata.ces.mil/mdr/ns/GSIP/tspi/2.0/core\" ");
+		xml.append("xmlns:gml=\"").append(DDMSVersion.getCurrentVersion().getGmlNamespace()).append("\" ");
+		xml.append("gml:id=\"EnvelopeMinimalExample\" srsName=\"http://metadata.ces.mil/mdr/ns/GSIP/crs/WGS84E_2D\">");
+		xml.append("<tspi-core:lowerCorner>");
+		xml.append("<gml:pos>51.0667 -1.8</gml:pos>");
+		xml.append("</tspi-core:lowerCorner>");
+		xml.append("<tspi-core:upperCorner>");
+		xml.append("<gml:pos>52.75 -1.2</gml:pos>");
+		xml.append("</tspi-core:upperCorner>");
+		xml.append("</tspi:Envelope>");
 		return (xml.toString());
 	}
 
@@ -140,7 +122,7 @@ public class GeneralAddressClassTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			assertNameAndNamespace(getInstance(getValidElement(sVersion), SUCCESS), DEFAULT_TSPI_PREFIX,
-				GeneralAddressClass.getName(version));
+				Envelope.getName(version));
 			getInstance(getWrongNameElementFixture(), WRONG_NAME_MESSAGE);
 		}
 	}
@@ -158,31 +140,11 @@ public class GeneralAddressClassTest extends AbstractBaseTestCase {
 	}
 	
 	public void testConstructorsMinimal() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			// No optional fields
-			GeneralAddressClass.Builder builder = getBaseBuilder();
-			String xml = getExpectedXMLOutput();
-			xml = xml.replace("action=\"ADD\"", "");
-			builder.setXml(xml);
-			getInstance(builder, SUCCESS);
-		}
+		// No tests.
 	}
 
 	public void testValidationErrors() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			
-			// Invalid action
-			String xml = getExpectedXMLOutput();
-			xml = xml.replace("\"ADD\"", "\"UPDATE\"");
-			GeneralAddressClass.Builder builder = getBaseBuilder();
-			builder.setXml(xml);
-			getInstance(builder, "The action attribute must be one of");
-			
-			// Invalid XML case is implicit in Util.commitXml() test.
-		}
+		// Invalid XML case is implicit in Util.commitXml() test.
 	}
 
 	public void testValidationWarnings() throws InvalidDDMSException {
@@ -190,7 +152,7 @@ public class GeneralAddressClassTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			GeneralAddressClass component = getInstance(getValidElement(sVersion), SUCCESS);
+			Envelope component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -200,8 +162,8 @@ public class GeneralAddressClassTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Base equality
-			GeneralAddressClass elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			GeneralAddressClass builderComponent = new GeneralAddressClass.Builder(elementComponent).commit();
+			Envelope elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			Envelope builderComponent = new Envelope.Builder(elementComponent).commit();
 			assertEquals(elementComponent, builderComponent);
 			assertEquals(elementComponent.hashCode(), builderComponent.hashCode());
 
@@ -209,15 +171,9 @@ public class GeneralAddressClassTest extends AbstractBaseTestCase {
 			assertFalse(elementComponent.equals(Integer.valueOf(1)));
 			
 			// Different values in each field
-			GeneralAddressClass.Builder builder = getBaseBuilder();
+			Envelope.Builder builder = getBaseBuilder();
 			String xml = getExpectedXMLOutput();
-			xml = xml.replace("\"ADD\"", "\"DELETE\"");
-			builder.setXml(xml);
-			assertFalse(elementComponent.equals(builder.commit()));			
-			
-			builder = getBaseBuilder();
-			xml = getExpectedXMLOutput();
-			xml = xml.replace("John", "James");
+			xml = xml.replace("MinimalExample", "Example");
 			builder.setXml(xml);
 			assertFalse(elementComponent.equals(builder.commit()));		
 		}
@@ -231,7 +187,7 @@ public class GeneralAddressClassTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			GeneralAddressClass elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
+			Envelope elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
 			assertEquals(getExpectedOutput(false), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
@@ -242,7 +198,7 @@ public class GeneralAddressClassTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			GeneralAddressClass.Builder builder = new GeneralAddressClass.Builder();
+			Envelope.Builder builder = new Envelope.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
 			

@@ -457,6 +457,9 @@ public class ResourceTest extends AbstractBaseTestCase {
 			text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.uomLabels", "Meter Meter Meter"));
 			text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.pos", "32.1 40.1"));
 		}
+		else {
+			text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.shapeType", "Point"));
+		}
 		text.append(buildOutput(isHTML, relatedPrefix + "relationship", "http://purl.org/dc/terms/references"));
 		text.append(buildOutput(isHTML, relatedPrefix + "direction", "outbound"));
 		text.append(buildOutput(isHTML, relatedPrefix + "qualifier", "http://purl.org/dc/terms/URI"));
@@ -606,8 +609,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 			xml.append("\t\t</ddms:TimePeriod>\n");
 		}
 		xml.append("\t</ddms:temporalCoverage>\n");
+		xml.append("\t<ddms:geospatialCoverage>\n");
 		if (!isAtLeast50) {
-			xml.append("\t<ddms:geospatialCoverage>\n");
 			if (isAtLeast401) {
 				xml.append("\t\t<ddms:boundingGeometry>\n");
 				xml.append("\t\t\t<gml:Point xmlns:gml=\"").append(version.getGmlNamespace()).append("\" ");
@@ -628,8 +631,17 @@ public class ResourceTest extends AbstractBaseTestCase {
 				xml.append("\t\t\t</ddms:boundingGeometry>\n");
 				xml.append("\t\t</ddms:GeospatialExtent>\n");
 			}
-			xml.append("\t</ddms:geospatialCoverage>\n");
 		}
+		else {
+			xml.append("\t\t<ddms:boundingGeometry>\n");
+			xml.append("\t\t\t<tspi:Point xmlns:tspi=\"").append(version.getTspiNamespace()).append("\" ");
+			xml.append("xmlns:gml=\"").append(version.getGmlNamespace()).append("\" ");
+			xml.append("gml:id=\"PointMinimalExample\" srsDimension=\"3\" srsName=\"http://metadata.ces.mil/mdr/ns/GSIP/crs/WGS84E_MSL_H\">\n");
+			xml.append("\t\t\t\t<gml:pos>32.1 40.1</gml:pos>\n");
+			xml.append("\t\t\t</tspi:Point>\n");
+			xml.append("\t\t</ddms:boundingGeometry>\n");
+		}
+		xml.append("\t</ddms:geospatialCoverage>\n");
 		if (isAtLeast401) {
 			xml.append("\t<ddms:relatedResource ddms:relationship=\"http://purl.org/dc/terms/references\" ");
 			xml.append("ddms:direction=\"outbound\" ddms:qualifier=\"http://purl.org/dc/terms/URI\" ");
@@ -695,9 +707,10 @@ public class ResourceTest extends AbstractBaseTestCase {
 
 				// Valid orders
 				builder = getBaseBuilder();
-				// TODO: Restore GeospatialCoverage checks after TSPI shapes are ready.
 				builder.getSubjectCoverages().add(new SubjectCoverage.Builder(SubjectCoverageTest.getFixture(1)));
-				builder.getSubjectCoverages().add(new SubjectCoverage.Builder(SubjectCoverageTest.getFixture(2)));
+				builder.getGeospatialCoverages().add(
+					new GeospatialCoverage.Builder(GeospatialCoverageTest.getFixture(2)));
+				builder.getSubjectCoverages().add(new SubjectCoverage.Builder(SubjectCoverageTest.getFixture(3)));
 				getInstance(builder, SUCCESS);
 			}
 			if (!version.isAtLeast("5.0")) {
@@ -844,13 +857,15 @@ public class ResourceTest extends AbstractBaseTestCase {
 				// Duplicate orders
 				builder = getBaseBuilder();
 				builder.getSubjectCoverages().add(new SubjectCoverage.Builder(SubjectCoverageTest.getFixture(1)));
-				builder.getSubjectCoverages().add(new SubjectCoverage.Builder(SubjectCoverageTest.getFixture(1)));
+				builder.getGeospatialCoverages().add(
+					new GeospatialCoverage.Builder(GeospatialCoverageTest.getFixture(1)));
 				getInstance(builder, "The ddms:order attributes throughout this resource");
 
 				// Skipped orders
 				builder = getBaseBuilder();
 				builder.getSubjectCoverages().add(new SubjectCoverage.Builder(SubjectCoverageTest.getFixture(1)));
-				builder.getSubjectCoverages().add(new SubjectCoverage.Builder(SubjectCoverageTest.getFixture(3)));
+				builder.getGeospatialCoverages().add(
+					new GeospatialCoverage.Builder(GeospatialCoverageTest.getFixture(3)));
 				getInstance(builder, "The ddms:order attributes throughout this resource");
 			}
 			else {
@@ -1203,7 +1218,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 
 		// Transform up to 5.0 fails on 4.1-specific fields
 		DDMSVersion.setCurrentVersion("5.0");
-		getInstance(builder, "The security element must not");
+		getInstance(builder, "At least 1 TSPI");
 
 		// Adding 5.0-specific fields works
 		builder.setResourceElement(null);

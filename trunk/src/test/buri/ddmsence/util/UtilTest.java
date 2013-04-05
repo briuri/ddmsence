@@ -1022,4 +1022,18 @@ public class UtilTest extends AbstractBaseTestCase {
 		schDocument = Util.buildXmlDocument(new FileInputStream("data/sample/schematron/testPositionValuesXslt2.sch"));
 		assertEquals("xslt2", Util.getSchematronQueryBinding(schDocument));
 	}
+	
+	public void testCommitXml() throws InvalidDDMSException {
+		Util.commitXml("<test />");
+	}
+	
+	public void testCommitXmlFailure() {
+		try {
+			Util.commitXml("notXml");
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			expectMessage(e, "Could not create a valid element");
+		}
+	}
 }
