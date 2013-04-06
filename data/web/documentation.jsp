@@ -101,7 +101,7 @@ be possible to plot Temporal Coverage on an
 	
 <a name="javadoc"></a><h4>JavaDoc API Documentation</h4>
 
-<img src="./images/docSample.png" width="310" height="231" title="JavaDoc sample" align="right" />
+<img src="./images/docSample.png" width="305" height="273" title="JavaDoc sample" align="right" />
 
 <ul>
 	<li><a href="/docs/">Online API Documentation</a></li>
@@ -111,19 +111,20 @@ in the "src"-flavored download. Classes which represent DDMS elements are groupe
 core sets they belong to. In some cases, packages are further divided to identify any components which originate from other 
 XML namespaces, such as GML or XLink. If a component is reused across multiple sets, it will be found in the package of the 
 set where it was first introduced.</p>
-<p>The overview page contains a quick reference chart of all implemented DDMS components. You should also be aware of the following sections, which appear on every DDMS component's page:
+<p>The overview page contains a quick reference chart of all implemented DDMS components. Drill down to a specific component class to find the following information in a standard format:
 <ul>
-	<li>The class description describes cases where DDMSence is stricter than the DDMS specification, and allowed cases which are legal, but nonsensical. If this varies
-	for different versions of DDMS, the version number will be indicated. If no version number is listed, the constraint applies to all versions.</li>
-	<li>The class description describes any nested elements or attributes for the implemented component.</li>
-	<li>The <code>validate()</code> method description lists the specific rules used to validate a component. This section may be useful when building your own components from scratch.</li>
-	<li>If a component has any conditions that result in warnings, the <code>validateWarnings()</code> method description lists the specific conditions that trigger a warning.</li>
+	<li><b>Overview</b>: The versions of DDMS that this component exists in, along with any important component details.</li>
+	<li><b>History</b>: How the class implementation has evolved through different versions of DDMSence.</li>
+	<li><b>Nested Elements</b>: The child elements of this component, their cardinality, and which versions of DDMS they exist in.</li>
+	<li><b>Attributes</b>: The attributes of this component, their cardinality, and which versions of DDMS they exist in.</li>
+	<li><b>Validation Rules</b>: The rules that DDMSence checks for validity, whether the rule triggers an error or warning, and which versions of DDMS they exist in.</li>
 </ul>
 <div class="clear"></div>
 
 <a name="useCases"></a><h3>Suggested Use Cases</h3>
 
-<p>This section describes common use cases that are a good fit for the DDMSence library.</p>
+<p>This section describes common use cases that are a good fit for the DDMSence library. The term, "metacard", refers to DDMS 2.0 through 4.1 resources. The term, "assertion", refers
+to DDMS 5.0 resources. For the purposes of these use cases, the terms are interchangeable.</p>
 
 <h4>Reading existing metacards</h4>
 
@@ -145,7 +146,7 @@ correct errors in a collection of DDMS metacards. For example, if your assets ha
 to point to the new location. Alternately, you could change all occurences of a producer's last name after a marriage.</p>
 
 <p>As a specialized example of editing, you could transform older metacards to the latest version of DDMS. With the Component Builder framework, you could load a DDMS 2.0 metacard,
-add all of the fields required for DDMS 4.1, and then save it as a DDMS 4.1 metacard. Example code for this use case can be found in the <a href="documentation-builders.jsp">Component Builder</a> Power Tip.</p>
+add all of the fields required for DDMS 5.0, and then save it as a DDMS 5.0 assertion. Example code for this use case can be found in the <a href="documentation-builders.jsp">Component Builder</a> Power Tip.</p>
 
 <h4>Applying custom constraints with Schematron</h4>
 
@@ -170,28 +171,31 @@ followed these rules to determine which components are important enough to deser
 	<li>Data which can be represented as a simple Java type AND which has no special attributes is represented as a simple Java type (<code>ddms:email</code>).</li>
 	<li>Attributes are generally implemented as properties on an Object. The exceptions to this are the attributes which tend to be used together, such as the
 		<a href="/docs/index.html?buri/ddmsence/ddms/security/ism/SecurityAttributes.html">ISM SecurityAttributes</a>, 
-		which decorates many DDMS components, and the <a href="/docs/index.html?buri/ddmsence/ddms/summary/gml/SRSAttributes.html">GML SRSAttributes</a>,
-		which decorates components in the GML profile.</li>
+		which decorates many DDMS components.</li>
 </ul>
+
+<h4>Immutability</h4>
+
+<p>All DDMS components are implemented as immutable objects, which means that their values cannot be changed after instantiation. Because the components are
+validated during instantiation, this also means that it is impossible to have an invalid component at any given time: a component is either confirmed to be 
+valid or does not exist. The <a href="documentation-builders.jsp">Component Builder</a> framework can be used to build DDMS Resources piece by piece, saving validation until the end.</li>
+</p>
 
 <h4>Empty String vs. No Value</h4>
 
 <p>When analyzing <code>xs:string</code>-based components, DDMSence treats the absence of some element/attribute in the same manner as it would treat that element/attribute if it were
-present but had an empty string as a value. The DDMS schema generally uses <code>xs:string</code> without length restrictions, so an empty string is syntactically correct, even if the
-resulting data is not logical. To provide some consistency in this library, I have tried to follow these rules:</p>
+present but had an empty string as a value. A string-based accessor will always return an empty string instead of a <code>null</code> entity.</p>
 
-<ul>
-	<li>A string-based accessor will always return an empty string instead of a <code>null</code> entity. This means that a missing element and an element with no value
-	in an XML file are treated identically.</li>
-	<li>If the DDMS specification marks a component as Mandatory, but the schema allows an empty string, DDMSence will also require that the component have a non-empty value.</li> 
-	<li>If the DDMS specification marks a component as Optional, DDMSence will never be stricter than the DDMS schema. This could result in illogical constructs
-	that are legal according to the schema, but I wanted to minimize the cases where this library might interfere with existing records.</li>
-</ul>
+<h4>Accessor Consistency Across Versions</h4>
+
+<p>Some non-string-based attributes, such as <code>ism:excludeFromRollup</code> and <code>ism:resouceElement</code> do not appear in all versions of DDMS. When the accessors for 
+these attributes are called on an older version, a null value will be returned. This decision allows DDMS records of varying versions to be
+traversed and queried in the same manner, without requiring too much knowledge of when specific attributes were introduced.</p>
 
 <h4>Lists of Strings</h4>
 
-<p>In some instances, the DDMS specification supports multiple string values, either by  multiple elements (<code>ddms:name</code> elements on a <code>ddms:person</code>)
-or by supporting the <code>xsd:list</code> datatype (the <code>ISM:ownerProducer</code> security attribute). The accessor methods for these fields in DDMSence will always deal with
+<p>In some instances, the DDMS specification supports multiple string values, either by multiple elements (<code>ddms:name</code> elements on a <code>ddms:person</code>)
+or by supporting the <code>xsd:list</code> datatype (the <code>ism:ownerProducer</code> security attribute). The accessor methods for these fields in DDMSence will always deal with
 a List of String values, rather than a space-separated String containing multiple values. However, because list management can be tedious, there is a shortcut utility method available:
 
 <pre class="brush: java">// These two approaches to generating ownerProducers are equivalent.
@@ -202,46 +206,16 @@ ownerProducers.add("USA");
 List&lt;String&gt; ownerProducers = Util.getXsListAsList("AUS USA");</pre>
 <p class="figure">Figure 3. Conveniently creating a list of Strings from a space-delimited String</p>
 
-<h4>Immutability</h4>
-
-<p>All DDMS components are implemented as immutable objects, which means that their values cannot be changed after instantiation. Because the components are
-validated during instantiation, this also means that it is impossible to have an invalid component at any given time: a component is either confirmed to be 
-valid or does not exist. The <a href="documentation-builders.jsp">Component Builder</a> framework can be used to build DDMS Resources piece by piece, saving validation until the end.</li>
-</p>
-
-<h4>Constructor Parameter Order</h4>
-
-<p>Because DDMS components are built in single-step constructors to support immutability, parameter lists can sometimes exceed more than a handful of information. 
-The following convention is used to provide some consistency:</p>
-
-<ul>
-	<li>On constructors which build components from raw data:</li>
-		<ul>
-			<li>The data or components needed to construct any nested elements or child text comes next (such as the list of Keywords in a <a href="/docs/buri/ddmsence/ddms/summary/SubjectCoverage.html">SubjectCoverage</a> component).</li>
-			<li>The data needed to construct any attributes comes next (such as the <a href="/docs/index.html?buri/ddmsence/ddms/security/ism/SecurityAttributes.html">ISM SecurityAttributes</a>).</li>
-			<li>Any remaining information that DDMSence needs comes last (such as the boolean flag on a <a href="/docs/index.html?buri/ddmsence/ddms/summary/PostalAddress.html">PostalAddress</a> which toggles between states and provinces).</li>
-		</ul>
-	<li>On constructors which build components from XML files, a XOM element is generally the only parameter. Additional information is implicitly
-	loaded from the XOM element. </li>
-</ul>
-
 <h4>Thread Safety</h4>
 
 <p>Other than the immutability of objects, no special effort went into making DDMSence thread-safe, and no testing was done on its behavior in multithreaded environments.</p>
-
-<h4>Accessor Consistency Across Versions</h4>
-
-<p>Some non-string-based attributes, such as <code>ISM:excludeFromRollup</code> and <code>ISM:resouceElement</code> do not appear in earlier versions of DDMS. When the accessors for 
-these attributes are called on an older version, a null value will be returned. This decision allows DDMS records of varying versions to be
-traversed and queried in the same manner, without requiring too much knowledge of when specific attributes were introduced.</p>
 
 <a name="tips"></a><h3>Power Tips</h3>
 
 <p>Power Tips provide instructions and sample code to maximize the benefits of DDMSence, once you are comfortable with the basics of the library.</p>
 
 <ul>
-	<li><a href="documentation-version.jsp">Working With Different DDMS Versions</a>: Shows how to read and create DDMS Resources and components using other supported versions. 
-	Also outlines the important changes between each version of DDMS in table form.</li><br />
+	<li><a href="documentation-version.jsp">Working With Different DDMS Versions</a>: Shows how to read and create DDMS Resources and components using other supported versions.</li><br />
 
 	<li><a href="documentation-attributes.jsp">Common Attribute Groups</a>: Discusses the classes which represent the attribute groups used throughout DDMS, such as
 	Information Security Marking (ISM) attributes.</li><br />
@@ -252,7 +226,7 @@ traversed and queried in the same manner, without requiring too much knowledge o
 	<li><a href="documentation-schematron.jsp">Schematron Validation</a>: Explains the process for using custom Schematron files with DDMSence, and provides example
 	code for using the official ISM.XML Schematron files.</li><br />
 
-	<li><a href="documentation-differentIsm.jsp">Using Alternate Versions of ISM/NTK</a>: Shows how to use a local set of ISM/NTK schemas and CVE files instead of the files bundled with DDMSence.</li><br />
+	<li><a href="documentation-differentIsm.jsp">Using Alternate Versions of Intelligence Community Specifications</a>: Shows how to use a local set of ISM/NTK/VIRT schemas and CVE files instead of the files bundled with DDMSence.</li><br />
 
 	<li><a href="documentation-configuration.jsp">Configurable Properties</a>: Identifies DDMSence properties which can be changed at runtime.</li><br />
 
@@ -266,9 +240,9 @@ traversed and queried in the same manner, without requiring too much knowledge o
 
 <ul>
 	<li><a href="builder.uri">DDMS Builder</a>: An experimental tool to build DDMS metacards with a form-based UI.</li><br />
-	<li><a href="validator.uri">DDMS Validator</a>: An experimental tool to validate DDMS metacards.</li><br />
+	<li><a href="validator.uri">DDMS Validator</a>: An experimental tool to validate DDMS metacards and assertions.</li><br />
 	<li><a href="relationalTables.jsp">Relational Database Model for DDMS 3.1</a>: A mapping of the DDMS 3.1 specification to relational database tables (database-agnostic).</li><br />
-	<li><a href="schematron.jsp">Schematron Implementation for DDMS 4.1</a>: An attempt to model some of the more complex rules in the DDMS specification with ISO Schematron.</li>
+	<li><a href="schematron.jsp">Schematron Implementation for DDMS 5.0</a>: An attempt to model some of the more complex rules in the DDMS specification with ISO Schematron.</li>
 </ul>
 
 <a name="contributors"></a><h3>Contributors</h3>

@@ -17,7 +17,7 @@ instead of "ISM", you would set the "ism.prefix" property with a custom value of
 <p class="figure">Figure 1. Command to change a configurable property.</p>
 
 <p>Only the subset of properties listed below can be set programmatically. Attempts to change other DDMSence properties will result in an exception.</p>
-	
+			
 <table>
 <tr><th>Property Name</th><th>Description</th><th>Default Value</th></tr>
 <tr><td>ddms.prefix</td><td>Default DDMS prefix used when generating components from scratch</td><td><code>ddms</code></td></tr>
@@ -26,6 +26,8 @@ instead of "ISM", you would set the "ism.prefix" property with a custom value of
 <tr><td>ntk.prefix</td><td>Default NTK prefix used when generating components from scratch</td><td><code>ntk</code></td></tr>
 <tr><td>output.indexLevel</td><td>Controls the placement of 1-based indices on the HTML/Text output of fields which are allowed to have multiples (0 = Never use, 1 = Use unless exactly 1 item exists, 2 = Always use)</td><td><code>0</code></td></tr>
 <tr><td>sample.data</td><td>Default data directory used by sample applications</td><td><code>data/sample/</code></td></tr>
+<tr><td>tspi.prefix</td><td>Default TSPI prefix used when generating components from scratch</td><td><code>tspi</code></td></tr>
+<tr><td>virt.prefix</td><td>Default VIRT prefix used when generating components from scratch</td><td><code>virt</code></td></tr>
 <tr><td>xlink.prefix</td><td>Default XLink prefix used when generating components from scratch</td><td><code>xlink</code></td></tr>
 <tr><td>xml.transform.TransformerFactory</td><td>XSLT Engine class name, for Schematron validation<td><code>net.sf.saxon.TransformerFactoryImpl</code></td></tr>
 </table>
@@ -66,8 +68,7 @@ creator.surname: Uri
 creator.phone[1]: 703-885-1000</pre> 
 <p class="figure">Figure 3. The Text output of this creator when output.indexLevel is 2</p>
 
-<p>Indices are off by default, since this is not a part of the official specification. However, I recently submitted a Change Request to the DDMS team for this system of handling multiples,
-so it might be accepted in the future.</p>
+<p>Indices are off by default, since this is not a part of the official specification.</p>
 
 <p>
 	<a href="#top">Back to Top</a><br>
