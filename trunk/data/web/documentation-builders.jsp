@@ -161,7 +161,7 @@ Point tspiPoint = builder.commit();</pre>
 <p class="figure">Figure 8. Creating a TSPI Point with a Builder</p>
 
 <p>This is actually a step back from the GML shape builders provided in older versions of DDMSence. As use cases refine and more organizations adopt DDMS 5.0, I will
-revisit these components to determine whether a stronger solution is useful.</p>
+revisit these components to determine whether a stronger solution would be useful.</p>
 
 <p>
 	<a href="#top">Back to Top</a><br>
