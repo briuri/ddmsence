@@ -80,7 +80,7 @@ public final class Point extends AbstractBaseComponent {
 			if (posElement != null)
 				_position = new Position(posElement);
 			_srsAttributes = new SRSAttributes(element);
-			setXOMElement(element, true);
+			validate();
 		}
 		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());

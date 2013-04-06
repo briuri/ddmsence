@@ -83,7 +83,7 @@ public final class Position extends AbstractBaseComponent {
 				_coordinates.add(Double.valueOf(coordinate));
 			}
 			_srsAttributes = new SRSAttributes(element);
-			setXOMElement(element, true);
+			validate();
 		}
 		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());

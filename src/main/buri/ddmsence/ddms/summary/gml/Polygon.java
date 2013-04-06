@@ -101,7 +101,7 @@ public final class Polygon extends AbstractBaseComponent {
 				}
 			}
 			_srsAttributes = new SRSAttributes(element);
-			setXOMElement(element, true);
+			validate();
 		}
 		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
