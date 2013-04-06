@@ -39,10 +39,12 @@ selecting the sample file, <code>3.1-identifierPostalAddressExample.xml</code> a
 The two lower panes contain the results of calling <code>toHTML()</code> and <code>toText()</code>, respectively, on the Resource object.</p> 
 
 <p>Now, let's take a look at the source code in <code>/src/samples/buri/ddmsence/samples/Essentials.java</code> to see how this was accomplished. The important lines are found in the
-<code>loadFile()</code> method:</p>
+<code>loadFile()</code> method. First, we try to guess the version of DDMS used in the file, based upon the XML namespace. Next, we create a DDMSReader instance that
+will load the file. Finally, we store the loaded resource in the <code>_resource</code> variable:</p>
 
-<pre class="brush: java">// The DDMS reader builds a Resource object from the XML in the file.
-_resource = getReader().getDDMSResource(file);
+<pre class="brush: java">DDMSVersion fileVersion = guessVersion(file);
+// The DDMS reader builds a Resource object from the XML in the file.
+_resource = getReader(fileVersion).getDDMSResource(file);
 			
 // The three output formats
 String xmlFormat = getResource().toXML();

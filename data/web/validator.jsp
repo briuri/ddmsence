@@ -61,14 +61,12 @@
 			exampleRecord = ""
 				+ "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 				+ "<ddms:resource \n"
-				+ "  xmlns:ddms=\"urn:us:mil:ces:metadata:ddms:4\" \n"
-				+ "  xmlns:ISM=\"urn:us:gov:ic:ism\" \n"
+				+ "  xmlns:ddms=\"urn:us:mil:ces:metadata:ddms:5\" \n"
+				+ "  xmlns:ism=\"urn:us:gov:ic:ism\" \n"
 				+ "  xmlns:ntk=\"urn:us:gov:ic:ntk\" \n"
-				+ "  ntk:DESVersion=\"7\" \n"
-				+ "  ISM:resourceElement=\"true\" ISM:DESVersion=\"9\" \n"
-				+ "  ISM:createDate=\"2011-09-25\" ISM:classification=\"U\" \n"
-				+ "  ISM:ownerProducer=\"USA\">\n"
-				+ "  <ddms:metacardInfo ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n"
+				+ "  xmlns:virt=\"urn:us:gov:ic:virt\" \n"
+				+ "  ddms:compliesWith=\"DDMSRules\">\n"
+				+ "  <ddms:metacardInfo ism:classification=\"U\" ism:ownerProducer=\"USA\">\n"
 				+ "    <ddms:identifier ddms:qualifier=\"URI\" ddms:value=\"urn:buri:ddmsence:testIdentifier\" />\n"
 				+ "    <ddms:dates ddms:created=\"2011-09-24\" />\n"
 				+ "    <ddms:publisher>\n"
@@ -79,10 +77,10 @@
 				+ "    </ddms:publisher>\n"
 				+ "  </ddms:metacardInfo>\n"				
 				+ "  <ddms:identifier ddms:qualifier=\"URI\" ddms:value=\"urn:buri:ddmsence\"/>\n"
-				+ "  <ddms:title ISM:ownerProducer=\"USA\" ISM:classification=\"U\">\n"
+				+ "  <ddms:title ism:ownerProducer=\"USA\" ism:classification=\"U\">\n"
 				+ "    DDMSence\n"
 				+ "  </ddms:title>\n"
-				+ "  <ddms:description ISM:ownerProducer=\"USA\" ISM:classification=\"U\">\n"
+				+ "  <ddms:description ism:ownerProducer=\"USA\" ism:classification=\"U\">\n"
 				+ "    An open-source Java API for DDMS\n"
 				+ "  </ddms:description>\n"
 				+ "  <ddms:language ddms:qualifier=\"http://purl.org/dc/elements/1.1/language\" \n"
@@ -90,7 +88,7 @@
 				+ "  <ddms:dates ddms:created=\"2010-03-24\" ddms:posted=\"2010-03-24\" />\n"
 				+ "  <ddms:rights ddms:copyright=\"true\" ddms:privacyAct=\"false\" \n"
 				+ "    ddms:intellectualProperty=\"true\"/>\n"
-				+ "  <ddms:creator ISM:ownerProducer=\"USA\" ISM:classification=\"U\">\n"
+				+ "  <ddms:creator ism:ownerProducer=\"USA\" ism:classification=\"U\">\n"
 				+ "    <ddms:person>\n"
 				+ "      <ddms:name>Brian Uri</ddms:name>\n"
 				+ "      <ddms:name>Brian</ddms:name>\n"
@@ -98,7 +96,7 @@
 				+ "      <ddms:email>ddmsence@urizone.net</ddms:email>\n"
 				+ "    </ddms:person>\n"
 				+ "  </ddms:creator>\n"
-				+ "  <ddms:publisher ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n"
+				+ "  <ddms:publisher ism:classification=\"U\" ism:ownerProducer=\"USA\">\n"
 				+ "    <ddms:person>\n"
 				+ "      <ddms:name>Brian Uri</ddms:name>\n"
 				+ "      <ddms:name>Brian</ddms:name>\n"
@@ -124,7 +122,7 @@
 				+ "    <ddms:category \n"
 				+ "      ddms:qualifier=\"http://metadata.dod.mil/mdr/ns/TaxFG/0.75c/Core_Tax_0.75c.owl#Asset\" \n"
 				+ "      ddms:code=\"Asset\" ddms:label=\"Asset\"/>\n"
-				+ "</ddms:subjectCoverage>\n"
+				+ "  </ddms:subjectCoverage>\n"
 				+ "  <ddms:temporalCoverage>\n"
 				+ "    <ddms:approximableStart>\n"
 				+ "      <ddms:description>Early 2010</ddms:description>\n"
@@ -132,13 +130,11 @@
 				+ "    </ddms:approximableStart>\n"
 				+ "    <ddms:end>Unknown</ddms:end>\n"
 				+ "  </ddms:temporalCoverage>\n"
-				+ "  <ddms:security ISM:ownerProducer=\"USA\" ISM:classification=\"U\" \n"
-				+ "    ISM:excludeFromRollup=\"true\"/>\n"
 				+ "</ddms:resource>"
 			form.stringRecord.value = exampleRecord;
 		</c:if>
 		<c:if test="${type eq 'url'}">
-			form.url.value = "ddmsence.googlecode.com/svn/trunk/data/sample/4.1-ddmsenceExample.xml";
+			form.url.value = "ddmsence.googlecode.com/svn/trunk/data/sample/5.0-ddmsenceExample.xml";
 		</c:if>
 	}
 	
@@ -154,7 +150,7 @@
 
 <a name="top"></a><h1>DDMS Validator</h1>
 
-<p>This experimental tool uses the DDMSence library to validate <b>Unclassified</b> DDMS 2.0, 3.0, 3.1, 4.0.1, and 4.1 records. Records 
+<p>This experimental tool uses the DDMSence library to validate <b>Unclassified</b> DDMS 2.0, 3.0, 3.1, 4.0.1, 4.1, and 5.0 records. Records 
 can be submitted by pasting XML text, uploading a file, or referencing a URL.</p>
 <p>Starred fields (<b>*</b>) are required.</p>
 
@@ -233,8 +229,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.Reader;
+import java.io.StringReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -243,6 +241,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import nu.xom.Document;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.BindException;
@@ -250,13 +250,18 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
 
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
+import buri.ddmsence.ddms.UnsupportedVersionException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSReader;
+import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -314,7 +319,8 @@ public class ValidatorControl extends SimpleFormController {
             }
          }         
          model.put("record", stringRepresentation);
-         Resource resource = new DDMSReader().getDDMSResource(stringRepresentation);
+         DDMSVersion version = guessVersion(stringRepresentation);
+         Resource resource = new DDMSReader(version).getDDMSResource(stringRepresentation);
          if (isUnclassified(resource)) {
             model.put("warnings", resource.getValidationWarnings());
          } else {
@@ -333,6 +339,28 @@ public class ValidatorControl extends SimpleFormController {
       return (new ModelAndView("validatorResult", "model", model));
    }
     
+   /**
+    * Helper method to attempt to guess which version of DDMS to use, based
+    * upon the namespace URI of the root element, via a non-validating builder.
+    * 
+    * @param potentialResource a String containing the resource
+    * @return the version
+    * @throws UnsupportedVersionException if the version could not be guessed.
+    * @throws InvalidDDMSException if the file could not be parsed.
+    */
+   private DDMSVersion guessVersion(String potentialResource) throws InvalidDDMSException {
+      try {
+         XMLReader reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xml.reader.class"));
+         nu.xom.Builder builder = new nu.xom.Builder(reader, false);
+         Document doc = builder.build(new StringReader(potentialResource));
+         String namespace = doc.getRootElement().getNamespaceURI();
+         return (DDMSVersion.getVersionForNamespace(namespace));
+      }
+      catch (Exception e) {
+         throw new InvalidDDMSException("Could not create a valid element from potential resource: " + e.getMessage());
+      }
+   }
+   
    /**
     * Converts the contents of a stream into a String
     * 

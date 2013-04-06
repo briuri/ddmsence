@@ -26,6 +26,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 
@@ -41,10 +43,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.xml.sax.SAXException;
+import nu.xom.Document;
 
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
+
+import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.UnsupportedVersionException;
 import buri.ddmsence.util.DDMSReader;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -59,7 +68,6 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public abstract class AbstractSample implements ActionListener {
-	private DDMSReader _reader;
 	private JFrame _frame;
 
 	protected static final String FILE = "File";
@@ -71,10 +79,38 @@ public abstract class AbstractSample implements ActionListener {
 	 */
 	public AbstractSample(String title, Dimension size, boolean hasFileMenu) throws SAXException {
 		_frame = buildFrame(title, size, hasFileMenu);
-		// TODO: Find a way to have readers for all possible loaded DDMS files.
-		_reader = new DDMSReader(DDMSVersion.getCurrentVersion());
 	}
 
+
+	/**
+	 * Returns a Reader for a specific version of DDMS
+	 */
+	protected DDMSReader getReader(DDMSVersion version) throws SAXException {
+		return (new DDMSReader(version));
+	}
+	
+	/**
+	 * Helper method to attempt to guess which version of DDMS to use, based
+	 * upon the namespace URI of the root element, via a non-validating builder.
+	 * 
+	 * @param potentialResource a File containing the resource
+	 * @return the version
+	 * @throws UnsupportedVersionException if the version could not be guessed.
+	 * @throws InvalidDDMSException if the file could not be parsed.
+	 */
+	protected DDMSVersion guessVersion(File potentialResource) throws InvalidDDMSException {
+		try {
+			XMLReader reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xml.reader.class"));
+			nu.xom.Builder builder = new nu.xom.Builder(reader, false);
+			Document doc = builder.build(new FileReader(potentialResource));
+			String namespace = doc.getRootElement().getNamespaceURI();
+			return (DDMSVersion.getVersionForNamespace(namespace));
+		}
+		catch (Exception e) {
+			throw new InvalidDDMSException("Could not create a valid element from potential resource: " + e.getMessage());
+		}
+	}
+	
 	/**
 	 * Returns a set of default instructions to display on startup.
 	 */
@@ -236,13 +272,6 @@ public abstract class AbstractSample implements ActionListener {
 	 */
 	public void setVisible(boolean b) {
 		getFrame().setVisible(b);
-	}
-
-	/**
-	 * Accessor for the DDMSReader
-	 */
-	protected DDMSReader getReader() {
-		return (_reader);
 	}
 
 	/**

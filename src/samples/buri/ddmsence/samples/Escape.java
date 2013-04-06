@@ -148,7 +148,8 @@ public class Escape extends AbstractSample {
 		for (int i = 0; i < fileList.length; i++) {
 			try {
 				// Try to parse each file.
-				getResources().add(getReader().getDDMSResource(fileList[i]));
+				DDMSVersion version = guessVersion(fileList[i]);
+				getResources().add(getReader(version).getDDMSResource(fileList[i]));
 			}
 			catch (Exception e) {
 				// Skip any that cannot be parsed and continue.
@@ -227,7 +228,7 @@ public class Escape extends AbstractSample {
 					distribution.incrementCount(String.valueOf(dates.getReceivedOn().getYear()));
 			}
 
-			// Resource createDate (required field in starting 3.0, optional in 2.0)
+			// Resource createDate (required field in 3.0, 4.0.1, and 4.1, optional in 2.0)
 			if (resource.getCreateDate() != null)
 				distribution.incrementCount(String.valueOf(resource.getCreateDate().getYear()));
 

@@ -33,12 +33,12 @@ command line parameters.</p>
 
 <pre class="brush: xml">Escort: a DDMSence Sample
 
-This program allows you to build a DDMS 4.1 metacard from scratch using a
+This program allows you to build a DDMS 5.0 assertion from scratch using a
 representative subset of possible components. Suggested valid answers are
 provided in square brackets for each prompt. However, these are not default
 values (hitting Enter will answer the prompt with an empty string).
 
-Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the metacard? [Y/N]:</pre>
+Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the assertion? [Y/N]:</pre>
 <p class="figure">Figure 1. Starting the Wizard</p>
 
 <p>The wizard will walk you through various components of a DDMS Resource in the order that they are found in the schema. 
@@ -103,7 +103,7 @@ component. Some Builders, like the one for a MetacardInfo will use other Builder
 <p>Let's use the wizard to create a valid Resource. You should be able to follow the prompts to the end, but if not, the output below is one possible
 road to a valid Resource.</p>
 
-<pre class="brush: xml">Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the metacard? [Y/N]: Y
+<pre class="brush: xml">Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the assertion? [Y/N]: y
 
 === ddms:metacardInfo (exactly 1 required) ===
 A minimal metacardInfo consist of an identifier, dates, and a publisher.
@@ -120,7 +120,7 @@ Please enter the number of names this organization has [1]: 1
 Please enter the number of phone numbers this organization has [0]: 0
 Please enter the number of email addresses this organization has [0]: 0
 Please enter the number of suborganizations to include [0]: 0
-Please enter entity name #1 [testName1]: DISA
+Please enter entity name #1 [testName1]: Defense Information Systems Agency
 Please enter the Organization acronym [testAcronym]: DISA
 
 === ddms:identifier (at least 1 required) ===
@@ -131,19 +131,20 @@ Please enter the value [testValue]: testValue
 Please enter the title text [testTitle]: testTitle
 
 === ddms:description (only 1 allowed) ===
-Include this component? [Y/N]: N
+Include this component? [Y/N]: n
 
 === ddms:dates (only 1 allowed) ===
-Include this component? [Y/N]: N
+Include this component? [Y/N]: n
 
 === Producers: creator, publisher, contributor, and pointOfContact (at least 1 required) ===
 Please enter the producer type [creator]: creator
 Please enter the entity type [organization]: organization
+Please enter the pocType [DoD-Dist-B]: 
 Please enter the number of names this organization has [1]: 1
 Please enter the number of phone numbers this organization has [0]: 0
 Please enter the number of email addresses this organization has [0]: 0
 Please enter the number of suborganizations to include [0]: 0
-Please enter entity name #1 [testName1]: DISA
+Please enter entity name #1 [testName1]: Defense Information Systems Agency
 Please enter the Organization acronym [testAcronym]: DISA
 
 === ddms:subjectCoverage (at least 1 required) ===
@@ -152,15 +153,10 @@ Please enter the number of categories to include [0]: 0
 Please enter the number of productionMetrics to include [0]: 0
 Please enter the number of nonStateActors to include [0]: 0
 * Keyword #1
-Please enter the keyword value [testValue]: DDMSence
-
-=== ddms:security (exactly 1 required) ===
+Please enter the keyword value [testValue]: ddmsence
 
 === ddms:resource Attributes (all required) ===
-Does this tag set the classification for the resource as a whole? [Y/N]: Y
-Please enter Resource createDate [2012-09-01]: 2012-09-01
-Please enter the Resource ISM:DESVersion [9]: 9
-Please enter the Resource ntk:DESVersion [7]: 7
+Please enter the Resource compliesWith [DDMSRules]: DDMSRules
 The DDMS Resource is valid!
 No warnings were recorded.</pre>
 <p class="figure">Figure 6. Successful run of the Escort Wizard</p>
@@ -171,10 +167,10 @@ the messages of that component and any subcomponents. In this run-through, no wa
 <p>The final step is to save your valid Resource as an XML file. Enter a filename, and the Resource will be saved in the <code>data/sample/</code> directory.</p>
 
 <pre class="brush: xml">=== Saving the Resource ===
-Would you like to save this file? [Y/N]: Y
+Would you like to save this file? [Y/N]: y
 This Resource will be saved as XML in the data/sample/ directory.
 Please enter a filename: test.xml
-File saved at "D:\projects\ddmsence\data\sample\test.xml".
+File saved at "C:\projects\ddmsence\data\sample\test.xml".
 
 You can now open your saved file with the Essentials application.
 The Escort wizard is now finished.</pre>
