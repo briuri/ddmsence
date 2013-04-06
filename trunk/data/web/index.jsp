@@ -80,13 +80,14 @@
 <%@ include file="../shared/header.jspf" %>
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
-	<div class="newsUpdate"><u>04/01/2013</u>: Happy Birthday to DDMSence, celebrating 24 releases in 3 years! Development work on v2.2.0 (supporting DDMS 5.0) is roughly 75% complete.</div>
-	<div class="newsUpdate"><u>01/19/2013</u>: <a href="downloads.jsp">v2.1.0</a> released, adding support for DDMS 4.1.</div>
+	<div class="newsUpdate"><u>XX/XX/2013</u>: <a href="downloads.jsp">v2.2.0</a> released, adding support for DDMS 5.0.</div>
+	<div class="newsUpdate"><u>04/01/2013</u>: Happy Birthday to DDMSence, celebrating 24 releases in 3 years!</div>
+	<div class="newsUpdate"><u>01/19/2013</u>: v2.1.0 released, adding support for DDMS 4.1.</div>
 	<div class="newsUpdate"><u>12/01/2011</u>: v2.0.0 released, adding support for DDMS 4.0.1.</div>
 	<div class="divExpand feed"><a href="#" onClick="return false;">more...</a></div>	
 	<div id="oldNews" class="divHidden">
 		<div class="newsUpdate"><u>10/20/2011</u>: I gave a <a href="https://metadata.ces.mil/dse/content_items/document/100100096">briefing</a> on DDMSence at the 
-			<a href="https://metadata.ces.mil/dse-help/en/Metadata_Working_Group">DoD Metadata Working Group Meeting</a> on October 20 in Columbia, MD.</div>
+			<a href="https://metadata.ces.mil/dse-help/en/Metadata_Working_Group">DoD Metadata Working Group Meeting</a> in Columbia, MD.</div>
 		<div class="newsUpdate"><u>07/17/2011</u>: v1.11.0 released, adding <a href="documentation-schematron.jsp">support for XSLT2-based Schematron validation</a>.</div>
 		<div class="newsUpdate"><u>07/05/2011</u>: v1.10.0 released, adding support for DDMS 3.1.</div>
 		<div class="newsUpdate"><u>06/06/2011</u>: <a href="schematron.jsp">Schematron Implementation for DDMS</a> published.</div>
@@ -130,11 +131,11 @@
 <p>
 DDMSence (pronounced "<i>dee-dee-em-<font color="#660000">Essence</font></i>") is an open-source Java API which supports the 
 <a href="http://metadata.ces.mil/mdr/irs/DDMS/" target="_new">DoD Discovery Metadata Specification (DDMS)</a>. 
-It transforms XML DDMS Resources (metacards) into a Java object model (using XOM and Xerces), allowing them to be manipulated or traversed within the context of a Java environment. 
+It transforms XML DDMS Resources (also called metacards or assertions) into a Java object model, allowing them to be manipulated or traversed within the context of a Java environment. 
 </p>
 
 <ul>
-	<li>Provides a complete implementation of the DDMS specification (including the Extensible Layer) using DDMS 2.0, 3.0, 3.1, 4.0.1, or 4.1.</li>
+	<li>Provides a complete implementation of the DDMS specification (including the Extensible Layer) using any version of DDMS between 2.0 and 5.0.</li>
 	<li>Java object model can be created from existing XML files, or built up from scratch with basic Java data types. Components automatically transform into valid, well-formed XML, HTML, and Text records.</li>
 	<li>Validates metacards against the complete specification, not just the schemas. Integrated with the Controlled Vocabulary Enumerations for ISM attributes, as defined by the Intelligence Community, and supports Schematron-based custom validation rules.</li>
 	<li>Three sample applications and accompanying <a href="documentation.jsp#started">tutorials</a> provide an introduction to the library,
@@ -156,13 +157,14 @@ It transforms XML DDMS Resources (metacards) into a Java object model (using XOM
 
 <h1>About the Author</h1>
 
-<p><img src="./images/BU.jpg" width="73" height="100" title="BU" class="bordered" align="left" />
+<p><img src="./images/BU.jpg" width="73" height="90" title="BU" class="bordered" align="left" />
 <b><a href="http://www.linkedin.com/in/urizone">Brian Uri!</a></b> is a Technical Lead at <a href="http://www.fgm.com/" target="_new">Novetta Solutions</a> 
-in Reston, Virginia. He has been involved in the development and support of the <a href="http://metadata.ces.mil/" target="_new">DoD Data Services Environment</a>
-and other enterprise services since the inception of the Net-Centric Enterprise Services (NCES) program in 2005. He currently supports the Defense
-Information Systems Agency (DISA) in its role as the Technical Agent for Universal Core (UCore). DDMSence was conceived in January 2010 and
-grew out of Brian's desire to gain more practical XML Schema experience, to write something useful which had never been done before, and an 
-unusually large amount of free time.</p>
+in Reston, Virginia. He has been involved with DISA's enterprise services and data strategy efforts (including DDMS, UCore, the 
+<a href="http://metadata.ces.mil/" target="_new">Data Services Environment</a>, ESM and SKIWeb) since the inception of the Net-Centric Enterprise Services 
+(NCES) program in 2005.</p>
+
+<p>DDMSence was conceived in January 2010 and grew out of Brian's desire to gain more practical XML Schema experience, to write something useful which had never 
+been done before, and an unusually large amount of free time.</p>
 
 <div class="clear"></div>
 <%@ include file="../shared/footer.jspf" %>

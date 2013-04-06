@@ -68,7 +68,6 @@ System.out.println(title.toXML());</pre>
 &lt;/ddms:title&gt;</pre>
 <p class="figure">Figure 5. The resultant XML element with security attributes</p>
 
-
 <p>The DES also defines many logical constraints on these attributes, but DDMSence does not validate these rules today. A set of Schematron files is 
 bundled with ISM.XML V5, and V9 (which are used by DDMS 3.1 and 4.1, respectively),
 and sample code for using DDMSence with these files can be found in the <a href="documentation-schematron.jsp">Schematron Validation</a> Power Tip.</p>
@@ -79,7 +78,7 @@ higher classification levels. This restriction will be addressed in a future rel
 
 <h2>ISM Notice Attributes</h2>
 
-<p><a href="/docs/index.html?buri/ddmsence/ddms/security/ism/NoticeAttributes.html">NoticeAttributes</a> were introduced in DDMS 4.0.1, and follow the same patterns used 
+<p><a href="/docs/index.html?buri/ddmsence/ddms/security/ism/NoticeAttributes.html">NoticeAttributes</a> are only applicable in DDMS 4.0.1 and 4.1, and follow the same patterns used 
 by the SecurityAttributes. The <code>ISM:noticeType</code> attribute is validated against a CVE when present.</p>
 
 <pre class="brush: java">// Assume that a list of noticeTexts, and the security attributes were previously created.
@@ -96,8 +95,8 @@ System.out.println(notice.toXML());</pre>
 
 <h2>XLink Attributes</h2>
 
-<p><a href="/docs/index.html?buri/ddmsence/ddms/summary/xlink/XLinkAttributes.html">XLinkAttributes</a> were introduced in DDMS 4.0.1, and support the various components
-which provide link attributes. An XLinkAttributes instance can function as 3 different types of XLink attribute groups: locator, simple, and resource, based on
+<p><a href="/docs/index.html?buri/ddmsence/ddms/summary/xlink/XLinkAttributes.html">XLinkAttributes</a> support the various components
+which provide external link attributes. An XLinkAttributes instance can function as 3 different types of XLink attribute groups: locator, simple, and resource, based on
 the value of the <code>xlink:type</code> attribute, or the constructor used to build the instance.</p>
 
 <pre class="brush: java">
@@ -113,10 +112,10 @@ public XLinkAttributes(String href, String role, String title, String arcrole, S
 
 <h2>GML SRS Attributes</h2>
 
-<p>Spatial Reference System (SRS) attributes are defined in the DDMS' GML Profile and implemented as an <a href="/docs/index.html?buri/ddmsence/ddms/summary/gml/SRSAttributes.html">SRSAttributes</a> class.
-They can be applied to <code>gml:Point</code>, <code>gml:Polygon</code>, and <code>gml:pos</code>.</p>
+<p>Spatial Reference System (SRS) attributes are defined in the GML specification and implemented as an <a href="/docs/index.html?buri/ddmsence/ddms/summary/gml/SRSAttributes.html">SRSAttributes</a> class.
+They can be applied to the various GML and TSPI shapes inside of a <code>ddms:boundingGeometry</code> element.</p>
 
-<p>Here is an example which creates SRS attributes on a <code>gml:pos</code> element:</p>
+<p>Here is an example which creates SRS attributes on a <code>gml:pos</code> element in DDMS 4.1:</p>
 
 <pre class="brush: java">List&lt;String&gt; axisLabels = Util.getXsListAsList("X Y");
 List&lt;String&gt; uomLabels = Util.getXsListAsList("Meter Meter");
@@ -127,13 +126,13 @@ coordinates.add(new Double(32.1));
 coordinates.add(new Double(40.1));
 Position position = new Position(coordinates, srsAttributes);
 System.out.println(position.toXML());</pre>
-<p class="figure">Figure 9. Code to generate SRSAttributes</p>
+<p class="figure">Figure 9. Code to generate SRSAttributes in DDMS 4.1</p>
 
 <pre class="brush: xml">&lt;gml:pos srsName="http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D" srsDimension="10" 
    axisLabels="X Y" uomLabels="Meter Meter"&gt;32.1 40.1&lt;/gml:pos&gt;</pre>
 <p class="figure">Figure 10. The resultant XML element with SRS attributes</p>
   
-<p>Please note that the SRSAttributes do not belong in any XML namespace -- this is correct according to the DDMS GML Profile.</p>
+<p>Please note that the SRSAttributes do not belong in any XML namespace.</p>
 
 <p>
 	<a href="#top">Back to Top</a><br>

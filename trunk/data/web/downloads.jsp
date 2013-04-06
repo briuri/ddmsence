@@ -20,30 +20,31 @@ code for the main library, unit tests, and the sample applications, as well as s
 file allows you to compile source code, run unit tests, generate API documentation, or even generate the "bin"-flavored archive with <a href="http://ant.apache.org/">Apache Ant</a>. 
 I have also included a <code>.project</code> file if you wish to import the project into Eclipse.</p>
 
-<p>Regardless of your choice, you will need a <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_new">JRE or JDK</a> which supports Java 1.5 or higher.</p>
+<p>Regardless of your choice, you will need a <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_new">JRE or JDK</a> which supports Java 1.6 or higher.</p>
 
-<h1>Latest Release: v2.1.0</h1>
+<h1>Latest Release: v2.2.0</h1>
 
-<p>Version <b>2.1.0</b> (01/19/2013) is a stable release, which adds support for DDMS 4.1. It is backwards compatible with 2.0.0. Because DDMS 4.1 shares an XML namespace with DDMS 4.0.1,
-older 4.0.1 metacards are validated against the DDMS 4.1 schemas in this release.</p>
+<p>Version <b>2.2.0</b> (XX/XX/2013) is a stable release, which adds support for DDMS 5.0. It is backwards compatible with all versions since 2.0.0.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-2.1.0.zip"><code>ddmsence-bin-2.1.0.zip</code></a></b> (6.1 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-2.1.0.zip"><code>ddmsence-src-2.1.0.zip</code></a></b> (6.2 MB)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-2.2.0.zip"><code>ddmsence-bin-2.2.0.zip</code></a></b> (6.8 MB, compiled with JDK1.7.0_17, source level 1.6)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-2.2.0.zip"><code>ddmsence-src-2.2.0.zip</code></a></b> (6.8 MB)</li>
 <br />
-<li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v2.1.0">Complete List of Changes</a></li>
-<li><a href="upgrade-2.0.0.jsp">Upgrade Guide</a> (for migrating from DDMSence v1.x.x)</li>
+<li><a href="releaseNotes-2.2.0.jsp">What's New in DDMS 5.0 / DDMSence 2.2.0</a></li>
+<li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v2.2.0">Complete List of Changes</a></li>
 </ul>
+
+<p>An upgrade guide is available if you need to <a href="upgrade-2.0.0.jsp">upgrade from v1.x.x</a>.</p>
 
 <h3>DDMSence and Maven</h3>
 
-<p>Starting with v2.1.0, the DDMSence JAR file is also available in the <a href="http://search.maven.org/#browse|829191053">Maven Central Repository</a>. It can be added to your <code>pom.xml</code>
+<p>Starting with v2.1.0, the DDMSence JAR file is also available in the <a href="http://search.maven.org/#browse|57355829">Maven Central Repository</a>. It can be added to your <code>pom.xml</code>
 file as shown in Figure 1.</p>
 
 <pre class="brush: xml">&lt;dependency&gt;
    &lt;groupId&gt;net.urizone&lt;/groupId&gt;
    &lt;artifactId&gt;ddmsence&lt;/artifactId&gt;
-   &lt;version&gt;2.1.0&lt;/version&gt;
+   &lt;version&gt;2.2.0&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 <p class="figure">Figure 1. Setting up DDMSence as a Maven dependency</p>
 
@@ -63,6 +64,16 @@ All changes which are not backwards compatible will be linked from this page wit
 
 <!-- 339 downloads of 2.0.0 as of 1/19/2013 -->
 <!-- 828 downloads of 1.x -->
+
+<p>Version <b>2.1.0</b> (01/19/2013) is a stable release, which adds support for DDMS 4.1. It is backwards compatible with 2.0.0. Because DDMS 4.1 shares an XML namespace with DDMS 4.0.1,
+older 4.0.1 metacards are validated against the DDMS 4.1 schemas in this release.</p>
+
+<ul>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-2.1.0.zip"><code>ddmsence-bin-2.1.0.zip</code></a></b> (6.1 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-2.1.0.zip"><code>ddmsence-src-2.1.0.zip</code></a></b> (6.2 MB)</li>
+<li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v2.1.0">Complete List of Changes</a></li>
+
+</ul>
 
 <p>Versions of DDMSence before 2.1.0 are no longer available for download (although they can still be built from the source code). Historical information about earlier releases can be
 found below.</p>

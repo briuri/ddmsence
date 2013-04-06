@@ -43,7 +43,7 @@ attribute on the root element of your Schematron file. The supported values are 
 
 <p>The following code sample will build a DDMS Resource from one of the sample XML files, and then validate it through Schematron:</p>
 
-<pre class="brush: java">File resourceFile = new File("data/sample/4.1-ddmsenceExample.xml");
+<pre class="brush: java">File resourceFile = new File("data/sample/5.0-ddmsenceExample.xml");
 File schFile = new File("data/sample/schematron/testPublisherValueXslt1.sch");
 
 DDMSReader reader = new DDMSReader();
@@ -53,12 +53,12 @@ for (ValidationMessage message : schematronMessages) {
    System.out.println("Location: " + message.getLocator());
    System.out.println("Message: " + message.getText());
 }</pre>
-<p class="figure">Figure 3. Sample code to validate 4.1-ddmsenceExample.xml with testPublisherValueXslt1.sch</p>
+<p class="figure">Figure 3. Sample code to validate 5.0-ddmsenceExample.xml with testPublisherValueXslt1.sch</p>
 
-<pre class="brush: xml">Location: //*[local-name()='Resource' and namespace-uri()='urn:us:mil:ces:metadata:ddms:4']
-   /*[local-name()='publisher' and namespace-uri()='urn:us:mil:ces:metadata:ddms:4']
-   /*[local-name()='person' and namespace-uri()='urn:us:mil:ces:metadata:ddms:4']
-   /*[local-name()='surname' and namespace-uri()='urn:us:mil:ces:metadata:ddms:4']
+<pre class="brush: xml">Location: //*[local-name()='Resource' and namespace-uri()='urn:us:mil:ces:metadata:ddms:5']
+   /*[local-name()='publisher' and namespace-uri()='urn:us:mil:ces:metadata:ddms:5']
+   /*[local-name()='person' and namespace-uri()='urn:us:mil:ces:metadata:ddms:5']
+   /*[local-name()='surname' and namespace-uri()='urn:us:mil:ces:metadata:ddms:5']
 Message: Members of the Uri family cannot be publishers.</pre>
 <p class="figure">Figure 4. Ouput of the code from Figure 3</p>
 
@@ -71,14 +71,15 @@ It is important to notice that 1) Schematron validation can only be performed on
 to any ValidationMessages.</p>
 
 <p>Schematron files contain the XML namespaces of any elements you might traverse -- please make sure you use the correct namespaces for the version
-of DDMS you are employing. The sample files described above are written only for DDMS 4.0.1 and 4.1.</p>
+of DDMS you are employing. The sample files described above are written only for DDMS 5.0.</p>
 
-<h2>Validating with ISM.XML Schematron Files</h2>
+<h2>Validating with Intelligence Community Schematron Files</h2>
 
-<p>Recent versions of ISM.XML include Schematron files for validating logical constraints on the ISM security attributes. DDMSence does not include these files,
-but you can download the Public Release versions from the <a href="http://www.dni.gov/ICEA/ism/default.htm">ODNI website</a>, and your organization might have
-access to versions from higher classification levels as well. The top-level Schematron file, <code>ISM/Schematron/ISM/ISM_XML.sch</code> is the orchestration
-point for each of the supporting files and the vocabularies needed for validation.</p>
+<p>The Intelligence Community specifications (ISM, NTK, and VIRT) include Schematron files for validating logical constraints on the IC attributes. 
+DDMSence does not include these files, but you can download the Public Release versions from the 
+<a href="http://www.dni.gov/index.php/about/organization/chief-information-officer/trusted-data-format">ODNI website</a>, and your organization might have
+access to versions from higher classification levels as well. The top-level Schematron file for ISM, <code>ISM/Schematron/ISM/ISM_XML.sch</code> is the orchestration
+point for each of the supporting files and the vocabularies needed for validation. A similar pattern can be seen in NTK and VIRT.</p>
 
 <p>Here is an example which validates one of the sample DDMS metacards against the ISM.XML Schematron files. It assumes that the top-level file and all of
 the files and subdirectories it depends on have been copied into the working directory.</p>
@@ -102,9 +103,13 @@ Message: [ISM-ID-00100][Error] If ISM-CAPCO-RESOURCE and attribute ownerProducer
    be ordered in accordance with CVEnumISMOwnerProducer.xml. The following values are out of order [AUS] for [USA AUS]</pre>
 <p class="figure">Figure 6. Schematron output when intentionally flaunting the rules</p>
 
+<p>Be aware that a DDMS 5.0 assertion is not a complete record on its own -- it is intended for insertion into an IC Trusted Data Object. Because of this, using IC
+Schematron files on the assertion alone may not be successful. You will need to validate the entire TDO record with the Schematron files. This operation is outside the scope
+of what DDMSence offers.</p>
+
 <h2>Supported XSLT Engines</h2>
 
-<p>DDMSence comes bundled with Saxon Home Edition (v9.4.0.7) because it supports both XSLT1 and XSLT2 transformations. Support for alternate engines is provided through the 
+<p>DDMSence comes bundled with Saxon Home Edition because it supports both XSLT1 and XSLT2 transformations. Support for alternate engines is provided through the 
 <code>xml.transform.TransformerFactory</code> configurable property, which can be set to the class name of another processor. Please 
 see the Power Tip on <a href="documentation-configuration.jsp">Configurable Properties</a> for details on how to set this property. The table below lists the engines I have tested with.
 None of the engines listed will work with XSLT 2 Schema-Aware (SA) Schematron files.</p>

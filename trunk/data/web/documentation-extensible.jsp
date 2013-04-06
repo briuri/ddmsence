@@ -9,6 +9,8 @@
 
 <a name="top"></a><h1>Power Tip: The Extensible Layer</h1>
 
+<p><i><b>Note</b>: This Power Tip only applies to DDMS 2.0 through 4.1. DDMS 5.0 no longer has an Extensible Layer, and extensions are stored elsewhere in the IC Trusted Data Format (TDF).</i></p>
+
 <p>DDMS is composed of five Core Sets (Metacard Info, Security, Resource, Summary Content, and Format) and the Extensible Layer. This layer supports extensibility
 by providing space for custom attributes and elements within a <code>ddms:resource</code>. Specifically, custom attributes can be added to any producer
 (Organization, Person, Service, and Unknown), a Keyword, a Category, and the Resource itself. A Resource can also have an unlimited number of custom

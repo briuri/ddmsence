@@ -71,49 +71,63 @@ the building process has no effect up until the moment that <code>commit()</code
 
 <h2>Transforming Between DDMS Versions</h2>
 
-<p>The code sample below takes a DDMS 2.0 metacard, adds the new fields required in DDMS 3.0, and commits it. The resulting Resource will use the DDMS 3.0 XML namespace.</p>
+<p>The code sample below takes a DDMS 2.0 metacard and uses builders to transform it into newer versions of DDMS.</p>
 
-<pre class="brush: java">Resource.Builder builder = new Resource.Builder(my20Resource);
+<pre class="brush: java">
+// Start from a 2.0 metacard
+Resource.Builder builder = new Resource.Builder(my20Resource);
 builder.setResourceElement(Boolean.TRUE);
 builder.setCreateDate("2011-07-05");
 builder.setIsmDESVersion(new Integer(2));
 builder.getSecurityAttributes().setClassification("U");
 builder.getSecurityAttributes().getOwnerProducers().add("USA");
 
+// Save as a 3.0 metacard
 DDMSVersion.setCurrentVersion("3.0");
-Resource my30Resource = builder.commit();</pre>
-<p class="figure">Figure 5. Transforming a DDMS 2.0 metacard with the Builder Framework</p>
+Resource my30Resource = builder.commit();
 
-<p>The similar code shown below will add the required fields to a 3.0 metacard that will make it valid in 3.1.</p>
-
-<pre class="brush: java">Resource.Builder builder = new Resource.Builder(my30Resource);
+// Now start from a 3.0 metacard
+builder = new Resource.Builder(my30Resource);
 builder.setIsmDESVersion(new Integer(5));
+
+// Save as a 3.1 metacard
 DDMSVersion.setCurrentVersion("3.1");
-Resource my31Resource = builder.commit();</pre>
-<p class="figure">Figure 6. Transforming a DDMS 3.0 metacard with the Builder Framework</p>
+Resource my31Resource = builder.commit();
 
-<p>This code sample will add the required fields to a 3.1 metacard that will make it valid in 4.0.1.</p>
-
-<pre class="brush: java">Resource.Builder builder = new Resource.Builder(my31Resource);
-builder.setNtkDESVersion(new Integer(5));
-builder.setIsmDESVersion(new Integer(7));
+// Now start from a 3.1 metacard
+builder = new Resource.Builder(my31Resource);
+builder.setNtkDESVersion(new Integer(7));
+builder.setIsmDESVersion(new Integer(9));
 builder.getMetacardInfo().getIdentifiers().get(0).setQualifier("qualifier");
 builder.getMetacardInfo().getIdentifiers().get(0).setValue("value");
 builder.getMetacardInfo().getDates().setCreated("2011-09-25");
 builder.getMetacardInfo().getPublishers().get(0).setEntityType("organization");
 builder.getMetacardInfo().getPublishers().get(0).getOrganization().setNames(Util.getXsListAsList("DISA"));
-DDMSVersion.setCurrentVersion("4.0.1");
-Resource my401Resource = builder.commit();</pre>
-<p class="figure">Figure 7. Transforming a DDMS 3.1 metacard with the Builder Framework</p>
 
-<p>Finally, this code sample will add the required fields to a 4.0.1 metacard that will make it valid in 4.1.</p>
+// Skip 4.0.1, because it has the same XML namespace as 4.1
 
-<pre class="brush: java">Resource.Builder builder = new Resource.Builder(my31Resource);
-builder.setNtkDESVersion(new Integer(7));
-builder.setIsmDESVersion(new Integer(9));
+// Save as a 4.1 metacard
 DDMSVersion.setCurrentVersion("4.1");
-Resource my41Resource = builder.commit();</pre>
-<p class="figure">Figure 7. Transforming a DDMS 4.0.1 metacard with the Builder Framework</p>
+Resource my41Resource = builder.commit();
+
+// Now start from a 4.1 metacard
+builder = new Resource.Builder(my41Resource);
+builder.setResourceElement(null);
+builder.setCreateDate(null);
+builder.setIsmDESVersion(null);
+builder.setNtkDESVersion(null);
+builder.setCompliesWiths("DDMSRules");
+builder.setSecurityAttributes(null);
+builder.setNoticeAttributes(null);
+builder.setSecurity(null);
+// If you used GML shapes or a postalAddress, your geospatialCoverages will be incompatible.
+// Converting shapes and addresses into TSPI is not covered here.
+builder.getGeospatialCoverages().clear();
+
+// Save as a 5.0 assertion
+DDMSVersion.setCurrentVersion("5.0");
+Resource my50Resource = builder.commit();</pre>
+<p class="figure">Figure 5. Transforming a DDMS 2.0 metacard with the Builder Framework</p>
 
 <h2>Builders as Form Beans</h2>
 
@@ -123,14 +137,31 @@ web library like Spring MVC might resolve that field into Java:
 
 <pre class="brush: xml">&lt;input name="metacardInfo.publishers[0].entityType" type="hidden" value="person" /&gt;
 &lt;input name="metacardInfo.publishers[0].person.surname" type="text" value="Uri" /&gt;</pre>
-<p class="figure">Figure 8. Form fields identifying a publisher as a person, and setting his surname</p>
+<p class="figure">Figure 6. Form fields identifying a publisher as a person, and setting his surname</p>
 
-<pre class="brush: java">Resource.Builder builder = new ResourceBuilder();
+<pre class="brush: java">Resource.Builder builder = new Resource.Builder();
 builder.getMetacardInfo().getPublishers().get(0).setEntityType("person");
 builder.getMetacardInfo().getPublishers().get(0).getPerson().setSurname("Uri");</pre>
-<p class="figure">Figure 9. Comparable Builder code to the form fields in Figure 8.</p>
+<p class="figure">Figure 7. Comparable Builder code to the form fields in Figure 6</p>
 
 <p>I have created a sample <a href="builder.uri">DDMS Builder</a> web application which provides an example of this behavior.</li></p> 
+
+<h2>Builders for TSPI Components</h2>
+
+<p>DDMS 5.0 introduced the Time-Space-Position Information specification for geospatial shapes and addresses. The TSPI specification is incredibly complex and 
+multi-layered, and it is unclear how much value a complete implementation in DDMSence would provide for discovery use cases. For this reason,
+shapes and addresses in the TSPI namespace have very simple Builder classes which require the raw XML for a component.</p>
+
+<pre class="brush: java">Point.Builder builder = new Point.Builder();
+builder.setXml("&lt;tspi:Point xmlns:tspi=\"http://metadata.ces.mil/mdr/ns/GSIP/tspi/2.0\" "
+   + "xmlns:gml=\"http://www.opengis.net/gml/3.2\" gml:id=\"PointMinimalExample\" srsDimension=\"3\" "
+   + "srsName=\"http://metadata.ces.mil/mdr/ns/GSIP/crs/WGS84E_MSL_H\"&gt;"
+   + "&lt;gml:pos&gt;53.8093938 -2.12955 4572&lt;/gml:pos&gt;&lt;/tspi:Point&gt;");
+Point tspiPoint = builder.commit();</pre>
+<p class="figure">Figure 8. Creating a TSPI Point with a Builder</p>
+
+<p>This is actually a step back from the GML shape builders provided in older versions of DDMSence. As use cases refine and more organizations adopt DDMS 5.0, I will
+revisit these components to determine whether a stronger solution is useful.</p>
 
 <p>
 	<a href="#top">Back to Top</a><br>

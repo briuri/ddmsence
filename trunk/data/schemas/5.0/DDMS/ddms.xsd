@@ -2,7 +2,7 @@
 <xs:schema
    xmlns:common="urn:us:gov:ic:common"
    xmlns:ddms="urn:us:mil:ces:metadata:ddms:5"
-   xmlns:ICISM="urn:us:gov:ic:ism"
+   xmlns:ism="urn:us:gov:ic:ism"
    xmlns:tspi="http://metadata.ces.mil/mdr/ns/GSIP/tspi/2.0"
    xmlns:virt="urn:us:gov:ic:virt"
    xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -556,14 +556,14 @@
       <xs:attributeGroup ref="virt:OptionalResourceLinkAttributesGroup" />
    </xs:attributeGroup>
    <xs:attributeGroup name="POCAttributesGroup">
-      <xs:attributeGroup ref="ICISM:POCAttributeGroup" /> 
+      <xs:attributeGroup ref="ism:POCAttributeGroup" /> 
       <xs:attributeGroup ref="SecurityAttributesOptionGroup" />
    </xs:attributeGroup>
    <xs:attributeGroup name="SecurityAttributesGroup">
-      <xs:attributeGroup ref="ICISM:SecurityAttributesGroup" />
+      <xs:attributeGroup ref="ism:SecurityAttributesGroup" />
    </xs:attributeGroup>
    <xs:attributeGroup name="SecurityAttributesOptionGroup">
-      <xs:attributeGroup ref="ICISM:SecurityAttributesOptionGroup" />
+      <xs:attributeGroup ref="ism:SecurityAttributesOptionGroup" />
    </xs:attributeGroup>
    <xs:attributeGroup name="SimpleLinkAttributesGroup">
       <xs:attributeGroup ref="virt:SimpleLinkAttributesGroup" />
