@@ -19,6 +19,7 @@
  */
 package buri.ddmsence.ddms;
 
+import buri.ddmsence.AbstractBaseComponent;
 
 /**
  * Identifying interface for a TSPI shape element, which may be used to fill a boundingGeometry element.
