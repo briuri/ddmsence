@@ -34,7 +34,7 @@ command line parameters. A network connection is needed to connect to Google (wh
 <h3>Walkthrough</h3>
 
 <p>When the application first opens, it will search the <code>data/sample/</code> directory for any XML files and try to convert them all into Resource
-objects (DDMSence can currently handle DDMS 2.0, 3.0, 3.1, 4.0.1, and 4.1 files). You might see an error message appear in your console, because I have included an invalid metacard file (aptly named <code>3.0-invalidResourceExample.xml</code>)
+objects (DDMSence can currently handle DDMS 2.0 through 5.0). You might see an error message appear in your console, because I have included an invalid metacard file (aptly named <code>3.0-invalidResourceExample.xml</code>)
 in the directory, which is used in the <u>Essentials</u> application. <u>Escape</u> will ignore any files it could not convert, so you can safely ignore this message.</p>
 
 <p>With a collection of Resources in hand, <u>Escape</u> examines the data in each Resource and builds frequency distribution charts based on various metrics. The
@@ -107,7 +107,7 @@ up into single words (to make the visualization more exciting).</p>
 <ul>
 	<li>There are six date attributes in the <code>ddms:dates</code> element, which apply to the resource being described.</li>
 	<li>If any <code>ddms:temporalCoverage</code> elements are defined, each one may have a start date and an end date.</li>
-	<li>The resource record itself has a createDate attribute starting in DDMS 3.0.</li>
+	<li>The resource record itself has a createDate attribute in DDMS 3.0 through 4.1.</li>
 </ul>
 
 <pre class="brush: java">Distribution distribution = new Distribution();
@@ -130,7 +130,7 @@ for (Resource resource : getResources()) {
          distribution.incrementCount(String.valueOf(dates.getReceivedOn().getYear()));
    }
    
-   // Resource createDate (required field starting in 3.0, optional in 2.0)
+   // Resource createDate (required field in 3.0, 4.0.1, and 4.1, optional in 2.0)
    if (resource.getCreateDate() != null)
       distribution.incrementCount(String.valueOf(resource.getCreateDate().getYear()));
    

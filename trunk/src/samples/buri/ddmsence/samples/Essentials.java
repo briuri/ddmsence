@@ -23,7 +23,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
@@ -31,9 +30,9 @@ import javax.swing.filechooser.FileFilter;
 
 import org.xml.sax.SAXException;
 
-import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.samples.util.AbstractSample;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
@@ -107,8 +106,9 @@ public class Essentials extends AbstractSample {
 	private void loadFile(File file) {
 		JPanel resultPanel;
 		try {
+			DDMSVersion fileVersion = guessVersion(file);
 			// The DDMS reader builds a Resource object from the XML in the file.
-			_resource = getReader().getDDMSResource(file);
+			_resource = getReader(fileVersion).getDDMSResource(file);
 
 			// The three output formats
 			String xmlFormat = getResource().toXML();
@@ -123,10 +123,7 @@ public class Essentials extends AbstractSample {
 			resultPanel.add(buildLabelledPanel(file.getName() + " in XML", xmlFormat));
 			resultPanel.add(htmlTextPanel);
 		}
-		catch (InvalidDDMSException e) {
-			resultPanel = buildErrorPanel("Could not create the DDMS Resource: ", e);
-		}
-		catch (IOException e) {
+		catch (Exception e) {
 			resultPanel = buildErrorPanel("Could not create the DDMS Resource: ", e);
 		}
 		refreshUI(resultPanel);
@@ -147,7 +144,7 @@ public class Essentials extends AbstractSample {
 				}
 
 				public boolean accept(File pathname) {
-					return (pathname.getAbsolutePath().endsWith(".xml"));
+					return (pathname.getAbsolutePath().endsWith(".xml") || pathname.isDirectory());
 				}
 			};
 			chooser.setFileFilter(filter);

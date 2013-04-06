@@ -51,27 +51,6 @@
 				},
 				'subjectCoverage.keywords[0].value': {
 					required: true
-				},
-				'security.securityAttributes.classification': {
-					required: true
-				},
-				'security.securityAttributes.ownerProducers': {
-					required: true
-				},
-				'createDate': {
-					required: true
-				},
-				'ismDESVersion': {
-					required: true
-				},
-				'ntkDESVersion': {
-					required: true
-				},
-				'securityAttributes.classification': {
-					required: true
-				},
-				'securityAttributes.ownerProducers': {
-					required: true
 				}
 			}, 
 			messages: {
@@ -110,27 +89,6 @@
 				},
 				'subjectCoverages[0].keywords[0].value': {
 					required: "A keyword is required."
-				},
-				'security.securityAttributes.classification': {
-					required: "A security classification is required."
-				},
-				'security.securityAttributes.ownerProducers': {
-					required: "At least one owner/producer is required."
-				},
-				'createDate': {
-					required: "A create date is required."
-				},
-				'ismDESVersion': {
-					required: "An ISM DES Version is required."
-				},
-				'ntkDESVersion': {
-					required: "An NTK DES Version is required."
-				},
-				'securityAttributes.classification': {
-					required: "A security classification is required."
-				},
-				'securityAttributes.ownerProducers': {
-					required: "At least one owner/producer is required."
 				}
 			}		
 		});
@@ -152,14 +110,6 @@
 		form.elements['creators[0].organization.emails[0]'].value = 'ddmsence@urizone.net';
 		form.elements['creators[0].organization.acronym'].value = 'FGM';
 		form.elements['subjectCoverages[0].keywords[0].value'].value = 'DDMSence';
-		form.elements['security.securityAttributes.classification'].value = 'U';
-		form.elements['security.securityAttributes.ownerProducers'].value = 'USA';
-		form.elements['resourceElement'].checked = true;
-		form.elements['createDate'].value = '2010-01-21';
-		form.elements['ismDESVersion'].value = '9';
-		form.elements['ntkDESVersion'].value = '7';
-		form.elements['securityAttributes.classification'].value = 'U';
-		form.elements['securityAttributes.ownerProducers'].value = 'USA';
 	}	
 	
 	</script>
@@ -169,10 +119,10 @@
 
 <a name="top"></a><h1>DDMS Builder</h1>
 
-<p>This experimental tool uses the DDMSence library to create a DDMS 4.1 Resource from form input. It uses
-the <a href="documentation-builders.jsp">Component Builder</a> framework, which was introduced in DDMSence 
-1.8.0. To simplify the example source code, the form only asks for a minimal subset of elements and attributes required for a valid resource. 
-Information submitted through this tool is not retained on the server.</p> 
+<p>This experimental tool uses the DDMSence library to create a DDMS 5.0 assertion from form input. The assertion is not a complete record on its own,
+but is intended for insertion into a Trusted Data Object in the IC Trusted Data Format (TDF) specification. It uses
+the <a href="documentation-builders.jsp">Component Builder</a> framework. To simplify the example source code, the form only asks for a minimal subset of 
+elements and attributes required for a valid resource. Information submitted through this tool is not retained on the server.</p> 
 
 <p>Starred fields (<b>*</b>) are required.</p>
 
@@ -238,46 +188,6 @@ Information submitted through this tool is not retained on the server.</p>
 	<form:input path="subjectCoverages[0].keywords[0].value" size="25" maxlength="256" /></div>
 	<div class="clear"><label class="builderField" for="subjectCoverages[0].keywords[1].value">Keyword #2:</label>
 	<form:input path="subjectCoverages[0].keywords[1].value" size="25" maxlength="256" /></div>
-	
-	<br />
-	<label class="builderComponent">Security</label>
-	<div class="clear"></div>
-	<div class="clear"><label class="builderField" for="security.excludeFromRollup">Exclude from Rollup?: *</label>
-	<span class="formElement">yes<input type="hidden" name="security.excludeFromRollup" value="true" /></span></div>
-	<div class="clear"><label class="builderField" for="security.securityAttributes.classification">Security Classification: *</label> 
- 	<form:select path="security.securityAttributes.classification" multiple="false" size="1">
- 		<form:option value=""></form:option>
-		<form:option value="U">Unclassified</form:option>
-	</form:select></div>	
-	<div class="clear"><label class="builderField" for="security.securityAttributes.ownerProducers">Owner/Producers: *</label>
-	<form:select path="security.securityAttributes.ownerProducers"  multiple="true" size="4">
-		<c:forEach var="ownerProducer" items="${ownerProducers}">
-			<form:option value="${ownerProducer}">${ownerProducer}</form:option>
-		</c:forEach>
-	</form:select></div>
-	
-	<br />
-	<label class="builderComponent">Resource Attributes</label>
-	<div class="clear"></div>
-	<div class="clear"><label class="builderField" for="resourceElement">Resource Element?: *</label>
-	<form:checkbox path="resourceElement" /> yes</div>
-	<div class="clear"><label class="builderField" for="createDate">Create Date: *</label>
-	<form:input path="createDate" size="10" maxlength="32" /></div>
-	<div class="clear"><label class="builderField" for="ismDESVersion">ISM DES Version: *</label>
-	<form:input path="ismDESVersion" size="1" maxlength="1" /></div>
-	<div class="clear"><label class="builderField" for="ntkDESVersion">NTK DES Version: *</label>
-	<form:input path="ntkDESVersion" size="1" maxlength="1" /></div>
-	<div class="clear"><label class="builderField" for="securityAttributes.classification">Security Classification: *</label>
- 	<form:select path="securityAttributes.classification"  multiple="false" size="1">
- 		<form:option value=""></form:option>
-		<form:option value="U">Unclassified</form:option>
-	</form:select></div>
-	<div class="clear"><label class="builderField" for="securityAttributes.ownerProducers">Owner/Producers: *</label>
-	<form:select path="securityAttributes.ownerProducers"  multiple="true" size="4">
-		<c:forEach var="ownerProducer" items="${ownerProducers}">
-			<form:option value="${ownerProducer}">${ownerProducer}</form:option>
-		</c:forEach>
-	</form:select></div>
 	
 	<br />
 	<label class="error"><form:errors path="*"/></label><br />
@@ -368,6 +278,7 @@ public class BuilderControl extends SimpleFormController {
       Resource.Builder builder = (Resource.Builder) command;
       Map&lt;String, Object&gt; model = new HashMap&lt;String, Object&gt;();
       try {
+         DDMSVersion.setCurrentVersion("5.0");
          Resource resource = builder.commit();
          if (resource == null)
             throw new InvalidDDMSException("No information was entered to create a DDMS Resource.");

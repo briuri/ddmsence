@@ -121,14 +121,14 @@ public class Escort {
 	private void run() throws IOException {
 		println("Escort: a DDMSence Sample\n");
 
-		println("This program allows you to build a DDMS 4.1 metacard from scratch using a");
+		println("This program allows you to build a DDMS 5.0 assertion from scratch using a");
 		println("representative subset of possible components. Suggested valid answers are");
 		println("provided in square brackets for each prompt. However, these are not default");
 		println("values (hitting Enter will answer the prompt with an empty string).\n");
 
-		_useDummySecurityAttributes = confirm("Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the metacard?");
+		_useDummySecurityAttributes = confirm("Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the assertion?");
 
-		DDMSVersion.setCurrentVersion("4.1");
+		DDMSVersion.setCurrentVersion("5.0");
 
 		printHead("ddms:metacardInfo (exactly 1 required)");
 		getTopLevelComponents().add(inputLoop(MetacardInfo.class));
@@ -166,8 +166,7 @@ public class Escort {
 		// Skip optional virtualCoverage, temporalCoverage, geospatialCoverage, relatedResource,
 		// and resourceManagement components.
 
-		printHead("ddms:security (exactly 1 required)");
-		getTopLevelComponents().add(inputLoop(Security.class));
+		// Skip security, which was removed after DDMS 4.1.
 
 		// Skip optional extensible elements.
 
@@ -514,12 +513,9 @@ public class Escort {
 		});
 		CONSTRUCTOR_BUILDERS.put(Resource.class, new IConstructorBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				boolean resourceElement = confirm("Does this tag set the classification for the resource as a whole?");
-				String createDate = readString("Resource createDate [2012-09-01]");
-				int ismDESVersion = readInt("the Resource ISM:DESVersion [9]");
-				int ntkDESVersion = readInt("the Resource ntk:DESVersion [7]");
-				return (new Resource(getTopLevelComponents(), resourceElement, createDate, null, new Integer(
-					ismDESVersion), new Integer(ntkDESVersion), buildSecurityAttributes("resource"), null, null));
+				String compliesWith = readString("the Resource compliesWith [DDMSRules]");
+				return (new Resource(getTopLevelComponents(), null, null, Util.getXsListAsList(compliesWith), null,
+					null, null, null, null));
 			}
 		});
 	}
