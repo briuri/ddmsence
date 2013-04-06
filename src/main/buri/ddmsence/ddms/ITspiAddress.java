@@ -19,6 +19,7 @@
  */
 package buri.ddmsence.ddms;
 
+import buri.ddmsence.AbstractBaseComponent;
 
 /**
  * Identifying interface for a TSPI address element, which may be used to fill a postalAddress element.
