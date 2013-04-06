@@ -44,11 +44,16 @@ import buri.ddmsence.util.Util;
  * 		None.
  * {@table.footer}
  * {@table.header Attributes}
- * 		None.
+ * 		{@child.info gml:id|1|00001}
+ * 		{@child.info &lt;<i>srsAttributes</i>&gt;|0..*|00001}
  * {@table.footer}
  * {@table.header Validation Rules}
  * 		{@ddms.rule Component must not be used before the DDMS version in which it was introduced.|Error|11111}
  * 		{@ddms.rule The qualified name of this element must be correct.|Error|11111}
+ * 		{@ddms.rule The srsName must exist.|Error|11111}
+ * 		{@ddms.rule The gml:id must exist, and must be a valid NCName.|Error|11111}
+ * 		{@ddms.rule If the gml:pos has an srsName, it must match the srsName of this Point.|Error|11111}
+ * 		{@ddms.rule Warnings from any SRS attributes are claimed by this component.|Warning|11111}
  * 		<p>No additional validation is done on the TSPI shape at this time.</p>
  * {@table.footer}
  * 

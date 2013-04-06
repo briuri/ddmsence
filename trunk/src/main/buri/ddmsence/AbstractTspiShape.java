@@ -25,6 +25,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.ITspiShape;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.summary.gml.SRSAttributes;
 import buri.ddmsence.util.Util;
 
 /**
@@ -47,10 +48,15 @@ import buri.ddmsence.util.Util;
  * 		None.
  * {@table.footer}
  * {@table.header Attributes}
- * 		None.
+ * 		{@child.info gml:id|1|11110}
+ * 		{@child.info &lt;<i>srsAttributes</i>&gt;|0..*|11110}
  * {@table.footer}
  * {@table.header Validation Rules}
  * 		{@ddms.rule Component must not be used before the DDMS version in which it was introduced.|Error|11111}
+ * 		{@ddms.rule The srsName must exist.|Error|11111}
+ * 		{@ddms.rule The gml:id must exist, and must be a valid NCName.|Error|11111}
+ * 		{@ddms.rule If the gml:pos has an srsName, it must match the srsName of this Point.|Error|11111}
+ * 		{@ddms.rule Warnings from any SRS attributes are claimed by this component.|Warning|11111}
  * 		<p>No additional validation is done on the TSPI shape at this time.</p>
  * {@table.footer}
  *  
@@ -59,13 +65,25 @@ import buri.ddmsence.util.Util;
  */
 public abstract class AbstractTspiShape extends AbstractBaseComponent implements ITspiShape {
 		
+	private SRSAttributes _srsAttributes = null;
+	
+	private static final String ID_NAME = "id";
+	
 	/**
 	 * Base constructor which works from a XOM element.
 	 * 
 	 * @param element the XOM element
 	 */
 	protected AbstractTspiShape(Element element) throws InvalidDDMSException {
-		super(element);
+		try {
+			setXOMElement(element, false);
+			_srsAttributes = new SRSAttributes(element);
+			validate();
+		}
+		catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 
 	/**
@@ -73,6 +91,10 @@ public abstract class AbstractTspiShape extends AbstractBaseComponent implements
 	 */
 	protected void validate() throws InvalidDDMSException {
 		requireAtLeastVersion("5.0");
+		Util.requireDDMSValue("srsAttributes", getSRSAttributes());
+		Util.requireDDMSValue("srsName", getSRSAttributes().getSrsName());
+		Util.requireDDMSValue(ID_NAME, getId());
+		Util.requireValidNCName(getId());		
 		super.validate();
 	}
 	
@@ -84,6 +106,7 @@ public abstract class AbstractTspiShape extends AbstractBaseComponent implements
 			return (false);
 		AbstractTspiShape test = (AbstractTspiShape) obj;
 		return (toXML().equals(test.toXML()));
+		// ID and SRSAttributes are implicit in the XML.
 	}
 
 	/**
@@ -92,9 +115,24 @@ public abstract class AbstractTspiShape extends AbstractBaseComponent implements
 	public int hashCode() {
 		int result = super.hashCode();
 		result = 7 * result + toXML().hashCode();
+		// ID and SRSAttributes are implicit in the XML.
 		return (result);
 	}
-		
+	
+	/**
+	 * Accessor for the ID
+	 */
+	public String getId() {
+		return (getAttributeValue(ID_NAME, getDDMSVersion().getGmlNamespace()));
+	}
+	
+	/**
+	 * Accessor for the SRS Attributes. Will always be non-null.
+	 */
+	public SRSAttributes getSRSAttributes() {
+		return (_srsAttributes);
+	}
+	
 	/**
 	 * Abstract Builder for this DDMS component.
 	 * 
