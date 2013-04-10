@@ -81,11 +81,12 @@
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
 	<div class="newsUpdate"><u>XX/XX/2013</u>: <a href="downloads.jsp">v2.2.0</a> released, adding support for DDMS 5.0.</div>
+	<div class="newsUpdate"><u>04/10/2013</u>: Statistics about the DDMSence codebase can now be viewed at <a href="https://www.ohloh.net/p/ddmsence" target="_new">Ohloh</a>.</div>
 	<div class="newsUpdate"><u>04/01/2013</u>: Happy Birthday to DDMSence, celebrating 24 releases in 3 years!</div>
 	<div class="newsUpdate"><u>01/19/2013</u>: v2.1.0 released, adding support for DDMS 4.1.</div>
-	<div class="newsUpdate"><u>12/01/2011</u>: v2.0.0 released, adding support for DDMS 4.0.1.</div>
 	<div class="divExpand feed"><a href="#" onClick="return false;">more...</a></div>	
 	<div id="oldNews" class="divHidden">
+		<div class="newsUpdate"><u>12/01/2011</u>: v2.0.0 released, adding support for DDMS 4.0.1.</div>
 		<div class="newsUpdate"><u>10/20/2011</u>: I gave a <a href="https://metadata.ces.mil/dse/content_items/document/100100096">briefing</a> on DDMSence at the 
 			<a href="https://metadata.ces.mil/dse-help/en/Metadata_Working_Group">DoD Metadata Working Group Meeting</a> in Columbia, MD.</div>
 		<div class="newsUpdate"><u>07/17/2011</u>: v1.11.0 released, adding <a href="documentation-schematron.jsp">support for XSLT2-based Schematron validation</a>.</div>
