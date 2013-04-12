@@ -27,8 +27,6 @@ should not need to download them separately.</p>
 	<li><a href="http://www.xom.nu/">XOM 1.2.9</a>
 		(<a href="http://xom.nu/license.xhtml">GNU Lesser General Public License v2.1</a>): Core library needed for XML parsing.</li>
 	<br />	
-	<li><a href="http://www.servlets.com/cos/">com.oreilly.servlets 26Dec2008</a>
-		(<a href="http://www.servlets.com/cos/license.html">Custom License</a>): Used on the DDMSence website (not bundled).</li>
 	<li><a href="http://jquery.com/">jQuery 1.6.4</a>
 		(<a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a>): Used on the DDMSence website.</li>
 	<li><a href="http://bassistance.de/jquery-plugins/jquery-plugin-validation/">jQuery Validation 1.8.1</a>
