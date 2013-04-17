@@ -159,7 +159,7 @@ It transforms XML DDMS Resources (also called metacards or assertions) into a Ja
 <h1>About the Author</h1>
 
 <p><img src="./images/BU.jpg" width="73" height="90" title="BU" class="bordered" align="left" />
-<b><a href="http://www.linkedin.com/in/urizone">Brian Uri!</a></b> is a Technical Lead at <a href="http://www.fgm.com/" target="_new">Novetta Solutions</a> 
+<b><a href="http://www.linkedin.com/in/urizone">Brian Uri!</a></b> is a Technical Lead at <a href="http://www.novetta.com/" target="_new">Novetta Solutions</a> 
 in Reston, Virginia. He has been involved with DISA's enterprise services and data strategy efforts (including DDMS, UCore, the 
 <a href="http://metadata.ces.mil/" target="_new">Data Services Environment</a>, ESM and SKIWeb) since the inception of the Net-Centric Enterprise Services 
 (NCES) program in 2005.</p>
