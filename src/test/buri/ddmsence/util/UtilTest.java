@@ -23,6 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +48,12 @@ public class UtilTest extends AbstractBaseTestCase {
 		super(null);
 	}
 
+	public void testPrivateConstructorForCoverage() throws Exception {
+		Constructor<Util> constructor = Util.class.getDeclaredConstructor();
+		constructor.setAccessible(true);
+		constructor.newInstance();
+	}
+	
 	public void testGetNonNullStringNull() {
 		assertEquals("", Util.getNonNullString(null));
 	}
