@@ -13,30 +13,30 @@
 complete text of this license can be found below.</p>
 
 <p>DDMSence makes use of several third-party libraries, whose licenses are linked below. Required libraries are already bundled with DDMSence, so you
-should not need to download them separately.</p>
+do not need to download them separately.</p>
 
 <ul>
 	<li><a href="http://www.schematron.com/">Rick Jelliffe's ISO Schematron implementation 4-21-2010</a> 
-		(<a href="http://www.opensource.org/licenses/zlib-license.php">zlib/libpng License</a>): Core library needed for Schematron validation.</li>
+		(<a href="http://www.opensource.org/licenses/zlib-license.php">zlib/libpng License</a>): Core library needed for Schematron validation (unmodified).</li>
 	<li><a href="http://saxon.sourceforge.net/">Saxon HE 9.4.0.7</a> 
-		(<a href="http://www.opensource.org/licenses/MPL-1.1">Mozilla Public License v1.1</a>): Core library needed for Schematron validation.</li>
+		(<a href="http://www.opensource.org/licenses/MPL-1.1">Mozilla Public License v1.1</a>): Core library needed for Schematron validation (unmodified).</li>
 	<li><a href="http://xerces.apache.org/xerces2-j/">Xerces 2.11.0</a>
-		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Core library needed for XML parsing.</li>
+		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Core library needed for XML parsing (unmodified).</li>
 	<li><a href="http://xml.apache.org/commons/">XML-Commons 1.4.01</a>
-		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Core library needed for XML parsing.</li>
+		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Core library needed for XML parsing (unmodified).</li>
 	<li><a href="http://www.xom.nu/">XOM 1.2.9</a>
-		(<a href="http://xom.nu/license.xhtml">GNU Lesser General Public License v2.1</a>): Core library needed for XML parsing.</li>
+		(<a href="http://xom.nu/license.xhtml">GNU Lesser General Public License v2.1</a>): Core library needed for XML parsing (unmodified).</li>
 	<br />	
 	<li><a href="http://jquery.com/">jQuery 1.6.4</a>
-		(<a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a>): Used on the DDMSence website.</li>
+		(<a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a>): Used on the DDMSence website (unmodified).</li>
 	<li><a href="http://bassistance.de/jquery-plugins/jquery-plugin-validation/">jQuery Validation 1.8.1</a>
-		(<a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a>): Used on the DDMSence website.</li>
+		(<a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a>): Used on the DDMSence website (unmodified).</li>
 	<li><a href="http://junit.org/">JUnit 4.10.0</a> 
-		(<a href="http://opensource.org/licenses/cpl1.0.php">Common Public License v1.0</a>): Needed to run unit tests against DDMSence.</li>
+		(<a href="http://opensource.org/licenses/cpl1.0.php">Common Public License v1.0</a>): Needed to run unit tests against DDMSence (unmodified).</li>
 	<li><a href="http://www.springsource.org/">Spring MVC 3.2.1</a>
-		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Used on the DDMSence website (not bundled).</li>
+		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Used on the DDMSence website (unmodified, not bundled).</li>
 	<li><a href="http://alexgorbatchev.com/SyntaxHighlighter/">SyntaxHighlighter 3.0.83</a>
-		(<a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a>): Used on the DDMSence website.</li>
+		(<a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a>): Used on the DDMSence website (with modified stylesheets).</li>
 	
 </ul>
 
