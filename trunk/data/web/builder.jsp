@@ -128,6 +128,8 @@ elements and attributes required for a valid resource. Information submitted thr
 
 <form:form id="resource" commandName="resource" method="post">
 
+	<label class="error"><form:errors path="*" htmlEscape="false" /></label><br />
+
 	<label class="builderComponent">Metacard Info</label>
 	<div class="clear"></div>
 	<div class="clear"><label class="builderField" for="metacardInfo.identifiers[0].qualifier">Identifier Qualifier: *</label>
@@ -190,7 +192,7 @@ elements and attributes required for a valid resource. Information submitted thr
 	<form:input path="subjectCoverages[0].keywords[1].value" size="25" maxlength="256" /></div>
 	
 	<br />
-	<label class="error"><form:errors path="*"/></label><br />
+	<label class="error"><form:errors path="*" htmlEscape="false" /></label><br />
 	<span class="formElement">
 		<input type="submit" class="button" name="submit" value="Submit">
 		<input type="reset" class="button" name="reset" value="Reset">
@@ -200,118 +202,107 @@ elements and attributes required for a valid resource. Information submitted thr
 
 <h3>How This Works</h3>
 
-<p>Compilable source code for this tool is not bundled with DDMSence, because it has dependencies on the Spring Framework (v3.2.1). However, all of the pieces you need create 
+<p>Compilable source code for this tool is not bundled with DDMSence, because it has dependencies on the Spring Framework (v3.2.2). However, all of the pieces you need create 
 a similar web application are shown below. A basic understanding of <a href="http://en.wikipedia.org/wiki/Spring_Framework#Model-view-controller_framework">Spring MVC</a> 
 will be necessary to understand the code.</p>
 
 <ol>
-	<li>A Spring configuration file maps the URI, <code>builder.uri</code> to the appropriate Spring controller.
-	 Here is the relevant excerpt from this server's configuration file:</li>
-<pre class="brush: xml; collapse: true">&lt;bean id="builderControl" class="buri.web.ddmsence.BuilderControl"&gt;
-   &lt;property name="commandName" value="resource"/&gt;
-   &lt;property name="commandClass" value="buri.ddmsence.ddms.Resource.Builder"/&gt;
-   &lt;property name="formView" value="builder"/&gt;
-&lt;/bean&gt;
-&lt;bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping"&gt;
-   &lt;property name="urlMap"&gt;
-      &lt;map&gt;
-         &lt;entry key="builder.uri" value-ref="builderControl" /&gt;
-      &lt;/map&gt;
-   &lt;/property&gt;
-&lt;/bean&gt;</pre>
-
-	<li>A Spring controller, BuilderControl, handles incoming requests.</li>
+	<li>A Spring controller, BuilderControl, handles incoming requests at the URI, <code>builder.uri</code>.</li>
 <pre class="brush: java; collapse: true">package buri.web.ddmsence;
 
 import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Set;
 
 import nu.xom.Document;
 import nu.xom.Serializer;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.validation.BindException;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
-import buri.ddmsence.ddms.AbstractProducer;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.ism.ISMVocabulary;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
+import buri.web.AbstractControl;
 
 /**
  * Controller class for building DDMS Records
- *
- * @author	Brian Uri!
+ * 
+ * @author Brian Uri!
  */
-public class BuilderControl extends SimpleFormController {
-	
-   protected final Log logger = LogFactory.getLog(getClass());
-    
-   /**
-    * @see SimpleFormController#formBackingObject(HttpServletRequest)
-    */
-   protected Object formBackingObject(HttpServletRequest request) throws Exception {
-      return (new Resource.Builder());
-   }    
-    
-   /**
-    * @see org.springframework.web.servlet.mvc.SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest)
-    */
-   public Map&lt;String, Object&gt; referenceData(HttpServletRequest request) throws Exception {
-      Map&lt;String, Object&gt; data = new HashMap&lt;String, Object&gt;();
-      data.put("ownerProducers", ISMVocabulary.getEnumerationTokens(ISMVocabulary.CVE_OWNER_PRODUCERS));
-      return (data);
-   }  
-    
-    /**
-     * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object, org.springframework.validation.BindException)
-     */
-   protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-      Resource.Builder builder = (Resource.Builder) command;
-      Map&lt;String, Object&gt; model = new HashMap&lt;String, Object&gt;();
-      try {
-         DDMSVersion.setCurrentVersion("5.0");
-         Resource resource = builder.commit();
-         if (resource == null)
-            throw new InvalidDDMSException("No information was entered to create a DDMS Resource.");
-         // Skipping resource.toXML() so I can control formatting.
-         Document document = new Document(resource.getXOMElementCopy());
-         ByteArrayOutputStream os = new ByteArrayOutputStream();
-         Serializer serializer = new Serializer(os, "ISO-8859-1");
-         serializer.setIndent(3);
-         serializer.setMaxLength(120);
-         serializer.write(document);          
-         model.put("xml", os.toString());
-         model.put("warnings", resource.getValidationWarnings());
-         return (new ModelAndView("builderResult", "model", model));
-      }
-      catch (InvalidDDMSException e) {
-         ValidationMessage message = ValidationMessage.newError(e.getMessage(), e.getLocator());
-         String location = Util.isEmpty(message.getLocator()) ? "unknown location" : message.getLocator();
-         errors.reject(null, null, "&lt;b&gt;" + message.getType() + "&lt;/b&gt; at &lt;code&gt;" + location + "&lt;/code&gt;: " + message.getText());
-      }
-      catch (Exception e) {
-         errors.reject(e.getMessage());
-      }
-      return showForm(request, response, errors, model);       
-    }
+@Controller
+@SessionAttributes({ "resource" })
+public class BuilderControl extends AbstractControl {
+
+	/**
+	 * Entry point for creating a new builder
+	 */
+	@RequestMapping(value = "/builder.uri", method = RequestMethod.GET)
+	public String newForm(Model model) {
+		Resource.Builder builder = new Resource.Builder();
+		model.addAttribute("resource", builder);
+		return ("builder");
+	}
+
+	/**
+	 * Entry point for saving the builder
+	 */
+	@RequestMapping(value = "/builder.uri", method = RequestMethod.POST)
+	public String build(@ModelAttribute("resource") Resource.Builder builder, BindingResult result,
+		SessionStatus status, Model model) {
+		try {
+			DDMSVersion.setCurrentVersion("5.0");
+			Resource resource = builder.commit();
+			if (resource == null)
+				throw new InvalidDDMSException("No information was entered to create a DDMS Resource.");
+			// Skipping resource.toXML() so I can control formatting.
+			Document document = new Document(resource.getXOMElementCopy());
+			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			Serializer serializer = new Serializer(os, "ISO-8859-1");
+			serializer.setIndent(3);
+			serializer.setMaxLength(120);
+			serializer.write(document);
+			model.addAttribute("xml", os.toString());
+			model.addAttribute("warnings", resource.getValidationWarnings());
+			return ("builderResult");
+		}
+		catch (InvalidDDMSException e) {
+			ValidationMessage message = ValidationMessage.newError(e.getMessage(), e.getLocator());
+			String location = Util.isEmpty(message.getLocator()) ? "unknown location" : message.getLocator();
+			result.reject(null, null, "&lt;b&gt;" + message.getType() + "&lt;/b&gt; at &lt;code&gt;" + location + "&lt;/code&gt;: "
+				+ message.getText());
+		}
+		catch (Exception e) {
+			result.reject(e.getMessage());
+		}
+		return ("builder");
+	}
+
+	/**
+	 * Accessor for the allowable ownerProducer values
+	 */
+	@ModelAttribute(value = "ownerProducers")
+	private Set&lt;String&gt; getOwnerProducers() {
+		return (ISMVocabulary.getEnumerationTokens(ISMVocabulary.CVE_OWNER_PRODUCERS));
+	}
 }</pre>
-	<li>The BuilderControl starts by creating a new form bean, Resource.Builder, in the <code>formBackingObject()</code> method. 
-	This is a Component Builder which supports the form you see on this page. If you wanted your form to edit an existing Resource, you could initialize the builder by passing in a Resource instance.</li>
-	<li>The <a href="http://ddmsence.googlecode.com/svn/trunk/data/web/builder.jsp">initial form view</a> is rendered. This is the page you are currently viewing. The JSP file also contains the JavaScript code used for client-side validation (with jQuery).</li>
-	<li>Once the form has been filled in and submitted, the <code>onSubmit()</code> method of the BuilderControl is called. This method commits the Resource.Builder.
+	<li>The BuilderControl starts by creating a new form bean, Resource.Builder, in the <code>newForm()</code> method. 
+	This is a Component Builder which supports the form you see on this page. If you wanted your form to edit an existing Resource, 
+	you could initialize the builder by passing in a Resource instance.</li>
+	<li>The <a href="http://ddmsence.googlecode.com/svn/trunk/data/web/builder.jsp">initial form view</a> is rendered. This is the page 
+	you are currently viewing. The JSP file also contains the JavaScript code used for client-side validation (with jQuery).</li>
+	<li>Once the form has been filled in and submitted, the <code>build()</code> method of the BuilderControl is called. This method commits the Resource.Builder.
 	It will fail immediately with an <code>InvalidDDMSException</code> if the Resource is invalid.</li>
-	<li>If the Resource is invalid, <code>showForm()</code> returns to the initial form view, displaying the errors and allowing for editing.</li>
-	<li>If the Builder succeeds, the Resource is proven to be valid, although there may still be warnings. The warnings and the XML output of the Resource are stored in a Map,
-	<code>model</code>,	which is then used to render the <a href="http://ddmsence.googlecode.com/svn/trunk/data/web/builderResult.jsp">Builder Results page</a>.</li>
+	<li>If the Resource is invalid, the control class returns to the initial form view, displaying the errors and allowing for editing.</li>
+	<li>If the Builder succeeds, the Resource is proven to be valid, although there may still be warnings. The warnings and the XML output of the Resource are stored in the model,	which is then used to render the <a href="http://ddmsence.googlecode.com/svn/trunk/data/web/builderResult.jsp">Builder Results page</a>.</li>
 </ol>
 
 <p>

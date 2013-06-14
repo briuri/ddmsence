@@ -11,13 +11,13 @@
 
 <h1>DDMS Builder Results</h1>
 
-<c:forEach items="${model.warnings}" var="warning" varStatus="rowInfo">
+<c:forEach items="${warnings}" var="warning" varStatus="rowInfo">
 	<li><b>${warning.type}</b> at <code><c:out value="${warning.locator}" /></code>: <c:out value="${warning.text}" /></li>
 </c:forEach>
 
-<c:if test="${not empty model.xml}">
+<c:if test="${not empty xml}">
 	<pre class="brush: xml">
-<c:out value="${model.xml}" escapeXml="true" />
+<c:out value="${xml}" escapeXml="true" />
 	</pre>
 </c:if>	
 
