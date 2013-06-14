@@ -196,7 +196,7 @@ can be submitted by pasting XML text, uploading a file, or referencing a URL.</p
 
 <h3>How This Works</h3>
 
-<p>Compilable source code for this tool is not bundled with DDMSence, because it has dependencies on the Spring Framework (v3.2.1). However, all of the pieces you need create 
+<p>Compilable source code for this tool is not bundled with DDMSence, because it has dependencies on the Spring Framework (v3.2.2). However, all of the pieces you need create 
 a similar web application are shown below. A basic understanding of <a href="http://en.wikipedia.org/wiki/Spring_Framework#Model-view-controller_framework">Spring MVC</a> 
 will be necessary to understand the code.</p>
 
