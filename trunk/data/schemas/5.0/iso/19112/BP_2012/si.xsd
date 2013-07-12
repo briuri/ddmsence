@@ -141,7 +141,7 @@ example a postal code defined as a collection of postal delivery points.</xsd:do
                           in order to allow extent to be expressed using any of the geometric types supported by GML -->
                     <xsd:element name="territoryOfUse" type="gml:GeometryPropertyType">
                         <xsd:annotation>
-                            <xsd:documentation>The geographic area within which the location type occurs. For example, in the case of a gazetteer of "rivers” then the extent of North America.</xsd:documentation>
+                            <xsd:documentation>The geographic area within which the location type occurs. For example, in the case of a gazetteer of "rivers" then the extent of North America.</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="owner" type="gmd:CI_ResponsibleParty_PropertyType">
@@ -191,7 +191,7 @@ example a postal code defined as a collection of postal delivery points.</xsd:do
                     <!-- Note that scopes may be localized to a specific language -->
                     <xsd:element name="scope" type="iso19112:LanguageStringType" minOccurs="0">
                         <xsd:annotation>
-                            <xsd:documentation>A description of the location types contained in the gazetteer. For example, the “rivers of North America” or the “streets of London”.</xsd:documentation>
+                            <xsd:documentation>A description of the location types contained in the gazetteer. For example, the "rivers of North America" or the "streets of London".</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <!-- Note that instead of using EX_GeographicExtent, gml:GeometryPropertyType is used
@@ -239,7 +239,7 @@ example a postal code defined as a collection of postal delivery points.</xsd:do
                     <!-- Note that geographicIdentifiers (when, e.g., 'identification' = 'name') may be localized to a specific language -->
                     <xsd:element name="geographicIdentifier" type="iso19112:LanguageStringType">
                         <xsd:annotation>
-                            <xsd:documentation>The unique geographic identifier for the location instance. In order to ensure that the geographic identifier is unique within a wider geographic domain, the geographic identifier may need to include an identifier of an instance of a parent location type, for example “Paris, Texas” (as distinguished from "Paris, France").</xsd:documentation>
+                            <xsd:documentation>The unique geographic identifier for the location instance. In order to ensure that the geographic identifier is unique within a wider geographic domain, the geographic identifier may need to include an identifier of an instance of a parent location type, for example "Paris, Texas" (as distinguished from "Paris, France").</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
                     <xsd:element name="alternativeGeographicIdentifiers" type="iso19112:AlternativeGeographicIdentifiersPropertyType" minOccurs="0">
@@ -333,7 +333,7 @@ by the bounding streets;
                 <!-- Note that names may be localized to a specific language -->
                 <xsd:element name="name" type="iso19112:LanguageStringType">
                     <xsd:annotation>
-                        <xsd:documentation>A unique geographic identifier for a location instance. In order to ensure that the geographic identifier is unique within a wider geographic domain, the geographic identifier may need to include an identifier of an instance of a parent location type, for example “Paris, Texas” (as distinguished from "Paris, France").</xsd:documentation>
+                        <xsd:documentation>A unique geographic identifier for a location instance. In order to ensure that the geographic identifier is unique within a wider geographic domain, the geographic identifier may need to include an identifier of an instance of a parent location type, for example "Paris, Texas" (as distinguished from "Paris, France").</xsd:documentation>
                     </xsd:annotation>
                 </xsd:element>
                 <!-- May need to make this a QName to qualify the name
