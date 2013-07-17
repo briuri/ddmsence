@@ -218,7 +218,7 @@
 	<target name="tests" description="Runs unit tests">
 		<delete quiet="true" dir="${reports.dir}" />
 		<mkdir dir="${reports.dir}" />
-		<junit printsummary="false" haltonfailure="true" fork="yes">
+		<junit printsummary="false" haltonfailure="true" fork="true" forkmode="perBatch">
 			<classpath refid="classpath.test" />
 	      	<formatter type="brief" usefile="false" />
 	      	<formatter type="xml" />
