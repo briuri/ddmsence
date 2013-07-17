@@ -103,6 +103,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 
 	private List<Attribute> _attributes = null;
 
+	private static final String XSI_NAMESPACE = "http://www.w3.org/2001/XMLSchema-instance";
 	private final Set<QName> RESERVED_RESOURCE_NAMES = new HashSet<QName>();
 
 	/**
@@ -132,6 +133,9 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		_attributes = new ArrayList<Attribute>();
 		for (int i = 0; i < element.getAttributeCount(); i++) {
 			Attribute attribute = element.getAttribute(i);
+			// Skip xsi: attributes.
+			if (attribute.getNamespaceURI().equals(XSI_NAMESPACE))
+				continue;
 			// Skip ddms: attributes.
 			if (element.getNamespaceURI().equals(attribute.getNamespaceURI()))
 				continue;

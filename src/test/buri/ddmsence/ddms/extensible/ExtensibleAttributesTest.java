@@ -69,6 +69,22 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 	/**
 	 * Returns generated test data.
 	 */
+	private static Attribute getXsiSchemaLocation() {
+		return (new Attribute("xsi:schemaLocation", "http://www.w3.org/2001/XMLSchema-instance",
+			"urn:us:mil:ces:metadata:ddms:5 ../DDMS-v5.xsd"));
+	}
+
+	/**
+	 * Returns generated test data.
+	 */
+	private static Attribute getXsiNoNamespaceSchemaLocation() {
+		return (new Attribute("xsi:noNamespaceSchemaLocation", "http://www.w3.org/2001/XMLSchema-instance",
+			"schema.xsd"));
+	}
+	
+	/**
+	 * Returns generated test data.
+	 */
 	private static Attribute getTestAttribute() {
 		return (new Attribute("ddmsence:relevance", TEST_NAMESPACE, "95"));
 	}
@@ -314,6 +330,19 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 
 			ExtensibleAttributes component = getInstance(getTestElement(), SUCCESS);
 			assertTrue(component.isEmpty());
+		}
+	}
+	
+	public void testXsiAttributes() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Element element = getTestElement();
+			element.addAttribute(getXsiSchemaLocation());
+			element.addAttribute(getXsiNoNamespaceSchemaLocation());
+			
+			ExtensibleAttributes component = getInstance(element, SUCCESS);
+			assertTrue(component.getAttributes().isEmpty());
 		}
 	}
 }
