@@ -3,6 +3,10 @@
 	<title>DDMSence: The open-source Java library for DDMS</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="keywords" content="DDMSence,DDMS,Metadata,Discovery,Java,DoD,XML,DDMEssence,DDMSense,Essence" />
+	
+ 	<meta property="og:title" content="DDMSence: The open-source Java library for DDMS"/>
+	<meta property="og:description" content="DDMSence is the only open-source Java library that fully supports the DoD Discovery Metadata Specification (DDMS)." />
+	<meta property="og:image" content="http://ddmsence.urizone.net/images/banner.png" />
 
 	<!-- DDMS Resource Record --> 	
 	<meta name="resource.resourceElement" content="true" />
