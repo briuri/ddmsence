@@ -80,6 +80,7 @@
 <%@ include file="../shared/header.jspf" %>
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
+	<!-- TDF Location: http://www.dni.gov/index.php/about/organization/chief-information-officer/trusted-data-format -->
 	<div class="newsUpdate"><u>XX/XX/2013</u>: <a href="downloads.jsp">v2.2.0</a> released, adding support for DDMS 5.0.</div>
 	<div class="newsUpdate"><u>04/10/2013</u>: Statistics about the DDMSence codebase can now be viewed at <a href="https://www.ohloh.net/p/ddmsence" target="_new">Ohloh</a>.</div>
 	<div class="newsUpdate"><u>04/01/2013</u>: Happy Birthday to DDMSence, celebrating 24 releases in 3 years!</div>
@@ -111,9 +112,7 @@
 		<div class="newsUpdate"><u>04/24/2010</u>: v1.2.1 released.</div>
 		<div class="newsUpdate"><u>04/21/2010</u>: v1.2.0 released.</div>
 		<div class="newsUpdate"><u>04/08/2010</u>: v1.1.0 released.</div>
-		<div class="newsUpdate"><u>04/01/2010</u>: v1.0.0 released. DDMSence information posted on the
-			<a href="https://metadata.ces.mil/mdr/topic.htm?topicId=4662" target="_new">DoD Metadata Registry Community Forum</a> and on 
-			<a href="http://freshmeat.net/projects/ddmsence" target="_new">freshmeat</a>.</div>
+		<div class="newsUpdate"><u>04/01/2010</u>: v1.0.0 released.</div>
 	<!-- 
 		<div class="newsUpdate"><u>03/29/2010</u>: v0.9.d released.</div>
 		<div class="newsUpdate"><u>03/25/2010</u>: v0.9.c released.</div>
