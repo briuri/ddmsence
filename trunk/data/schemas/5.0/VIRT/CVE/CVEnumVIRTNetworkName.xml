@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Notices - Distribution Notice: 
+           This document has been approved for Public Release and is available for use without restriction.
+       -->
+<CVE xmlns:cve="urn:us:gov:ic:cve" xmlns:ddms="urn:us:mil:ces:metadata:ddms:5"
+     xmlns="urn:us:gov:ic:cve"
+     xmlns:ism="urn:us:gov:ic:ism"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     ism:ownerProducer="USA"
+     ism:classification="U"
+     ism:DESVersion="10"
+     ism:resourceElement="true"
+     CVEVersion="1"
+     ism:createDate="2012-06-27"
+     xsi:schemaLocation="urn:us:gov:ic:cve ../Schema/CVEXml.xsd">
+    <IRM>
+        <ddms:identifier ddms:qualifier="name" ddms:value="urn:us:gov:ic:cvenum:virt:network"/>
+        <ddms:title ism:ownerProducer="USA" ism:classification="U">CVEnumVIRTNetworkName</ddms:title>
+    	<ddms:description ism:ownerProducer="USA" ism:classification="U">All valid network names</ddms:description>
+    	<cve:Created>2012-06-27T11:19:00-04:00</cve:Created>
+        
+        <ddms:source ddms:value="IC-CIO"/>
+        <ddms:pointOfContact>
+            <ddms:organization>
+                <ddms:name>Office IC CIO</ddms:name>
+                <ddms:email>datastandardssupport@ugov.gov</ddms:email>
+            </ddms:organization>
+        </ddms:pointOfContact>
+    </IRM>
+                
+   	<Enumeration multivalue="false" ism:ownerProducer="USA" ism:classification="U">
+   		
+		    <Term ism:classification="U" ism:ownerProducer="USA">
+		        <Value ism:classification="U" ism:ownerProducer="USA">NIPRNet</Value>
+		        <ddms:description ism:classification="U" ism:ownerProducer="USA">DISA Non-classified IP Router Network
+			</ddms:description>
+		    </Term>
+   		
+   		<Term ism:classification="U" ism:ownerProducer="USA">
+   		    <Value ism:classification="U" ism:ownerProducer="USA">SIPRNet</Value>
+   		    <ddms:description ism:classification="U" ism:ownerProducer="USA">DoD and DoS Secret Internet Protocol Router Network
+   		    </ddms:description>
+		    </Term>
+   	    <Term ism:classification="U" ism:ownerProducer="USA">
+   	        <Value ism:classification="U" ism:ownerProducer="USA">JWICS</Value>
+   	        <ddms:description ism:classification="U" ism:ownerProducer="USA">Joint Worldwide Intelligence Communications System 
+   	            (JWICS) highside network.
+   	        </ddms:description>
+   	    </Term>
+   	    <Term ism:classification="U" ism:ownerProducer="USA">
+   	        <Value ism:classification="U" ism:ownerProducer="USA">ADSN</Value>
+   	        <ddms:description ism:classification="U" ism:ownerProducer="USA">ADSN Network
+   	        </ddms:description>
+   	    </Term>
+   	    <Term ism:classification="U" ism:ownerProducer="USA">
+   	        <Value ism:classification="U" ism:ownerProducer="USA">StoneGhost</Value>
+   	        <ddms:description ism:classification="U" ism:ownerProducer="USA">DIA Top Secret Sensitive 
+   	            Compartmented Information Network
+   	        </ddms:description>
+   	    </Term>
+   	    <Term ism:classification="U" ism:ownerProducer="USA">
+   	        <Value ism:classification="U" ism:ownerProducer="USA">LOCE</Value>
+   	        <ddms:description ism:classification="U" ism:ownerProducer="USA"> Linked Operations-Intelligence Centers Europe
+   	            (LOCE) Network is a USEUCOM system supoorting joint forces with communications
+   	        </ddms:description>
+   	    </Term>
+   	    <Term ism:classification="U" ism:ownerProducer="USA">
+   	        <Value ism:classification="U" ism:ownerProducer="USA">CRONOS</Value>
+   	        <ddms:description ism:classification="U" ism:ownerProducer="USA"> Crisis Response Operations in NATO Operating Systems 
+   	            (CRONOS) is a system of interconnected computer networks used by NATO to transmit classified information
+   	        </ddms:description>
+   	    </Term>
+   	    <Term ism:classification="U" ism:ownerProducer="USA">
+   	        <Value ism:classification="U" ism:ownerProducer="USA" regularExpression="true">other:\S{1,256}</Value>
+   	        <ddms:description ism:classification="U" ism:ownerProducer="USA"> Other Network
+   	        </ddms:description>
+   	    </Term>
+   	</Enumeration>
+</CVE>

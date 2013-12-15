@@ -4,11 +4,6 @@
             elementFormDefault="qualified"
             xml:lang="en"
             targetNamespace="urn:us:gov:ic:cvenum:ism:25x">
-	<!--
-   		This is a temporary stand-in schema for DDMSence 2.2.0 development (Issue #191).
-   		As individual enhancements are added to the codebase, these schemas will be updated or replaced until DDMS 5.0 is fully supported.  
-	-->
-	            
    <xsd:annotation>
       <xsd:documentation>
                     The W3C XML Schema fragment encoding types for CVEnumISM25X Version 1 controlled vocabulary enumerations. This file is generated, so edits should be made to the CVEnumISM25X.xml CVE it is based on, instead of here.
@@ -43,6 +38,25 @@
 				for each of the source documents classified under E.O. 13526 and 
 				shall not appear in the classification authority block
 			</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="NATO">
+            <xsd:annotation>
+               <xsd:documentation>
+	  			Since NATO information is not to be declassified or downgraded without the prior consent
+	  			of NATO, the “Declassify on” line of documents that commingle information classified by 
+	  			NATO and U.S. classified NSI, will read “N/A to NATO portions. 
+	  			See source list for NSI portions.” 
+	  			The NSI source list will appear beneath the classification authority block 
+	  			in a manner that clearly identifies it as separate and distinct.
+	  		</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="NATO-AEA">
+            <xsd:annotation>
+               <xsd:documentation>
+	  			Handles special case of BOTH NATO and AEA as a single exemption.
+	  		</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
          <xsd:enumeration value="25X1">
@@ -178,7 +192,7 @@
          <xsd:simpleType>
             <xsd:list itemType="ism25x:CVEnumISM25XValues"/>
          </xsd:simpleType>
-         <xsd:maxLength value="13"/>
+         <xsd:maxLength value="15"/>
       </xsd:restriction>
    </xsd:simpleType>
 </xsd:schema>
