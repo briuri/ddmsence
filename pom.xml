@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 	<name>DDMSence</name>
 	<version>2.1.0</version>	
-	<description>DDMSence (pronounced "dee-dee-em-Essence") is an open-source Java API which supports the DoD Discovery Metadata Specification (DDMS).</description>
+	<description>DDMSence (pronounced "dee-dee-em-Essence") is the only open-source Java library that fully supports the DoD Discovery Metadata Specification (DDMS).</description>
 	<url>http://ddmsence.urizone.net/</url>
 	<licenses>
 		<license>
@@ -32,14 +32,14 @@
 		<dependency>
 			<groupId>net.sf.saxon</groupId>
 			<artifactId>Saxon-HE</artifactId>
-			<version>9.4.0.7</version>
+			<version>9.5.1-1</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>xom</groupId>
 			<artifactId>xom</artifactId>
 			<version>1.2.5</version>
-			<!--  Actual Current Version as of v2.2.0: 1.2.9 -->
+			<!--  Actual Current Version as of v2.2.0: 1.2.10 -->
 			<type>jar</type>
 		</dependency>
 		<dependency>
