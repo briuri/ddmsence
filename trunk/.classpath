@@ -8,7 +8,7 @@
 	<classpathentry kind="lib" path="lib/xercesImpl-2.11.0.jar"/>
 	<classpathentry kind="lib" path="lib/test/junit-4.10.jar"/>
 	<classpathentry kind="var" path="JDK_HOME/lib/tools.jar"/>
-	<classpathentry kind="lib" path="lib/saxon9he-9.4.0.7.jar"/>
-	<classpathentry kind="lib" path="lib/xom-1.2.9.jar"/>
+	<classpathentry kind="lib" path="lib/xom-1.2.10.jar"/>
+	<classpathentry kind="lib" path="lib/saxon9he-9.5.1.1.jar"/>
 	<classpathentry kind="output" path="output/classes/samples"/>
 </classpath>
