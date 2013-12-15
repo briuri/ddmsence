@@ -220,6 +220,17 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 		assertTrue(externalLocations.contains("http://www.opengis.net/gml"));
 	}
 
+	public void testGetLocalSchemaLocation() {
+		assertTrue(getReader("5.0").getLocalSchemaLocation("/schemas/5.0/DDMS/ddms.xsd").contains("/schemas/5.0/"));
+		try {
+			getReader("5.0").getLocalSchemaLocation("UnknownSchema");
+			fail("Allowed unknown schema.");
+		}
+		catch (IllegalArgumentException e) {
+			expectMessage(e, "Unable to load");
+		}
+	}
+	
 	/**
 	 * Accessor for the reader
 	 */

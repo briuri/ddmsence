@@ -112,7 +112,7 @@ public class DDMSReader {
 	 * @return the full path to the schema (generally this is in the JAR file)
 	 * @throws IllegalArgumentException if the schema could not be found.
 	 */
-	private String getLocalSchemaLocation(String schemaLocation) {
+	protected String getLocalSchemaLocation(String schemaLocation) {
 		URL xsd = getClass().getResource(schemaLocation);
 		if (xsd == null)
 			throw new IllegalArgumentException("Unable to load a local copy of the schema for validation.");
