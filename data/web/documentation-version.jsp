@@ -2,7 +2,7 @@
 <head>
 	<title>DDMSence: Power Tip - Working With Different DDMS Versions</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="description" content="An open-source Java library for the DoD Discovery Metadata Specification (DDMS)">
+	<meta name="description" content="The open-source Java library for the DoD Discovery Metadata Specification (DDMS)">
 </head>
 <body>
 <%@ include file="../shared/header.jspf" %>
@@ -15,7 +15,7 @@
 of files it will be loading.</p>
 
 <pre class="brush: java">DDMSVersion version = DDMSVersion.getVersionFor("4.1");
-Resource resource = getReader(version).getDDMSResource(my41resourceFile);
+Resource resource = (new DDMSReader(version)).getDDMSResource(my41resourceFile);
 System.out.println("This metacard was created with DDMS "
    + DDMSVersion.getVersionForNamespace(resource.getNamespace()));</pre>
 <p class="figure">Figure 1. Loading resources from XML files</p>

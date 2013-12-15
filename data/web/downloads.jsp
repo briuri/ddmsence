@@ -2,7 +2,7 @@
 <head>
 	<title>DDMSence: Downloads</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="description" content="An open-source Java library for the DoD Discovery Metadata Specification (DDMS)">
+	<meta name="description" content="The open-source Java library for the DoD Discovery Metadata Specification (DDMS)">
 </head>
 <body>
 <%@ include file="../shared/header.jspf" %>
@@ -24,7 +24,10 @@ I have also included a <code>.project</code> file if you wish to import the proj
 
 <h1>Latest Release: v2.2.0</h1>
 
-<p>Version <b>2.2.0</b> (XX/XX/2013) is a stable release, which adds support for DDMS 5.0. It is backwards compatible with all versions since 2.0.0.</p>
+<p>Version <b>2.2.0</b> (12/15/2013) is a stable release, which adds support for DDMS 5.0. It is backwards compatible with all versions since 2.0.0.
+<a href="documentation.jsp#javadoc">API documentation</a> has also been updated, making it easier to track components across DDMS versions. 
+
+</p>
 
 <ul>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-2.2.0.zip"><code>ddmsence-bin-2.2.0.zip</code></a></b> (6.8 MB, compiled with JDK1.7.0_17, source level 1.6)</li>
@@ -111,49 +114,49 @@ and <a href="http://code.google.com/p/ddmsence/issues/detail?id=75">Issue #75</a
  (<a href="http://code.google.com/p/ddmsence/issues/detail?id=65">Issue #65</a>). It is backwards compatible 
 with all versions since v1.4.0.</p>
 
-<p>Version <b>1.7.0</b> (9/18/2010) is a stable release, which allows toggling between errors and warnings on
+<p>Version <b>1.7.0</b> (09/18/2010) is a stable release, which allows toggling between errors and warnings on
 Intelligence Community Controlled Vocabulary validation (<a href="http://code.google.com/p/ddmsence/issues/detail?id=36">Issue #36</a>)
 and adds support for swappable Controlled Vocabulary files
 (<a href="http://code.google.com/p/ddmsence/issues/detail?id=59">Issue #59</a>). It is backwards compatible 
 with all versions since v1.4.0.</p>
 
-<p>Version <b>1.6.0</b> (9/07/2010) is a stable release, which updates bundled schemas and files for DDMS 3.0. Because the changes
+<p>Version <b>1.6.0</b> (09/07/2010) is a stable release, which updates bundled schemas and files for DDMS 3.0. Because the changes
 mainly affected the ISM Controlled Vocabulary files, this release is still backwards compatible with all versions since v1.4.0.</p>
 
-<p>Version <b>1.5.1</b> (7/07/2010) is a stable patch release, which fixes a <a href="http://code.google.com/p/ddmsence/issues/detail?id=50">Glassfish deployment issue</a>. It is backwards compatible with all versions since v1.4.0.</p>
+<p>Version <b>1.5.1</b> (07/07/2010) is a stable patch release, which fixes a <a href="http://code.google.com/p/ddmsence/issues/detail?id=50">Glassfish deployment issue</a>. It is backwards compatible with all versions since v1.4.0.</p>
 
-<p>Version <b>1.5.0</b> (7/05/2010) is a stable release, and adds DDMSReader support for Strings, Readers, and InputStreams. It also updates the bundled version of XOM
+<p>Version <b>1.5.0</b> (07/05/2010) is a stable release, and adds DDMSReader support for Strings, Readers, and InputStreams. It also updates the bundled version of XOM
 to 1.2.6. This release is backwards compatible with v1.4.0.</p>
 
-<p>Version <b>1.4.0</b> (6/08/2010) is a stable release, and changes configurable property support to be code-driven rather than property-file driven.
+<p>Version <b>1.4.0</b> (06/08/2010) is a stable release, and changes configurable property support to be code-driven rather than property-file driven.
 It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=46">backwards compatible</a> with earlier versions.</p>
 
-<p>Version <b>1.3.2</b> (5/14/2010) is a stable patch release, which fixes <a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v1.3.2">four minor bugs</a>. It is backwards compatible with all versions since v1.1.0.</p>
+<p>Version <b>1.3.2</b> (05/14/2010) is a stable patch release, which fixes <a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v1.3.2">four minor bugs</a>. It is backwards compatible with all versions since v1.1.0.</p>
 
-<p>Version <b>1.3.1</b> (5/9/2010) is a stable patch release, which fixes a bug related to namespace resolution when working with more than one version
+<p>Version <b>1.3.1</b> (05/09/2010) is a stable patch release, which fixes a bug related to namespace resolution when working with more than one version
 of DDMS at a time. It is backwards compatible with all versions since v1.1.0.</p>
 
-<p>Version <b>1.3.0</b> (5/7/2010) is a stable release, and adds support for custom validation through the 
+<p>Version <b>1.3.0</b> (05/07/2010) is a stable release, and adds support for custom validation through the 
 <a href="documentation-schematron.jsp">ISO Schematron</a> standard. It is backwards compatible with all versions since v1.1.0.</p>
 
-<p>Version <b>1.2.1</b> (4/24/2010) is a stable patch release, which fixes a bug where QNames were compared based on namespace prefixes rather than URIs. 
+<p>Version <b>1.2.1</b> (04/24/2010) is a stable patch release, which fixes a bug where QNames were compared based on namespace prefixes rather than URIs. 
 It is backwards compatible with v1.2.0 and v1.1.0.</p>
 
-<p>Version <b>1.2.0</b> (4/21/2010) is a stable release, and adds support for configurable properties. It also has improved unit tests and documentation. It is backwards
+<p>Version <b>1.2.0</b> (04/21/2010) is a stable release, and adds support for configurable properties. It also has improved unit tests and documentation. It is backwards
 compatible with v1.1.0.</p>
 
-<p>Version <b>1.1.0</b> (4/8/2010) is a stable release, and adds support for DDMS 2.0 and the Extensible Layer. 
+<p>Version <b>1.1.0</b> (04/08/2010) is a stable release, and adds support for DDMS 2.0 and the Extensible Layer. 
 It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=31">backwards compatible</a> with earlier versions.</p>
 
-<p>Version <b>1.0.0</b> (4/1/2010) is the first official stable release of DDMSence. <!--  It is backwards compatible with v0.9.d and v0.9.c. --></p>
+<p>Version <b>1.0.0</b> (04/01/2010) is the first official stable release of DDMSence. <!--  It is backwards compatible with v0.9.d and v0.9.c. --></p>
 
-<p>Version <b>0.9.d</b> (3/29/2010) includes further validation improvements. This version is believed to be stable, and is intended to be the test candidate
+<p>Version <b>0.9.d</b> (03/29/2010) includes further validation improvements. This version is believed to be stable, and is intended to be the test candidate
 for v1.0.0. It is backwards compatible with v0.9.c.</p>
 
-<p>Version <b>0.9.c</b> (3/25/2010) adds warning support to the validation system. This version is believed to be stable, and is intended to be a limited audience release
+<p>Version <b>0.9.c</b> (03/25/2010) adds warning support to the validation system. This version is believed to be stable, and is intended to be a limited audience release
 for early feedback. It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=32">backwards compatible</a> with earlier versions.</p>
 
-<p>Version <b>0.9.b</b> (3/24/2010) is the initial beta release. This version is believed to be stable, and is intended to be a limited audience release for early feedback.</p>
+<p>Version <b>0.9.b</b> (03/24/2010) is the initial beta release. This version is believed to be stable, and is intended to be a limited audience release for early feedback.</p>
 
 <div class="clear"></div>
 <%@ include file="../shared/footer.jspf" %>

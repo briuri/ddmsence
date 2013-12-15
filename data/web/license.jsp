@@ -2,7 +2,7 @@
 <head>
 	<title>DDMSence: License</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="description" content="An open-source Java library for the DoD Discovery Metadata Specification (DDMS)">
+	<meta name="description" content="The open-source Java library for the DoD Discovery Metadata Specification (DDMS)">
 </head>
 <body>
 <%@ include file="../shared/header.jspf" %>
@@ -18,13 +18,13 @@ do not need to download them separately.</p>
 <ul>
 	<li><a href="http://www.schematron.com/">Rick Jelliffe's ISO Schematron implementation 4-21-2010</a> 
 		(<a href="http://www.opensource.org/licenses/zlib-license.php">zlib/libpng License</a>): Core library needed for Schematron validation (unmodified).</li>
-	<li><a href="http://saxon.sourceforge.net/">Saxon HE 9.4.0.7</a> 
+	<li><a href="http://saxon.sourceforge.net/">Saxon HE 9.5.1.1</a> 
 		(<a href="http://www.opensource.org/licenses/MPL-1.1">Mozilla Public License v1.1</a>): Core library needed for Schematron validation (unmodified).</li>
 	<li><a href="http://xerces.apache.org/xerces2-j/">Xerces 2.11.0</a>
 		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Core library needed for XML parsing (unmodified).</li>
 	<li><a href="http://xml.apache.org/commons/">XML-Commons 1.4.01</a>
 		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Core library needed for XML parsing (unmodified).</li>
-	<li><a href="http://www.xom.nu/">XOM 1.2.9</a>
+	<li><a href="http://www.xom.nu/">XOM 1.2.10</a>
 		(<a href="http://xom.nu/license.xhtml">GNU Lesser General Public License v2.1</a>): Core library needed for XML parsing (unmodified).</li>
 	<br />	
 	<li><a href="http://jquery.com/">jQuery 1.6.4</a>

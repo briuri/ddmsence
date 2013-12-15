@@ -2,7 +2,7 @@
 <head>
 	<title>DDMSence: Relational Database Model for DDMS 3.1</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="description" content="An open-source Java library for the DoD Discovery Metadata Specification (DDMS)">
+	<meta name="description" content="The open-source Java library for the DoD Discovery Metadata Specification (DDMS)">
 </head>
 <body>
 <%@ include file="../shared/header.jspf" %>
@@ -13,8 +13,6 @@
 and pragmatic second -- the full scope of DDMS will be modeled, but some design decisions may be made for simplicity, such as modeling lists of values 
 as a delimited string value. Although direct-to-table persistence mapping will probably not be a feature in any version of DDMSence, this table model 
 may be useful when integrating DDMSence with an existing persistence framework like Hibernate or the Oracle XML SQL Utility (XSU).</p> 
-
-<p><a href="documentation.jsp#feedback">Feedback</a> on this document is appreciated!</p>
  
 <a name="tables-notes"></a><h4>General Notes</h4> 
 <ul>
