@@ -62,6 +62,7 @@ All changes which are not backwards compatible will be linked from this page wit
 
 <h3>Older Releases</h3>
 
+<!-- 345 downloads of 2.1.0 as of 12/15/2013 -->
 <!-- 339 downloads of 2.0.0 as of 1/19/2013 -->
 <!-- 828 downloads of 1.x -->
 
