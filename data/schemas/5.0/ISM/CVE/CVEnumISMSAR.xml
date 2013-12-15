@@ -1,19 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?> 
- <!-- Notices - Distribution Notice: 
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Notices - Distribution Notice: 
            This document has been approved for Public Release and is available for use without restriction.
-       -->
-       
-       	<!--
-   			This is a temporary stand-in CVE for DDMSence 2.2.0 development (Issue #191).
-   			As individual enhancements are added to the codebase, these schemas will be updated or replaced until DDMS 5.0 is fully supported.  
-		-->
-		
-<cve:CVE xmlns:cve="urn:us:gov:ic:cve" xmlns:ddms="urn:us:mil:ces:metadata:ddms:5"
-    xmlns="urn:us:gov:ic:cve" xmlns:ism="urn:us:gov:ic:ism"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="urn:us:gov:ic:cve ../Schema/CVEXml.xsd" ism:ownerProducer="USA"
-    ism:classification="U" ism:DESVersion="9" ism:resourceElement="true" CVEVersion="1"
-    ism:createDate="2011-09-01">
+       --><cve:CVE xmlns:cve="urn:us:gov:ic:cve" xmlns:ddms="urn:us:mil:ces:metadata:ddms:5"
+         xmlns="urn:us:gov:ic:cve"
+         xmlns:ism="urn:us:gov:ic:ism"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         ism:ownerProducer="USA"
+         ism:classification="U"
+         ism:DESVersion="10"
+         ism:resourceElement="true"
+         CVEVersion="1"
+         ism:createDate="2011-09-01"
+         xsi:schemaLocation="urn:us:gov:ic:cve ../Schema/CVEXml.xsd">
 
     <cve:IRM>
         <ddms:identifier ddms:qualifier="name" ddms:value="urn:us:gov:ic:cvenum:ism:sar"/>
@@ -33,18 +31,19 @@
 
     <cve:Enumeration multivalue="true" ism:ownerProducer="USA" ism:classification="U">
         <Term ism:classification="U" ism:ownerProducer="USA">
-            <Value ism:classification="U" ism:ownerProducer="USA" regularExpression="true"
-                >[A-Z][A-Z][A-Z]?</Value>
+            <Value ism:classification="U" ism:ownerProducer="USA" regularExpression="true">[A-Z_0-9\-]{1,100}</Value>
+            <ddms:description ism:classification="U" ism:ownerProducer="USA">SPECIAL ACCESS REQUIRED-XXX,Within the nickname or name of a SAR all spaces must be replaced with a "_". The XSL will restore the spaces for rendering.</ddms:description>
+        </Term>
+        <Term ism:classification="U" ism:ownerProducer="USA">
+            <Value ism:classification="U" ism:ownerProducer="USA" regularExpression="true">[A-Z]{2,}</Value>
             <ddms:description ism:classification="U" ism:ownerProducer="USA">SPECIAL ACCESS REQUIRED-XXX, the Digraph or Trigraph of the SAR is represented by the XXX</ddms:description>
         </Term>
         <Term ism:classification="U" ism:ownerProducer="USA">
-            <Value ism:classification="U" ism:ownerProducer="USA" regularExpression="true"
-                >[A-Z]{2,3}-[A-Z][A-Z0-9]{1,2}</Value>
+            <Value ism:classification="U" ism:ownerProducer="USA" regularExpression="true">[A-Z]{2,}-[A-Z][A-Z0-9]+</Value>
             <ddms:description ism:classification="U" ism:ownerProducer="USA">SPECIAL ACCESS REQUIRED-XXX, the Digraph or Trigraph of the SAR is represented by the XXX</ddms:description>
         </Term>
         <Term ism:classification="U" ism:ownerProducer="USA">
-            <Value ism:classification="U" ism:ownerProducer="USA" regularExpression="true"
-                >[A-Z]{2,3}-[A-Z][A-Z0-9]{1,2}-[A-Z0-9]{2,3}</Value>
+            <Value ism:classification="U" ism:ownerProducer="USA" regularExpression="true">[A-Z]{2,}-[A-Z][A-Z0-9]+-[A-Z0-9]{2,}</Value>
             <ddms:description ism:classification="U" ism:ownerProducer="USA">SPECIAL ACCESS REQUIRED-XXX, the Digraph or Trigraph of the SAR is represented by the XXX</ddms:description>
         </Term>
 

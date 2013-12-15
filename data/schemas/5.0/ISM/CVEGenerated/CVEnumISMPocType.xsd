@@ -4,12 +4,6 @@
             elementFormDefault="qualified"
             xml:lang="en"
             targetNamespace="urn:us:gov:ic:cvenum:ism:pocType">
-               
-	<!--
-   		This is a temporary stand-in schema for DDMSence 2.2.0 development (Issue #191).
-   		As individual enhancements are added to the codebase, these schemas will be updated or replaced until DDMS 5.0 is fully supported.  
-	-->
-	            
    <xsd:annotation>
       <xsd:documentation>
                     The W3C XML Schema fragment encoding types for CVEnumISMPocType Version 1 controlled vocabulary enumerations. This file is generated, so edits should be made to the CVEnumISMPocType.xml CVE it is based on, instead of here.
@@ -65,11 +59,6 @@
                <xsd:documentation>DoD Distribution statement X from DoD Directive 5230.24</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <xsd:enumeration value="ORCON">
-            <xsd:annotation>
-               <xsd:documentation>Point-of-contact to whom questions about ORIGINATOR CONTROLLED information should be directed.</xsd:documentation>
-            </xsd:annotation>
-         </xsd:enumeration>
       </xsd:restriction>
    </xsd:simpleType>
    <xsd:simpleType name="CVEnumISMPocType">
@@ -77,7 +66,7 @@
          <xsd:simpleType>
             <xsd:list itemType="ismpoctype:CVEnumISMPocTypeValues"/>
          </xsd:simpleType>
-         <xsd:maxLength value="8"/>
+         <xsd:maxLength value="7"/>
       </xsd:restriction>
    </xsd:simpleType>
 </xsd:schema>

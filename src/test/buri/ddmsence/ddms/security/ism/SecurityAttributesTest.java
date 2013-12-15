@@ -45,6 +45,27 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 	private static final String TEST_CLASS = "U";
 	private static final List<String> TEST_OWNERS = Util.getXsListAsList("USA");
 
+	private static final Map<String, String> TEST_OTHERS_50 = new HashMap<String, String>();
+	static {
+		TEST_OTHERS_50.put(SecurityAttributes.ATOMIC_ENERGY_MARKINGS_NAME, "RD");
+		TEST_OTHERS_50.put(SecurityAttributes.CLASSIFICATION_REASON_NAME, "PQ");
+		TEST_OTHERS_50.put(SecurityAttributes.CLASSIFIED_BY_NAME, " MN");
+		TEST_OTHERS_50.put(SecurityAttributes.COMPILATION_REASON_NAME, "NO");
+		TEST_OTHERS_50.put(SecurityAttributes.DECLASS_DATE_NAME, "2005-10-10");
+		TEST_OTHERS_50.put(SecurityAttributes.DECLASS_EVENT_NAME, "RS");
+		TEST_OTHERS_50.put(SecurityAttributes.DECLASS_EXCEPTION_NAME, "25X1");
+		TEST_OTHERS_50.put(SecurityAttributes.DERIVATIVELY_CLASSIFIED_BY_NAME, "OP");
+		TEST_OTHERS_50.put(SecurityAttributes.DERIVED_FROM_NAME, "QR");
+		TEST_OTHERS_50.put(SecurityAttributes.DISPLAY_ONLY_TO_NAME, "AIA");
+		TEST_OTHERS_50.put(SecurityAttributes.DISSEMINATION_CONTROLS_NAME, "FOUO");
+		TEST_OTHERS_50.put(SecurityAttributes.FGI_SOURCE_OPEN_NAME, "ABW");
+		TEST_OTHERS_50.put(SecurityAttributes.FGI_SOURCE_PROTECTED_NAME, "FGI");
+		TEST_OTHERS_50.put(SecurityAttributes.NON_IC_MARKINGS_NAME, "DS");
+		TEST_OTHERS_50.put(SecurityAttributes.NON_US_CONTROLS_NAME, "ATOMAL");
+		TEST_OTHERS_50.put(SecurityAttributes.RELEASABLE_TO_NAME, "AIA");
+		TEST_OTHERS_50.put(SecurityAttributes.SAR_IDENTIFIER_NAME, "SAR-USA");
+		TEST_OTHERS_50.put(SecurityAttributes.SCI_CONTROLS_NAME, "HCS");
+	}
 	private static final Map<String, String> TEST_OTHERS_41 = new HashMap<String, String>();
 	static {
 		TEST_OTHERS_41.put(SecurityAttributes.ATOMIC_ENERGY_MARKINGS_NAME, "RD");
@@ -182,7 +203,9 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			return (new HashMap<String, String>(TEST_OTHERS_30));
 		if ("3.1".equals(version))
 			return (new HashMap<String, String>(TEST_OTHERS_31));
-		return (new HashMap<String, String>(TEST_OTHERS_41));
+		if ("4.1".equals(version))
+			return (new HashMap<String, String>(TEST_OTHERS_41));
+		return (new HashMap<String, String>(TEST_OTHERS_50));
 	}
 
 	/**

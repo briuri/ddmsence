@@ -116,7 +116,12 @@ public class ISMVocabularyTest extends AbstractBaseTestCase {
 
 			assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_SAR_IDENTIFIER, "SAR-ABC"));
 			assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_SAR_IDENTIFIER, "SAR-AB"));
-			assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_SAR_IDENTIFIER, "SAR-ABCD"));
+			
+			StringBuffer b = new StringBuffer("SAR-");
+			for (int i = 0; i < 11; i++) {
+				b.append("0123456789");
+			}
+			assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_SAR_IDENTIFIER, b.toString()));
 
 			if (!version.isAtLeast("3.1")) {
 				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_DISSEMINATION_CONTROLS, "RD-SG-1"));

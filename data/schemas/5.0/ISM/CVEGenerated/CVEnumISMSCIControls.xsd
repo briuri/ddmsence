@@ -4,12 +4,6 @@
             elementFormDefault="qualified"
             xml:lang="en"
             targetNamespace="urn:us:gov:ic:cvenum:ism:scicontrols">
-            
-	<!--
-   		This is a temporary stand-in schema for DDMSence 2.2.0 development (Issue #191).
-   		As individual enhancements are added to the codebase, these schemas will be updated or replaced until DDMS 5.0 is fully supported.  
-	-->
-	            
    <xsd:annotation>
       <xsd:documentation>
                     The W3C XML Schema fragment encoding types for CVEnumISMSCIControls Version 2 controlled vocabulary enumerations. This file is generated, so edits should be made to the CVEnumISMSCIControls.xml CVE it is based on, instead of here.
@@ -32,9 +26,19 @@
       <xsd:union>
          <xsd:simpleType>
             <xsd:restriction base="xsd:token">
-               <xsd:pattern value="KDK-[A-Z0-9]{1,6}">
+               <xsd:pattern value="KDK-BLFH-[A-Z0-9]{1,6}">
                   <xsd:annotation>
-                     <xsd:documentation>KDK-xxxxxx, xxxxxx represents up to 6 alpha numeric characters indicating a sub KDK compartment</xsd:documentation>
+                     <xsd:documentation>KDK-BLFH-xxxxxx, xxxxxx represents up to 6 alphanumeric characters indicating a sub BLUEFISH compartment</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:pattern>
+               <xsd:pattern value="KDK-IDIT-[A-Z0-9]{1,6}">
+                  <xsd:annotation>
+                     <xsd:documentation>KDK-IDIT-xxxxxx, xxxxxx represents up to 6 alphanumeric characters indicating a sub IDITAROD compartment</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:pattern>
+               <xsd:pattern value="KDK-KAND-[A-Z0-9]{1,6}">
+                  <xsd:annotation>
+                     <xsd:documentation>KDK-KAND-xxxxxx, xxxxxx represents up to 6 alphanumeric characters indicating a sub KANDIK compartment</xsd:documentation>
                   </xsd:annotation>
                </xsd:pattern>
                <xsd:pattern value="RSV-[A-Z0-9]{3}">
@@ -61,6 +65,21 @@
          </xsd:simpleType>
          <xsd:simpleType>
             <xsd:restriction base="xsd:token">
+               <xsd:enumeration value="EL">
+                  <xsd:annotation>
+                     <xsd:documentation>ENDSEAL</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:enumeration>
+               <xsd:enumeration value="EL-EU">
+                  <xsd:annotation>
+                     <xsd:documentation>ECRU</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:enumeration>
+               <xsd:enumeration value="EL-NK">
+                  <xsd:annotation>
+                     <xsd:documentation>NONBOOK</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:enumeration>
                <xsd:enumeration value="HCS">
                   <xsd:annotation>
                      <xsd:documentation>HCS</xsd:documentation>
@@ -69,6 +88,21 @@
                <xsd:enumeration value="KDK">
                   <xsd:annotation>
                      <xsd:documentation>KLONDIKE</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:enumeration>
+               <xsd:enumeration value="KDK-BLFH">
+                  <xsd:annotation>
+                     <xsd:documentation>KDK BLUEFISH</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:enumeration>
+               <xsd:enumeration value="KDK-IDIT">
+                  <xsd:annotation>
+                     <xsd:documentation>KDK IDITAROD</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:enumeration>
+               <xsd:enumeration value="KDK-KAND">
+                  <xsd:annotation>
+                     <xsd:documentation>KDK KANDIK</xsd:documentation>
                   </xsd:annotation>
                </xsd:enumeration>
                <xsd:enumeration value="RSV">
