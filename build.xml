@@ -14,7 +14,7 @@
 		10) Test Validator and Builder webapps.
 		11) Commit any remaining changes and tag as new release.
 		12) Manual sign-deploy steps for Maven Central Repository upload 
-		13) Announcements (Google Groups / freecode)
+		13) Announcements (Google Groups / freecode / LinkedIn)
 	-->
 
 	<property name="version" value="2.2.0" />
