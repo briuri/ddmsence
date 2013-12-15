@@ -140,6 +140,7 @@
 				<exclude name=".classpath"/>
 				<exclude name=".project"/>
 				<exclude name="build.xml"/>
+				<exclude name="pom.xml"/>
 				<exclude name=".settings/**"/>
 				<exclude name="${src.main.dir}/**"/>
 				<exclude name="${src.test.dir}/**"/>
