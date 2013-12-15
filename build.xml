@@ -13,7 +13,7 @@
 		9) Upload new DDMSence JAR to webserver and bounce.
 		10) Test Validator and Builder webapps.
 		11) Commit any remaining changes and tag as new release.
-		12) Manual sign-deploy steps for Maven Central Repository upload 
+		12) Update version number in pom.xml, then manual sign-deploy steps for Maven Central Repository upload. 
 		13) Announcements (Google Groups / freecode / LinkedIn / Ohloh)
 	-->
 
