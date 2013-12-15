@@ -364,7 +364,9 @@ public class ISMVocabulary {
 	}
 
 	/**
-	 * Validates the value of a network attribute from the IC-COMMON schema.
+	 * Validates the value of a network attribute from the IC-COMMON schema. This check is only relevant in DDMS 4.1, which
+	 * uses IC-COMMON to create a no-namespace "network" attribute. In DDMS 5.0, "network" is moved into the "virt"
+	 * XML namespace, and validation of the token is implicit in the schema.
 	 * 
 	 * @param network the network token to test
 	 * @throws InvalidDDMSException if the network is not a valid token
