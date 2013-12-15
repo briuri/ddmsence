@@ -2,7 +2,7 @@
 <head>
 	<title>DDMSence: Documentation</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="description" content="An open-source Java library for the DoD Discovery Metadata Specification (DDMS)">
+	<meta name="description" content="The open-source Java library for the DoD Discovery Metadata Specification (DDMS)">
 </head>
 <body>
 <%@ include file="../shared/header.jspf" %>
@@ -36,8 +36,8 @@ into a batch/shell script and running that script):</p>
 
 <pre class="brush: xml">REM Windows Commands
 cd &lt;folderWhereDDMSenceIsUnzipped&gt;\ddmsence-bin-@ddmsence.version@
-set DDMSENCE_CLASSPATH=lib/saxon9he-9.4.0.7.jar;lib/xercesImpl-2.11.0.jar
-set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/xml-apis-1.4.01.jar;lib/xom-1.2.9.jar
+set DDMSENCE_CLASSPATH=lib/saxon9he-9.5.1.1.jar;lib/xercesImpl-2.11.0.jar
+set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/xml-apis-1.4.01.jar;lib/xom-1.2.10.jar
 set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-@ddmsence.version@.jar
 set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-samples-@ddmsence.version@.jar
 java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre>
@@ -46,8 +46,8 @@ java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre>
 <pre class="brush: xml">#!/bin/sh
 # Linux Commands
 cd &lt;folderWhereDDMSenceIsUnzipped&gt;/ddmsence-bin-@ddmsence.version@
-ddmsence_classpath=lib/saxon9he-9.4.0.7.jar:lib/xercesImpl-2.11.0.jar
-ddmsence_classpath=$ddmsence_classpath:lib/xml-apis-1.4.01.jar:lib/xom-1.2.9.jar
+ddmsence_classpath=lib/saxon9he-9.5.1.1.jar:lib/xercesImpl-2.11.0.jar
+ddmsence_classpath=$ddmsence_classpath:lib/xml-apis-1.4.01.jar:lib/xom-1.2.10.jar
 ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-@ddmsence.version@.jar
 ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-samples-@ddmsence.version@.jar
 java -cp $ddmsence_classpath buri.ddmsence.samples.Essentials</pre>
@@ -104,7 +104,7 @@ be possible to plot Temporal Coverage on an
 <img src="./images/docSample.png" width="305" height="273" title="JavaDoc sample" align="right" />
 
 <ul>
-	<li><a href="/docs/">Online API Documentation</a></li>
+	<li><a href="docs/">Online API Documentation</a></li>
 </ul>
 The API documentation is also bundled with the "bin"-flavored download on the <a href="downloads.jsp">Downloads</a> page, and can be generated from source code 
 in the "src"-flavored download. Classes which represent DDMS elements are grouped into packages based on which of the five 
