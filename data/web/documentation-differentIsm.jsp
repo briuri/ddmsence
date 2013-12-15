@@ -76,10 +76,9 @@ java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre>
 
 <h3>Virtual Coverage (VIRT)</h3>
 
-<p>The same instructions can be used to swap VIRT versions. You will need three files:</p>
+<p>The same instructions can be used to swap VIRT versions. You will need two files (DDMSence does not make use of the CVE file for VIRT):</p>
 <ul>
 <li><code>VIRT.xsd</code></li>
-<li><code>CVE/CVEnumVIRTNetworkName.xml</code></li>
 <li><code>CVEGenerated/CVEnumVIRTNetworkName.xsd</code></li>
 </ul>
 <p>DDMSence expects to find these files at <code>schemas\&lt;ddmsVersionNumber&gt;/VIRT/</code>.</p>
