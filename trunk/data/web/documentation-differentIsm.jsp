@@ -72,7 +72,7 @@ java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre>
 <h3>Need-to-Know Metadata (NTK)</h3>
 
 <p>The same instructions can be used to swap NTK versions. There is only a single NTK schema file, <code>IC-NTK.xsd</code> which DDMSence expects to find at
-<code>schemas\&lt;ddmsVersionNumber&gt;/NTK/</code>.</p>
+<code>schemas/&lt;ddmsVersionNumber&gt;/NTK/</code>.</p>
 
 <h3>Virtual Coverage (VIRT)</h3>
 
@@ -81,7 +81,7 @@ java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre>
 <li><code>VIRT.xsd</code></li>
 <li><code>CVEGenerated/CVEnumVIRTNetworkName.xsd</code></li>
 </ul>
-<p>DDMSence expects to find these files at <code>schemas\&lt;ddmsVersionNumber&gt;/VIRT/</code>.</p>
+<p>DDMSence expects to find these files at <code>schemas/&lt;ddmsVersionNumber&gt;/VIRT/</code>.</p>
 
 <p>
 	<a href="#top">Back to Top</a><br>
