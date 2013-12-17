@@ -48,8 +48,8 @@ import buri.ddmsence.util.Util;
  * 		None.
  * {@table.footer}
  * {@table.header Attributes}
- * 		{@child.info gml:id|1|11110}
- * 		{@child.info &lt;<i>srsAttributes</i>&gt;|0..*|11110}
+ * 		{@child.info gml:id|1|00001}
+ * 		{@child.info &lt;<i>srsAttributes</i>&gt;|0..*|00001}
  * {@table.footer}
  * {@table.header Validation Rules}
  * 		{@ddms.rule Component must not be used before the DDMS version in which it was introduced.|Error|11111}

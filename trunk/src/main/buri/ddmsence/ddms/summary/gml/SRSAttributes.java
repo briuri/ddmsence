@@ -34,7 +34,7 @@ import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
 /**
- * Attribute group for the four SRS attributes used in the GML profile.
+ * Attribute group for the four SRS attributes used on GML and TSPI-based shapes.
  * <br /><br />
  * {@ddms.versions 11110}
  * 
@@ -44,16 +44,16 @@ import buri.ddmsence.util.Util;
  * </p>
  * 
  * {@table.header History}
- * 		The GML profile was removed in favour of TSPI in DDMS 5.0.
+ * 		The GML profile was removed in favour of TSPI in DDMS 5.0. However, these SRS attributes continue to appear on TSPI shapes.
  * {@table.footer}
  * {@table.header Nested Elements}
  * 		None.
  * {@table.footer}
  * {@table.header Attributes}
- * 		{@child.info srsName|0..1|11110}
- * 		{@child.info srsDimension|0..1|11110}
- * 		{@child.info axisLabels|0..*|11110}
- * 		{@child.info uomLabels|0..*|11110}
+ * 		{@child.info srsName|0..1|11111}
+ * 		{@child.info srsDimension|0..1|11111}
+ * 		{@child.info axisLabels|0..*|11111}
+ * 		{@child.info uomLabels|0..*|11111}
  * {@table.footer}
  * {@table.header Validation Rules}
  * 		{@ddms.rule If set, srsName must be a valid URI.|Error|11111}
