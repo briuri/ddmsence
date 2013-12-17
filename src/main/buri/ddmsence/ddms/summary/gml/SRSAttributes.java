@@ -36,7 +36,7 @@ import buri.ddmsence.util.Util;
 /**
  * Attribute group for the four SRS attributes used on GML and TSPI-based shapes.
  * <br /><br />
- * {@ddms.versions 11110}
+ * {@ddms.versions 11111}
  * 
  * <p>
  * Because the GML-Profile defines these attributes locally inside of attribute groups, they are not in any namespace.
