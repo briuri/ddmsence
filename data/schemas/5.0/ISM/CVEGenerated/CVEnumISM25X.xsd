@@ -44,9 +44,9 @@
             <xsd:annotation>
                <xsd:documentation>
 	  			Since NATO information is not to be declassified or downgraded without the prior consent
-	  			of NATO, the “Declassify on” line of documents that commingle information classified by 
-	  			NATO and U.S. classified NSI, will read “N/A to NATO portions. 
-	  			See source list for NSI portions.” 
+	  			of NATO, the "Declassify on" line of documents that commingle information classified by 
+	  			NATO and U.S. classified NSI, will read "N/A to NATO portions. 
+	  			See source list for NSI portions." 
 	  			The NSI source list will appear beneath the classification authority block 
 	  			in a manner that clearly identifies it as separate and distinct.
 	  		</xsd:documentation>
