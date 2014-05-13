@@ -17,7 +17,7 @@
 		13) Announcements (Google Groups / freecode / LinkedIn / Ohloh)
 	-->
 
-	<property name="version" value="2.2.0" />
+	<property name="version" value="2.2.1" />
 	<property name="conf.dir" value="conf" />
 	<property name="data.dir" value="data" />
 	<property name="local.web.dir" value="/projects/urizone/output/tomcat/webapps/ddmsence" />
@@ -77,13 +77,13 @@
 		<mkdir dir="${compile.test.dir}" />
 		<filter token="ddmsence.version" value="${version}"/>
 
-		<javac srcdir="${src.main.dir}" destdir="${compile.main.dir}" classpathref="classpath.compile" source="1.6" includeantruntime="false" />
+		<javac srcdir="${src.main.dir}" destdir="${compile.main.dir}" classpathref="classpath.compile" source="1.6" target="1.6" includeantruntime="false" />
 		<copy todir="${compile.main.dir}" filtering="true">
 			<fileset refid="files.properties" />
 			<fileset refid="files.requiredData" />
 		</copy>
-		<javac srcdir="${src.samples.dir}" destdir="${compile.samples.dir}" classpathref="classpath.samples" source="1.6" includeantruntime="false" />
-		<javac srcdir="${src.test.dir}" destdir="${compile.test.dir}" classpathref="classpath.test" source="1.6" includeantruntime="false" />
+		<javac srcdir="${src.samples.dir}" destdir="${compile.samples.dir}" classpathref="classpath.samples" source="1.6" target="1.6" includeantruntime="false" />
+		<javac srcdir="${src.test.dir}" destdir="${compile.test.dir}" classpathref="classpath.test" source="1.6" target="1.6" includeantruntime="false" />
 		<copy todir="${compile.test.dir}" filtering="true">
 			<fileset refid="files.properties" />
 			<fileset refid="files.requiredData" />
@@ -195,7 +195,7 @@
             windowtitle="DDMSence ${version} API"
             docencoding="UTF-8" charset="UTF-8"
             doctitle="DDMSence ${version}"		
-            bottom="Copyright 2010 - 2013 by Brian Uri!&lt;br /&gt;Generated on ${javadoc.time}&lt;br /&gt;&lt;a target='_top' href='http://ddmsence.urizone.net/'&gt;http://ddmsence.urizone.net/&lt;/a&gt;"
+            bottom="Copyright 2010 - 2014 by Brian Uri!&lt;br /&gt;Generated on ${javadoc.time}&lt;br /&gt;&lt;a target='_top' href='http://ddmsence.urizone.net/'&gt;http://ddmsence.urizone.net/&lt;/a&gt;"
 			stylesheetfile="${conf.dir}/javadoc-stylesheet.css"
 		>
 			<taglet name="buri.ddmsence.util.taglet.DDMSChildInfoTaglet">
