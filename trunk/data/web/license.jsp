@@ -9,7 +9,7 @@
 
 <h1>License</h1>
 
-<p>DDMSence is Copyright &copy; 2010 - 2013 by Brian Uri!. The DDMSence source code is published under the GNU Lesser General Public License (LGPL). The
+<p>DDMSence is Copyright &copy; 2010 - 2014 by Brian Uri!. The DDMSence source code is published under the GNU Lesser General Public License (LGPL). The
 complete text of this license can be found below.</p>
 
 <p>DDMSence makes use of several third-party libraries, whose licenses are linked below. Required libraries are already bundled with DDMSence, so you

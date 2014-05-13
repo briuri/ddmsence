@@ -4,10 +4,14 @@ that fully supports the DoD Discovery Metadata Specification (DDMS).
 You can contact the author at ddmsence@urizone.net. The DDMSence
 home page is located at http://ddmsence.urizone.net/ .
 
-Copyright 2010 - 2013 by Brian Uri!
+Copyright 2010 - 2014 by Brian Uri!
 ===========================================================================
 Release History
 ===========================================================================
+
+v 2.2.1 (05/13/2014):
+This stable release is functionally equivalent to 2.2.0, but provides compiled
+binaries that can be used in a Java 1.6 environment. 
 
 v 2.2.0 (12/15/2013):
 This stable release adds support for DDMS 5.0. API documentation has been updated,
