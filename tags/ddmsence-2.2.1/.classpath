@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="output/classes/main" path="src/main"/>
+	<classpathentry kind="src" output="output/classes/samples" path="src/samples"/>
+	<classpathentry kind="src" output="output/classes/test" path="src/test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/xml-apis-1.4.01.jar"/>
+	<classpathentry kind="lib" path="lib/xercesImpl-2.11.0.jar"/>
+	<classpathentry kind="lib" path="lib/test/junit-4.10.jar"/>
+	<classpathentry kind="var" path="JDK_HOME/lib/tools.jar"/>
+	<classpathentry kind="lib" path="lib/xom-1.2.10.jar"/>
+	<classpathentry kind="lib" path="lib/saxon9he-9.5.1.1.jar"/>
+	<classpathentry kind="output" path="output/classes/samples"/>
+</classpath>
