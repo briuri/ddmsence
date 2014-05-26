@@ -252,8 +252,9 @@ public class ExtentTest extends AbstractBaseTestCase {
 			Extent elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
 			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
-			assertEquals(getExpectedJSONOutput(), elementComponent.toJSON());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
+			assertEquals(getExpectedJSONOutput(), elementComponent.toJSON());
+			assertValidJson(elementComponent.toJSON());
 		}
 	}
 

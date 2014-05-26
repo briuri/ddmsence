@@ -88,8 +88,6 @@ public final class Extent extends AbstractQualifierValue {
 	/**
 	 * Validates the component.
 	 * 
-
-	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
