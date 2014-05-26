@@ -79,7 +79,7 @@ import buri.ddmsence.util.Util;
  * <br />
  * {@ddms.versions 11111}
  * 
- * <p>When generating HTML/Text output for a Resource, additional tags are generated listing the version of DDMSence
+ * <p>When generating HTML/JSON/Text output for a Resource, additional tags are generated listing the version of DDMSence
  * used to create the record (to help identify formatting bugs), and the version of DDMS. These lines are not required
  * (and may be removed). For example:</p>
  * 

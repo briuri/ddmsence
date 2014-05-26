@@ -51,7 +51,7 @@ import buri.ddmsence.util.Util;
  * 		removed, and the ddms:relatedResource now contains all of the parent information (relationship and direction).</p>
  * 
  * 		<p>The element-based constructor for this class can automatically handle these cases, and will automatically
- * 		mediate the Text/HTML/XML output:</p>
+ * 		mediate the Text/HTML/JSON/XML output:</p>
  * 		<ul>
  * 		<li>A pre-DDMS 4.0.1 ddms:RelatedResources element containing 1 ddms:relatedResource.</li>
  * 		<li>A post-DDMS 4.0.1 ddms:relatedResource element.</li>

@@ -65,7 +65,7 @@ import buri.ddmsence.util.Util;
  * Attribute attribute = new Attribute("opensearch:confidence", "http://opensearch.namespace/", "82"); </code></ul>
  * 
  * <p>The DDMS documentation does not provide sample HTML/Text output for extensible attributes, so the following
- * approach is used. In general, the HTML/Text output of extensible attributes will be prefixed with the name of the
+ * approach is used. In general, the output of extensible attributes will be prefixed with the name of the
  * element being marked. For example:</p>
  * 
  * <ul><code> keyword opensearch:relevance: 95<br /> keyword opensearch:confidence: 82<br />

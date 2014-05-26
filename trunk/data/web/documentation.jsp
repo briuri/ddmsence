@@ -38,6 +38,7 @@ into a batch/shell script and running that script):</p>
 cd &lt;folderWhereDDMSenceIsUnzipped&gt;\ddmsence-bin-@ddmsence.version@
 set DDMSENCE_CLASSPATH=lib/saxon9he-9.5.1.1.jar;lib/xercesImpl-2.11.0.jar
 set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/xml-apis-1.4.01.jar;lib/xom-1.2.10.jar
+set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/json-simple-1.1.1.jar
 set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-@ddmsence.version@.jar
 set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-samples-@ddmsence.version@.jar
 java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre>
@@ -48,6 +49,7 @@ java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre>
 cd &lt;folderWhereDDMSenceIsUnzipped&gt;/ddmsence-bin-@ddmsence.version@
 ddmsence_classpath=lib/saxon9he-9.5.1.1.jar:lib/xercesImpl-2.11.0.jar
 ddmsence_classpath=$ddmsence_classpath:lib/xml-apis-1.4.01.jar:lib/xom-1.2.10.jar
+ddmsence_classpath=$ddmsence_classpath:lib/json-simple-1.1.1.jar
 ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-@ddmsence.version@.jar
 ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-samples-@ddmsence.version@.jar
 java -cp $ddmsence_classpath buri.ddmsence.samples.Essentials</pre>
@@ -66,8 +68,8 @@ real-world solutions.</p>
 
 <h5>Essentials</h5>
 
-<p><u>Essentials</u> is a simple reader application which loads an XML file containing a DDMS Resource and displays it in three different formats: the
-original XML, HTML, and Text. The source code for this application provides an example of how to create DDMS components from an XML file.</p>
+<p><u>Essentials</u> is a simple reader application which loads an XML file containing a DDMS Resource and displays it in four different formats: the
+original XML, HTML, JSON, and Text. The source code for this application provides an example of how to create DDMS components from an XML file.</p>
 
 <ul>
 	<li><a href="tutorials-01.jsp">Tutorial #1: Essentials</a></li>

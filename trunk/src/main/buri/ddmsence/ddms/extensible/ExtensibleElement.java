@@ -48,7 +48,7 @@ import buri.ddmsence.util.Util;
  * element.appendChild("This will be the child text.");
  * </code></ul>
  * 
- * <p>Because it is impossible to cover all of the HTML/Text output cases for ExtensibleElements, DDMSence
+ * <p>Because it is impossible to cover all of the HTML/JSON/Text output cases for ExtensibleElements, DDMSence
  * will simply print out the existence of extensible elements:</p>
  * <ul><code>
  * Extensible Layer: true<br />

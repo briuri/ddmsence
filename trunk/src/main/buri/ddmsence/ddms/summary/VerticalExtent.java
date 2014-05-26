@@ -40,7 +40,7 @@ import buri.ddmsence.util.Util;
  * values on the required attributes of the same name on this element. It does not seem logical to specify these
  * attributes on the parent element and then express the actual values with a different measure. Note that because
  * DDMSence is giving precedence to the top-level unitOfMeasure and datum attributes, those attributes on the
- * children are not displayed in HTML/Text. However, they are still rendered in XML, if present in an existing
+ * children are not displayed in HTML/JSON/Text. However, they are still rendered in XML, if present in an existing
  * document.</p>
  * 
  * <p>The above design decision dictates that VerticalDistance (the type behind minVerticalExtent and maxVerticalExtent)

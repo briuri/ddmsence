@@ -107,6 +107,13 @@ public interface IDDMSComponent {
 	public String toHTML();
 
 	/**
+	 * Renders this component as JSON.
+	 * 
+	 * @return the JSON representation of this component
+	 */
+	public String toJSON();
+	
+	/**
 	 * Renders this component as Text.
 	 * 
 	 * @return the text-based representation of this component

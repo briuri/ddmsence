@@ -141,7 +141,7 @@ It converts XML DDMS Resources (also called assertions or metacards) into a Java
 
 <ul>
 	<li>Provides a complete implementation of the DDMS specification (including the Extensible Layer) using any version of DDMS between 2.0 and 5.0.</li>
-	<li>Java object model can be created from existing XML files, or built up from scratch with basic Java data types. Components automatically transform into valid, well-formed XML, HTML, and Text records.</li>
+	<li>Java object model can be created from existing XML files, or built up from scratch with basic Java data types. Components automatically transform into valid, well-formed XML, HTML, JSON, and Text records.</li>
 	<li>Validates assertions against the complete specification, not just the schemas. Integrated with the Controlled Vocabulary Enumerations for ISM attributes, as defined by the Intelligence Community, and supports Schematron-based custom validation rules.</li>
 	<li>Three sample applications and accompanying <a href="documentation.jsp#started">tutorials</a> provide an introduction to the library,
 		and <a href="documentation.jsp#tips">Power Tips</a> are available for more experienced users.</li>
