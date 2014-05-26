@@ -23,6 +23,7 @@ import java.io.Serializable;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
@@ -153,16 +154,16 @@ public final class Category extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + QUALIFIER_NAME, getQualifier()));
-		text.append(buildOutput(isHTML, localPrefix + CODE_NAME, getCode()));
-		text.append(buildOutput(isHTML, localPrefix + LABEL_NAME, getLabel()));
-		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
-		text.append(getExtensibleAttributes().getOutput(isHTML, localPrefix));
+		text.append(buildOutput(format, localPrefix + QUALIFIER_NAME, getQualifier()));
+		text.append(buildOutput(format, localPrefix + CODE_NAME, getCode()));
+		text.append(buildOutput(format, localPrefix + LABEL_NAME, getLabel()));
+		text.append(getSecurityAttributes().getOutput(format, localPrefix));
+		text.append(getExtensibleAttributes().getOutput(format, localPrefix));
 		return (text.toString());
 	}
 

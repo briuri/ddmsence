@@ -22,6 +22,7 @@ package buri.ddmsence.ddms.summary.tspi;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractTspiShape;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
@@ -81,12 +82,12 @@ public final class Polygon extends AbstractTspiShape {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, "", suffix);
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + "shapeType", getName()));
+		text.append(buildOutput(format, localPrefix + "shapeType", getName()));
 		return (text.toString());
 	}
 

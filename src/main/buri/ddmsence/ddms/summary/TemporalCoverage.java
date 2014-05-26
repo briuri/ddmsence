@@ -31,6 +31,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.ApproximableDate;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -300,21 +301,21 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		if (!getDDMSVersion().isAtLeast("4.0.1"))
 			localPrefix += TIME_PERIOD_NAME + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + TIME_PERIOD_NAME_NAME, getTimePeriodName()));
-		text.append(buildOutput(isHTML, localPrefix + START_NAME, getStartString()));
-		text.append(buildOutput(isHTML, localPrefix + END_NAME, getEndString()));
+		text.append(buildOutput(format, localPrefix + TIME_PERIOD_NAME_NAME, getTimePeriodName()));
+		text.append(buildOutput(format, localPrefix + START_NAME, getStartString()));
+		text.append(buildOutput(format, localPrefix + END_NAME, getEndString()));
 		if (getApproximableStart() != null)
-			text.append(getApproximableStart().getOutput(isHTML, localPrefix, ""));
+			text.append(getApproximableStart().getOutput(format, localPrefix, ""));
 		if (getApproximableEnd() != null)
-			text.append(getApproximableEnd().getOutput(isHTML, localPrefix, ""));
-		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
+			text.append(getApproximableEnd().getOutput(format, localPrefix, ""));
+		text.append(getSecurityAttributes().getOutput(format, localPrefix));
 		return (text.toString());
 	}
 

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
@@ -125,15 +126,15 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		List<IDDMSComponent> objectList = new ArrayList<IDDMSComponent>();
 		objectList.add(rights);
 		assertEquals("rights.privacyAct: true\nrights.intellectualProperty: true\nrights.copyright: true\n",
-			rights.buildOutput(false, "", objectList));
+			rights.buildOutput(OutputFormat.TEXT, "", objectList));
 
 		List<String> stringList = new ArrayList<String>();
 		stringList.add("Text");
-		assertEquals("name: Text\n", rights.buildOutput(false, "name", stringList));
+		assertEquals("name: Text\n", rights.buildOutput(OutputFormat.TEXT, "name", stringList));
 
 		List<Double> otherList = new ArrayList<Double>();
 		otherList.add(Double.valueOf(2.0));
-		assertEquals("name: 2.0\n", rights.buildOutput(false, "name", otherList));
+		assertEquals("name: 2.0\n", rights.buildOutput(OutputFormat.TEXT, "name", otherList));
 	}
 
 	public void testSelfEquality() throws InvalidDDMSException {
@@ -162,7 +163,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 
 	public void testNullChecks() throws InvalidDDMSException {
 		AbstractBaseComponent component = new AbstractBaseComponent() {
-			public String getOutput(boolean isHTML, String prefix, String suffix) {
+			public String getOutput(OutputFormat format, String prefix, String suffix) {
 				return null;
 			}
 		};
@@ -174,7 +175,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 
 	public void testAttributeWarnings() throws InvalidDDMSException {
 		AbstractBaseComponent component = new AbstractBaseComponent() {
-			public String getOutput(boolean isHTML, String prefix, String suffix) {
+			public String getOutput(OutputFormat format, String prefix, String suffix) {
 				return null;
 			}
 

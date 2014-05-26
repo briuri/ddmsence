@@ -23,6 +23,7 @@ import java.io.Serializable;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.ISMVocabulary;
@@ -161,16 +162,16 @@ public final class TaskID extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix);
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix, getValue()));
-		text.append(buildOutput(isHTML, localPrefix + "." + TASKING_SYSTEM_NAME, getTaskingSystem()));
-		text.append(buildOutput(isHTML, localPrefix + "." + NETWORK_NAME, getNetwork()));
-		text.append(buildOutput(isHTML, localPrefix + "." + OTHER_NETWORK_NAME, getOtherNetwork()));
-		text.append(getXLinkAttributes().getOutput(isHTML, localPrefix + "."));
+		text.append(buildOutput(format, localPrefix, getValue()));
+		text.append(buildOutput(format, localPrefix + "." + TASKING_SYSTEM_NAME, getTaskingSystem()));
+		text.append(buildOutput(format, localPrefix + "." + NETWORK_NAME, getNetwork()));
+		text.append(buildOutput(format, localPrefix + "." + OTHER_NETWORK_NAME, getOtherNetwork()));
+		text.append(getXLinkAttributes().getOutput(format, localPrefix + "."));
 		return (text.toString());
 	}
 

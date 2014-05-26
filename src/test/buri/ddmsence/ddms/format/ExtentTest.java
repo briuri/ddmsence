@@ -21,6 +21,7 @@ package buri.ddmsence.ddms.format;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -113,12 +114,12 @@ public class ExtentTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) {
+	private String getExpectedOutput(OutputFormat format) {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "extent.qualifier", TEST_QUALIFIER));
-		text.append(buildOutput(isHTML, "extent.value", TEST_VALUE));
+		text.append(buildOutput(format, "extent.qualifier", TEST_QUALIFIER));
+		text.append(buildOutput(format, "extent.value", TEST_VALUE));
 		return (text.toString());
 	}
 
@@ -240,8 +241,8 @@ public class ExtentTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Extent elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

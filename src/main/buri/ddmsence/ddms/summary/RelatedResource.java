@@ -29,6 +29,7 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractQualifierValue;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -228,19 +229,19 @@ public final class RelatedResource extends AbstractQualifierValue {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0.1"))
 			localPrefix += "RelatedResource.";
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + RELATIONSHIP_NAME, getRelationship()));
-		text.append(buildOutput(isHTML, localPrefix + DIRECTION_NAME, getDirection()));
-		text.append(buildOutput(isHTML, localPrefix + getQualifierName(), getQualifier()));
-		text.append(buildOutput(isHTML, localPrefix + getValueName(), getValue()));
-		text.append(buildOutput(isHTML, localPrefix, getLinks()));
-		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
+		text.append(buildOutput(format, localPrefix + RELATIONSHIP_NAME, getRelationship()));
+		text.append(buildOutput(format, localPrefix + DIRECTION_NAME, getDirection()));
+		text.append(buildOutput(format, localPrefix + getQualifierName(), getQualifier()));
+		text.append(buildOutput(format, localPrefix + getValueName(), getValue()));
+		text.append(buildOutput(format, localPrefix, getLinks()));
+		text.append(getSecurityAttributes().getOutput(format, localPrefix));
 		return (text.toString());
 	}
 

@@ -27,6 +27,7 @@ import java.util.List;
 import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -151,14 +152,14 @@ public final class Notice extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, "notice", suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix, getNoticeTexts()));
-		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
-		text.append(getNoticeAttributes().getOutput(isHTML, localPrefix));
+		text.append(buildOutput(format, localPrefix, getNoticeTexts()));
+		text.append(getSecurityAttributes().getOutput(format, localPrefix));
+		text.append(getNoticeAttributes().getOutput(format, localPrefix));
 		return (text.toString());
 	}
 

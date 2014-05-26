@@ -24,6 +24,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
@@ -126,14 +127,14 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 	}
 	
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) {
+	private String getExpectedOutput(OutputFormat format) {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "srsName", TEST_SRS_NAME));
-		text.append(buildOutput(isHTML, "srsDimension", String.valueOf(TEST_SRS_DIMENSION)));
-		text.append(buildOutput(isHTML, "axisLabels", Util.getXsList(TEST_AXIS_LABELS)));
-		text.append(buildOutput(isHTML, "uomLabels", Util.getXsList(TEST_UOM_LABELS)));
+		text.append(buildOutput(format, "srsName", TEST_SRS_NAME));
+		text.append(buildOutput(format, "srsDimension", String.valueOf(TEST_SRS_DIMENSION)));
+		text.append(buildOutput(format, "axisLabels", Util.getXsList(TEST_AXIS_LABELS)));
+		text.append(buildOutput(format, "uomLabels", Util.getXsList(TEST_UOM_LABELS)));
 		return (text.toString());
 	}
 
@@ -279,8 +280,8 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			SRSAttributes attributes = getFixture();
-			assertEquals(getExpectedOutput(true), attributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false), attributes.getOutput(false, ""));
+			assertEquals(getExpectedOutput(OutputFormat.HTML), attributes.getOutput(OutputFormat.HTML, ""));
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), attributes.getOutput(OutputFormat.TEXT, ""));
 		}
 	}
 

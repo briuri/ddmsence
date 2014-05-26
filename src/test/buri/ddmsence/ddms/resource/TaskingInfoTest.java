@@ -24,6 +24,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.ddms.summary.DescriptionTest;
@@ -141,30 +142,30 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "taskingInfo.requesterInfo.entityType", "organization"));
-		text.append(buildOutput(isHTML, "taskingInfo.requesterInfo.name", "DISA"));
-		text.append(buildOutput(isHTML, "taskingInfo.requesterInfo.classification", "U"));
-		text.append(buildOutput(isHTML, "taskingInfo.requesterInfo.ownerProducer", "USA"));
-		text.append(buildOutput(isHTML, "taskingInfo.addressee.entityType", "organization"));
-		text.append(buildOutput(isHTML, "taskingInfo.addressee.name", "DISA"));
-		text.append(buildOutput(isHTML, "taskingInfo.addressee.classification", "U"));
-		text.append(buildOutput(isHTML, "taskingInfo.addressee.ownerProducer", "USA"));
-		text.append(buildOutput(isHTML, "taskingInfo.description", "A transformation service."));
-		text.append(buildOutput(isHTML, "taskingInfo.description.classification", "U"));
-		text.append(buildOutput(isHTML, "taskingInfo.description.ownerProducer", "USA"));
-		text.append(buildOutput(isHTML, "taskingInfo.taskID", "Task #12345"));
-		text.append(buildOutput(isHTML, "taskingInfo.taskID.taskingSystem", "MDR"));
-		text.append(buildOutput(isHTML, "taskingInfo.taskID.type", "simple"));
-		text.append(buildOutput(isHTML, "taskingInfo.taskID.href", "http://en.wikipedia.org/wiki/Tank"));
-		text.append(buildOutput(isHTML, "taskingInfo.taskID.role", "tank"));
-		text.append(buildOutput(isHTML, "taskingInfo.taskID.title", "Tank Page"));
-		text.append(buildOutput(isHTML, "taskingInfo.taskID.arcrole", "arcrole"));
-		text.append(buildOutput(isHTML, "taskingInfo.taskID.show", "new"));
-		text.append(buildOutput(isHTML, "taskingInfo.taskID.actuate", "onLoad"));
+		text.append(buildOutput(format, "taskingInfo.requesterInfo.entityType", "organization"));
+		text.append(buildOutput(format, "taskingInfo.requesterInfo.name", "DISA"));
+		text.append(buildOutput(format, "taskingInfo.requesterInfo.classification", "U"));
+		text.append(buildOutput(format, "taskingInfo.requesterInfo.ownerProducer", "USA"));
+		text.append(buildOutput(format, "taskingInfo.addressee.entityType", "organization"));
+		text.append(buildOutput(format, "taskingInfo.addressee.name", "DISA"));
+		text.append(buildOutput(format, "taskingInfo.addressee.classification", "U"));
+		text.append(buildOutput(format, "taskingInfo.addressee.ownerProducer", "USA"));
+		text.append(buildOutput(format, "taskingInfo.description", "A transformation service."));
+		text.append(buildOutput(format, "taskingInfo.description.classification", "U"));
+		text.append(buildOutput(format, "taskingInfo.description.ownerProducer", "USA"));
+		text.append(buildOutput(format, "taskingInfo.taskID", "Task #12345"));
+		text.append(buildOutput(format, "taskingInfo.taskID.taskingSystem", "MDR"));
+		text.append(buildOutput(format, "taskingInfo.taskID.type", "simple"));
+		text.append(buildOutput(format, "taskingInfo.taskID.href", "http://en.wikipedia.org/wiki/Tank"));
+		text.append(buildOutput(format, "taskingInfo.taskID.role", "tank"));
+		text.append(buildOutput(format, "taskingInfo.taskID.title", "Tank Page"));
+		text.append(buildOutput(format, "taskingInfo.taskID.arcrole", "arcrole"));
+		text.append(buildOutput(format, "taskingInfo.taskID.show", "new"));
+		text.append(buildOutput(format, "taskingInfo.taskID.actuate", "onLoad"));
 		return (text.toString());
 	}
 
@@ -305,8 +306,8 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			TaskingInfo elementComponent = getInstance(getFixtureElement(), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

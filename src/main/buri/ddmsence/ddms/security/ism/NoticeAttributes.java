@@ -32,6 +32,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractAttributeGroup;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
@@ -255,20 +256,20 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	}
 
 	/**
-	 * @see AbstractAttributeGroup#getOutput(boolean, String)
+	 * @see AbstractAttributeGroup#getOutput(OutputFormat, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(OutputFormat format, String prefix) {
 		String localPrefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer();
-		text.append(Resource.buildOutput(isHTML, localPrefix + NOTICE_TYPE_NAME, getNoticeType()));
-		text.append(Resource.buildOutput(isHTML, localPrefix + NOTICE_REASON_NAME, getNoticeReason()));
+		text.append(Resource.buildOutput(format, localPrefix + NOTICE_TYPE_NAME, getNoticeType()));
+		text.append(Resource.buildOutput(format, localPrefix + NOTICE_REASON_NAME, getNoticeReason()));
 		if (getNoticeDate() != null) {
-			text.append(Resource.buildOutput(isHTML, localPrefix + NOTICE_DATE_NAME, getNoticeDate().toXMLFormat()));
+			text.append(Resource.buildOutput(format, localPrefix + NOTICE_DATE_NAME, getNoticeDate().toXMLFormat()));
 		}
-		text.append(Resource.buildOutput(isHTML, localPrefix + UNREGISTERED_NOTICE_TYPE_NAME,
+		text.append(Resource.buildOutput(format, localPrefix + UNREGISTERED_NOTICE_TYPE_NAME,
 			getUnregisteredNoticeType()));
 		if (isExternalReference() != null) {
-			text.append(Resource.buildOutput(isHTML, localPrefix + EXTERNAL_NOTICE_NAME,
+			text.append(Resource.buildOutput(format, localPrefix + EXTERNAL_NOTICE_NAME,
 				String.valueOf(isExternalReference())));
 		}
 

@@ -25,6 +25,7 @@ import java.util.List;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.summary.Keyword;
@@ -165,11 +166,11 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) {
+	private String getExpectedOutput(OutputFormat format) {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "ddmsence.relevance", "95"));
+		text.append(buildOutput(format, "ddmsence.relevance", "95"));
 		return (text.toString());
 	}
 
@@ -264,8 +265,8 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 			Element element = getTestElement();
 			element.addAttribute(new Attribute(getTestAttribute()));
 			ExtensibleAttributes elementAttributes = getInstance(element, SUCCESS);
-			assertEquals(getExpectedOutput(true), elementAttributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false), elementAttributes.getOutput(false, ""));
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementAttributes.getOutput(OutputFormat.HTML, ""));
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementAttributes.getOutput(OutputFormat.TEXT, ""));
 		}
 	}
 

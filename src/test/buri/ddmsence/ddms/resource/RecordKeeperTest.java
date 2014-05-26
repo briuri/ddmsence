@@ -21,6 +21,7 @@ package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -128,13 +129,13 @@ public class RecordKeeperTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "recordKeeper.recordKeeperID", TEST_ID));
-		text.append(buildOutput(isHTML, "recordKeeper.entityType", "organization"));
-		text.append(buildOutput(isHTML, "recordKeeper.name", TEST_NAME));
+		text.append(buildOutput(format, "recordKeeper.recordKeeperID", TEST_ID));
+		text.append(buildOutput(format, "recordKeeper.entityType", "organization"));
+		text.append(buildOutput(format, "recordKeeper.name", TEST_NAME));
 		return (text.toString());
 	}
 
@@ -235,8 +236,8 @@ public class RecordKeeperTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			RecordKeeper elementComponent = getInstance(getFixtureElement(), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

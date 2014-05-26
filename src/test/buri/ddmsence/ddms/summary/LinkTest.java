@@ -24,6 +24,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -153,11 +154,11 @@ public class LinkTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(XLinkAttributesTest.getLocatorFixture().getOutput(isHTML, "link."));
+		text.append(XLinkAttributesTest.getLocatorFixture().getOutput(format, "link."));
 		return (text.toString());
 	}
 
@@ -302,8 +303,8 @@ public class LinkTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Link elementComponent = getInstance(getFixtureElement(), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

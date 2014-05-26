@@ -21,6 +21,7 @@ package buri.ddmsence.ddms.security.ntk;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -114,19 +115,19 @@ public class AccessTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(IndividualTest.getFixture().getOutput(isHTML, "access.individualList.", ""));
-		text.append(GroupTest.getFixture().getOutput(isHTML, "access.groupList.", ""));
-		text.append(ProfileListTest.getFixture().getOutput(isHTML, "access.", ""));
+		text.append(IndividualTest.getFixture().getOutput(format, "access.individualList.", ""));
+		text.append(GroupTest.getFixture().getOutput(format, "access.groupList.", ""));
+		text.append(ProfileListTest.getFixture().getOutput(format, "access.", ""));
 		if (version.isAtLeast("4.1")) {
-			text.append(buildOutput(isHTML, "access.externalReference", String.valueOf(TEST_EXTERNAL)));
+			text.append(buildOutput(format, "access.externalReference", String.valueOf(TEST_EXTERNAL)));
 		}
-		text.append(buildOutput(isHTML, "access.classification", "U"));
-		text.append(buildOutput(isHTML, "access.ownerProducer", "USA"));
+		text.append(buildOutput(format, "access.classification", "U"));
+		text.append(buildOutput(format, "access.ownerProducer", "USA"));
 		return (text.toString());
 	}
 
@@ -290,8 +291,8 @@ public class AccessTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Access elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

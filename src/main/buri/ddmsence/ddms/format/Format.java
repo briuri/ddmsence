@@ -25,6 +25,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -153,17 +154,17 @@ public final class Format extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		if (!getDDMSVersion().isAtLeast("4.0.1"))
 			localPrefix += MEDIA_NAME + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + MIME_TYPE_NAME, getMimeType()));
+		text.append(buildOutput(format, localPrefix + MIME_TYPE_NAME, getMimeType()));
 		if (getExtent() != null)
-			text.append(getExtent().getOutput(isHTML, localPrefix, ""));
-		text.append(buildOutput(isHTML, localPrefix + MEDIUM_NAME, getMedium()));
+			text.append(getExtent().getOutput(format, localPrefix, ""));
+		text.append(buildOutput(format, localPrefix + MEDIUM_NAME, getMedium()));
 		return (text.toString());
 	}
 

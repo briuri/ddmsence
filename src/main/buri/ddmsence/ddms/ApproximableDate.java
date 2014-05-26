@@ -204,18 +204,18 @@ public final class ApproximableDate extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix);
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + "." + DESCRIPTION_NAME, getDescription()));
-		text.append(buildOutput(isHTML, localPrefix + "." + APPROXIMABLE_DATE_NAME, getApproximableDateString()));
-		text.append(buildOutput(isHTML, localPrefix + "." + APPROXIMABLE_DATE_NAME + "." + APPROXIMATION_NAME,
+		text.append(buildOutput(format, localPrefix + "." + DESCRIPTION_NAME, getDescription()));
+		text.append(buildOutput(format, localPrefix + "." + APPROXIMABLE_DATE_NAME, getApproximableDateString()));
+		text.append(buildOutput(format, localPrefix + "." + APPROXIMABLE_DATE_NAME + "." + APPROXIMATION_NAME,
 			getApproximation()));
-		text.append(buildOutput(isHTML, localPrefix + "." + SEARCHABLE_DATE_NAME + "." + START_NAME,
+		text.append(buildOutput(format, localPrefix + "." + SEARCHABLE_DATE_NAME + "." + START_NAME,
 			getSearchableStartString()));
-		text.append(buildOutput(isHTML, localPrefix + "." + SEARCHABLE_DATE_NAME + "." + END_NAME,
+		text.append(buildOutput(format, localPrefix + "." + SEARCHABLE_DATE_NAME + "." + END_NAME,
 			getSearchableEndString()));
 		return (text.toString());
 	}

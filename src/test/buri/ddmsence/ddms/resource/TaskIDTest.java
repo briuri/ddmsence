@@ -21,6 +21,7 @@ package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -170,17 +171,17 @@ public class TaskIDTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "taskID", TEST_VALUE));
-		text.append(buildOutput(isHTML, "taskID.taskingSystem", TEST_TASKING_SYSTEM));
-		text.append(buildOutput(isHTML, "taskID.network", TEST_NETWORK));
+		text.append(buildOutput(format, "taskID", TEST_VALUE));
+		text.append(buildOutput(format, "taskID.taskingSystem", TEST_TASKING_SYSTEM));
+		text.append(buildOutput(format, "taskID.network", TEST_NETWORK));
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
-			text.append(buildOutput(isHTML, "taskID.otherNetwork", getTestOtherNetwork()));
+			text.append(buildOutput(format, "taskID.otherNetwork", getTestOtherNetwork()));
 		}
-		text.append(XLinkAttributesTest.getSimpleFixture().getOutput(isHTML, "taskID."));
+		text.append(XLinkAttributesTest.getSimpleFixture().getOutput(format, "taskID."));
 		return (text.toString());
 	}
 
@@ -328,8 +329,8 @@ public class TaskIDTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			TaskID elementComponent = getInstance(getFixtureElement(), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

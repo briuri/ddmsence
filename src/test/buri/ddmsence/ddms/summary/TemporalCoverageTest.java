@@ -23,6 +23,7 @@ import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.ApproximableDate;
 import buri.ddmsence.ddms.ApproximableDateTest;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -153,28 +154,28 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML, boolean isApproximable) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format, boolean isApproximable) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = "temporalCoverage.";
 		if (!version.isAtLeast("4.0.1"))
 			prefix += "TimePeriod.";
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix + "name", TEST_NAME));
+		text.append(buildOutput(format, prefix + "name", TEST_NAME));
 		if (isApproximable) {
 			ApproximableDate start = new ApproximableDate(ApproximableDateTest.getFixtureElement("approximableStart",
 				true));
 			ApproximableDate end = new ApproximableDate(ApproximableDateTest.getFixtureElement("approximableEnd", true));
-			text.append(start.getOutput(isHTML, prefix, ""));
-			text.append(end.getOutput(isHTML, prefix, ""));
+			text.append(start.getOutput(format, prefix, ""));
+			text.append(end.getOutput(format, prefix, ""));
 		}
 		else {
-			text.append(buildOutput(isHTML, prefix + "start", TEST_START));
-			text.append(buildOutput(isHTML, prefix + "end", TEST_END));
+			text.append(buildOutput(format, prefix + "start", TEST_START));
+			text.append(buildOutput(format, prefix + "end", TEST_END));
 		}
 		if (version.isAtLeast("3.0"))
-			text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, prefix));
+			text.append(SecurityAttributesTest.getFixture().getOutput(format, prefix));
 		return (text.toString());
 	}
 
@@ -408,8 +409,8 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			TemporalCoverage elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true, false), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false, false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML, false), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT, false), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(false), elementComponent.toXML());
 			
 			if (version.isAtLeast("4.1")) {
@@ -419,8 +420,8 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 				builder.setEndString(null);
 				builder.setApproximableEnd(getTestApproximableEnd());
 				TemporalCoverage builderComponent = getInstance(builder, SUCCESS);
-				assertEquals(getExpectedOutput(true, true), builderComponent.toHTML());
-				assertEquals(getExpectedOutput(false, true), builderComponent.toText());
+				assertEquals(getExpectedOutput(OutputFormat.HTML, true), builderComponent.toHTML());
+				assertEquals(getExpectedOutput(OutputFormat.TEXT, true), builderComponent.toText());
 				assertEquals(getExpectedXMLOutput(true), builderComponent.toXML());	
 			}
 		}

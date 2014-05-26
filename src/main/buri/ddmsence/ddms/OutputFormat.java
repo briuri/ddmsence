@@ -19,18 +19,17 @@
  */
 package buri.ddmsence.ddms;
 
-import buri.ddmsence.AbstractBaseComponent;
-
 /**
- * Identifying interface for a TSPI address element, which may be used to fill a postalAddress element.
+ * Enumeration of output formats. XML is not an enumeration value, as we rely on XOM for XML output.
+ * 
+ * <ul>
+ * <li><b>HTML</b>: HTML meta tags, in accordance with the suggested HTML output from the DDMS Specification.</li>
+ * <li><b>TEXT</b>: Text name-value pairings, in accordance with the suggested Text output from the DDMS Specification.</li>
+ * </ul>
  * 
  * @author Brian Uri!
- * @since 2.2.0
+ * @since 2.3.0
  */
-public interface ITspiAddress extends IDDMSComponent {
-	
-	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
-	 */
-	public abstract String getOutput(OutputFormat format, String prefix, String suffix);
+public enum OutputFormat {
+	HTML, TEXT
 }

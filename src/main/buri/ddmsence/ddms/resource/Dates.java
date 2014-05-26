@@ -31,6 +31,7 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.ApproximableDate;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -209,18 +210,18 @@ public final class Dates extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix, getAcquiredOns()));
-		text.append(buildOutput(isHTML, localPrefix + CREATED_NAME, getCreatedString()));
-		text.append(buildOutput(isHTML, localPrefix + POSTED_NAME, getPostedString()));
-		text.append(buildOutput(isHTML, localPrefix + VALID_TIL_NAME, getValidTilString()));
-		text.append(buildOutput(isHTML, localPrefix + INFO_CUT_OFF_NAME, getInfoCutOffString()));
-		text.append(buildOutput(isHTML, localPrefix + APPROVED_ON_NAME, getApprovedOnString()));
-		text.append(buildOutput(isHTML, localPrefix + RECEIVED_ON_NAME, getReceivedOnString()));
+		text.append(buildOutput(format, localPrefix, getAcquiredOns()));
+		text.append(buildOutput(format, localPrefix + CREATED_NAME, getCreatedString()));
+		text.append(buildOutput(format, localPrefix + POSTED_NAME, getPostedString()));
+		text.append(buildOutput(format, localPrefix + VALID_TIL_NAME, getValidTilString()));
+		text.append(buildOutput(format, localPrefix + INFO_CUT_OFF_NAME, getInfoCutOffString()));
+		text.append(buildOutput(format, localPrefix + APPROVED_ON_NAME, getApprovedOnString()));
+		text.append(buildOutput(format, localPrefix + RECEIVED_ON_NAME, getReceivedOnString()));
 		return (text.toString());
 	}
 

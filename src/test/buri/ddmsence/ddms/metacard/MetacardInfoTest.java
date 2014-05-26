@@ -25,6 +25,7 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.ContributorTest;
@@ -159,14 +160,14 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		for (IDDMSComponent component : getChildComponents(false))
-			text.append(((AbstractBaseComponent) component).getOutput(isHTML, "metacardInfo.", ""));
-		text.append(buildOutput(isHTML, "metacardInfo.classification", "U"));
-		text.append(buildOutput(isHTML, "metacardInfo.ownerProducer", "USA"));
+			text.append(((AbstractBaseComponent) component).getOutput(format, "metacardInfo.", ""));
+		text.append(buildOutput(format, "metacardInfo.classification", "U"));
+		text.append(buildOutput(format, "metacardInfo.ownerProducer", "USA"));
 		return (text.toString());
 	}
 
@@ -413,8 +414,8 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			MetacardInfo elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

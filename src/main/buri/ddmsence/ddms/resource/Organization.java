@@ -27,6 +27,7 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractRoleEntity;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -149,13 +150,13 @@ public final class Organization extends AbstractRoleEntity {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, "", suffix);
-		StringBuffer text = new StringBuffer(super.getOutput(isHTML, localPrefix, ""));
-		text.append(buildOutput(isHTML, localPrefix, getSubOrganizations()));
-		text.append(buildOutput(isHTML, localPrefix + ACRONYM_NAME, getAcronym()));
+		StringBuffer text = new StringBuffer(super.getOutput(format, localPrefix, ""));
+		text.append(buildOutput(format, localPrefix, getSubOrganizations()));
+		text.append(buildOutput(format, localPrefix + ACRONYM_NAME, getAcronym()));
 		return (text.toString());
 	}
 

@@ -21,6 +21,7 @@ package buri.ddmsence.ddms.security;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.NoticeTest;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -134,25 +135,25 @@ public class NoticeListTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "noticeList.notice.noticeText", "noticeText"));
-		text.append(buildOutput(isHTML, "noticeList.notice.noticeText.pocType", "DoD-Dist-B"));
-		text.append(buildOutput(isHTML, "noticeList.notice.noticeText.classification", "U"));
-		text.append(buildOutput(isHTML, "noticeList.notice.noticeText.ownerProducer", "USA"));
-		text.append(buildOutput(isHTML, "noticeList.notice.classification", "U"));
-		text.append(buildOutput(isHTML, "noticeList.notice.ownerProducer", "USA"));
-		text.append(buildOutput(isHTML, "noticeList.notice.noticeType", "DoD-Dist-B"));
-		text.append(buildOutput(isHTML, "noticeList.notice.noticeReason", "noticeReason"));
-		text.append(buildOutput(isHTML, "noticeList.notice.noticeDate", "2011-09-15"));
-		text.append(buildOutput(isHTML, "noticeList.notice.unregisteredNoticeType", "unregisteredNoticeType"));
+		text.append(buildOutput(format, "noticeList.notice.noticeText", "noticeText"));
+		text.append(buildOutput(format, "noticeList.notice.noticeText.pocType", "DoD-Dist-B"));
+		text.append(buildOutput(format, "noticeList.notice.noticeText.classification", "U"));
+		text.append(buildOutput(format, "noticeList.notice.noticeText.ownerProducer", "USA"));
+		text.append(buildOutput(format, "noticeList.notice.classification", "U"));
+		text.append(buildOutput(format, "noticeList.notice.ownerProducer", "USA"));
+		text.append(buildOutput(format, "noticeList.notice.noticeType", "DoD-Dist-B"));
+		text.append(buildOutput(format, "noticeList.notice.noticeReason", "noticeReason"));
+		text.append(buildOutput(format, "noticeList.notice.noticeDate", "2011-09-15"));
+		text.append(buildOutput(format, "noticeList.notice.unregisteredNoticeType", "unregisteredNoticeType"));
 		if (DDMSVersion.getCurrentVersion().isAtLeast("4.1")) {
-			text.append(buildOutput(isHTML, "noticeList.notice.externalNotice", "false"));
+			text.append(buildOutput(format, "noticeList.notice.externalNotice", "false"));
 		}
-		text.append(buildOutput(isHTML, "noticeList.classification", "U"));
-		text.append(buildOutput(isHTML, "noticeList.ownerProducer", "USA"));
+		text.append(buildOutput(format, "noticeList.classification", "U"));
+		text.append(buildOutput(format, "noticeList.ownerProducer", "USA"));
 		return (text.toString());
 	}
 
@@ -271,8 +272,8 @@ public class NoticeListTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			NoticeList elementComponent = getInstance(getFixtureElement(), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

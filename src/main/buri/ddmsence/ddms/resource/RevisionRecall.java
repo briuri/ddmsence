@@ -31,6 +31,7 @@ import nu.xom.Elements;
 import nu.xom.Node;
 import nu.xom.Text;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -293,22 +294,22 @@ public final class RevisionRecall extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		boolean hasNestedElements = (!getLinks().isEmpty() || !getDetails().isEmpty());
 		String localPrefix = buildPrefix(prefix, getName(), suffix);
 		StringBuffer text = new StringBuffer();
 		if (!hasNestedElements)
-			text.append(buildOutput(isHTML, localPrefix, getValue()));
-		text.append(buildOutput(isHTML, localPrefix + "." + REVISION_ID_NAME, String.valueOf(getRevisionID())));
-		text.append(buildOutput(isHTML, localPrefix + "." + REVISION_TYPE_NAME, getRevisionType()));
-		text.append(buildOutput(isHTML, localPrefix + "." + NETWORK_NAME, getNetwork()));
-		text.append(buildOutput(isHTML, localPrefix + "." + OTHER_NETWORK_NAME, getOtherNetwork()));
-		text.append(buildOutput(isHTML, localPrefix + ".", getLinks()));
-		text.append(buildOutput(isHTML, localPrefix + ".", getDetails()));
-		text.append(getXLinkAttributes().getOutput(isHTML, localPrefix + "."));
-		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix + "."));
+			text.append(buildOutput(format, localPrefix, getValue()));
+		text.append(buildOutput(format, localPrefix + "." + REVISION_ID_NAME, String.valueOf(getRevisionID())));
+		text.append(buildOutput(format, localPrefix + "." + REVISION_TYPE_NAME, getRevisionType()));
+		text.append(buildOutput(format, localPrefix + "." + NETWORK_NAME, getNetwork()));
+		text.append(buildOutput(format, localPrefix + "." + OTHER_NETWORK_NAME, getOtherNetwork()));
+		text.append(buildOutput(format, localPrefix + ".", getLinks()));
+		text.append(buildOutput(format, localPrefix + ".", getDetails()));
+		text.append(getXLinkAttributes().getOutput(format, localPrefix + "."));
+		text.append(getSecurityAttributes().getOutput(format, localPrefix + "."));
 		return (text.toString());
 	}
 

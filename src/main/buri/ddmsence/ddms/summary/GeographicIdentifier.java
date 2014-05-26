@@ -26,6 +26,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -239,19 +240,19 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + NAME_NAME, getNames()));
-		text.append(buildOutput(isHTML, localPrefix + REGION_NAME, getRegions()));
+		text.append(buildOutput(format, localPrefix + NAME_NAME, getNames()));
+		text.append(buildOutput(format, localPrefix + REGION_NAME, getRegions()));
 		if (getCountryCode() != null)
-			text.append(getCountryCode().getOutput(isHTML, localPrefix, ""));
+			text.append(getCountryCode().getOutput(format, localPrefix, ""));
 		if (getSubDivisionCode() != null)
-			text.append(getSubDivisionCode().getOutput(isHTML, localPrefix, ""));
+			text.append(getSubDivisionCode().getOutput(format, localPrefix, ""));
 		if (hasFacilityIdentifier())
-			text.append(getFacilityIdentifier().getOutput(isHTML, localPrefix, ""));
+			text.append(getFacilityIdentifier().getOutput(format, localPrefix, ""));
 		return (text.toString());
 	}
 

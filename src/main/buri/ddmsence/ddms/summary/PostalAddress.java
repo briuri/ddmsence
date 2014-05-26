@@ -26,6 +26,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.ITspiAddress;
@@ -292,22 +293,22 @@ public final class PostalAddress extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		if (!getDDMSVersion().isAtLeast("5.0")) {
-			text.append(buildOutput(isHTML, localPrefix + STREET_NAME, getStreets()));
-			text.append(buildOutput(isHTML, localPrefix + CITY_NAME, getCity()));
-			text.append(buildOutput(isHTML, localPrefix + STATE_NAME, getState()));
-			text.append(buildOutput(isHTML, localPrefix + PROVINCE_NAME, getProvince()));
-			text.append(buildOutput(isHTML, localPrefix + POSTAL_CODE_NAME, getPostalCode()));
+			text.append(buildOutput(format, localPrefix + STREET_NAME, getStreets()));
+			text.append(buildOutput(format, localPrefix + CITY_NAME, getCity()));
+			text.append(buildOutput(format, localPrefix + STATE_NAME, getState()));
+			text.append(buildOutput(format, localPrefix + PROVINCE_NAME, getProvince()));
+			text.append(buildOutput(format, localPrefix + POSTAL_CODE_NAME, getPostalCode()));
 			if (getCountryCode() != null)
-				text.append(getCountryCode().getOutput(isHTML, localPrefix, ""));
+				text.append(getCountryCode().getOutput(format, localPrefix, ""));
 		}
 		else {
-			text.append(getTspiAddress().getOutput(isHTML, localPrefix, ""));
+			text.append(getTspiAddress().getOutput(format, localPrefix, ""));
 		}
 		return (text.toString());
 	}

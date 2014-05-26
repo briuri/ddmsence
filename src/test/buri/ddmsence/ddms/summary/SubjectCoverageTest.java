@@ -24,6 +24,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -152,25 +153,25 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = version.isAtLeast("4.0.1") ? "subjectCoverage." : "subjectCoverage.Subject.";
 		StringBuffer text = new StringBuffer();
 		for (Keyword keyword : KeywordTest.getFixtureList())
-			text.append(keyword.getOutput(isHTML, prefix, ""));
+			text.append(keyword.getOutput(format, prefix, ""));
 		for (Category category : CategoryTest.getFixtureList())
-			text.append(category.getOutput(isHTML, prefix, ""));
+			text.append(category.getOutput(format, prefix, ""));
 
 		if (version.isAtLeast("4.0.1")) {
 			for (ProductionMetric metric : ProductionMetricTest.getFixtureList())
-				text.append(metric.getOutput(isHTML, prefix, ""));
+				text.append(metric.getOutput(format, prefix, ""));
 			for (NonStateActor actor : NonStateActorTest.getFixtureList())
-				text.append(actor.getOutput(isHTML, prefix, ""));
+				text.append(actor.getOutput(format, prefix, ""));
 		}
 		if (version.isAtLeast("3.0")) {
-			text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, prefix));
+			text.append(SecurityAttributesTest.getFixture().getOutput(format, prefix));
 		}
 		return (text.toString());
 	}
@@ -366,8 +367,8 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			SubjectCoverage elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

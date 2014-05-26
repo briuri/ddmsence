@@ -24,6 +24,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -141,14 +142,14 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "noticeText", TEST_VALUE));
-		text.append(buildOutput(isHTML, "noticeText.pocType", Util.getXsList(TEST_POC_TYPES)));
-		text.append(buildOutput(isHTML, "noticeText.classification", "U"));
-		text.append(buildOutput(isHTML, "noticeText.ownerProducer", "USA"));
+		text.append(buildOutput(format, "noticeText", TEST_VALUE));
+		text.append(buildOutput(format, "noticeText.pocType", Util.getXsList(TEST_POC_TYPES)));
+		text.append(buildOutput(format, "noticeText.classification", "U"));
+		text.append(buildOutput(format, "noticeText.ownerProducer", "USA"));
 		return (text.toString());
 	}
 
@@ -273,8 +274,8 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			NoticeText elementComponent = getInstance(getFixtureElement(), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

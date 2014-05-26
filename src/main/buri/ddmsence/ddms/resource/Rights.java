@@ -23,6 +23,7 @@ import java.io.Serializable;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
@@ -95,15 +96,15 @@ public final class Rights extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + PRIVACY_ACT_NAME, String.valueOf(getPrivacyAct())));
-		text.append(buildOutput(isHTML, localPrefix + INTELLECTUAL_PROPERY_NAME,
+		text.append(buildOutput(format, localPrefix + PRIVACY_ACT_NAME, String.valueOf(getPrivacyAct())));
+		text.append(buildOutput(format, localPrefix + INTELLECTUAL_PROPERY_NAME,
 			String.valueOf(getIntellectualProperty())));
-		text.append(buildOutput(isHTML, localPrefix + COPYRIGHT_NAME, String.valueOf(getCopyright())));
+		text.append(buildOutput(format, localPrefix + COPYRIGHT_NAME, String.valueOf(getCopyright())));
 		return (text.toString());
 	}
 

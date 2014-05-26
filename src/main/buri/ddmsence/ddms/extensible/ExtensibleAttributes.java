@@ -31,6 +31,7 @@ import javax.xml.namespace.QName;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.AbstractAttributeGroup;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
@@ -229,13 +230,13 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	}
 
 	/**
-	 * @see AbstractAttributeGroup#getOutput(boolean, String)
+	 * @see AbstractAttributeGroup#getOutput(OutputFormat, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(OutputFormat format, String prefix) {
 		String localPrefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer();
 		for (Attribute attribute : getAttributes()) {
-			text.append(Resource.buildOutput(isHTML, localPrefix + attribute.getNamespacePrefix() + "."
+			text.append(Resource.buildOutput(format, localPrefix + attribute.getNamespacePrefix() + "."
 				+ attribute.getLocalName(), attribute.getValue()));
 		}
 		return (text.toString());

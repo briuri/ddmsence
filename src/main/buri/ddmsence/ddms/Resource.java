@@ -788,59 +788,59 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		if (isResourceElement() != null)
-			text.append(buildOutput(isHTML, localPrefix + RESOURCE_ELEMENT_NAME, String.valueOf(isResourceElement())));
+			text.append(buildOutput(format, localPrefix + RESOURCE_ELEMENT_NAME, String.valueOf(isResourceElement())));
 		if (getCreateDate() != null)
-			text.append(buildOutput(isHTML, localPrefix + CREATE_DATE_NAME, getCreateDate().toXMLFormat()));
-		text.append(buildOutput(isHTML, localPrefix + COMPLIES_WITH_NAME, Util.getXsList(getCompliesWiths())));
+			text.append(buildOutput(format, localPrefix + CREATE_DATE_NAME, getCreateDate().toXMLFormat()));
+		text.append(buildOutput(format, localPrefix + COMPLIES_WITH_NAME, Util.getXsList(getCompliesWiths())));
 		if (getIsmDESVersion() != null)
-			text.append(buildOutput(isHTML, localPrefix + "ism." + DES_VERSION_NAME, String.valueOf(getIsmDESVersion())));
+			text.append(buildOutput(format, localPrefix + "ism." + DES_VERSION_NAME, String.valueOf(getIsmDESVersion())));
 		if (getNtkDESVersion() != null)
-			text.append(buildOutput(isHTML, localPrefix + "ntk." + DES_VERSION_NAME, String.valueOf(getNtkDESVersion())));
-		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
-		text.append(getNoticeAttributes().getOutput(isHTML, localPrefix));
-		text.append(getExtensibleAttributes().getOutput(isHTML, localPrefix));
+			text.append(buildOutput(format, localPrefix + "ntk." + DES_VERSION_NAME, String.valueOf(getNtkDESVersion())));
+		text.append(getSecurityAttributes().getOutput(format, localPrefix));
+		text.append(getNoticeAttributes().getOutput(format, localPrefix));
+		text.append(getExtensibleAttributes().getOutput(format, localPrefix));
 
 		// Traverse top-level components, suppressing the resource prefix
 		if (getMetacardInfo() != null)
-			text.append(getMetacardInfo().getOutput(isHTML, "", ""));
-		text.append(buildOutput(isHTML, "", getIdentifiers()));
-		text.append(buildOutput(isHTML, "", getTitles()));
-		text.append(buildOutput(isHTML, "", getSubtitles()));
+			text.append(getMetacardInfo().getOutput(format, "", ""));
+		text.append(buildOutput(format, "", getIdentifiers()));
+		text.append(buildOutput(format, "", getTitles()));
+		text.append(buildOutput(format, "", getSubtitles()));
 		if (getDescription() != null)
-			text.append(getDescription().getOutput(isHTML, "", ""));
-		text.append(buildOutput(isHTML, "", getLanguages()));
+			text.append(getDescription().getOutput(format, "", ""));
+		text.append(buildOutput(format, "", getLanguages()));
 		if (getDates() != null)
-			text.append(getDates().getOutput(isHTML, "", ""));
+			text.append(getDates().getOutput(format, "", ""));
 		if (getRights() != null)
-			text.append(getRights().getOutput(isHTML, "", ""));
-		text.append(buildOutput(isHTML, "", getSources()));
-		text.append(buildOutput(isHTML, "", getTypes()));
-		text.append(buildOutput(isHTML, "", getCreators()));
-		text.append(buildOutput(isHTML, "", getPublishers()));
-		text.append(buildOutput(isHTML, "", getContributors()));
-		text.append(buildOutput(isHTML, "", getPointOfContacts()));
+			text.append(getRights().getOutput(format, "", ""));
+		text.append(buildOutput(format, "", getSources()));
+		text.append(buildOutput(format, "", getTypes()));
+		text.append(buildOutput(format, "", getCreators()));
+		text.append(buildOutput(format, "", getPublishers()));
+		text.append(buildOutput(format, "", getContributors()));
+		text.append(buildOutput(format, "", getPointOfContacts()));
 		if (getFormat() != null)
-			text.append(getFormat().getOutput(isHTML, "", ""));
-		text.append(buildOutput(isHTML, "", getSubjectCoverages()));
-		text.append(buildOutput(isHTML, "", getVirtualCoverages()));
-		text.append(buildOutput(isHTML, "", getTemporalCoverages()));
-		text.append(buildOutput(isHTML, "", getGeospatialCoverages()));
-		text.append(buildOutput(isHTML, "", getRelatedResources()));
+			text.append(getFormat().getOutput(format, "", ""));
+		text.append(buildOutput(format, "", getSubjectCoverages()));
+		text.append(buildOutput(format, "", getVirtualCoverages()));
+		text.append(buildOutput(format, "", getTemporalCoverages()));
+		text.append(buildOutput(format, "", getGeospatialCoverages()));
+		text.append(buildOutput(format, "", getRelatedResources()));
 		if (getResourceManagement() != null)
-			text.append(getResourceManagement().getOutput(isHTML, "", ""));
+			text.append(getResourceManagement().getOutput(format, "", ""));
 		if (getSecurity() != null)
-			text.append(getSecurity().getOutput(isHTML, "", ""));
-		text.append(buildOutput(isHTML, "", getExtensibleElements()));
+			text.append(getSecurity().getOutput(format, "", ""));
+		text.append(buildOutput(format, "", getExtensibleElements()));
 
-		text.append(buildOutput(isHTML, "extensible.layer", String.valueOf(!getExtensibleElements().isEmpty())));
-		text.append(buildOutput(isHTML, "ddms.generator", "DDMSence " + PropertyReader.getProperty("version")));
-		text.append(buildOutput(isHTML, "ddms.version", getDDMSVersion().getVersion()));
+		text.append(buildOutput(format, "extensible.layer", String.valueOf(!getExtensibleElements().isEmpty())));
+		text.append(buildOutput(format, "ddms.generator", "DDMSence " + PropertyReader.getProperty("version")));
+		text.append(buildOutput(format, "ddms.version", getDDMSVersion().getVersion()));
 		return (text.toString());
 	}
 

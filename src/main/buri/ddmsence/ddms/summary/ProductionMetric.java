@@ -23,6 +23,7 @@ import java.io.Serializable;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
@@ -116,14 +117,14 @@ public final class ProductionMetric extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + SUBJECT_NAME, getSubject()));
-		text.append(buildOutput(isHTML, localPrefix + COVERAGE_NAME, getCoverage()));
-		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
+		text.append(buildOutput(format, localPrefix + SUBJECT_NAME, getSubject()));
+		text.append(buildOutput(format, localPrefix + COVERAGE_NAME, getCoverage()));
+		text.append(getSecurityAttributes().getOutput(format, localPrefix));
 		return (text.toString());
 	}
 

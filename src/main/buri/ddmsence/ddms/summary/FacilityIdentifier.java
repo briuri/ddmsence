@@ -23,6 +23,7 @@ import java.io.Serializable;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
@@ -101,13 +102,13 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + BE_NUMBER_NAME, getBeNumber()));
-		text.append(buildOutput(isHTML, localPrefix + OSUFFIX_NAME, getOsuffix()));
+		text.append(buildOutput(format, localPrefix + BE_NUMBER_NAME, getBeNumber()));
+		text.append(buildOutput(format, localPrefix + OSUFFIX_NAME, getOsuffix()));
 		return (text.toString());
 	}
 

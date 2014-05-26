@@ -136,15 +136,15 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "acquiredOn.description", TEST_DESCRIPTION));
-		text.append(buildOutput(isHTML, "acquiredOn.approximableDate", TEST_APPROXIMABLE_DATE));
-		text.append(buildOutput(isHTML, "acquiredOn.approximableDate.approximation", TEST_APPROXIMATION));
-		text.append(buildOutput(isHTML, "acquiredOn.searchableDate.start", TEST_START_DATE));
-		text.append(buildOutput(isHTML, "acquiredOn.searchableDate.end", TEST_END_DATE));
+		text.append(buildOutput(format, "acquiredOn.description", TEST_DESCRIPTION));
+		text.append(buildOutput(format, "acquiredOn.approximableDate", TEST_APPROXIMABLE_DATE));
+		text.append(buildOutput(format, "acquiredOn.approximableDate.approximation", TEST_APPROXIMATION));
+		text.append(buildOutput(format, "acquiredOn.searchableDate.start", TEST_START_DATE));
+		text.append(buildOutput(format, "acquiredOn.searchableDate.end", TEST_END_DATE));
 		return (text.toString());
 	}
 
@@ -297,8 +297,8 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			ApproximableDate elementComponent = getInstance(getFixtureElement(TEST_NAME, true), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

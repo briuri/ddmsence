@@ -21,6 +21,7 @@ package buri.ddmsence.ddms.security;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -115,35 +116,35 @@ public class SecurityTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = "security.";
 		StringBuffer text = new StringBuffer();
 		if (version.isAtLeast("3.0"))
-			text.append(buildOutput(isHTML, prefix + "excludeFromRollup", "true"));
+			text.append(buildOutput(format, prefix + "excludeFromRollup", "true"));
 		if (version.isAtLeast("4.0.1")) {
-			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeText", "noticeText"));
-			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeText.pocType", "DoD-Dist-B"));
-			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeText.classification", "U"));
-			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeText.ownerProducer", "USA"));
-			text.append(buildOutput(isHTML, prefix + "noticeList.notice.classification", "U"));
-			text.append(buildOutput(isHTML, prefix + "noticeList.notice.ownerProducer", "USA"));
-			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeType", "DoD-Dist-B"));
-			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeReason", "noticeReason"));
-			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeDate", "2011-09-15"));
-			text.append(buildOutput(isHTML, prefix + "noticeList.notice.unregisteredNoticeType",
+			text.append(buildOutput(format, prefix + "noticeList.notice.noticeText", "noticeText"));
+			text.append(buildOutput(format, prefix + "noticeList.notice.noticeText.pocType", "DoD-Dist-B"));
+			text.append(buildOutput(format, prefix + "noticeList.notice.noticeText.classification", "U"));
+			text.append(buildOutput(format, prefix + "noticeList.notice.noticeText.ownerProducer", "USA"));
+			text.append(buildOutput(format, prefix + "noticeList.notice.classification", "U"));
+			text.append(buildOutput(format, prefix + "noticeList.notice.ownerProducer", "USA"));
+			text.append(buildOutput(format, prefix + "noticeList.notice.noticeType", "DoD-Dist-B"));
+			text.append(buildOutput(format, prefix + "noticeList.notice.noticeReason", "noticeReason"));
+			text.append(buildOutput(format, prefix + "noticeList.notice.noticeDate", "2011-09-15"));
+			text.append(buildOutput(format, prefix + "noticeList.notice.unregisteredNoticeType",
 				"unregisteredNoticeType"));
 			if (version.isAtLeast("4.1")) {
-				text.append(buildOutput(isHTML, prefix + "noticeList.notice.externalNotice", "false"));
+				text.append(buildOutput(format, prefix + "noticeList.notice.externalNotice", "false"));
 			}
-			text.append(buildOutput(isHTML, prefix + "noticeList.classification", "U"));
-			text.append(buildOutput(isHTML, prefix + "noticeList.ownerProducer", "USA"));
+			text.append(buildOutput(format, prefix + "noticeList.classification", "U"));
+			text.append(buildOutput(format, prefix + "noticeList.ownerProducer", "USA"));
 			if (!version.isAtLeast("5.0"))
-				text.append(AccessTest.getFixture().getOutput(isHTML, "security.", ""));
+				text.append(AccessTest.getFixture().getOutput(format, "security.", ""));
 		}
-		text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, prefix));
+		text.append(SecurityAttributesTest.getFixture().getOutput(format, prefix));
 		return (text.toString());
 	}
 
@@ -338,8 +339,8 @@ public class SecurityTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Security elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

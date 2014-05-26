@@ -21,6 +21,7 @@ package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -116,17 +117,17 @@ public class SourceTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "source.qualifier", TEST_QUALIFIER));
-		text.append(buildOutput(isHTML, "source.value", TEST_VALUE));
-		text.append(buildOutput(isHTML, "source.schemaQualifier", TEST_SCHEMA_QUALIFIER));
-		text.append(buildOutput(isHTML, "source.schemaHref", TEST_SCHEMA_HREF));
+		text.append(buildOutput(format, "source.qualifier", TEST_QUALIFIER));
+		text.append(buildOutput(format, "source.value", TEST_VALUE));
+		text.append(buildOutput(format, "source.schemaQualifier", TEST_SCHEMA_QUALIFIER));
+		text.append(buildOutput(format, "source.schemaHref", TEST_SCHEMA_HREF));
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
-			text.append(buildOutput(isHTML, "source.classification", "U"));
-			text.append(buildOutput(isHTML, "source.ownerProducer", "USA"));
+			text.append(buildOutput(format, "source.classification", "U"));
+			text.append(buildOutput(format, "source.ownerProducer", "USA"));
 		}
 		return (text.toString());
 	}
@@ -255,8 +256,8 @@ public class SourceTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Source elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

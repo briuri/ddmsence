@@ -21,6 +21,7 @@ package buri.ddmsence.ddms.security.ism;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.resource.Rights;
@@ -321,8 +322,8 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 			NoticeAttributes.Builder builder = new NoticeAttributes.Builder();
 			builder.setNoticeDate("2005-10-10");
 			NoticeAttributes dataAttributes = builder.commit();
-			assertEquals(buildOutput(true, "noticeDate", "2005-10-10"), dataAttributes.getOutput(true, ""));
-			assertEquals(buildOutput(false, "noticeDate", "2005-10-10"), dataAttributes.getOutput(false, ""));
+			assertEquals(buildOutput(OutputFormat.HTML, "noticeDate", "2005-10-10"), dataAttributes.getOutput(OutputFormat.HTML, ""));
+			assertEquals(buildOutput(OutputFormat.TEXT, "noticeDate", "2005-10-10"), dataAttributes.getOutput(OutputFormat.TEXT, ""));
 		}
 	}
 }

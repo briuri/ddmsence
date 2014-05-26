@@ -24,6 +24,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -128,16 +129,16 @@ public class GroupValueTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "groupValue", TEST_VALUE));
-		text.append(buildOutput(isHTML, "groupValue.id", TEST_ID));
-		text.append(buildOutput(isHTML, "groupValue.idReference", TEST_ID_REFERENCE));
-		text.append(buildOutput(isHTML, "groupValue.qualifier", TEST_QUALIFIER));
-		text.append(buildOutput(isHTML, "groupValue.classification", "U"));
-		text.append(buildOutput(isHTML, "groupValue.ownerProducer", "USA"));
+		text.append(buildOutput(format, "groupValue", TEST_VALUE));
+		text.append(buildOutput(format, "groupValue.id", TEST_ID));
+		text.append(buildOutput(format, "groupValue.idReference", TEST_ID_REFERENCE));
+		text.append(buildOutput(format, "groupValue.qualifier", TEST_QUALIFIER));
+		text.append(buildOutput(format, "groupValue.classification", "U"));
+		text.append(buildOutput(format, "groupValue.ownerProducer", "USA"));
 		return (text.toString());
 	}
 
@@ -262,8 +263,8 @@ public class GroupValueTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			GroupValue elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

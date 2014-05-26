@@ -27,6 +27,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 import nu.xom.Element;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
@@ -198,7 +199,8 @@ public abstract class AbstractBaseTestCase extends TestCase {
 	 * @param content the content value of the meta tag (will be escaped in HTML)
 	 * @return a string containing the output
 	 */
-	public static String buildOutput(boolean isHTML, String name, String content) {
+	public static String buildOutput(OutputFormat format, String name, String content) {
+		boolean isHTML = (format == OutputFormat.HTML);
 		StringBuffer tag = new StringBuffer();
 		tag.append(isHTML ? "<meta name=\"" : "");
 		tag.append(isHTML ? Util.xmlEscape(name) : name);

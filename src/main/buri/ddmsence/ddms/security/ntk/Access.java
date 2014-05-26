@@ -27,6 +27,7 @@ import java.util.List;
 import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -215,19 +216,19 @@ public final class Access extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, "access", suffix) + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + "individualList.", getIndividuals()));
-		text.append(buildOutput(isHTML, localPrefix + "groupList.", getGroups()));
+		text.append(buildOutput(format, localPrefix + "individualList.", getIndividuals()));
+		text.append(buildOutput(format, localPrefix + "groupList.", getGroups()));
 		if (getProfileList() != null)
-			text.append(getProfileList().getOutput(isHTML, localPrefix, ""));
+			text.append(getProfileList().getOutput(format, localPrefix, ""));
 		if (isExternalReference() != null)
-			text.append(buildOutput(isHTML, localPrefix + EXTERNAL_REFERENCE_NAME,
+			text.append(buildOutput(format, localPrefix + EXTERNAL_REFERENCE_NAME,
 				String.valueOf(isExternalReference())));
-		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
+		text.append(getSecurityAttributes().getOutput(format, localPrefix));
 		return (text.toString());
 	}
 

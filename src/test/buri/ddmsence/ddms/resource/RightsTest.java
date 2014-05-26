@@ -21,6 +21,7 @@ package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -108,13 +109,13 @@ public class RightsTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "rights.privacyAct", "true"));
-		text.append(buildOutput(isHTML, "rights.intellectualProperty", "true"));
-		text.append(buildOutput(isHTML, "rights.copyright", "false"));
+		text.append(buildOutput(format, "rights.privacyAct", "true"));
+		text.append(buildOutput(format, "rights.intellectualProperty", "true"));
+		text.append(buildOutput(format, "rights.copyright", "false"));
 		return (text.toString());
 	}
 
@@ -216,8 +217,8 @@ public class RightsTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Rights elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

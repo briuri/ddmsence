@@ -26,6 +26,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractAttributeGroup;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
@@ -181,17 +182,17 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	}
 
 	/**
-	 * @see AbstractAttributeGroup#getOutput(boolean, String)
+	 * @see AbstractAttributeGroup#getOutput(OutputFormat, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(OutputFormat format, String prefix) {
 		String localPrefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer();
-		text.append(Resource.buildOutput(isHTML, localPrefix + "srsName", getSrsName()));
+		text.append(Resource.buildOutput(format, localPrefix + "srsName", getSrsName()));
 		if (getSrsDimension() != null) {
-			text.append(Resource.buildOutput(isHTML, localPrefix + "srsDimension", String.valueOf(getSrsDimension())));
+			text.append(Resource.buildOutput(format, localPrefix + "srsDimension", String.valueOf(getSrsDimension())));
 		}
-		text.append(Resource.buildOutput(isHTML, localPrefix + "axisLabels", getAxisLabelsAsXsList()));
-		text.append(Resource.buildOutput(isHTML, localPrefix + "uomLabels", getUomLabelsAsXsList()));
+		text.append(Resource.buildOutput(format, localPrefix + "axisLabels", getAxisLabelsAsXsList()));
+		text.append(Resource.buildOutput(format, localPrefix + "uomLabels", getUomLabelsAsXsList()));
 		return (text.toString());
 	}
 

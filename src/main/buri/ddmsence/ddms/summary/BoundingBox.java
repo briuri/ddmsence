@@ -23,6 +23,7 @@ import java.io.Serializable;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
@@ -136,15 +137,15 @@ public final class BoundingBox extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + getWestBLName(), String.valueOf(getWestBL())));
-		text.append(buildOutput(isHTML, localPrefix + getEastBLName(), String.valueOf(getEastBL())));
-		text.append(buildOutput(isHTML, localPrefix + getSouthBLName(), String.valueOf(getSouthBL())));
-		text.append(buildOutput(isHTML, localPrefix + getNorthBLName(), String.valueOf(getNorthBL())));
+		text.append(buildOutput(format, localPrefix + getWestBLName(), String.valueOf(getWestBL())));
+		text.append(buildOutput(format, localPrefix + getEastBLName(), String.valueOf(getEastBL())));
+		text.append(buildOutput(format, localPrefix + getSouthBLName(), String.valueOf(getSouthBL())));
+		text.append(buildOutput(format, localPrefix + getNorthBLName(), String.valueOf(getNorthBL())));
 		return (text.toString());
 	}
 
