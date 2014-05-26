@@ -25,6 +25,7 @@ import java.util.List;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
@@ -120,15 +121,15 @@ public class KeywordTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "keyword", TEST_VALUE));
+		text.append(buildOutput(format, "keyword", TEST_VALUE));
 		if (version.isAtLeast("4.0.1")) {
-			text.append(buildOutput(isHTML, "keyword.classification", "U"));
-			text.append(buildOutput(isHTML, "keyword.ownerProducer", "USA"));
+			text.append(buildOutput(format, "keyword.classification", "U"));
+			text.append(buildOutput(format, "keyword.ownerProducer", "USA"));
 		}
 		return (text.toString());
 	}
@@ -246,8 +247,8 @@ public class KeywordTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Keyword elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

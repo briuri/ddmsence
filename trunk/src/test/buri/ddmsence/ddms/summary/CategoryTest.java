@@ -25,6 +25,7 @@ import java.util.List;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
@@ -121,17 +122,17 @@ public class CategoryTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "category.qualifier", TEST_QUALIFIER));
-		text.append(buildOutput(isHTML, "category.code", TEST_CODE));
-		text.append(buildOutput(isHTML, "category.label", TEST_LABEL));
+		text.append(buildOutput(format, "category.qualifier", TEST_QUALIFIER));
+		text.append(buildOutput(format, "category.code", TEST_CODE));
+		text.append(buildOutput(format, "category.label", TEST_LABEL));
 		if (version.isAtLeast("4.0.1")) {
-			text.append(buildOutput(isHTML, "category.classification", "U"));
-			text.append(buildOutput(isHTML, "category.ownerProducer", "USA"));
+			text.append(buildOutput(format, "category.classification", "U"));
+			text.append(buildOutput(format, "category.ownerProducer", "USA"));
 		}
 		return (text.toString());
 	}
@@ -300,8 +301,8 @@ public class CategoryTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Category elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

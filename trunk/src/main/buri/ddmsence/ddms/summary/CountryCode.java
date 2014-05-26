@@ -22,6 +22,7 @@ package buri.ddmsence.ddms.summary;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractQualifierValue;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
@@ -94,13 +95,13 @@ public final class CountryCode extends AbstractQualifierValue {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + getQualifierName(), getQualifier()));
-		text.append(buildOutput(isHTML, localPrefix + getValueName(), getValue()));
+		text.append(buildOutput(format, localPrefix + getQualifierName(), getQualifier()));
+		text.append(buildOutput(format, localPrefix + getValueName(), getValue()));
 		return (text.toString());
 	}
 

@@ -30,7 +30,7 @@ import buri.ddmsence.AbstractBaseComponent;
 public interface ITspiShape extends IDDMSComponent {
 	
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public abstract String getOutput(boolean isHTML, String prefix, String suffix);
+	public abstract String getOutput(OutputFormat format, String prefix, String suffix);
 }

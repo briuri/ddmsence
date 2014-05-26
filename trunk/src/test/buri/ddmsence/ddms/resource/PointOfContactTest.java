@@ -22,6 +22,7 @@ package buri.ddmsence.ddms.resource;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IRoleEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -122,16 +123,16 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(((AbstractBaseComponent) getEntityFixture()).getOutput(isHTML, "pointOfContact.", ""));
+		text.append(((AbstractBaseComponent) getEntityFixture()).getOutput(format, "pointOfContact.", ""));
 		if (version.isAtLeast("4.0.1"))
-			text.append(buildOutput(isHTML, "pointOfContact.pocType", "DoD-Dist-B"));
-		text.append(buildOutput(isHTML, "pointOfContact.classification", "U"));
-		text.append(buildOutput(isHTML, "pointOfContact.ownerProducer", "USA"));
+			text.append(buildOutput(format, "pointOfContact.pocType", "DoD-Dist-B"));
+		text.append(buildOutput(format, "pointOfContact.classification", "U"));
+		text.append(buildOutput(format, "pointOfContact.ownerProducer", "USA"));
 		return (text.toString());
 	}
 
@@ -268,8 +269,8 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			PointOfContact elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

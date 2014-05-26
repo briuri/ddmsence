@@ -25,6 +25,7 @@ import java.util.Set;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
@@ -208,15 +209,15 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + UOM_NAME, getUnitOfMeasure()));
-		text.append(buildOutput(isHTML, localPrefix + DATUM_NAME, getDatum()));
-		text.append(buildOutput(isHTML, localPrefix + "minimum", String.valueOf(getMinVerticalExtent())));
-		text.append(buildOutput(isHTML, localPrefix + "maximum", String.valueOf(getMaxVerticalExtent())));
+		text.append(buildOutput(format, localPrefix + UOM_NAME, getUnitOfMeasure()));
+		text.append(buildOutput(format, localPrefix + DATUM_NAME, getDatum()));
+		text.append(buildOutput(format, localPrefix + "minimum", String.valueOf(getMinVerticalExtent())));
+		text.append(buildOutput(format, localPrefix + "maximum", String.valueOf(getMaxVerticalExtent())));
 		return (text.toString());
 	}
 

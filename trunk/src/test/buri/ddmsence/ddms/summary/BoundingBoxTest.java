@@ -21,6 +21,7 @@ package buri.ddmsence.ddms.summary;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
@@ -144,14 +145,14 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "boundingBox." + getTestWestBLName(), String.valueOf(TEST_WEST)));
-		text.append(buildOutput(isHTML, "boundingBox." + getTestEastBLName(), String.valueOf(TEST_EAST)));
-		text.append(buildOutput(isHTML, "boundingBox." + getTestSouthBLName(), String.valueOf(TEST_SOUTH)));
-		text.append(buildOutput(isHTML, "boundingBox." + getTestNorthBLName(), String.valueOf(TEST_NORTH)));
+		text.append(buildOutput(format, "boundingBox." + getTestWestBLName(), String.valueOf(TEST_WEST)));
+		text.append(buildOutput(format, "boundingBox." + getTestEastBLName(), String.valueOf(TEST_EAST)));
+		text.append(buildOutput(format, "boundingBox." + getTestSouthBLName(), String.valueOf(TEST_SOUTH)));
+		text.append(buildOutput(format, "boundingBox." + getTestNorthBLName(), String.valueOf(TEST_NORTH)));
 		return (text.toString());
 	}
 
@@ -301,8 +302,8 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			BoundingBox elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

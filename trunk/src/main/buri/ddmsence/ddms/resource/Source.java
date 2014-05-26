@@ -22,6 +22,7 @@ package buri.ddmsence.ddms.resource;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractQualifierValue;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
@@ -139,16 +140,16 @@ public final class Source extends AbstractQualifierValue {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + getQualifierName(), getQualifier()));
-		text.append(buildOutput(isHTML, localPrefix + getValueName(), getValue()));
-		text.append(buildOutput(isHTML, localPrefix + SCHEMA_QUALIFIER_NAME, getSchemaQualifier()));
-		text.append(buildOutput(isHTML, localPrefix + SCHEMA_HREF_NAME, getSchemaHref()));
-		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
+		text.append(buildOutput(format, localPrefix + getQualifierName(), getQualifier()));
+		text.append(buildOutput(format, localPrefix + getValueName(), getValue()));
+		text.append(buildOutput(format, localPrefix + SCHEMA_QUALIFIER_NAME, getSchemaQualifier()));
+		text.append(buildOutput(format, localPrefix + SCHEMA_HREF_NAME, getSchemaHref()));
+		text.append(getSecurityAttributes().getOutput(format, localPrefix));
 		return (text.toString());
 	}
 

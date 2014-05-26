@@ -27,6 +27,7 @@ import java.util.List;
 import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -161,18 +162,18 @@ public final class ResourceManagement extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		if (getRecordsManagementInfo() != null)
-			text.append(getRecordsManagementInfo().getOutput(isHTML, localPrefix, ""));
+			text.append(getRecordsManagementInfo().getOutput(format, localPrefix, ""));
 		if (getRevisionRecall() != null)
-			text.append(getRevisionRecall().getOutput(isHTML, localPrefix, ""));
-		text.append(buildOutput(isHTML, localPrefix, getTaskingInfos()));
-		text.append(buildOutput(isHTML, localPrefix, getProcessingInfos()));
-		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
+			text.append(getRevisionRecall().getOutput(format, localPrefix, ""));
+		text.append(buildOutput(format, localPrefix, getTaskingInfos()));
+		text.append(buildOutput(format, localPrefix, getProcessingInfos()));
+		text.append(getSecurityAttributes().getOutput(format, localPrefix));
 		return (text.toString());
 	}
 

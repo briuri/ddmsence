@@ -25,6 +25,7 @@ import java.util.Set;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractAttributeGroup;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
@@ -291,19 +292,19 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	}
 
 	/**
-	 * @see AbstractAttributeGroup#getOutput(boolean, String)
+	 * @see AbstractAttributeGroup#getOutput(OutputFormat, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(OutputFormat format, String prefix) {
 		String localPrefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer();
-		text.append(Resource.buildOutput(isHTML, localPrefix + TYPE_NAME, getType()));
-		text.append(Resource.buildOutput(isHTML, localPrefix + HREF_NAME, getHref()));
-		text.append(Resource.buildOutput(isHTML, localPrefix + ROLE_NAME, getRole()));
-		text.append(Resource.buildOutput(isHTML, localPrefix + TITLE_NAME, getTitle()));
-		text.append(Resource.buildOutput(isHTML, localPrefix + LABEL_NAME, getLabel()));
-		text.append(Resource.buildOutput(isHTML, localPrefix + ARC_ROLE_NAME, getArcrole()));
-		text.append(Resource.buildOutput(isHTML, localPrefix + SHOW_NAME, getShow()));
-		text.append(Resource.buildOutput(isHTML, localPrefix + ACTUATE_NAME, getActuate()));
+		text.append(Resource.buildOutput(format, localPrefix + TYPE_NAME, getType()));
+		text.append(Resource.buildOutput(format, localPrefix + HREF_NAME, getHref()));
+		text.append(Resource.buildOutput(format, localPrefix + ROLE_NAME, getRole()));
+		text.append(Resource.buildOutput(format, localPrefix + TITLE_NAME, getTitle()));
+		text.append(Resource.buildOutput(format, localPrefix + LABEL_NAME, getLabel()));
+		text.append(Resource.buildOutput(format, localPrefix + ARC_ROLE_NAME, getArcrole()));
+		text.append(Resource.buildOutput(format, localPrefix + SHOW_NAME, getShow()));
+		text.append(Resource.buildOutput(format, localPrefix + ACTUATE_NAME, getActuate()));
 		return (text.toString());
 	}
 

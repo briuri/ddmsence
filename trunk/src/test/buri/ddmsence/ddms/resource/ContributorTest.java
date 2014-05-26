@@ -21,6 +21,7 @@ package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -110,16 +111,16 @@ public class ContributorTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(OrganizationTest.getFixture().getOutput(isHTML, "contributor.", ""));
+		text.append(OrganizationTest.getFixture().getOutput(format, "contributor.", ""));
 		if (version.isAtLeast("4.0.1"))
-			text.append(buildOutput(isHTML, "contributor.pocType", "DoD-Dist-B"));
-		text.append(buildOutput(isHTML, "contributor.classification", "U"));
-		text.append(buildOutput(isHTML, "contributor.ownerProducer", "USA"));
+			text.append(buildOutput(format, "contributor.pocType", "DoD-Dist-B"));
+		text.append(buildOutput(format, "contributor.classification", "U"));
+		text.append(buildOutput(format, "contributor.ownerProducer", "USA"));
 		return (text.toString());
 	}
 
@@ -247,8 +248,8 @@ public class ContributorTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Contributor elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

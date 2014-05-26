@@ -25,6 +25,7 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractRoleEntity;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
@@ -172,14 +173,14 @@ public final class Person extends AbstractRoleEntity {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, "", suffix);
-		StringBuffer text = new StringBuffer(super.getOutput(isHTML, localPrefix, ""));
-		text.append(buildOutput(isHTML, localPrefix + SURNAME_NAME, getSurname()));
-		text.append(buildOutput(isHTML, localPrefix + USERID_NAME, getUserID()));
-		text.append(buildOutput(isHTML, localPrefix + AFFILIATION_NAME, getAffiliations()));
+		StringBuffer text = new StringBuffer(super.getOutput(format, localPrefix, ""));
+		text.append(buildOutput(format, localPrefix + SURNAME_NAME, getSurname()));
+		text.append(buildOutput(format, localPrefix + USERID_NAME, getUserID()));
+		text.append(buildOutput(format, localPrefix + AFFILIATION_NAME, getAffiliations()));
 		return (text.toString());
 	}
 

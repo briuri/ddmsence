@@ -25,6 +25,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -156,19 +157,19 @@ public final class Security extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		if (getExcludeFromRollup() != null)
-			text.append(buildOutput(isHTML, localPrefix + EXCLUDE_FROM_ROLLUP_NAME,
+			text.append(buildOutput(format, localPrefix + EXCLUDE_FROM_ROLLUP_NAME,
 				String.valueOf(getExcludeFromRollup())));
 		if (getNoticeList() != null)
-			text.append(getNoticeList().getOutput(isHTML, localPrefix, ""));
+			text.append(getNoticeList().getOutput(format, localPrefix, ""));
 		if (getAccess() != null)
-			text.append(getAccess().getOutput(isHTML, localPrefix, ""));
-		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
+			text.append(getAccess().getOutput(format, localPrefix, ""));
+		text.append(getSecurityAttributes().getOutput(format, localPrefix));
 		return (text.toString());
 	}
 

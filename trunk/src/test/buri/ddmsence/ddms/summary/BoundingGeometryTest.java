@@ -24,6 +24,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.ITspiShape;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
@@ -146,15 +147,15 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 	}
 	
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
-			text.append(PointTest.getFixtureList().get(0).getOutput(isHTML, "boundingGeometry.", ""));
+			text.append(PointTest.getFixtureList().get(0).getOutput(format, "boundingGeometry.", ""));
 		}
 		else {
-			text.append(EnvelopeTest.getFixture().getOutput(isHTML, "boundingGeometry.", ""));
+			text.append(EnvelopeTest.getFixture().getOutput(format, "boundingGeometry.", ""));
 		}
 		return (text.toString());
 	}
@@ -350,17 +351,17 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			BoundingGeometry elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 
 			if (!version.isAtLeast("5.0")) {
 				Element element = Util.buildDDMSElement(BoundingGeometry.getName(version), null);
 				element.appendChild(PolygonTest.getFixtureList().get(0).getXOMElementCopy());
 				elementComponent = getInstance(element, SUCCESS);
-				assertEquals(PolygonTest.getFixtureList().get(0).getOutput(true, "boundingGeometry.", ""),
+				assertEquals(PolygonTest.getFixtureList().get(0).getOutput(OutputFormat.HTML, "boundingGeometry.", ""),
 					elementComponent.toHTML());
-				assertEquals(PolygonTest.getFixtureList().get(0).getOutput(false, "boundingGeometry.", ""),
+				assertEquals(PolygonTest.getFixtureList().get(0).getOutput(OutputFormat.TEXT, "boundingGeometry.", ""),
 					elementComponent.toText());
 			}
 		}

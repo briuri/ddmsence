@@ -21,6 +21,7 @@ package buri.ddmsence.ddms.summary.xlink;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
@@ -142,21 +143,21 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 	}
 	
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML, String type) {
+	private String getExpectedOutput(OutputFormat format, String type) {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "type", type));
+		text.append(buildOutput(format, "type", type));
 		if (!"resource".equals(type))
-			text.append(buildOutput(isHTML, "href", TEST_HREF));
-		text.append(buildOutput(isHTML, "role", TEST_ROLE));
-		text.append(buildOutput(isHTML, "title", TEST_TITLE));
+			text.append(buildOutput(format, "href", TEST_HREF));
+		text.append(buildOutput(format, "role", TEST_ROLE));
+		text.append(buildOutput(format, "title", TEST_TITLE));
 		if (!"simple".equals(type))
-			text.append(buildOutput(isHTML, "label", TEST_LABEL));
+			text.append(buildOutput(format, "label", TEST_LABEL));
 		if ("simple".equals(type)) {
-			text.append(buildOutput(isHTML, "arcrole", TEST_ARCROLE));
-			text.append(buildOutput(isHTML, "show", TEST_SHOW));
-			text.append(buildOutput(isHTML, "actuate", TEST_ACTUATE));
+			text.append(buildOutput(format, "arcrole", TEST_ARCROLE));
+			text.append(buildOutput(format, "show", TEST_SHOW));
+			text.append(buildOutput(format, "actuate", TEST_ACTUATE));
 		}
 		return (text.toString());
 	}
@@ -411,16 +412,16 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			XLinkAttributes attributes = getLocatorFixture();
-			assertEquals(getExpectedOutput(true, "locator"), attributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false, "locator"), attributes.getOutput(false, ""));
+			assertEquals(getExpectedOutput(OutputFormat.HTML, "locator"), attributes.getOutput(OutputFormat.HTML, ""));
+			assertEquals(getExpectedOutput(OutputFormat.TEXT, "locator"), attributes.getOutput(OutputFormat.TEXT, ""));
 
 			attributes = getSimpleFixture();
-			assertEquals(getExpectedOutput(true, "simple"), attributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false, "simple"), attributes.getOutput(false, ""));
+			assertEquals(getExpectedOutput(OutputFormat.HTML, "simple"), attributes.getOutput(OutputFormat.HTML, ""));
+			assertEquals(getExpectedOutput(OutputFormat.TEXT, "simple"), attributes.getOutput(OutputFormat.TEXT, ""));
 
 			attributes = getResourceFixture();
-			assertEquals(getExpectedOutput(true, "resource"), attributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false, "resource"), attributes.getOutput(false, ""));
+			assertEquals(getExpectedOutput(OutputFormat.HTML, "resource"), attributes.getOutput(OutputFormat.HTML, ""));
+			assertEquals(getExpectedOutput(OutputFormat.TEXT, "resource"), attributes.getOutput(OutputFormat.TEXT, ""));
 		}
 	}
 

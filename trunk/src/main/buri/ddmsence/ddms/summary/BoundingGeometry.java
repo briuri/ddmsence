@@ -27,6 +27,7 @@ import java.util.List;
 import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.ITspiShape;
@@ -206,18 +207,18 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		if (!getDDMSVersion().isAtLeast("5.0")) {
-			text.append(buildOutput(isHTML, localPrefix, getGmlPolygons()));
-			text.append(buildOutput(isHTML, localPrefix, getGmlPoints()));
+			text.append(buildOutput(format, localPrefix, getGmlPolygons()));
+			text.append(buildOutput(format, localPrefix, getGmlPoints()));
 		}
 		else {
 			for (ITspiShape shape : getTspiShapes())
-				text.append(shape.getOutput(isHTML, localPrefix, ""));
+				text.append(shape.getOutput(format, localPrefix, ""));
 		}
 		return (text.toString());
 	}

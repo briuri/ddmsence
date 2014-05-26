@@ -21,6 +21,7 @@ package buri.ddmsence.ddms.summary;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -127,12 +128,12 @@ public class CountryCodeTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "countryCode." + getTestQualifierName(), TEST_QUALIFIER));
-		text.append(buildOutput(isHTML, "countryCode." + getTestValueName(), TEST_VALUE));
+		text.append(buildOutput(format, "countryCode." + getTestQualifierName(), TEST_QUALIFIER));
+		text.append(buildOutput(format, "countryCode." + getTestValueName(), TEST_VALUE));
 		return (text.toString());
 	}
 
@@ -231,8 +232,8 @@ public class CountryCodeTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			CountryCode elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

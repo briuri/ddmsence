@@ -26,6 +26,7 @@ import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.ApproximableDate;
 import buri.ddmsence.ddms.ApproximableDateTest;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -145,24 +146,24 @@ public class DatesTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
 		if (version.isAtLeast("4.1")) {
 			for (ApproximableDate acquiredOn : getTestAcquiredOns()) {
-				text.append(acquiredOn.getOutput(isHTML, "dates.", ""));
+				text.append(acquiredOn.getOutput(format, "dates.", ""));
 			}
 		}
-		text.append(buildOutput(isHTML, "dates.created", TEST_CREATED));
-		text.append(buildOutput(isHTML, "dates.posted", TEST_POSTED));
-		text.append(buildOutput(isHTML, "dates.validTil", TEST_VALID));
-		text.append(buildOutput(isHTML, "dates.infoCutOff", TEST_CUTOFF));
+		text.append(buildOutput(format, "dates.created", TEST_CREATED));
+		text.append(buildOutput(format, "dates.posted", TEST_POSTED));
+		text.append(buildOutput(format, "dates.validTil", TEST_VALID));
+		text.append(buildOutput(format, "dates.infoCutOff", TEST_CUTOFF));
 		if (version.isAtLeast("3.1"))
-			text.append(buildOutput(isHTML, "dates.approvedOn", TEST_APPROVED));
+			text.append(buildOutput(format, "dates.approvedOn", TEST_APPROVED));
 		if (version.isAtLeast("4.0.1"))
-			text.append(buildOutput(isHTML, "dates.receivedOn", TEST_RECEIVED));
+			text.append(buildOutput(format, "dates.receivedOn", TEST_RECEIVED));
 		return (text.toString());
 	}
 
@@ -353,8 +354,8 @@ public class DatesTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Dates elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

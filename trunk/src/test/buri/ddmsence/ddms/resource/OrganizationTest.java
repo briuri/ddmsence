@@ -24,6 +24,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
@@ -125,26 +126,26 @@ public class OrganizationTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "entityType", Organization.getName(version)));
+		text.append(buildOutput(format, "entityType", Organization.getName(version)));
 		for (String name : TEST_NAMES)
-			text.append(buildOutput(isHTML, "name", name));
+			text.append(buildOutput(format, "name", name));
 		for (String phone : TEST_PHONES)
-			text.append(buildOutput(isHTML, "phone", phone));
+			text.append(buildOutput(format, "phone", phone));
 		for (String email : TEST_EMAILS)
-			text.append(buildOutput(isHTML, "email", email));
+			text.append(buildOutput(format, "email", email));
 		if (version.isAtLeast("4.0.1")) {
-			text.append(buildOutput(isHTML, "subOrganization", "sub1"));
-			text.append(buildOutput(isHTML, "subOrganization.classification", "U"));
-			text.append(buildOutput(isHTML, "subOrganization.ownerProducer", "USA"));
-			text.append(buildOutput(isHTML, "subOrganization", "sub2"));
-			text.append(buildOutput(isHTML, "subOrganization.classification", "U"));
-			text.append(buildOutput(isHTML, "subOrganization.ownerProducer", "USA"));
-			text.append(buildOutput(isHTML, "acronym", "DISA"));
+			text.append(buildOutput(format, "subOrganization", "sub1"));
+			text.append(buildOutput(format, "subOrganization.classification", "U"));
+			text.append(buildOutput(format, "subOrganization.ownerProducer", "USA"));
+			text.append(buildOutput(format, "subOrganization", "sub2"));
+			text.append(buildOutput(format, "subOrganization.classification", "U"));
+			text.append(buildOutput(format, "subOrganization.ownerProducer", "USA"));
+			text.append(buildOutput(format, "acronym", "DISA"));
 		}
 		return (text.toString());
 	}
@@ -287,8 +288,8 @@ public class OrganizationTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Organization elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

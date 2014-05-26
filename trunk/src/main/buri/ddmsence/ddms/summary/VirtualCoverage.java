@@ -23,6 +23,7 @@ import java.io.Serializable;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
@@ -173,16 +174,16 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + ADDRESS_NAME, getAddress()));
-		text.append(buildOutput(isHTML, localPrefix + PROTOCOL_NAME, getProtocol()));
-		text.append(buildOutput(isHTML, localPrefix + ACCESS_NAME, getAccess()));
-		text.append(buildOutput(isHTML, localPrefix + NETWORK_NAME, getNetwork()));
-		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
+		text.append(buildOutput(format, localPrefix + ADDRESS_NAME, getAddress()));
+		text.append(buildOutput(format, localPrefix + PROTOCOL_NAME, getProtocol()));
+		text.append(buildOutput(format, localPrefix + ACCESS_NAME, getAccess()));
+		text.append(buildOutput(format, localPrefix + NETWORK_NAME, getNetwork()));
+		text.append(getSecurityAttributes().getOutput(format, localPrefix));
 		return (text.toString());
 	}
 

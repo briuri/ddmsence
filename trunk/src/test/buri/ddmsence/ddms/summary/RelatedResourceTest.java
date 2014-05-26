@@ -24,6 +24,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributes;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributesTest;
@@ -121,23 +122,23 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		String prefix = DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? "relatedResource."
 			: "relatedResources.RelatedResource.";
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix + "relationship", TEST_RELATIONSHIP));
-		text.append(buildOutput(isHTML, prefix + "direction", TEST_DIRECTION));
-		text.append(buildOutput(isHTML, prefix + "qualifier", TEST_QUALIFIER));
-		text.append(buildOutput(isHTML, prefix + "value", TEST_VALUE));
-		text.append(buildOutput(isHTML, prefix + "link.type", "locator"));
-		text.append(buildOutput(isHTML, prefix + "link.href", TEST_VALUE));
-		text.append(buildOutput(isHTML, prefix + "link.role", "tank"));
-		text.append(buildOutput(isHTML, prefix + "link.title", "Tank Page"));
-		text.append(buildOutput(isHTML, prefix + "link.label", "tank"));
-		text.append(buildOutput(isHTML, prefix + "classification", "U"));
-		text.append(buildOutput(isHTML, prefix + "ownerProducer", "USA"));
+		text.append(buildOutput(format, prefix + "relationship", TEST_RELATIONSHIP));
+		text.append(buildOutput(format, prefix + "direction", TEST_DIRECTION));
+		text.append(buildOutput(format, prefix + "qualifier", TEST_QUALIFIER));
+		text.append(buildOutput(format, prefix + "value", TEST_VALUE));
+		text.append(buildOutput(format, prefix + "link.type", "locator"));
+		text.append(buildOutput(format, prefix + "link.href", TEST_VALUE));
+		text.append(buildOutput(format, prefix + "link.role", "tank"));
+		text.append(buildOutput(format, prefix + "link.title", "Tank Page"));
+		text.append(buildOutput(format, prefix + "link.label", "tank"));
+		text.append(buildOutput(format, prefix + "classification", "U"));
+		text.append(buildOutput(format, prefix + "ownerProducer", "USA"));
 		return (text.toString());
 	}
 
@@ -337,8 +338,8 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			RelatedResource elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

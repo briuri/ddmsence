@@ -21,6 +21,7 @@ package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -110,16 +111,16 @@ public class PublisherTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(ServiceTest.getFixture().getOutput(isHTML, "publisher.", ""));
+		text.append(ServiceTest.getFixture().getOutput(format, "publisher.", ""));
 		if (version.isAtLeast("4.0.1"))
-			text.append(buildOutput(isHTML, "publisher.pocType", "DoD-Dist-B"));
-		text.append(buildOutput(isHTML, "publisher.classification", "U"));
-		text.append(buildOutput(isHTML, "publisher.ownerProducer", "USA"));
+			text.append(buildOutput(format, "publisher.pocType", "DoD-Dist-B"));
+		text.append(buildOutput(format, "publisher.classification", "U"));
+		text.append(buildOutput(format, "publisher.ownerProducer", "USA"));
 		return (text.toString());
 	}
 
@@ -247,8 +248,8 @@ public class PublisherTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Publisher elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

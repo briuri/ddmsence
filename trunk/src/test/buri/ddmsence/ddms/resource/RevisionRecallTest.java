@@ -21,6 +21,7 @@ package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.ddms.summary.LinkTest;
@@ -138,31 +139,31 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean hasLinks, boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(boolean hasLinks, OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		if (!hasLinks)
-			text.append(buildOutput(isHTML, "revisionRecall", TEST_VALUE));
-		text.append(buildOutput(isHTML, "revisionRecall.revisionID", "1"));
-		text.append(buildOutput(isHTML, "revisionRecall.revisionType", "ADMINISTRATIVE RECALL"));
-		text.append(buildOutput(isHTML, "revisionRecall.network", "NIPRNet"));
+			text.append(buildOutput(format, "revisionRecall", TEST_VALUE));
+		text.append(buildOutput(format, "revisionRecall.revisionID", "1"));
+		text.append(buildOutput(format, "revisionRecall.revisionType", "ADMINISTRATIVE RECALL"));
+		text.append(buildOutput(format, "revisionRecall.network", "NIPRNet"));
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
-			text.append(buildOutput(isHTML, "revisionRecall.otherNetwork", "PBS"));
+			text.append(buildOutput(format, "revisionRecall.otherNetwork", "PBS"));
 		if (hasLinks) {
-			text.append(buildOutput(isHTML, "revisionRecall.link.type", "locator"));
-			text.append(buildOutput(isHTML, "revisionRecall.link.href", "http://en.wikipedia.org/wiki/Tank"));
-			text.append(buildOutput(isHTML, "revisionRecall.link.role", "tank"));
-			text.append(buildOutput(isHTML, "revisionRecall.link.title", "Tank Page"));
-			text.append(buildOutput(isHTML, "revisionRecall.link.label", "tank"));
-			text.append(buildOutput(isHTML, "revisionRecall.link.classification", "U"));
-			text.append(buildOutput(isHTML, "revisionRecall.link.ownerProducer", "USA"));
-			text.append(buildOutput(isHTML, "revisionRecall.details", "Details"));
-			text.append(buildOutput(isHTML, "revisionRecall.details.classification", "U"));
-			text.append(buildOutput(isHTML, "revisionRecall.details.ownerProducer", "USA"));
+			text.append(buildOutput(format, "revisionRecall.link.type", "locator"));
+			text.append(buildOutput(format, "revisionRecall.link.href", "http://en.wikipedia.org/wiki/Tank"));
+			text.append(buildOutput(format, "revisionRecall.link.role", "tank"));
+			text.append(buildOutput(format, "revisionRecall.link.title", "Tank Page"));
+			text.append(buildOutput(format, "revisionRecall.link.label", "tank"));
+			text.append(buildOutput(format, "revisionRecall.link.classification", "U"));
+			text.append(buildOutput(format, "revisionRecall.link.ownerProducer", "USA"));
+			text.append(buildOutput(format, "revisionRecall.details", "Details"));
+			text.append(buildOutput(format, "revisionRecall.details.classification", "U"));
+			text.append(buildOutput(format, "revisionRecall.details.ownerProducer", "USA"));
 		}
-		text.append(XLinkAttributesTest.getResourceFixture().getOutput(isHTML, "revisionRecall."));
-		text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, "revisionRecall."));
+		text.append(XLinkAttributesTest.getResourceFixture().getOutput(format, "revisionRecall."));
+		text.append(SecurityAttributesTest.getFixture().getOutput(format, "revisionRecall."));
 		return (text.toString());
 	}
 
@@ -414,14 +415,14 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 
 			// links & details
 			RevisionRecall elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true, true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(true, false), elementComponent.toText());
+			assertEquals(getExpectedOutput(true, OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(true, OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(true), elementComponent.toXML());
 			
 			// text
 			elementComponent = getInstance(getTextFixtureElement(false), SUCCESS);
-			assertEquals(getExpectedOutput(false, true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false, false), elementComponent.toText());
+			assertEquals(getExpectedOutput(false, OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(false, OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(false), elementComponent.toXML());
 		}
 	}

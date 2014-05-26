@@ -24,6 +24,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -123,14 +124,14 @@ public class IndividualTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(SystemNameTest.getFixture().getOutput(isHTML, "individual.", ""));
-		text.append(IndividualValueTest.getFixtureList().get(0).getOutput(isHTML, "individual.", ""));
-		text.append(buildOutput(isHTML, "individual.classification", "U"));
-		text.append(buildOutput(isHTML, "individual.ownerProducer", "USA"));
+		text.append(SystemNameTest.getFixture().getOutput(format, "individual.", ""));
+		text.append(IndividualValueTest.getFixtureList().get(0).getOutput(format, "individual.", ""));
+		text.append(buildOutput(format, "individual.classification", "U"));
+		text.append(buildOutput(format, "individual.ownerProducer", "USA"));
 		return (text.toString());
 	}
 
@@ -243,8 +244,8 @@ public class IndividualTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Individual elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

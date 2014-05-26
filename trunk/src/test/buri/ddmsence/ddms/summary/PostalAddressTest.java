@@ -24,6 +24,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.summary.tspi.GeneralAddressClass;
@@ -157,22 +158,22 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 	}
 	
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML, boolean hasState) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format, boolean hasState) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
-			text.append(buildOutput(isHTML, "postalAddress.street", TEST_STREETS.get(0)));
-			text.append(buildOutput(isHTML, "postalAddress.city", TEST_CITY));
+			text.append(buildOutput(format, "postalAddress.street", TEST_STREETS.get(0)));
+			text.append(buildOutput(format, "postalAddress.city", TEST_CITY));
 			if (hasState)
-				text.append(buildOutput(isHTML, "postalAddress.state", TEST_STATE));
+				text.append(buildOutput(format, "postalAddress.state", TEST_STATE));
 			else
-				text.append(buildOutput(isHTML, "postalAddress.province", TEST_PROVINCE));
-			text.append(buildOutput(isHTML, "postalAddress.postalCode", TEST_POSTAL_CODE));
-			text.append(CountryCodeTest.getFixture().getOutput(isHTML, "postalAddress.", ""));
+				text.append(buildOutput(format, "postalAddress.province", TEST_PROVINCE));
+			text.append(buildOutput(format, "postalAddress.postalCode", TEST_POSTAL_CODE));
+			text.append(CountryCodeTest.getFixture().getOutput(format, "postalAddress.", ""));
 		}
 		else {
-			text.append(GeneralAddressClassTest.getFixture().getOutput(isHTML, "postalAddress.", ""));
+			text.append(GeneralAddressClassTest.getFixture().getOutput(format, "postalAddress.", ""));
 		}
 		return (text.toString());
 	}
@@ -414,16 +415,16 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			PostalAddress elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true, true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false, true), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML, true), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT, true), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(true), elementComponent.toXML());
 			
 			PostalAddress.Builder builder = getBaseBuilder();
 			builder.setState(null);
 			builder.setProvince(TEST_PROVINCE);
 			elementComponent = builder.commit();
-			assertEquals(getExpectedOutput(true, false), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false, false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML, false), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT, false), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(false), elementComponent.toXML());
 		}
 	}

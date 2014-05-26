@@ -21,6 +21,7 @@ package buri.ddmsence.ddms.summary;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -116,19 +117,19 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "virtualCoverage.address", TEST_ADDRESS));
-		text.append(buildOutput(isHTML, "virtualCoverage.protocol", TEST_PROTOCOL));
+		text.append(buildOutput(format, "virtualCoverage.address", TEST_ADDRESS));
+		text.append(buildOutput(format, "virtualCoverage.protocol", TEST_PROTOCOL));
 		if (DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
-			text.append(buildOutput(isHTML, "virtualCoverage.access", TEST_ACCESS));
-			text.append(buildOutput(isHTML, "virtualCoverage.network", TEST_NETWORK));
+			text.append(buildOutput(format, "virtualCoverage.access", TEST_ACCESS));
+			text.append(buildOutput(format, "virtualCoverage.network", TEST_NETWORK));
 		}
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
-			text.append(buildOutput(isHTML, "virtualCoverage.classification", "U"));
-			text.append(buildOutput(isHTML, "virtualCoverage.ownerProducer", "USA"));
+			text.append(buildOutput(format, "virtualCoverage.classification", "U"));
+			text.append(buildOutput(format, "virtualCoverage.ownerProducer", "USA"));
 		}
 		return (text.toString());
 	}
@@ -270,8 +271,8 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			VirtualCoverage elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

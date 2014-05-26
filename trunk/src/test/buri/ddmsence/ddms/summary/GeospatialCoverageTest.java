@@ -24,6 +24,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.ITspiShape;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -153,7 +154,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = version.isAtLeast("4.0.1") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
-			return (buildOutput(true, prefix + "classification", "U") + buildOutput(true, prefix + "ownerProducer",
+			return (buildOutput(OutputFormat.HTML, prefix + "classification", "U") + buildOutput(OutputFormat.HTML, prefix + "ownerProducer",
 				"USA"));
 		return ("");
 	}
@@ -165,25 +166,25 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = version.isAtLeast("4.0.1") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
-			return (buildOutput(false, prefix + "classification", "U") + buildOutput(false, prefix + "ownerProducer",
+			return (buildOutput(OutputFormat.TEXT, prefix + "classification", "U") + buildOutput(OutputFormat.TEXT, prefix + "ownerProducer",
 				"USA"));
 		return ("");
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = version.isAtLeast("4.0.1") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
 		StringBuffer text = new StringBuffer();
-		text.append(GeographicIdentifierTest.getCountryCodeBasedFixture().getOutput(isHTML, prefix, ""));
+		text.append(GeographicIdentifierTest.getCountryCodeBasedFixture().getOutput(format, prefix, ""));
 		if (version.isAtLeast("4.0.1")) {
-			text.append(buildOutput(isHTML, prefix + "precedence", "Primary"));
-			text.append(buildOutput(isHTML, prefix + "order", "1"));
+			text.append(buildOutput(format, prefix + "precedence", "Primary"));
+			text.append(buildOutput(format, prefix + "order", "1"));
 		}
 		if (version.isAtLeast("3.0"))
-			text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, prefix));
+			text.append(SecurityAttributesTest.getFixture().getOutput(format, prefix));
 		return (text.toString());
 	}
 
@@ -477,42 +478,42 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 
 			// geographicIdentifier
 			GeospatialCoverage elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 
 			if (!version.isAtLeast("5.0")) {
 				// boundingBox
 				Element element = buildComponentElement(BoundingBoxTest.getFixture());
 				elementComponent = getInstance(element, SUCCESS);
-				assertEquals(BoundingBoxTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(),
+				assertEquals(BoundingBoxTest.getFixture().getOutput(OutputFormat.HTML, prefix, "") + getHtmlIcism(),
 					elementComponent.toHTML());
-				assertEquals(BoundingBoxTest.getFixture().getOutput(false, prefix, "") + getTextIcism(),
+				assertEquals(BoundingBoxTest.getFixture().getOutput(OutputFormat.TEXT, prefix, "") + getTextIcism(),
 					elementComponent.toText());
 
 				// verticalExtent
 				element = buildComponentElement(VerticalExtentTest.getFixture());
 				elementComponent = getInstance(element, SUCCESS);
-				assertEquals(VerticalExtentTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(),
+				assertEquals(VerticalExtentTest.getFixture().getOutput(OutputFormat.HTML, prefix, "") + getHtmlIcism(),
 					elementComponent.toHTML());
-				assertEquals(VerticalExtentTest.getFixture().getOutput(false, prefix, "") + getTextIcism(),
+				assertEquals(VerticalExtentTest.getFixture().getOutput(OutputFormat.TEXT, prefix, "") + getTextIcism(),
 					elementComponent.toText());
 			}
 
 			// boundingGeometry
 			Element element = buildComponentElement(BoundingGeometryTest.getFixture());
 			elementComponent = getInstance(element, SUCCESS);
-			assertEquals(BoundingGeometryTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(),
+			assertEquals(BoundingGeometryTest.getFixture().getOutput(OutputFormat.HTML, prefix, "") + getHtmlIcism(),
 				elementComponent.toHTML());
-			assertEquals(BoundingGeometryTest.getFixture().getOutput(false, prefix, "") + getTextIcism(),
+			assertEquals(BoundingGeometryTest.getFixture().getOutput(OutputFormat.TEXT, prefix, "") + getTextIcism(),
 				elementComponent.toText());
 
 			// postalAddress
 			element = buildComponentElement(PostalAddressTest.getFixture());
 			elementComponent = getInstance(element, SUCCESS);
-			assertEquals(PostalAddressTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(),
+			assertEquals(PostalAddressTest.getFixture().getOutput(OutputFormat.HTML, prefix, "") + getHtmlIcism(),
 				elementComponent.toHTML());
-			assertEquals(PostalAddressTest.getFixture().getOutput(false, prefix, "") + getTextIcism(),
+			assertEquals(PostalAddressTest.getFixture().getOutput(OutputFormat.TEXT, prefix, "") + getTextIcism(),
 				elementComponent.toText());
 		}
 	}

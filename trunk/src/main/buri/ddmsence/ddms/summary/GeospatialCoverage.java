@@ -25,6 +25,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -256,27 +257,27 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		if (!getDDMSVersion().isAtLeast("4.0.1"))
 			localPrefix += GEOSPATIAL_EXTENT_NAME + ".";
 		StringBuffer text = new StringBuffer();
 		if (getGeographicIdentifier() != null)
-			text.append(getGeographicIdentifier().getOutput(isHTML, localPrefix, ""));
+			text.append(getGeographicIdentifier().getOutput(format, localPrefix, ""));
 		if (getBoundingBox() != null)
-			text.append(getBoundingBox().getOutput(isHTML, localPrefix, ""));
+			text.append(getBoundingBox().getOutput(format, localPrefix, ""));
 		if (getBoundingGeometry() != null)
-			text.append(getBoundingGeometry().getOutput(isHTML, localPrefix, ""));
+			text.append(getBoundingGeometry().getOutput(format, localPrefix, ""));
 		if (getPostalAddress() != null)
-			text.append(getPostalAddress().getOutput(isHTML, localPrefix, ""));
+			text.append(getPostalAddress().getOutput(format, localPrefix, ""));
 		if (getVerticalExtent() != null)
-			text.append(getVerticalExtent().getOutput(isHTML, localPrefix, ""));
-		text.append(buildOutput(isHTML, localPrefix + PRECEDENCE_NAME, getPrecedence()));
+			text.append(getVerticalExtent().getOutput(format, localPrefix, ""));
+		text.append(buildOutput(format, localPrefix + PRECEDENCE_NAME, getPrecedence()));
 		if (getOrder() != null)
-			text.append(buildOutput(isHTML, localPrefix + ORDER_NAME, String.valueOf(getOrder())));
-		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
+			text.append(buildOutput(format, localPrefix + ORDER_NAME, String.valueOf(getOrder())));
+		text.append(getSecurityAttributes().getOutput(format, localPrefix));
 		return (text.toString());
 	}
 

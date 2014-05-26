@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import nu.xom.Element;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.UnsupportedVersionException;
@@ -186,26 +187,26 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @see IDDMSComponent#toHTML()
 	 */
 	public String toHTML() {
-		return (getOutput(true, "", ""));
+		return (getOutput(OutputFormat.HTML, "", ""));
 	}
 
 	/**
 	 * @see IDDMSComponent#toText()
 	 */
 	public String toText() {
-		return (getOutput(false, "", ""));
+		return (getOutput(OutputFormat.TEXT, "", ""));
 	}
 
 	/**
 	 * Renders this component as HTML or Text, with an optional prefix to nest it.
 	 * 
-	 * @param isHTML true for HTML, false for Text.
+	 * @param format the desired format of this output
 	 * @param prefix an optional prefix to put on each name.
 	 * @param suffix an optional suffix to append to each name, such as an index.
 	 * 
 	 * @return the HTML or Text representation of this component
 	 */
-	public abstract String getOutput(boolean isHTML, String prefix, String suffix);
+	public abstract String getOutput(OutputFormat format, String prefix, String suffix);
 
 	/**
 	 * Accessor for a collection of nested components. A list such as this is useful for bulk actions, such as checking
@@ -218,14 +219,15 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	/**
 	 * Convenience method to build a meta tag for HTML output or a text line for Text output.
 	 * 
-	 * @param isHTML true for HTML, false for Text
+	 * @param format the desired format of this output
 	 * @param name the name of the name-value pairing (will be escaped in HTML)
 	 * @param content the value of the name-value pairing (will be escaped in HTML)
 	 * @return a string containing the output
 	 */
-	public static String buildOutput(boolean isHTML, String name, String content) {
+	public static String buildOutput(OutputFormat format, String name, String content) {
 		if (Util.isEmpty(content))
 			return ("");
+		boolean isHTML = (format == OutputFormat.HTML);
 		StringBuffer tag = new StringBuffer();
 		tag.append(isHTML ? "<meta name=\"" : "");
 		tag.append(isHTML ? Util.xmlEscape(name) : name);
@@ -239,23 +241,23 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * Convenience method to build a meta tag for HTML output or a text line for Text output for a list of multiple DDMS
 	 * components.
 	 * 
-	 * @param isHTML true for HTML, false for Text
+	 * @param format the desired format of this output
 	 * @param prefix the first part of the name in the name-value pairing (will be escaped in HTML)
 	 * @param contents a list of the values (will be escaped in HTML)
 	 * @return a string containing the output
 	 */
-	protected String buildOutput(boolean isHTML, String prefix, List<?> contents) {
+	protected String buildOutput(OutputFormat format, String prefix, List<?> contents) {
 		StringBuffer values = new StringBuffer();
 		for (int i = 0; i < contents.size(); i++) {
 			Object object = contents.get(i);
 			if (object instanceof AbstractBaseComponent) {
 				AbstractBaseComponent component = (AbstractBaseComponent) object;
-				values.append(component.getOutput(isHTML, prefix, buildIndex(i, contents.size())));
+				values.append(component.getOutput(format, prefix, buildIndex(i, contents.size())));
 			}
 			else if (object instanceof String)
-				values.append(buildOutput(isHTML, prefix + buildIndex(i, contents.size()), (String) object));
+				values.append(buildOutput(format, prefix + buildIndex(i, contents.size()), (String) object));
 			else
-				values.append(buildOutput(isHTML, prefix + buildIndex(i, contents.size()), String.valueOf(object)));
+				values.append(buildOutput(format, prefix + buildIndex(i, contents.size()), String.valueOf(object)));
 		}
 		return (values.toString());
 	}

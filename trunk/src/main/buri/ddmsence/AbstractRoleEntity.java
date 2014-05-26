@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import nu.xom.Element;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IRoleEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -159,16 +160,16 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, "", suffix);
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + "entityType", getName()));
-		text.append(buildOutput(isHTML, localPrefix + NAME_NAME, getNames()));
-		text.append(buildOutput(isHTML, localPrefix + PHONE_NAME, getPhones()));
-		text.append(buildOutput(isHTML, localPrefix + EMAIL_NAME, getEmails()));
-		text.append(getExtensibleAttributes().getOutput(isHTML, prefix));
+		text.append(buildOutput(format, localPrefix + "entityType", getName()));
+		text.append(buildOutput(format, localPrefix + NAME_NAME, getNames()));
+		text.append(buildOutput(format, localPrefix + PHONE_NAME, getPhones()));
+		text.append(buildOutput(format, localPrefix + EMAIL_NAME, getEmails()));
+		text.append(getExtensibleAttributes().getOutput(format, prefix));
 		return (text.toString());
 	}
 

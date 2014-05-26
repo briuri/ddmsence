@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
@@ -101,11 +102,11 @@ public abstract class AbstractAttributeGroup {
 	/**
 	 * Outputs to HTML or Text with a prefix at the beginning of each meta tag or line.
 	 * 
-	 * @param isHTML true for HTML, false for Text
+	 * @param format the desired format of this output
 	 * @param prefix the prefix to add
 	 * @return the HTML or Text output
 	 */
-	public abstract String getOutput(boolean isHTML, String prefix);
+	public abstract String getOutput(OutputFormat format, String prefix);
 
 	/**
 	 * Accessor for the XML namespace of these attributes

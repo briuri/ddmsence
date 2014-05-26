@@ -27,6 +27,7 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.AbstractAccessEntity;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -129,15 +130,15 @@ public final class Profile extends AbstractAccessEntity {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, "profile", suffix) + ".";
 		StringBuffer text = new StringBuffer();
 		if (getSystemName() != null)
-			text.append(getSystemName().getOutput(isHTML, localPrefix, ""));
-		text.append(buildOutput(isHTML, localPrefix, getProfileValues()));
-		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
+			text.append(getSystemName().getOutput(format, localPrefix, ""));
+		text.append(buildOutput(format, localPrefix, getProfileValues()));
+		text.append(getSecurityAttributes().getOutput(format, localPrefix));
 		return (text.toString());
 	}
 

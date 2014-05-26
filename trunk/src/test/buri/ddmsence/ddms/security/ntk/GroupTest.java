@@ -24,6 +24,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -123,14 +124,14 @@ public class GroupTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML or Text output for this unit test
+	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(SystemNameTest.getFixture().getOutput(isHTML, "group.", ""));
-		text.append(GroupValueTest.getFixtureList().get(0).getOutput(isHTML, "group.", ""));
-		text.append(buildOutput(isHTML, "group.classification", "U"));
-		text.append(buildOutput(isHTML, "group.ownerProducer", "USA"));
+		text.append(SystemNameTest.getFixture().getOutput(format, "group.", ""));
+		text.append(GroupValueTest.getFixtureList().get(0).getOutput(format, "group.", ""));
+		text.append(buildOutput(format, "group.classification", "U"));
+		text.append(buildOutput(format, "group.ownerProducer", "USA"));
 		return (text.toString());
 	}
 
@@ -243,8 +244,8 @@ public class GroupTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Group elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false), elementComponent.toText());
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

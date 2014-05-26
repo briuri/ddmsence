@@ -29,6 +29,7 @@ import java.util.Set;
 import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -221,18 +222,18 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
+	public String getOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		if (!getDDMSVersion().isAtLeast("4.0.1"))
 			localPrefix += SUBJECT_NAME + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix, getKeywords()));
-		text.append(buildOutput(isHTML, localPrefix, getCategories()));
-		text.append(buildOutput(isHTML, localPrefix, getProductionMetrics()));
-		text.append(buildOutput(isHTML, localPrefix, getNonStateActors()));
-		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
+		text.append(buildOutput(format, localPrefix, getKeywords()));
+		text.append(buildOutput(format, localPrefix, getCategories()));
+		text.append(buildOutput(format, localPrefix, getProductionMetrics()));
+		text.append(buildOutput(format, localPrefix, getNonStateActors()));
+		text.append(getSecurityAttributes().getOutput(format, localPrefix));
 		return (text.toString());
 	}
 
