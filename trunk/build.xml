@@ -17,7 +17,7 @@
 		13) Announcements (Google Groups / freecode / LinkedIn / Ohloh)
 	-->
 
-	<property name="version" value="2.2.1" />
+	<property name="version" value="2.3.0-unstable" />
 	<property name="conf.dir" value="conf" />
 	<property name="data.dir" value="data" />
 	<property name="local.web.dir" value="/projects/urizone/output/tomcat/webapps/ddmsence" />
@@ -172,9 +172,9 @@
 			<fileset dir="${src.main.dir}" />
 		</jar>
 		<!-- Deploy manual commands:
-			mvn gpg:sign-and-deploy-file -DpomFile=pom.xml -Dfile=./output/dist/maven/ddmsence-2.1.0.jar -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging
-			mvn gpg:sign-and-deploy-file -DpomFile=pom.xml -Dfile=./output/dist/maven/ddmsence-2.1.0-sources.jar -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -Dclassifier=sources
-			mvn gpg:sign-and-deploy-file -DpomFile=pom.xml -Dfile=./output/dist/maven/ddmsence-2.1.0-javadoc.jar -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -Dclassifier=javadoc
+			mvn gpg:sign-and-deploy-file -DpomFile=pom.xml -Dfile=./output/dist/maven/ddmsence-2.3.0.jar -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging
+			mvn gpg:sign-and-deploy-file -DpomFile=pom.xml -Dfile=./output/dist/maven/ddmsence-2.3.0-sources.jar -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -Dclassifier=sources
+			mvn gpg:sign-and-deploy-file -DpomFile=pom.xml -Dfile=./output/dist/maven/ddmsence-2.3.0-javadoc.jar -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -Dclassifier=javadoc
 			
 			Then, Close and Release repository via Nexus UI.
 		-->
