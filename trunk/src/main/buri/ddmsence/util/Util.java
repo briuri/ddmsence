@@ -35,7 +35,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -126,7 +125,7 @@ public class Util {
 	 * underlying map type in the future for different sorting strategies.
 	 */
 	public static Map<String, Object> getJSONMap() {
-		return (new TreeMap<String, Object>());
+		return (new LinkedHashMap<String, Object>());
 	}
 	
 	/**

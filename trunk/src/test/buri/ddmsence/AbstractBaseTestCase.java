@@ -30,6 +30,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.OutputFormat;
+import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.DDMSReader;
 import buri.ddmsence.util.DDMSVersion;
@@ -60,13 +61,6 @@ public abstract class AbstractBaseTestCase extends TestCase {
 	protected static final String DEFAULT_ISM_PREFIX = PropertyReader.getPrefix("ism");
 	protected static final String DEFAULT_NTK_PREFIX = PropertyReader.getPrefix("ntk");
 	protected static final String DEFAULT_TSPI_PREFIX = PropertyReader.getPrefix("tspi");
-
-	private static final Map<OutputFormat, String> OUTPUT_TEMPLATES = new HashMap<OutputFormat, String>();
-	static {
-		OUTPUT_TEMPLATES.put(OutputFormat.HTML, "<meta name=\"%s\" content=\"%s\" />\n");
-		OUTPUT_TEMPLATES.put(OutputFormat.JSON, "\"%s\":\"%s\",");
-		OUTPUT_TEMPLATES.put(OutputFormat.TEXT, "%s: %s\n");
-	}
 	
 	/**
 	 * Resets the in-use version of DDMS.
@@ -217,7 +211,7 @@ public abstract class AbstractBaseTestCase extends TestCase {
 			String[] tokens = name.split("\\.");
 			name = tokens[tokens.length - 1];
 		}
-		return (String.format(OUTPUT_TEMPLATES.get(format), name, content));
+		return (String.format(Resource.OUTPUT_TEMPLATES.get(format), name, content));
 	}
 
 	/**

@@ -59,12 +59,12 @@ public class UtilTest extends AbstractBaseTestCase {
 		Map map = Util.getJSONMap();
 		assertNotNull(map);
 		
-		// Test sort order (currently a TreeMap, so alphabetical)
+		// Test sort order (currently a LinkedHashMap, so put-order)
 		map.put("z", "a");
 		map.put("a", "z");
-		assertEquals("a", map.keySet().toArray()[0]);
+		assertEquals("z", map.keySet().toArray()[0]);
 	}
-	
+
 	public void testGetNonNullStringNull() {
 		assertEquals("", Util.getNonNullString(null));
 	}
