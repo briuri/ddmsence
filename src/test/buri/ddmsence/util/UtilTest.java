@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import nu.xom.Attribute;
 import nu.xom.Document;
@@ -52,6 +53,16 @@ public class UtilTest extends AbstractBaseTestCase {
 		Constructor<Util> constructor = Util.class.getDeclaredConstructor();
 		constructor.setAccessible(true);
 		constructor.newInstance();
+	}
+	
+	public void testGetJSONMap() {
+		Map map = Util.getJSONMap();
+		assertNotNull(map);
+		
+		// Test sort order (currently a TreeMap, so alphabetical)
+		map.put("z", "a");
+		map.put("a", "z");
+		assertEquals("a", map.keySet().toArray()[0]);
 	}
 	
 	public void testGetNonNullStringNull() {

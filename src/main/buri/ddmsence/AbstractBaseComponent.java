@@ -194,8 +194,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @see IDDMSComponent#toJSON()
 	 */
 	public String toJSON() {
-		throw new UnsupportedOperationException("JSON output has not yet been implemented.");
-		//return (getOutput(OutputFormat.JSON, "", ""));
+		return (getOutput(OutputFormat.JSON, "", ""));
 	}
 	
 	/**
