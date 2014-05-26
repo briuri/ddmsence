@@ -25,6 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import junit.framework.TestCase;
 import nu.xom.Element;
 import buri.ddmsence.ddms.IDDMSComponent;
@@ -46,6 +49,7 @@ import buri.ddmsence.util.Util;
 public abstract class AbstractBaseTestCase extends TestCase {
 
 	private String _type;
+	private JSONParser _jsonParser = new JSONParser();
 	private List<String> _supportedVersions = new ArrayList<String>(DDMSVersion.getSupportedVersions());
 
 	private static Map<String, Element> _elementMap = new HashMap<String, Element>();
@@ -192,7 +196,17 @@ public abstract class AbstractBaseTestCase extends TestCase {
 		assertEquals(prefix + ":" + name, component.getQualifiedName());
 	}
 
-	
+	/**
+	 * Runs a JSON string through a parser.
+	 */
+	protected void assertValidJson(String json) {
+		try {
+			getJsonParser().parse(json);
+		}
+		catch (ParseException e) {
+			fail("Invalid JSON string: " + json);
+		}
+	}
 	/**
 	 * Convenience method to build a meta tag for HTML output, or a text line for Text output.
 	 * 
@@ -269,6 +283,13 @@ public abstract class AbstractBaseTestCase extends TestCase {
 		return (_type);
 	}
 
+	/**
+	 * Accessor for the JSON parser, used to validate JSON strings.
+	 */
+	private JSONParser getJsonParser() {
+		return (_jsonParser);
+	}
+	
 	/**
 	 * Accessor for the supported versions for this specific component
 	 */

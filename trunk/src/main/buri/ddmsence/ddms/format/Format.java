@@ -22,6 +22,9 @@ package buri.ddmsence.ddms.format;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import org.json.simple.JSONObject;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
@@ -153,6 +156,18 @@ public final class Format extends AbstractBaseComponent {
 			+ getXOMElement().getNamespacePrefix() + ":" + MEDIA_NAME);
 	}
 
+	/**
+	 * @see AbstractBaseComponent#getJSONObject()
+	 */
+	protected JSONObject getJSONObject() {
+		Map<String, Object> map = Util.getJSONMap();
+		map.put(MIME_TYPE_NAME, getMimeType());
+		if (getExtent() != null)
+			map.putAll(getExtent().getJSONObject());
+		map.put(MEDIUM_NAME, getMedium());
+		return (Util.getJSONObject(getName(), map));
+	}
+	
 	/**
 	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
