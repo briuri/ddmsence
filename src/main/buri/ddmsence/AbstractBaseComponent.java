@@ -21,12 +21,15 @@ package buri.ddmsence;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.UnsupportedVersionException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.extensible.ExtensibleElement;
@@ -68,6 +71,13 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	private List<ValidationMessage> _warnings = null;
 	private Element _element = null;
 
+	public static final Map<OutputFormat, String> OUTPUT_TEMPLATES = new HashMap<OutputFormat, String>();
+	static {
+		OUTPUT_TEMPLATES.put(OutputFormat.HTML, "<meta name=\"%s\" content=\"%s\" />\n");
+		OUTPUT_TEMPLATES.put(OutputFormat.JSON, "\"%s\":\"%s\",");
+		OUTPUT_TEMPLATES.put(OutputFormat.TEXT, "%s: %s\n");
+	}
+	
 	/**
 	 * Empty constructor
 	 */
@@ -235,13 +245,11 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 		if (Util.isEmpty(content))
 			return ("");
 		boolean isHTML = (format == OutputFormat.HTML);
-		StringBuffer tag = new StringBuffer();
-		tag.append(isHTML ? "<meta name=\"" : "");
-		tag.append(isHTML ? Util.xmlEscape(name) : name);
-		tag.append(isHTML ? "\" content=\"" : ": ");
-		tag.append(isHTML ? Util.xmlEscape(content) : content);
-		tag.append(isHTML ? "\" />\n" : "\n");
-		return (tag.toString());
+		if (isHTML) {
+			name = Util.xmlEscape(name);
+			content = Util.xmlEscape(content);
+		}
+		return (String.format(Resource.OUTPUT_TEMPLATES.get(format), name, content));
 	}
 
 	/**
