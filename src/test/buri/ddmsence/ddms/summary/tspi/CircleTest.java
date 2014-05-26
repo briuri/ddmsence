@@ -94,7 +94,7 @@ public class CircleTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "shapeType", "Circle"));
+		text.append(buildHTMLTextOutput(format, "shapeType", "Circle"));
 		return (text.toString());
 	}
 

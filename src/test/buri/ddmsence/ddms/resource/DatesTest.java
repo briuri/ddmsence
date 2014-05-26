@@ -153,17 +153,17 @@ public class DatesTest extends AbstractBaseTestCase {
 		StringBuffer text = new StringBuffer();
 		if (version.isAtLeast("4.1")) {
 			for (ApproximableDate acquiredOn : getTestAcquiredOns()) {
-				text.append(acquiredOn.getOutput(format, "dates.", ""));
+				text.append(acquiredOn.getHTMLTextOutput(format, "dates.", ""));
 			}
 		}
-		text.append(buildOutput(format, "dates.created", TEST_CREATED));
-		text.append(buildOutput(format, "dates.posted", TEST_POSTED));
-		text.append(buildOutput(format, "dates.validTil", TEST_VALID));
-		text.append(buildOutput(format, "dates.infoCutOff", TEST_CUTOFF));
+		text.append(buildHTMLTextOutput(format, "dates.created", TEST_CREATED));
+		text.append(buildHTMLTextOutput(format, "dates.posted", TEST_POSTED));
+		text.append(buildHTMLTextOutput(format, "dates.validTil", TEST_VALID));
+		text.append(buildHTMLTextOutput(format, "dates.infoCutOff", TEST_CUTOFF));
 		if (version.isAtLeast("3.1"))
-			text.append(buildOutput(format, "dates.approvedOn", TEST_APPROVED));
+			text.append(buildHTMLTextOutput(format, "dates.approvedOn", TEST_APPROVED));
 		if (version.isAtLeast("4.0.1"))
-			text.append(buildOutput(format, "dates.receivedOn", TEST_RECEIVED));
+			text.append(buildHTMLTextOutput(format, "dates.receivedOn", TEST_RECEIVED));
 		return (text.toString());
 	}
 

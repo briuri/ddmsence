@@ -229,19 +229,19 @@ public final class RelatedResource extends AbstractQualifierValue {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0.1"))
 			localPrefix += "RelatedResource.";
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, localPrefix + RELATIONSHIP_NAME, getRelationship()));
-		text.append(buildOutput(format, localPrefix + DIRECTION_NAME, getDirection()));
-		text.append(buildOutput(format, localPrefix + getQualifierName(), getQualifier()));
-		text.append(buildOutput(format, localPrefix + getValueName(), getValue()));
-		text.append(buildOutput(format, localPrefix, getLinks()));
-		text.append(getSecurityAttributes().getOutput(format, localPrefix));
+		text.append(buildHTMLTextOutput(format, localPrefix + RELATIONSHIP_NAME, getRelationship()));
+		text.append(buildHTMLTextOutput(format, localPrefix + DIRECTION_NAME, getDirection()));
+		text.append(buildHTMLTextOutput(format, localPrefix + getQualifierName(), getQualifier()));
+		text.append(buildHTMLTextOutput(format, localPrefix + getValueName(), getValue()));
+		text.append(buildHTMLTextOutput(format, localPrefix, getLinks()));
+		text.append(getSecurityAttributes().getHTMLTextOutput(format, localPrefix));
 		return (text.toString());
 	}
 

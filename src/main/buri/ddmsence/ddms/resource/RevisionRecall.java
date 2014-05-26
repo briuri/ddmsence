@@ -294,22 +294,22 @@ public final class RevisionRecall extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		boolean hasNestedElements = (!getLinks().isEmpty() || !getDetails().isEmpty());
 		String localPrefix = buildPrefix(prefix, getName(), suffix);
 		StringBuffer text = new StringBuffer();
 		if (!hasNestedElements)
-			text.append(buildOutput(format, localPrefix, getValue()));
-		text.append(buildOutput(format, localPrefix + "." + REVISION_ID_NAME, String.valueOf(getRevisionID())));
-		text.append(buildOutput(format, localPrefix + "." + REVISION_TYPE_NAME, getRevisionType()));
-		text.append(buildOutput(format, localPrefix + "." + NETWORK_NAME, getNetwork()));
-		text.append(buildOutput(format, localPrefix + "." + OTHER_NETWORK_NAME, getOtherNetwork()));
-		text.append(buildOutput(format, localPrefix + ".", getLinks()));
-		text.append(buildOutput(format, localPrefix + ".", getDetails()));
-		text.append(getXLinkAttributes().getOutput(format, localPrefix + "."));
-		text.append(getSecurityAttributes().getOutput(format, localPrefix + "."));
+			text.append(buildHTMLTextOutput(format, localPrefix, getValue()));
+		text.append(buildHTMLTextOutput(format, localPrefix + "." + REVISION_ID_NAME, String.valueOf(getRevisionID())));
+		text.append(buildHTMLTextOutput(format, localPrefix + "." + REVISION_TYPE_NAME, getRevisionType()));
+		text.append(buildHTMLTextOutput(format, localPrefix + "." + NETWORK_NAME, getNetwork()));
+		text.append(buildHTMLTextOutput(format, localPrefix + "." + OTHER_NETWORK_NAME, getOtherNetwork()));
+		text.append(buildHTMLTextOutput(format, localPrefix + ".", getLinks()));
+		text.append(buildHTMLTextOutput(format, localPrefix + ".", getDetails()));
+		text.append(getXLinkAttributes().getHTMLTextOutput(format, localPrefix + "."));
+		text.append(getSecurityAttributes().getHTMLTextOutput(format, localPrefix + "."));
 		return (text.toString());
 	}
 

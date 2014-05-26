@@ -96,15 +96,15 @@ public final class Rights extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, localPrefix + PRIVACY_ACT_NAME, String.valueOf(getPrivacyAct())));
-		text.append(buildOutput(format, localPrefix + INTELLECTUAL_PROPERY_NAME,
+		text.append(buildHTMLTextOutput(format, localPrefix + PRIVACY_ACT_NAME, String.valueOf(getPrivacyAct())));
+		text.append(buildHTMLTextOutput(format, localPrefix + INTELLECTUAL_PROPERY_NAME,
 			String.valueOf(getIntellectualProperty())));
-		text.append(buildOutput(format, localPrefix + COPYRIGHT_NAME, String.valueOf(getCopyright())));
+		text.append(buildHTMLTextOutput(format, localPrefix + COPYRIGHT_NAME, String.valueOf(getCopyright())));
 		return (text.toString());
 	}
 

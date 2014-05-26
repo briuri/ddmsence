@@ -149,10 +149,10 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "boundingBox." + getTestWestBLName(), String.valueOf(TEST_WEST)));
-		text.append(buildOutput(format, "boundingBox." + getTestEastBLName(), String.valueOf(TEST_EAST)));
-		text.append(buildOutput(format, "boundingBox." + getTestSouthBLName(), String.valueOf(TEST_SOUTH)));
-		text.append(buildOutput(format, "boundingBox." + getTestNorthBLName(), String.valueOf(TEST_NORTH)));
+		text.append(buildHTMLTextOutput(format, "boundingBox." + getTestWestBLName(), String.valueOf(TEST_WEST)));
+		text.append(buildHTMLTextOutput(format, "boundingBox." + getTestEastBLName(), String.valueOf(TEST_EAST)));
+		text.append(buildHTMLTextOutput(format, "boundingBox." + getTestSouthBLName(), String.valueOf(TEST_SOUTH)));
+		text.append(buildHTMLTextOutput(format, "boundingBox." + getTestNorthBLName(), String.valueOf(TEST_NORTH)));
 		return (text.toString());
 	}
 

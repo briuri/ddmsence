@@ -146,11 +146,11 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "geographicIdentifier.name", TEST_NAMES.get(0)));
-		text.append(buildOutput(format, "geographicIdentifier.region", TEST_REGIONS.get(0)));
-		text.append(CountryCodeTest.getFixture().getOutput(format, "geographicIdentifier.", ""));
+		text.append(buildHTMLTextOutput(format, "geographicIdentifier.name", TEST_NAMES.get(0)));
+		text.append(buildHTMLTextOutput(format, "geographicIdentifier.region", TEST_REGIONS.get(0)));
+		text.append(CountryCodeTest.getFixture().getHTMLTextOutput(format, "geographicIdentifier.", ""));
 		if (version.isAtLeast("4.0.1"))
-			text.append(SubDivisionCodeTest.getFixture().getOutput(format, "geographicIdentifier.", ""));
+			text.append(SubDivisionCodeTest.getFixture().getHTMLTextOutput(format, "geographicIdentifier.", ""));
 		return (text.toString());
 	}
 

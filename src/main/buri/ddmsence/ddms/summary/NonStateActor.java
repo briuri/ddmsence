@@ -140,15 +140,15 @@ public final class NonStateActor extends AbstractSimpleString {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, localPrefix + "value", getValue()));
-		text.append(buildOutput(format, localPrefix + ORDER_NAME, String.valueOf(getOrder())));
-		text.append(buildOutput(format, localPrefix + QUALIFIER_NAME, getQualifier()));
-		text.append(getSecurityAttributes().getOutput(format, localPrefix));
+		text.append(buildHTMLTextOutput(format, localPrefix + "value", getValue()));
+		text.append(buildHTMLTextOutput(format, localPrefix + ORDER_NAME, String.valueOf(getOrder())));
+		text.append(buildHTMLTextOutput(format, localPrefix + QUALIFIER_NAME, getQualifier()));
+		text.append(getSecurityAttributes().getHTMLTextOutput(format, localPrefix));
 		return (text.toString());
 	}
 

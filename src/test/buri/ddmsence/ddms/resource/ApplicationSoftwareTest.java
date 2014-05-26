@@ -139,9 +139,9 @@ public class ApplicationSoftwareTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "applicationSoftware", TEST_VALUE));
-		text.append(buildOutput(format, "applicationSoftware.classification", "U"));
-		text.append(buildOutput(format, "applicationSoftware.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "applicationSoftware", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "applicationSoftware.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "applicationSoftware.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

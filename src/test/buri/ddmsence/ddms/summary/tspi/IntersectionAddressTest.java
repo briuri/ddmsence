@@ -118,7 +118,7 @@ public class IntersectionAddressTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "addressType", "IntersectionAddress"));
+		text.append(buildHTMLTextOutput(format, "addressType", "IntersectionAddress"));
 		return (text.toString());
 	}
 

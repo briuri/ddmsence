@@ -121,9 +121,9 @@ public class PointTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "Point.id", TEST_ID));
-		text.append(SRSAttributesTest.getFixture().getOutput(format, "Point."));
-		text.append(PositionTest.getFixture().getOutput(format, "Point.", ""));
+		text.append(buildHTMLTextOutput(format, "Point.id", TEST_ID));
+		text.append(SRSAttributesTest.getFixture().getHTMLTextOutput(format, "Point."));
+		text.append(PositionTest.getFixture().getHTMLTextOutput(format, "Point.", ""));
 		return (text.toString());
 	}
 

@@ -538,45 +538,46 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	}
 
 	/**
-	 * @see AbstractAttributeGroup#getOutput(OutputFormat, String)
+	 * @see AbstractAttributeGroup#getHTMLTextOutput(OutputFormat, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix) {
+		Util.requireHTMLText(format);
 		String localPrefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer();
-		text.append(Resource.buildOutput(format, localPrefix + ATOMIC_ENERGY_MARKINGS_NAME,
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + ATOMIC_ENERGY_MARKINGS_NAME,
 			Util.getXsList(getAtomicEnergyMarkings())));
-		text.append(Resource.buildOutput(format, localPrefix + CLASSIFICATION_NAME, getClassification()));
-		text.append(Resource.buildOutput(format, localPrefix + CLASSIFICATION_REASON_NAME, getClassificationReason()));
-		text.append(Resource.buildOutput(format, localPrefix + CLASSIFIED_BY_NAME, getClassifiedBy()));
-		text.append(Resource.buildOutput(format, localPrefix + COMPILATION_REASON_NAME, getCompilationReason()));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + CLASSIFICATION_NAME, getClassification()));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + CLASSIFICATION_REASON_NAME, getClassificationReason()));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + CLASSIFIED_BY_NAME, getClassifiedBy()));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + COMPILATION_REASON_NAME, getCompilationReason()));
 		if (getDateOfExemptedSource() != null) {
-			text.append(Resource.buildOutput(format, localPrefix + DATE_OF_EXEMPTED_SOURCE_NAME,
+			text.append(Resource.buildHTMLTextOutput(format, localPrefix + DATE_OF_EXEMPTED_SOURCE_NAME,
 				getDateOfExemptedSource().toXMLFormat()));
 		}
 		if (getDeclassDate() != null)
-			text.append(Resource.buildOutput(format, localPrefix + DECLASS_DATE_NAME, getDeclassDate().toXMLFormat()));
-		text.append(Resource.buildOutput(format, localPrefix + DECLASS_EVENT_NAME, getDeclassEvent()));
-		text.append(Resource.buildOutput(format, localPrefix + DECLASS_EXCEPTION_NAME, getDeclassException()));
+			text.append(Resource.buildHTMLTextOutput(format, localPrefix + DECLASS_DATE_NAME, getDeclassDate().toXMLFormat()));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + DECLASS_EVENT_NAME, getDeclassEvent()));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + DECLASS_EXCEPTION_NAME, getDeclassException()));
 		if (getDeclassManualReview() != null) {
-			text.append(Resource.buildOutput(format, localPrefix + DECLASS_MANUAL_REVIEW_NAME,
+			text.append(Resource.buildHTMLTextOutput(format, localPrefix + DECLASS_MANUAL_REVIEW_NAME,
 				getDeclassManualReview().toString()));
 		}
-		text.append(Resource.buildOutput(format, localPrefix + DERIVATIVELY_CLASSIFIED_BY_NAME,
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + DERIVATIVELY_CLASSIFIED_BY_NAME,
 			getDerivativelyClassifiedBy()));
-		text.append(Resource.buildOutput(format, localPrefix + DERIVED_FROM_NAME, getDerivedFrom()));
-		text.append(Resource.buildOutput(format, localPrefix + DISPLAY_ONLY_TO_NAME, Util.getXsList(getDisplayOnlyTo())));
-		text.append(Resource.buildOutput(format, localPrefix + DISSEMINATION_CONTROLS_NAME,
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + DERIVED_FROM_NAME, getDerivedFrom()));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + DISPLAY_ONLY_TO_NAME, Util.getXsList(getDisplayOnlyTo())));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + DISSEMINATION_CONTROLS_NAME,
 			Util.getXsList(getDisseminationControls())));
-		text.append(Resource.buildOutput(format, localPrefix + FGI_SOURCE_OPEN_NAME, Util.getXsList(getFGIsourceOpen())));
-		text.append(Resource.buildOutput(format, localPrefix + FGI_SOURCE_PROTECTED_NAME,
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + FGI_SOURCE_OPEN_NAME, Util.getXsList(getFGIsourceOpen())));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + FGI_SOURCE_PROTECTED_NAME,
 			Util.getXsList(getFGIsourceProtected())));
-		text.append(Resource.buildOutput(format, localPrefix + NON_IC_MARKINGS_NAME, Util.getXsList(getNonICmarkings())));
-		text.append(Resource.buildOutput(format, localPrefix + NON_US_CONTROLS_NAME, Util.getXsList(getNonUSControls())));
-		text.append(Resource.buildOutput(format, localPrefix + OWNER_PRODUCER_NAME, Util.getXsList(getOwnerProducers())));
-		text.append(Resource.buildOutput(format, localPrefix + RELEASABLE_TO_NAME, Util.getXsList(getReleasableTo())));
-		text.append(Resource.buildOutput(format, localPrefix + SAR_IDENTIFIER_NAME, Util.getXsList(getSARIdentifier())));
-		text.append(Resource.buildOutput(format, localPrefix + SCI_CONTROLS_NAME, Util.getXsList(getSCIcontrols())));
-		text.append(Resource.buildOutput(format, localPrefix + TYPE_OF_EXEMPTED_SOURCE_NAME, getTypeOfExemptedSource()));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + NON_IC_MARKINGS_NAME, Util.getXsList(getNonICmarkings())));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + NON_US_CONTROLS_NAME, Util.getXsList(getNonUSControls())));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + OWNER_PRODUCER_NAME, Util.getXsList(getOwnerProducers())));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + RELEASABLE_TO_NAME, Util.getXsList(getReleasableTo())));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + SAR_IDENTIFIER_NAME, Util.getXsList(getSARIdentifier())));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + SCI_CONTROLS_NAME, Util.getXsList(getSCIcontrols())));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + TYPE_OF_EXEMPTED_SOURCE_NAME, getTypeOfExemptedSource()));
 		return (text.toString());
 	}
 

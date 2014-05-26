@@ -152,10 +152,10 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
-			text.append(PointTest.getFixtureList().get(0).getOutput(format, "boundingGeometry.", ""));
+			text.append(PointTest.getFixtureList().get(0).getHTMLTextOutput(format, "boundingGeometry.", ""));
 		}
 		else {
-			text.append(EnvelopeTest.getFixture().getOutput(format, "boundingGeometry.", ""));
+			text.append(EnvelopeTest.getFixture().getHTMLTextOutput(format, "boundingGeometry.", ""));
 		}
 		return (text.toString());
 	}
@@ -359,9 +359,9 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 				Element element = Util.buildDDMSElement(BoundingGeometry.getName(version), null);
 				element.appendChild(PolygonTest.getFixtureList().get(0).getXOMElementCopy());
 				elementComponent = getInstance(element, SUCCESS);
-				assertEquals(PolygonTest.getFixtureList().get(0).getOutput(OutputFormat.HTML, "boundingGeometry.", ""),
+				assertEquals(PolygonTest.getFixtureList().get(0).getHTMLTextOutput(OutputFormat.HTML, "boundingGeometry.", ""),
 					elementComponent.toHTML());
-				assertEquals(PolygonTest.getFixtureList().get(0).getOutput(OutputFormat.TEXT, "boundingGeometry.", ""),
+				assertEquals(PolygonTest.getFixtureList().get(0).getHTMLTextOutput(OutputFormat.TEXT, "boundingGeometry.", ""),
 					elementComponent.toText());
 			}
 		}

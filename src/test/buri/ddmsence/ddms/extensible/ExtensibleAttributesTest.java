@@ -170,7 +170,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "ddmsence.relevance", "95"));
+		text.append(buildHTMLTextOutput(format, "ddmsence.relevance", "95"));
 		return (text.toString());
 	}
 
@@ -265,8 +265,8 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 			Element element = getTestElement();
 			element.addAttribute(new Attribute(getTestAttribute()));
 			ExtensibleAttributes elementAttributes = getInstance(element, SUCCESS);
-			assertEquals(getExpectedOutput(OutputFormat.HTML), elementAttributes.getOutput(OutputFormat.HTML, ""));
-			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementAttributes.getOutput(OutputFormat.TEXT, ""));
+			assertEquals(getExpectedOutput(OutputFormat.HTML), elementAttributes.getHTMLTextOutput(OutputFormat.HTML, ""));
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementAttributes.getHTMLTextOutput(OutputFormat.TEXT, ""));
 		}
 	}
 

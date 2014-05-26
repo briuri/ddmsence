@@ -102,13 +102,13 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, localPrefix + BE_NUMBER_NAME, getBeNumber()));
-		text.append(buildOutput(format, localPrefix + OSUFFIX_NAME, getOsuffix()));
+		text.append(buildHTMLTextOutput(format, localPrefix + BE_NUMBER_NAME, getBeNumber()));
+		text.append(buildHTMLTextOutput(format, localPrefix + OSUFFIX_NAME, getOsuffix()));
 		return (text.toString());
 	}
 

@@ -118,7 +118,7 @@ public class UnnumberedThoroughfareAddressTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "addressType", "UnnumberedThoroughfareAddress"));
+		text.append(buildHTMLTextOutput(format, "addressType", "UnnumberedThoroughfareAddress"));
 		return (text.toString());
 	}
 

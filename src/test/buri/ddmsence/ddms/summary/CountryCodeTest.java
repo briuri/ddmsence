@@ -132,8 +132,8 @@ public class CountryCodeTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "countryCode." + getTestQualifierName(), TEST_QUALIFIER));
-		text.append(buildOutput(format, "countryCode." + getTestValueName(), TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "countryCode." + getTestQualifierName(), TEST_QUALIFIER));
+		text.append(buildHTMLTextOutput(format, "countryCode." + getTestValueName(), TEST_VALUE));
 		return (text.toString());
 	}
 

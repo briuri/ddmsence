@@ -144,18 +144,18 @@ public class NoticeTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "notice.noticeText", "noticeText"));
-		text.append(buildOutput(format, "notice.noticeText.pocType", "DoD-Dist-B"));
-		text.append(buildOutput(format, "notice.noticeText.classification", "U"));
-		text.append(buildOutput(format, "notice.noticeText.ownerProducer", "USA"));
-		text.append(buildOutput(format, "notice.classification", "U"));
-		text.append(buildOutput(format, "notice.ownerProducer", "USA"));
-		text.append(buildOutput(format, "notice.noticeType", "DoD-Dist-B"));
-		text.append(buildOutput(format, "notice.noticeReason", "noticeReason"));
-		text.append(buildOutput(format, "notice.noticeDate", "2011-09-15"));
-		text.append(buildOutput(format, "notice.unregisteredNoticeType", "unregisteredNoticeType"));
+		text.append(buildHTMLTextOutput(format, "notice.noticeText", "noticeText"));
+		text.append(buildHTMLTextOutput(format, "notice.noticeText.pocType", "DoD-Dist-B"));
+		text.append(buildHTMLTextOutput(format, "notice.noticeText.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "notice.noticeText.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "notice.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "notice.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "notice.noticeType", "DoD-Dist-B"));
+		text.append(buildHTMLTextOutput(format, "notice.noticeReason", "noticeReason"));
+		text.append(buildHTMLTextOutput(format, "notice.noticeDate", "2011-09-15"));
+		text.append(buildHTMLTextOutput(format, "notice.unregisteredNoticeType", "unregisteredNoticeType"));
 		if (DDMSVersion.getCurrentVersion().isAtLeast("4.1")) {
-			text.append(buildOutput(format, "notice.externalNotice", "false"));
+			text.append(buildHTMLTextOutput(format, "notice.externalNotice", "false"));
 		}
 		return (text.toString());
 	}

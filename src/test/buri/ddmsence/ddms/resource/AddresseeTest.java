@@ -147,10 +147,10 @@ public class AddresseeTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "addressee.entityType", "organization"));
-		text.append(buildOutput(format, "addressee.name", "DISA"));
-		text.append(buildOutput(format, "addressee.classification", "U"));
-		text.append(buildOutput(format, "addressee.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "addressee.entityType", "organization"));
+		text.append(buildHTMLTextOutput(format, "addressee.name", "DISA"));
+		text.append(buildHTMLTextOutput(format, "addressee.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "addressee.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

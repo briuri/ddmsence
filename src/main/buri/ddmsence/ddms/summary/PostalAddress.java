@@ -293,22 +293,22 @@ public final class PostalAddress extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		if (!getDDMSVersion().isAtLeast("5.0")) {
-			text.append(buildOutput(format, localPrefix + STREET_NAME, getStreets()));
-			text.append(buildOutput(format, localPrefix + CITY_NAME, getCity()));
-			text.append(buildOutput(format, localPrefix + STATE_NAME, getState()));
-			text.append(buildOutput(format, localPrefix + PROVINCE_NAME, getProvince()));
-			text.append(buildOutput(format, localPrefix + POSTAL_CODE_NAME, getPostalCode()));
+			text.append(buildHTMLTextOutput(format, localPrefix + STREET_NAME, getStreets()));
+			text.append(buildHTMLTextOutput(format, localPrefix + CITY_NAME, getCity()));
+			text.append(buildHTMLTextOutput(format, localPrefix + STATE_NAME, getState()));
+			text.append(buildHTMLTextOutput(format, localPrefix + PROVINCE_NAME, getProvince()));
+			text.append(buildHTMLTextOutput(format, localPrefix + POSTAL_CODE_NAME, getPostalCode()));
 			if (getCountryCode() != null)
-				text.append(getCountryCode().getOutput(format, localPrefix, ""));
+				text.append(getCountryCode().getHTMLTextOutput(format, localPrefix, ""));
 		}
 		else {
-			text.append(getTspiAddress().getOutput(format, localPrefix, ""));
+			text.append(getTspiAddress().getHTMLTextOutput(format, localPrefix, ""));
 		}
 		return (text.toString());
 	}

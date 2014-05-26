@@ -116,11 +116,11 @@ public class PublisherTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(ServiceTest.getFixture().getOutput(format, "publisher.", ""));
+		text.append(ServiceTest.getFixture().getHTMLTextOutput(format, "publisher.", ""));
 		if (version.isAtLeast("4.0.1"))
-			text.append(buildOutput(format, "publisher.pocType", "DoD-Dist-B"));
-		text.append(buildOutput(format, "publisher.classification", "U"));
-		text.append(buildOutput(format, "publisher.ownerProducer", "USA"));
+			text.append(buildHTMLTextOutput(format, "publisher.pocType", "DoD-Dist-B"));
+		text.append(buildHTMLTextOutput(format, "publisher.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "publisher.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

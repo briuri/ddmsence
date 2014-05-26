@@ -135,10 +135,10 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "verticalExtent.unitOfMeasure", String.valueOf(TEST_UOM)));
-		text.append(buildOutput(format, "verticalExtent.datum", String.valueOf(TEST_DATUM)));
-		text.append(buildOutput(format, "verticalExtent.minimum", String.valueOf(TEST_MIN)));
-		text.append(buildOutput(format, "verticalExtent.maximum", String.valueOf(TEST_MAX)));
+		text.append(buildHTMLTextOutput(format, "verticalExtent.unitOfMeasure", String.valueOf(TEST_UOM)));
+		text.append(buildHTMLTextOutput(format, "verticalExtent.datum", String.valueOf(TEST_DATUM)));
+		text.append(buildHTMLTextOutput(format, "verticalExtent.minimum", String.valueOf(TEST_MIN)));
+		text.append(buildHTMLTextOutput(format, "verticalExtent.maximum", String.valueOf(TEST_MAX)));
 		return (text.toString());
 	}
 

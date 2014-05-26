@@ -128,10 +128,10 @@ public class GroupTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(SystemNameTest.getFixture().getOutput(format, "group.", ""));
-		text.append(GroupValueTest.getFixtureList().get(0).getOutput(format, "group.", ""));
-		text.append(buildOutput(format, "group.classification", "U"));
-		text.append(buildOutput(format, "group.ownerProducer", "USA"));
+		text.append(SystemNameTest.getFixture().getHTMLTextOutput(format, "group.", ""));
+		text.append(GroupValueTest.getFixtureList().get(0).getHTMLTextOutput(format, "group.", ""));
+		text.append(buildHTMLTextOutput(format, "group.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "group.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

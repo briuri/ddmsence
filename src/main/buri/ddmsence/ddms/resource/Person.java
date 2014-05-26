@@ -173,14 +173,14 @@ public final class Person extends AbstractRoleEntity {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, "", suffix);
-		StringBuffer text = new StringBuffer(super.getOutput(format, localPrefix, ""));
-		text.append(buildOutput(format, localPrefix + SURNAME_NAME, getSurname()));
-		text.append(buildOutput(format, localPrefix + USERID_NAME, getUserID()));
-		text.append(buildOutput(format, localPrefix + AFFILIATION_NAME, getAffiliations()));
+		StringBuffer text = new StringBuffer(super.getHTMLTextOutput(format, localPrefix, ""));
+		text.append(buildHTMLTextOutput(format, localPrefix + SURNAME_NAME, getSurname()));
+		text.append(buildHTMLTextOutput(format, localPrefix + USERID_NAME, getUserID()));
+		text.append(buildHTMLTextOutput(format, localPrefix + AFFILIATION_NAME, getAffiliations()));
 		return (text.toString());
 	}
 

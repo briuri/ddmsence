@@ -133,17 +133,17 @@ public class PersonTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "entityType", Person.getName(version)));
+		text.append(buildHTMLTextOutput(format, "entityType", Person.getName(version)));
 		for (String name : TEST_NAMES)
-			text.append(buildOutput(format, "name", name));
+			text.append(buildHTMLTextOutput(format, "name", name));
 		for (String phone : TEST_PHONES)
-			text.append(buildOutput(format, "phone", phone));
+			text.append(buildHTMLTextOutput(format, "phone", phone));
 		for (String email : TEST_EMAILS)
-			text.append(buildOutput(format, "email", email));
-		text.append(buildOutput(format, "surname", TEST_SURNAME));
-		text.append(buildOutput(format, "userID", TEST_USERID));
+			text.append(buildHTMLTextOutput(format, "email", email));
+		text.append(buildHTMLTextOutput(format, "surname", TEST_SURNAME));
+		text.append(buildHTMLTextOutput(format, "userID", TEST_USERID));
 		for (String affiliation : TEST_AFFILIATIONS)
-			text.append(buildOutput(format, "affiliation", affiliation));
+			text.append(buildHTMLTextOutput(format, "affiliation", affiliation));
 		return (text.toString());
 	}
 

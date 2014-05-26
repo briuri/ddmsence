@@ -120,14 +120,14 @@ public class AccessTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(IndividualTest.getFixture().getOutput(format, "access.individualList.", ""));
-		text.append(GroupTest.getFixture().getOutput(format, "access.groupList.", ""));
-		text.append(ProfileListTest.getFixture().getOutput(format, "access.", ""));
+		text.append(IndividualTest.getFixture().getHTMLTextOutput(format, "access.individualList.", ""));
+		text.append(GroupTest.getFixture().getHTMLTextOutput(format, "access.groupList.", ""));
+		text.append(ProfileListTest.getFixture().getHTMLTextOutput(format, "access.", ""));
 		if (version.isAtLeast("4.1")) {
-			text.append(buildOutput(format, "access.externalReference", String.valueOf(TEST_EXTERNAL)));
+			text.append(buildHTMLTextOutput(format, "access.externalReference", String.valueOf(TEST_EXTERNAL)));
 		}
-		text.append(buildOutput(format, "access.classification", "U"));
-		text.append(buildOutput(format, "access.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "access.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "access.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

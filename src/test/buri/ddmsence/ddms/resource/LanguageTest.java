@@ -116,8 +116,8 @@ public class LanguageTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "language.qualifier", TEST_QUALIFIER));
-		text.append(buildOutput(format, "language.value", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "language.qualifier", TEST_QUALIFIER));
+		text.append(buildHTMLTextOutput(format, "language.value", TEST_VALUE));
 		return (text.toString());
 	}
 

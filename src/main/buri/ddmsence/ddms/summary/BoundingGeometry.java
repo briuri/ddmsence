@@ -207,18 +207,18 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		if (!getDDMSVersion().isAtLeast("5.0")) {
-			text.append(buildOutput(format, localPrefix, getGmlPolygons()));
-			text.append(buildOutput(format, localPrefix, getGmlPoints()));
+			text.append(buildHTMLTextOutput(format, localPrefix, getGmlPolygons()));
+			text.append(buildHTMLTextOutput(format, localPrefix, getGmlPoints()));
 		}
 		else {
 			for (ITspiShape shape : getTspiShapes())
-				text.append(shape.getOutput(format, localPrefix, ""));
+				text.append(shape.getHTMLTextOutput(format, localPrefix, ""));
 		}
 		return (text.toString());
 	}

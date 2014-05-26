@@ -121,13 +121,13 @@ public class SourceTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "source.qualifier", TEST_QUALIFIER));
-		text.append(buildOutput(format, "source.value", TEST_VALUE));
-		text.append(buildOutput(format, "source.schemaQualifier", TEST_SCHEMA_QUALIFIER));
-		text.append(buildOutput(format, "source.schemaHref", TEST_SCHEMA_HREF));
+		text.append(buildHTMLTextOutput(format, "source.qualifier", TEST_QUALIFIER));
+		text.append(buildHTMLTextOutput(format, "source.value", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "source.schemaQualifier", TEST_SCHEMA_QUALIFIER));
+		text.append(buildHTMLTextOutput(format, "source.schemaHref", TEST_SCHEMA_HREF));
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
-			text.append(buildOutput(format, "source.classification", "U"));
-			text.append(buildOutput(format, "source.ownerProducer", "USA"));
+			text.append(buildHTMLTextOutput(format, "source.classification", "U"));
+			text.append(buildHTMLTextOutput(format, "source.ownerProducer", "USA"));
 		}
 		return (text.toString());
 	}

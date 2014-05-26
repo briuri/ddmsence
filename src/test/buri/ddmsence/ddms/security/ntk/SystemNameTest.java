@@ -121,12 +121,12 @@ public class SystemNameTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "systemName", TEST_VALUE));
-		text.append(buildOutput(format, "systemName.id", TEST_ID));
-		text.append(buildOutput(format, "systemName.idReference", TEST_ID_REFERENCE));
-		text.append(buildOutput(format, "systemName.qualifier", TEST_QUALIFIER));
-		text.append(buildOutput(format, "systemName.classification", "U"));
-		text.append(buildOutput(format, "systemName.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "systemName", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "systemName.id", TEST_ID));
+		text.append(buildHTMLTextOutput(format, "systemName.idReference", TEST_ID_REFERENCE));
+		text.append(buildHTMLTextOutput(format, "systemName.qualifier", TEST_QUALIFIER));
+		text.append(buildHTMLTextOutput(format, "systemName.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "systemName.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

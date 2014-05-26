@@ -116,11 +116,11 @@ public class ContributorTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(OrganizationTest.getFixture().getOutput(format, "contributor.", ""));
+		text.append(OrganizationTest.getFixture().getHTMLTextOutput(format, "contributor.", ""));
 		if (version.isAtLeast("4.0.1"))
-			text.append(buildOutput(format, "contributor.pocType", "DoD-Dist-B"));
-		text.append(buildOutput(format, "contributor.classification", "U"));
-		text.append(buildOutput(format, "contributor.ownerProducer", "USA"));
+			text.append(buildHTMLTextOutput(format, "contributor.pocType", "DoD-Dist-B"));
+		text.append(buildHTMLTextOutput(format, "contributor.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "contributor.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

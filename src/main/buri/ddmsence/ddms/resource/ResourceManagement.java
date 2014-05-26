@@ -162,18 +162,18 @@ public final class ResourceManagement extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		if (getRecordsManagementInfo() != null)
-			text.append(getRecordsManagementInfo().getOutput(format, localPrefix, ""));
+			text.append(getRecordsManagementInfo().getHTMLTextOutput(format, localPrefix, ""));
 		if (getRevisionRecall() != null)
-			text.append(getRevisionRecall().getOutput(format, localPrefix, ""));
-		text.append(buildOutput(format, localPrefix, getTaskingInfos()));
-		text.append(buildOutput(format, localPrefix, getProcessingInfos()));
-		text.append(getSecurityAttributes().getOutput(format, localPrefix));
+			text.append(getRevisionRecall().getHTMLTextOutput(format, localPrefix, ""));
+		text.append(buildHTMLTextOutput(format, localPrefix, getTaskingInfos()));
+		text.append(buildHTMLTextOutput(format, localPrefix, getProcessingInfos()));
+		text.append(getSecurityAttributes().getHTMLTextOutput(format, localPrefix));
 		return (text.toString());
 	}
 

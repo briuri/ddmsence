@@ -162,16 +162,16 @@ public final class TaskID extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix);
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, localPrefix, getValue()));
-		text.append(buildOutput(format, localPrefix + "." + TASKING_SYSTEM_NAME, getTaskingSystem()));
-		text.append(buildOutput(format, localPrefix + "." + NETWORK_NAME, getNetwork()));
-		text.append(buildOutput(format, localPrefix + "." + OTHER_NETWORK_NAME, getOtherNetwork()));
-		text.append(getXLinkAttributes().getOutput(format, localPrefix + "."));
+		text.append(buildHTMLTextOutput(format, localPrefix, getValue()));
+		text.append(buildHTMLTextOutput(format, localPrefix + "." + TASKING_SYSTEM_NAME, getTaskingSystem()));
+		text.append(buildHTMLTextOutput(format, localPrefix + "." + NETWORK_NAME, getNetwork()));
+		text.append(buildHTMLTextOutput(format, localPrefix + "." + OTHER_NETWORK_NAME, getOtherNetwork()));
+		text.append(getXLinkAttributes().getHTMLTextOutput(format, localPrefix + "."));
 		return (text.toString());
 	}
 

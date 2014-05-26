@@ -364,75 +364,75 @@ public class ResourceTest extends AbstractBaseTestCase {
 
 		StringBuffer text = new StringBuffer();
 		if (isAtLeast50) {
-			text.append(buildOutput(format, resourcePrefix + ".compliesWith", "DDMSRules"));
+			text.append(buildHTMLTextOutput(format, resourcePrefix + ".compliesWith", "DDMSRules"));
 		}
 		else {
 			if (isAtLeast30) {
-				text.append(buildOutput(format, resourcePrefix + ".resourceElement", "true"));
-				text.append(buildOutput(format, resourcePrefix + ".createDate", "2010-01-21"));
+				text.append(buildHTMLTextOutput(format, resourcePrefix + ".resourceElement", "true"));
+				text.append(buildHTMLTextOutput(format, resourcePrefix + ".createDate", "2010-01-21"));
 			}
-			text.append(buildOutput(format, resourcePrefix + ".ism.DESVersion", String.valueOf(getTestIsmDesVersion())));
+			text.append(buildHTMLTextOutput(format, resourcePrefix + ".ism.DESVersion", String.valueOf(getTestIsmDesVersion())));
 			if (isAtLeast401) {
-				text.append(buildOutput(format, resourcePrefix + ".ntk.DESVersion",
+				text.append(buildHTMLTextOutput(format, resourcePrefix + ".ntk.DESVersion",
 					String.valueOf(getTestNtkDesVersion())));
 			}
 			if (isAtLeast30) {
-				text.append(buildOutput(format, resourcePrefix + ".classification", "U"));
-				text.append(buildOutput(format, resourcePrefix + ".ownerProducer", "USA"));
+				text.append(buildHTMLTextOutput(format, resourcePrefix + ".classification", "U"));
+				text.append(buildHTMLTextOutput(format, resourcePrefix + ".ownerProducer", "USA"));
 			}
 		}
 		if (is41) {
-			text.append(buildOutput(format, resourcePrefix + ".noticeType", "DoD-Dist-B"));
-			text.append(buildOutput(format, resourcePrefix + ".noticeReason", "noticeReason"));
-			text.append(buildOutput(format, resourcePrefix + ".noticeDate", "2011-09-15"));
-			text.append(buildOutput(format, resourcePrefix + ".unregisteredNoticeType", "unregisteredNoticeType"));
-			text.append(buildOutput(format, resourcePrefix + ".externalNotice", "false"));
+			text.append(buildHTMLTextOutput(format, resourcePrefix + ".noticeType", "DoD-Dist-B"));
+			text.append(buildHTMLTextOutput(format, resourcePrefix + ".noticeReason", "noticeReason"));
+			text.append(buildHTMLTextOutput(format, resourcePrefix + ".noticeDate", "2011-09-15"));
+			text.append(buildHTMLTextOutput(format, resourcePrefix + ".unregisteredNoticeType", "unregisteredNoticeType"));
+			text.append(buildHTMLTextOutput(format, resourcePrefix + ".externalNotice", "false"));
 		}
 		if (isAtLeast401) {
-			text.append(buildOutput(format, "metacardInfo.identifier.qualifier", "URI"));
-			text.append(buildOutput(format, "metacardInfo.identifier.value", "urn:buri:ddmsence:testIdentifier"));
-			text.append(buildOutput(format, "metacardInfo.dates.created", "2003"));
-			text.append(buildOutput(format, "metacardInfo.publisher.entityType", "person"));
-			text.append(buildOutput(format, "metacardInfo.publisher.name", "Brian"));
-			text.append(buildOutput(format, "metacardInfo.publisher.surname", "Uri"));
-			text.append(buildOutput(format, "metacardInfo.classification", "U"));
-			text.append(buildOutput(format, "metacardInfo.ownerProducer", "USA"));
+			text.append(buildHTMLTextOutput(format, "metacardInfo.identifier.qualifier", "URI"));
+			text.append(buildHTMLTextOutput(format, "metacardInfo.identifier.value", "urn:buri:ddmsence:testIdentifier"));
+			text.append(buildHTMLTextOutput(format, "metacardInfo.dates.created", "2003"));
+			text.append(buildHTMLTextOutput(format, "metacardInfo.publisher.entityType", "person"));
+			text.append(buildHTMLTextOutput(format, "metacardInfo.publisher.name", "Brian"));
+			text.append(buildHTMLTextOutput(format, "metacardInfo.publisher.surname", "Uri"));
+			text.append(buildHTMLTextOutput(format, "metacardInfo.classification", "U"));
+			text.append(buildHTMLTextOutput(format, "metacardInfo.ownerProducer", "USA"));
 		}
-		text.append(buildOutput(format, "identifier.qualifier", "URI"));
-		text.append(buildOutput(format, "identifier.value", "urn:buri:ddmsence:testIdentifier"));
-		text.append(buildOutput(format, "title", "DDMSence"));
-		text.append(buildOutput(format, "title.classification", "U"));
-		text.append(buildOutput(format, "title.ownerProducer", "USA"));
-		text.append(buildOutput(format, "subtitle", "Version 0.1"));
-		text.append(buildOutput(format, "subtitle.classification", "U"));
-		text.append(buildOutput(format, "subtitle.ownerProducer", "USA"));
-		text.append(buildOutput(format, "description", "A transformation service."));
-		text.append(buildOutput(format, "description.classification", "U"));
-		text.append(buildOutput(format, "description.ownerProducer", "USA"));
-		text.append(buildOutput(format, "language.qualifier", "http://purl.org/dc/elements/1.1/language"));
-		text.append(buildOutput(format, "language.value", "en"));
-		text.append(buildOutput(format, "dates.created", "2003"));
-		text.append(buildOutput(format, "rights.privacyAct", "true"));
-		text.append(buildOutput(format, "rights.intellectualProperty", "true"));
-		text.append(buildOutput(format, "rights.copyright", "true"));
-		text.append(buildOutput(format, "source.value", "http://www.xmethods.com"));
-		text.append(buildOutput(format, "type.qualifier", "DCMITYPE"));
-		text.append(buildOutput(format, "type.value", "http://purl.org/dc/dcmitype/Text"));
-		text.append(buildOutput(format, "creator.entityType", Organization.getName(version)));
-		text.append(buildOutput(format, "creator.name", "DISA"));
-		text.append(buildOutput(format, "publisher.entityType", Person.getName(version)));
-		text.append(buildOutput(format, "publisher.name", "Brian"));
-		text.append(buildOutput(format, "publisher.surname", "Uri"));
-		text.append(buildOutput(format, "contributor.entityType", Service.getName(version)));
-		text.append(buildOutput(format, "contributor.name", "https://metadata.dod.mil/ebxmlquery/soap"));
+		text.append(buildHTMLTextOutput(format, "identifier.qualifier", "URI"));
+		text.append(buildHTMLTextOutput(format, "identifier.value", "urn:buri:ddmsence:testIdentifier"));
+		text.append(buildHTMLTextOutput(format, "title", "DDMSence"));
+		text.append(buildHTMLTextOutput(format, "title.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "title.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "subtitle", "Version 0.1"));
+		text.append(buildHTMLTextOutput(format, "subtitle.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "subtitle.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "description", "A transformation service."));
+		text.append(buildHTMLTextOutput(format, "description.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "description.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "language.qualifier", "http://purl.org/dc/elements/1.1/language"));
+		text.append(buildHTMLTextOutput(format, "language.value", "en"));
+		text.append(buildHTMLTextOutput(format, "dates.created", "2003"));
+		text.append(buildHTMLTextOutput(format, "rights.privacyAct", "true"));
+		text.append(buildHTMLTextOutput(format, "rights.intellectualProperty", "true"));
+		text.append(buildHTMLTextOutput(format, "rights.copyright", "true"));
+		text.append(buildHTMLTextOutput(format, "source.value", "http://www.xmethods.com"));
+		text.append(buildHTMLTextOutput(format, "type.qualifier", "DCMITYPE"));
+		text.append(buildHTMLTextOutput(format, "type.value", "http://purl.org/dc/dcmitype/Text"));
+		text.append(buildHTMLTextOutput(format, "creator.entityType", Organization.getName(version)));
+		text.append(buildHTMLTextOutput(format, "creator.name", "DISA"));
+		text.append(buildHTMLTextOutput(format, "publisher.entityType", Person.getName(version)));
+		text.append(buildHTMLTextOutput(format, "publisher.name", "Brian"));
+		text.append(buildHTMLTextOutput(format, "publisher.surname", "Uri"));
+		text.append(buildHTMLTextOutput(format, "contributor.entityType", Service.getName(version)));
+		text.append(buildHTMLTextOutput(format, "contributor.name", "https://metadata.dod.mil/ebxmlquery/soap"));
 		if (isAtLeast30) {
-			text.append(buildOutput(format, "pointOfContact.entityType", Unknown.getName(version)));
-			text.append(buildOutput(format, "pointOfContact.name", "UnknownEntity"));
+			text.append(buildHTMLTextOutput(format, "pointOfContact.entityType", Unknown.getName(version)));
+			text.append(buildHTMLTextOutput(format, "pointOfContact.name", "UnknownEntity"));
 		}
 		else {
-			text.append(buildOutput(format, "pointOfContact.entityType", Person.getName(version)));
-			text.append(buildOutput(format, "pointOfContact.name", "Brian"));
-			text.append(buildOutput(format, "pointOfContact.surname", "Uri"));
+			text.append(buildHTMLTextOutput(format, "pointOfContact.entityType", Person.getName(version)));
+			text.append(buildHTMLTextOutput(format, "pointOfContact.name", "Brian"));
+			text.append(buildHTMLTextOutput(format, "pointOfContact.surname", "Uri"));
 		}
 
 		String formatPrefix = (isAtLeast401 ? "format." : "format.Media.");
@@ -441,52 +441,52 @@ public class ResourceTest extends AbstractBaseTestCase {
 		String geospatialPrefix = isAtLeast401 ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
 		String relatedPrefix = (isAtLeast401 ? "relatedResource." : "relatedResources.RelatedResource.");
 
-		text.append(buildOutput(format, formatPrefix + "mimeType", "text/xml"));
-		text.append(buildOutput(format, subjectPrefix + "keyword", "DDMSence"));
-		text.append(buildOutput(format, "virtualCoverage.address", "123.456.789.0"));
-		text.append(buildOutput(format, "virtualCoverage.protocol", "IP"));
-		text.append(buildOutput(format, temporalPrefix + "name", "Unknown"));
-		text.append(buildOutput(format, temporalPrefix + "start", "1979-09-15"));
-		text.append(buildOutput(format, temporalPrefix + "end", "Not Applicable"));
+		text.append(buildHTMLTextOutput(format, formatPrefix + "mimeType", "text/xml"));
+		text.append(buildHTMLTextOutput(format, subjectPrefix + "keyword", "DDMSence"));
+		text.append(buildHTMLTextOutput(format, "virtualCoverage.address", "123.456.789.0"));
+		text.append(buildHTMLTextOutput(format, "virtualCoverage.protocol", "IP"));
+		text.append(buildHTMLTextOutput(format, temporalPrefix + "name", "Unknown"));
+		text.append(buildHTMLTextOutput(format, temporalPrefix + "start", "1979-09-15"));
+		text.append(buildHTMLTextOutput(format, temporalPrefix + "end", "Not Applicable"));
 		if (!isAtLeast50) {
-			text.append(buildOutput(format, geospatialPrefix + "boundingGeometry.Point.id", "IDValue"));
-			text.append(buildOutput(format, geospatialPrefix + "boundingGeometry.Point.srsName",
+			text.append(buildHTMLTextOutput(format, geospatialPrefix + "boundingGeometry.Point.id", "IDValue"));
+			text.append(buildHTMLTextOutput(format, geospatialPrefix + "boundingGeometry.Point.srsName",
 				"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D"));
-			text.append(buildOutput(format, geospatialPrefix + "boundingGeometry.Point.srsDimension", "10"));
-			text.append(buildOutput(format, geospatialPrefix + "boundingGeometry.Point.axisLabels", "A B C"));
-			text.append(buildOutput(format, geospatialPrefix + "boundingGeometry.Point.uomLabels", "Meter Meter Meter"));
-			text.append(buildOutput(format, geospatialPrefix + "boundingGeometry.Point.pos", "32.1 40.1"));
+			text.append(buildHTMLTextOutput(format, geospatialPrefix + "boundingGeometry.Point.srsDimension", "10"));
+			text.append(buildHTMLTextOutput(format, geospatialPrefix + "boundingGeometry.Point.axisLabels", "A B C"));
+			text.append(buildHTMLTextOutput(format, geospatialPrefix + "boundingGeometry.Point.uomLabels", "Meter Meter Meter"));
+			text.append(buildHTMLTextOutput(format, geospatialPrefix + "boundingGeometry.Point.pos", "32.1 40.1"));
 		}
 		else {
-			text.append(buildOutput(format, geospatialPrefix + "boundingGeometry.shapeType", "Point"));
+			text.append(buildHTMLTextOutput(format, geospatialPrefix + "boundingGeometry.shapeType", "Point"));
 		}
-		text.append(buildOutput(format, relatedPrefix + "relationship", "http://purl.org/dc/terms/references"));
-		text.append(buildOutput(format, relatedPrefix + "direction", "outbound"));
-		text.append(buildOutput(format, relatedPrefix + "qualifier", "http://purl.org/dc/terms/URI"));
-		text.append(buildOutput(format, relatedPrefix + "value", "http://en.wikipedia.org/wiki/Tank"));
-		text.append(buildOutput(format, relatedPrefix + "link.type", "locator"));
-		text.append(buildOutput(format, relatedPrefix + "link.href", "http://en.wikipedia.org/wiki/Tank"));
-		text.append(buildOutput(format, relatedPrefix + "link.role", "role"));
+		text.append(buildHTMLTextOutput(format, relatedPrefix + "relationship", "http://purl.org/dc/terms/references"));
+		text.append(buildHTMLTextOutput(format, relatedPrefix + "direction", "outbound"));
+		text.append(buildHTMLTextOutput(format, relatedPrefix + "qualifier", "http://purl.org/dc/terms/URI"));
+		text.append(buildHTMLTextOutput(format, relatedPrefix + "value", "http://en.wikipedia.org/wiki/Tank"));
+		text.append(buildHTMLTextOutput(format, relatedPrefix + "link.type", "locator"));
+		text.append(buildHTMLTextOutput(format, relatedPrefix + "link.href", "http://en.wikipedia.org/wiki/Tank"));
+		text.append(buildHTMLTextOutput(format, relatedPrefix + "link.role", "role"));
 		
 		if (isAtLeast401) {
-			text.append(buildOutput(format, "resourceManagement.processingInfo",
+			text.append(buildHTMLTextOutput(format, "resourceManagement.processingInfo",
 				"XSLT Transformation to convert DDMS 2.0 to DDMS 3.1."));
-			text.append(buildOutput(format, "resourceManagement.processingInfo.dateProcessed", "2011-08-19"));
-			text.append(buildOutput(format, "resourceManagement.processingInfo.classification", "U"));
-			text.append(buildOutput(format, "resourceManagement.processingInfo.ownerProducer", "USA"));
-			text.append(buildOutput(format, "resourceManagement.classification", "U"));
-			text.append(buildOutput(format, "resourceManagement.ownerProducer", "USA"));
+			text.append(buildHTMLTextOutput(format, "resourceManagement.processingInfo.dateProcessed", "2011-08-19"));
+			text.append(buildHTMLTextOutput(format, "resourceManagement.processingInfo.classification", "U"));
+			text.append(buildHTMLTextOutput(format, "resourceManagement.processingInfo.ownerProducer", "USA"));
+			text.append(buildHTMLTextOutput(format, "resourceManagement.classification", "U"));
+			text.append(buildHTMLTextOutput(format, "resourceManagement.ownerProducer", "USA"));
 		}
 		if (!isAtLeast50) {
 			if (isAtLeast30)
-				text.append(buildOutput(format, "security.excludeFromRollup", "true"));
-			text.append(buildOutput(format, "security.classification", "U"));
-			text.append(buildOutput(format, "security.ownerProducer", "USA"));
+				text.append(buildHTMLTextOutput(format, "security.excludeFromRollup", "true"));
+			text.append(buildHTMLTextOutput(format, "security.classification", "U"));
+			text.append(buildHTMLTextOutput(format, "security.ownerProducer", "USA"));
 		}
-		text.append(buildOutput(format, "extensible.layer", "false"));
-		text.append(buildOutput(format, "ddms.generator", "DDMSence " + PropertyReader.getProperty("version")));
+		text.append(buildHTMLTextOutput(format, "extensible.layer", "false"));
+		text.append(buildHTMLTextOutput(format, "ddms.generator", "DDMSence " + PropertyReader.getProperty("version")));
 		// Output for version will be based upon XML namespace of created resource, not the currently set version.
-		text.append(buildOutput(format, "ddms.version",
+		text.append(buildHTMLTextOutput(format, "ddms.version",
 			DDMSVersion.getVersionForNamespace(version.getNamespace()).getVersion()));
 		return (text.toString());
 	}
@@ -1006,8 +1006,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 				Resource.Builder builder = getBaseBuilder();
 				builder.getExtensibleElements().get(0).setXml(component.toXML());
 				Resource builderComponent = builder.commit();
-				assertTrue(builderComponent.toHTML().indexOf(buildOutput(OutputFormat.HTML, "extensible.layer", "true")) != -1);
-				assertTrue(builderComponent.toText().indexOf(buildOutput(OutputFormat.TEXT, "extensible.layer", "true")) != -1);
+				assertTrue(builderComponent.toHTML().indexOf(buildHTMLTextOutput(OutputFormat.HTML, "extensible.layer", "true")) != -1);
+				assertTrue(builderComponent.toText().indexOf(buildHTMLTextOutput(OutputFormat.TEXT, "extensible.layer", "true")) != -1);
 			}
 		}
 	}

@@ -94,7 +94,7 @@ public class PointTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "shapeType", "Point"));
+		text.append(buildHTMLTextOutput(format, "shapeType", "Point"));
 		return (text.toString());
 	}
 

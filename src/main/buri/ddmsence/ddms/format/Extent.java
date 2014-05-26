@@ -23,7 +23,7 @@ import java.util.Map;
 
 import nu.xom.Element;
 
-import org.json.simple.JSONValue;
+import org.json.simple.JSONObject;
 
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractQualifierValue;
@@ -116,22 +116,25 @@ public final class Extent extends AbstractQualifierValue {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getJSONObject()
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
-		if (format == OutputFormat.JSON) {
-			Map<String, Object> map = Util.getJSONMap();
-			map.put(getQualifierName(), getQualifier());
-			map.put(getValueName(), getValue());
-			return (JSONValue.toJSONString(map));
-		}
-		else {
-			String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
-			StringBuffer text = new StringBuffer();
-			text.append(buildOutput(format, localPrefix + getQualifierName(), getQualifier()));
-			text.append(buildOutput(format, localPrefix + getValueName(), getValue()));
-			return (text.toString());
-		}
+	protected JSONObject getJSONObject() {
+		Map<String, Object> map = Util.getJSONMap();
+		map.put(getQualifierName(), getQualifier());
+		map.put(getValueName(), getValue());
+		return (Util.getJSONObject(getName(), map));
+	}
+	
+	/**
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
+	 */
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
+		Util.requireHTMLText(format);
+		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
+		StringBuffer text = new StringBuffer();
+		text.append(buildHTMLTextOutput(format, localPrefix + getQualifierName(), getQualifier()));
+		text.append(buildHTMLTextOutput(format, localPrefix + getValueName(), getValue()));
+		return (text.toString());
 	}
 
 	/**

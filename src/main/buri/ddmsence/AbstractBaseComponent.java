@@ -26,9 +26,12 @@ import java.util.List;
 import java.util.Map;
 
 import nu.xom.Element;
-import buri.ddmsence.ddms.OutputFormat;
+
+import org.json.simple.JSONObject;
+
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.UnsupportedVersionException;
 import buri.ddmsence.ddms.ValidationMessage;
@@ -74,7 +77,6 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	public static final Map<OutputFormat, String> OUTPUT_TEMPLATES = new HashMap<OutputFormat, String>();
 	static {
 		OUTPUT_TEMPLATES.put(OutputFormat.HTML, "<meta name=\"%s\" content=\"%s\" />\n");
-		OUTPUT_TEMPLATES.put(OutputFormat.JSON, "\"%s\":\"%s\",");
 		OUTPUT_TEMPLATES.put(OutputFormat.TEXT, "%s: %s\n");
 	}
 	
@@ -197,25 +199,37 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @see IDDMSComponent#toHTML()
 	 */
 	public String toHTML() {
-		return (getOutput(OutputFormat.HTML, "", ""));
+		return (getHTMLTextOutput(OutputFormat.HTML, "", ""));
 	}
 
 	/**
 	 * @see IDDMSComponent#toJSON()
 	 */
 	public String toJSON() {
-		return (getOutput(OutputFormat.JSON, "", ""));
+		return (getJSONObject().toJSONString());
 	}
 	
 	/**
 	 * @see IDDMSComponent#toText()
 	 */
 	public String toText() {
-		return (getOutput(OutputFormat.TEXT, "", ""));
+		return (getHTMLTextOutput(OutputFormat.TEXT, "", ""));
 	}
 
 	/**
-	 * Renders this component as HTML, JSON, or Text, with an optional prefix to nest it.
+	 * Renders this component as a JSON object, which can either be converted to
+	 * a JSONString or inserted into the parent JSON object.
+	 */
+	// TODO: Convert this to abstract once all classes have implemented it.
+	protected JSONObject getJSONObject() {
+		return (new JSONObject());
+	}
+	
+	/**
+	 * Renders this component as HTML or Text, with an optional prefix to nest it.
+	 * 
+	 * <p>I consider this to be an internal method, that unfortunately must be marked as public to allow cross-package
+	 * access when generating output. Use toHTML() and toText() as the formal, public methods to generate output.</p>
 	 * 
 	 * @param format the desired format of this output
 	 * @param prefix an optional prefix to put on each name.
@@ -223,7 +237,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * 
 	 * @return the representation of this component in the specified format
 	 */
-	public abstract String getOutput(OutputFormat format, String prefix, String suffix);
+	public abstract String getHTMLTextOutput(OutputFormat format, String prefix, String suffix);
 
 	/**
 	 * Accessor for a collection of nested components. A list such as this is useful for bulk actions, such as checking
@@ -240,8 +254,10 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @param name the name of the name-value pairing (will be escaped in HTML)
 	 * @param content the value of the name-value pairing (will be escaped in HTML)
 	 * @return a string containing the output
+	 * @throws UnsupportedOperationException if the format is not HTML or Text.
 	 */
-	public static String buildOutput(OutputFormat format, String name, String content) {
+	public static String buildHTMLTextOutput(OutputFormat format, String name, String content) {
+		Util.requireHTMLText(format);
 		if (Util.isEmpty(content))
 			return ("");
 		boolean isHTML = (format == OutputFormat.HTML);
@@ -260,19 +276,21 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @param prefix the first part of the name in the name-value pairing (will be escaped in HTML)
 	 * @param contents a list of the values (will be escaped in HTML)
 	 * @return a string containing the output
+	 * @throws UnsupportedOperationException if the format is not HTML or Text.
 	 */
-	protected String buildOutput(OutputFormat format, String prefix, List<?> contents) {
+	protected String buildHTMLTextOutput(OutputFormat format, String prefix, List<?> contents) {
+		Util.requireHTMLText(format);
 		StringBuffer values = new StringBuffer();
 		for (int i = 0; i < contents.size(); i++) {
 			Object object = contents.get(i);
 			if (object instanceof AbstractBaseComponent) {
 				AbstractBaseComponent component = (AbstractBaseComponent) object;
-				values.append(component.getOutput(format, prefix, buildIndex(i, contents.size())));
+				values.append(component.getHTMLTextOutput(format, prefix, buildIndex(i, contents.size())));
 			}
 			else if (object instanceof String)
-				values.append(buildOutput(format, prefix + buildIndex(i, contents.size()), (String) object));
+				values.append(buildHTMLTextOutput(format, prefix + buildIndex(i, contents.size()), (String) object));
 			else
-				values.append(buildOutput(format, prefix + buildIndex(i, contents.size()), String.valueOf(object)));
+				values.append(buildHTMLTextOutput(format, prefix + buildIndex(i, contents.size()), String.valueOf(object)));
 		}
 		return (values.toString());
 	}

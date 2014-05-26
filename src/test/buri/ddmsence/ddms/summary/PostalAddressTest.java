@@ -163,17 +163,17 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(OutputFormat format, boolean hasState) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
-			text.append(buildOutput(format, "postalAddress.street", TEST_STREETS.get(0)));
-			text.append(buildOutput(format, "postalAddress.city", TEST_CITY));
+			text.append(buildHTMLTextOutput(format, "postalAddress.street", TEST_STREETS.get(0)));
+			text.append(buildHTMLTextOutput(format, "postalAddress.city", TEST_CITY));
 			if (hasState)
-				text.append(buildOutput(format, "postalAddress.state", TEST_STATE));
+				text.append(buildHTMLTextOutput(format, "postalAddress.state", TEST_STATE));
 			else
-				text.append(buildOutput(format, "postalAddress.province", TEST_PROVINCE));
-			text.append(buildOutput(format, "postalAddress.postalCode", TEST_POSTAL_CODE));
-			text.append(CountryCodeTest.getFixture().getOutput(format, "postalAddress.", ""));
+				text.append(buildHTMLTextOutput(format, "postalAddress.province", TEST_PROVINCE));
+			text.append(buildHTMLTextOutput(format, "postalAddress.postalCode", TEST_POSTAL_CODE));
+			text.append(CountryCodeTest.getFixture().getHTMLTextOutput(format, "postalAddress.", ""));
 		}
 		else {
-			text.append(GeneralAddressClassTest.getFixture().getOutput(format, "postalAddress.", ""));
+			text.append(GeneralAddressClassTest.getFixture().getHTMLTextOutput(format, "postalAddress.", ""));
 		}
 		return (text.toString());
 	}

@@ -240,19 +240,19 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, localPrefix + NAME_NAME, getNames()));
-		text.append(buildOutput(format, localPrefix + REGION_NAME, getRegions()));
+		text.append(buildHTMLTextOutput(format, localPrefix + NAME_NAME, getNames()));
+		text.append(buildHTMLTextOutput(format, localPrefix + REGION_NAME, getRegions()));
 		if (getCountryCode() != null)
-			text.append(getCountryCode().getOutput(format, localPrefix, ""));
+			text.append(getCountryCode().getHTMLTextOutput(format, localPrefix, ""));
 		if (getSubDivisionCode() != null)
-			text.append(getSubDivisionCode().getOutput(format, localPrefix, ""));
+			text.append(getSubDivisionCode().getHTMLTextOutput(format, localPrefix, ""));
 		if (hasFacilityIdentifier())
-			text.append(getFacilityIdentifier().getOutput(format, localPrefix, ""));
+			text.append(getFacilityIdentifier().getHTMLTextOutput(format, localPrefix, ""));
 		return (text.toString());
 	}
 

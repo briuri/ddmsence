@@ -138,10 +138,10 @@ public class PolygonTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "Polygon.id", TEST_ID));
-		text.append(SRSAttributesTest.getFixture().getOutput(format, "Polygon."));
+		text.append(buildHTMLTextOutput(format, "Polygon.id", TEST_ID));
+		text.append(SRSAttributesTest.getFixture().getHTMLTextOutput(format, "Polygon."));
 		for (Position pos : PositionTest.getFixtureList()) {
-			text.append(pos.getOutput(format, "Polygon.", ""));
+			text.append(pos.getHTMLTextOutput(format, "Polygon.", ""));
 		}
 		return (text.toString());
 	}

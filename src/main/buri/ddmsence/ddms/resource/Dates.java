@@ -210,18 +210,18 @@ public final class Dates extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, localPrefix, getAcquiredOns()));
-		text.append(buildOutput(format, localPrefix + CREATED_NAME, getCreatedString()));
-		text.append(buildOutput(format, localPrefix + POSTED_NAME, getPostedString()));
-		text.append(buildOutput(format, localPrefix + VALID_TIL_NAME, getValidTilString()));
-		text.append(buildOutput(format, localPrefix + INFO_CUT_OFF_NAME, getInfoCutOffString()));
-		text.append(buildOutput(format, localPrefix + APPROVED_ON_NAME, getApprovedOnString()));
-		text.append(buildOutput(format, localPrefix + RECEIVED_ON_NAME, getReceivedOnString()));
+		text.append(buildHTMLTextOutput(format, localPrefix, getAcquiredOns()));
+		text.append(buildHTMLTextOutput(format, localPrefix + CREATED_NAME, getCreatedString()));
+		text.append(buildHTMLTextOutput(format, localPrefix + POSTED_NAME, getPostedString()));
+		text.append(buildHTMLTextOutput(format, localPrefix + VALID_TIL_NAME, getValidTilString()));
+		text.append(buildHTMLTextOutput(format, localPrefix + INFO_CUT_OFF_NAME, getInfoCutOffString()));
+		text.append(buildHTMLTextOutput(format, localPrefix + APPROVED_ON_NAME, getApprovedOnString()));
+		text.append(buildHTMLTextOutput(format, localPrefix + RECEIVED_ON_NAME, getReceivedOnString()));
 		return (text.toString());
 	}
 

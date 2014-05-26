@@ -113,9 +113,9 @@ public class RightsTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "rights.privacyAct", "true"));
-		text.append(buildOutput(format, "rights.intellectualProperty", "true"));
-		text.append(buildOutput(format, "rights.copyright", "false"));
+		text.append(buildHTMLTextOutput(format, "rights.privacyAct", "true"));
+		text.append(buildHTMLTextOutput(format, "rights.intellectualProperty", "true"));
+		text.append(buildHTMLTextOutput(format, "rights.copyright", "false"));
 		return (text.toString());
 	}
 

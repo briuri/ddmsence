@@ -157,19 +157,19 @@ public final class Security extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		if (getExcludeFromRollup() != null)
-			text.append(buildOutput(format, localPrefix + EXCLUDE_FROM_ROLLUP_NAME,
+			text.append(buildHTMLTextOutput(format, localPrefix + EXCLUDE_FROM_ROLLUP_NAME,
 				String.valueOf(getExcludeFromRollup())));
 		if (getNoticeList() != null)
-			text.append(getNoticeList().getOutput(format, localPrefix, ""));
+			text.append(getNoticeList().getHTMLTextOutput(format, localPrefix, ""));
 		if (getAccess() != null)
-			text.append(getAccess().getOutput(format, localPrefix, ""));
-		text.append(getSecurityAttributes().getOutput(format, localPrefix));
+			text.append(getAccess().getHTMLTextOutput(format, localPrefix, ""));
+		text.append(getSecurityAttributes().getHTMLTextOutput(format, localPrefix));
 		return (text.toString());
 	}
 

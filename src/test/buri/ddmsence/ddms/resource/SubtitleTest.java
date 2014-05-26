@@ -116,9 +116,9 @@ public class SubtitleTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "subtitle", TEST_VALUE));
-		text.append(buildOutput(format, "subtitle.classification", "U"));
-		text.append(buildOutput(format, "subtitle.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "subtitle", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "subtitle.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "subtitle.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

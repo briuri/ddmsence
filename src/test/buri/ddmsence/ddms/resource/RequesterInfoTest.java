@@ -147,10 +147,10 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "requesterInfo.entityType", "organization"));
-		text.append(buildOutput(format, "requesterInfo.name", "DISA"));
-		text.append(buildOutput(format, "requesterInfo.classification", "U"));
-		text.append(buildOutput(format, "requesterInfo.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "requesterInfo.entityType", "organization"));
+		text.append(buildHTMLTextOutput(format, "requesterInfo.name", "DISA"));
+		text.append(buildHTMLTextOutput(format, "requesterInfo.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "requesterInfo.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

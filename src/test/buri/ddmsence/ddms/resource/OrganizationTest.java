@@ -131,21 +131,21 @@ public class OrganizationTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "entityType", Organization.getName(version)));
+		text.append(buildHTMLTextOutput(format, "entityType", Organization.getName(version)));
 		for (String name : TEST_NAMES)
-			text.append(buildOutput(format, "name", name));
+			text.append(buildHTMLTextOutput(format, "name", name));
 		for (String phone : TEST_PHONES)
-			text.append(buildOutput(format, "phone", phone));
+			text.append(buildHTMLTextOutput(format, "phone", phone));
 		for (String email : TEST_EMAILS)
-			text.append(buildOutput(format, "email", email));
+			text.append(buildHTMLTextOutput(format, "email", email));
 		if (version.isAtLeast("4.0.1")) {
-			text.append(buildOutput(format, "subOrganization", "sub1"));
-			text.append(buildOutput(format, "subOrganization.classification", "U"));
-			text.append(buildOutput(format, "subOrganization.ownerProducer", "USA"));
-			text.append(buildOutput(format, "subOrganization", "sub2"));
-			text.append(buildOutput(format, "subOrganization.classification", "U"));
-			text.append(buildOutput(format, "subOrganization.ownerProducer", "USA"));
-			text.append(buildOutput(format, "acronym", "DISA"));
+			text.append(buildHTMLTextOutput(format, "subOrganization", "sub1"));
+			text.append(buildHTMLTextOutput(format, "subOrganization.classification", "U"));
+			text.append(buildHTMLTextOutput(format, "subOrganization.ownerProducer", "USA"));
+			text.append(buildHTMLTextOutput(format, "subOrganization", "sub2"));
+			text.append(buildHTMLTextOutput(format, "subOrganization.classification", "U"));
+			text.append(buildHTMLTextOutput(format, "subOrganization.ownerProducer", "USA"));
+			text.append(buildHTMLTextOutput(format, "acronym", "DISA"));
 		}
 		return (text.toString());
 	}

@@ -257,27 +257,27 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		if (!getDDMSVersion().isAtLeast("4.0.1"))
 			localPrefix += GEOSPATIAL_EXTENT_NAME + ".";
 		StringBuffer text = new StringBuffer();
 		if (getGeographicIdentifier() != null)
-			text.append(getGeographicIdentifier().getOutput(format, localPrefix, ""));
+			text.append(getGeographicIdentifier().getHTMLTextOutput(format, localPrefix, ""));
 		if (getBoundingBox() != null)
-			text.append(getBoundingBox().getOutput(format, localPrefix, ""));
+			text.append(getBoundingBox().getHTMLTextOutput(format, localPrefix, ""));
 		if (getBoundingGeometry() != null)
-			text.append(getBoundingGeometry().getOutput(format, localPrefix, ""));
+			text.append(getBoundingGeometry().getHTMLTextOutput(format, localPrefix, ""));
 		if (getPostalAddress() != null)
-			text.append(getPostalAddress().getOutput(format, localPrefix, ""));
+			text.append(getPostalAddress().getHTMLTextOutput(format, localPrefix, ""));
 		if (getVerticalExtent() != null)
-			text.append(getVerticalExtent().getOutput(format, localPrefix, ""));
-		text.append(buildOutput(format, localPrefix + PRECEDENCE_NAME, getPrecedence()));
+			text.append(getVerticalExtent().getHTMLTextOutput(format, localPrefix, ""));
+		text.append(buildHTMLTextOutput(format, localPrefix + PRECEDENCE_NAME, getPrecedence()));
 		if (getOrder() != null)
-			text.append(buildOutput(format, localPrefix + ORDER_NAME, String.valueOf(getOrder())));
-		text.append(getSecurityAttributes().getOutput(format, localPrefix));
+			text.append(buildHTMLTextOutput(format, localPrefix + ORDER_NAME, String.valueOf(getOrder())));
+		text.append(getSecurityAttributes().getHTMLTextOutput(format, localPrefix));
 		return (text.toString());
 	}
 

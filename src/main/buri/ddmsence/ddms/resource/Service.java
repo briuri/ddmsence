@@ -128,12 +128,12 @@ public final class Service extends AbstractRoleEntity {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, "", suffix);
-		StringBuffer text = new StringBuffer(super.getOutput(format, localPrefix, ""));
-		text.append(buildOutput(format, localPrefix + AFFILIATION_NAME, getAffiliations()));
+		StringBuffer text = new StringBuffer(super.getHTMLTextOutput(format, localPrefix, ""));
+		text.append(buildHTMLTextOutput(format, localPrefix + AFFILIATION_NAME, getAffiliations()));
 		return (text.toString());
 	}
 

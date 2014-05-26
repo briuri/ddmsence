@@ -118,11 +118,20 @@ public class ExtentTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "extent.qualifier", TEST_QUALIFIER));
-		text.append(buildOutput(format, "extent.value", TEST_VALUE));
-		return (formatOutput(format, text.toString()));
+		text.append(buildHTMLTextOutput(format, "extent.qualifier", TEST_QUALIFIER));
+		text.append(buildHTMLTextOutput(format, "extent.value", TEST_VALUE));
+		return (text.toString());
 	}
 
+	/**
+	 * Returns the expected JSON output for this unit test
+	 */
+	private String getExpectedJSONOutput() {
+		StringBuffer json = new StringBuffer();
+		json.append("{\"extent\":{\"qualifier\":\"sizeBytes\",\"value\":\"75000\"}}");
+		return (json.toString());
+	}
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -242,8 +251,8 @@ public class ExtentTest extends AbstractBaseTestCase {
 
 			Extent elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(OutputFormat.JSON), elementComponent.toJSON());
 			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
+			assertEquals(getExpectedJSONOutput(), elementComponent.toJSON());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

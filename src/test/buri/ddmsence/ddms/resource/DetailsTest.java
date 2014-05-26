@@ -150,9 +150,9 @@ public class DetailsTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "details", TEST_VALUE));
-		text.append(buildOutput(format, "details.classification", "U"));
-		text.append(buildOutput(format, "details.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "details", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "details.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "details.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

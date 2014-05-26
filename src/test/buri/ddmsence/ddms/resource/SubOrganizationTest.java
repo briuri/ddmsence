@@ -145,9 +145,9 @@ public class SubOrganizationTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "subOrganization", TEST_VALUE));
-		text.append(buildOutput(format, "subOrganization.classification", "U"));
-		text.append(buildOutput(format, "subOrganization.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "subOrganization", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "subOrganization.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "subOrganization.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

@@ -144,26 +144,26 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(boolean hasLinks, OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		if (!hasLinks)
-			text.append(buildOutput(format, "revisionRecall", TEST_VALUE));
-		text.append(buildOutput(format, "revisionRecall.revisionID", "1"));
-		text.append(buildOutput(format, "revisionRecall.revisionType", "ADMINISTRATIVE RECALL"));
-		text.append(buildOutput(format, "revisionRecall.network", "NIPRNet"));
+			text.append(buildHTMLTextOutput(format, "revisionRecall", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "revisionRecall.revisionID", "1"));
+		text.append(buildHTMLTextOutput(format, "revisionRecall.revisionType", "ADMINISTRATIVE RECALL"));
+		text.append(buildHTMLTextOutput(format, "revisionRecall.network", "NIPRNet"));
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
-			text.append(buildOutput(format, "revisionRecall.otherNetwork", "PBS"));
+			text.append(buildHTMLTextOutput(format, "revisionRecall.otherNetwork", "PBS"));
 		if (hasLinks) {
-			text.append(buildOutput(format, "revisionRecall.link.type", "locator"));
-			text.append(buildOutput(format, "revisionRecall.link.href", "http://en.wikipedia.org/wiki/Tank"));
-			text.append(buildOutput(format, "revisionRecall.link.role", "tank"));
-			text.append(buildOutput(format, "revisionRecall.link.title", "Tank Page"));
-			text.append(buildOutput(format, "revisionRecall.link.label", "tank"));
-			text.append(buildOutput(format, "revisionRecall.link.classification", "U"));
-			text.append(buildOutput(format, "revisionRecall.link.ownerProducer", "USA"));
-			text.append(buildOutput(format, "revisionRecall.details", "Details"));
-			text.append(buildOutput(format, "revisionRecall.details.classification", "U"));
-			text.append(buildOutput(format, "revisionRecall.details.ownerProducer", "USA"));
+			text.append(buildHTMLTextOutput(format, "revisionRecall.link.type", "locator"));
+			text.append(buildHTMLTextOutput(format, "revisionRecall.link.href", "http://en.wikipedia.org/wiki/Tank"));
+			text.append(buildHTMLTextOutput(format, "revisionRecall.link.role", "tank"));
+			text.append(buildHTMLTextOutput(format, "revisionRecall.link.title", "Tank Page"));
+			text.append(buildHTMLTextOutput(format, "revisionRecall.link.label", "tank"));
+			text.append(buildHTMLTextOutput(format, "revisionRecall.link.classification", "U"));
+			text.append(buildHTMLTextOutput(format, "revisionRecall.link.ownerProducer", "USA"));
+			text.append(buildHTMLTextOutput(format, "revisionRecall.details", "Details"));
+			text.append(buildHTMLTextOutput(format, "revisionRecall.details.classification", "U"));
+			text.append(buildHTMLTextOutput(format, "revisionRecall.details.ownerProducer", "USA"));
 		}
-		text.append(XLinkAttributesTest.getResourceFixture().getOutput(format, "revisionRecall."));
-		text.append(SecurityAttributesTest.getFixture().getOutput(format, "revisionRecall."));
+		text.append(XLinkAttributesTest.getResourceFixture().getHTMLTextOutput(format, "revisionRecall."));
+		text.append(SecurityAttributesTest.getFixture().getHTMLTextOutput(format, "revisionRecall."));
 		return (text.toString());
 	}
 

@@ -131,10 +131,10 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "processingInfo", TEST_VALUE));
-		text.append(buildOutput(format, "processingInfo.dateProcessed", TEST_DATE_PROCESSED));
-		text.append(buildOutput(format, "processingInfo.classification", "U"));
-		text.append(buildOutput(format, "processingInfo.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "processingInfo", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "processingInfo.dateProcessed", TEST_DATE_PROCESSED));
+		text.append(buildHTMLTextOutput(format, "processingInfo.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "processingInfo.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

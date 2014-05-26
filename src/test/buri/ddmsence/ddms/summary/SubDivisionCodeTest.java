@@ -131,8 +131,8 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "subDivisionCode." + getTestQualifierName(), TEST_QUALIFIER));
-		text.append(buildOutput(format, "subDivisionCode." + getTestValueName(), TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "subDivisionCode." + getTestQualifierName(), TEST_QUALIFIER));
+		text.append(buildHTMLTextOutput(format, "subDivisionCode." + getTestValueName(), TEST_VALUE));
 		return (text.toString());
 	}
 
