@@ -126,10 +126,10 @@ public class KeywordTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "keyword", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "keyword", TEST_VALUE));
 		if (version.isAtLeast("4.0.1")) {
-			text.append(buildOutput(format, "keyword.classification", "U"));
-			text.append(buildOutput(format, "keyword.ownerProducer", "USA"));
+			text.append(buildHTMLTextOutput(format, "keyword.classification", "U"));
+			text.append(buildHTMLTextOutput(format, "keyword.ownerProducer", "USA"));
 		}
 		return (text.toString());
 	}

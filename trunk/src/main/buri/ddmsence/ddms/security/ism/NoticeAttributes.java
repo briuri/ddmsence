@@ -256,20 +256,21 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	}
 
 	/**
-	 * @see AbstractAttributeGroup#getOutput(OutputFormat, String)
+	 * @see AbstractAttributeGroup#getHTMLTextOutput(OutputFormat, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix) {
+		Util.requireHTMLText(format);
 		String localPrefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer();
-		text.append(Resource.buildOutput(format, localPrefix + NOTICE_TYPE_NAME, getNoticeType()));
-		text.append(Resource.buildOutput(format, localPrefix + NOTICE_REASON_NAME, getNoticeReason()));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + NOTICE_TYPE_NAME, getNoticeType()));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + NOTICE_REASON_NAME, getNoticeReason()));
 		if (getNoticeDate() != null) {
-			text.append(Resource.buildOutput(format, localPrefix + NOTICE_DATE_NAME, getNoticeDate().toXMLFormat()));
+			text.append(Resource.buildHTMLTextOutput(format, localPrefix + NOTICE_DATE_NAME, getNoticeDate().toXMLFormat()));
 		}
-		text.append(Resource.buildOutput(format, localPrefix + UNREGISTERED_NOTICE_TYPE_NAME,
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + UNREGISTERED_NOTICE_TYPE_NAME,
 			getUnregisteredNoticeType()));
 		if (isExternalReference() != null) {
-			text.append(Resource.buildOutput(format, localPrefix + EXTERNAL_NOTICE_NAME,
+			text.append(Resource.buildHTMLTextOutput(format, localPrefix + EXTERNAL_NOTICE_NAME,
 				String.valueOf(isExternalReference())));
 		}
 

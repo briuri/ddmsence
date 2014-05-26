@@ -116,14 +116,14 @@ public final class ProcessingInfo extends AbstractSimpleString {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix);
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, localPrefix, getValue()));
-		text.append(buildOutput(format, localPrefix + "." + DATE_PROCESSED_NAME, getDateProcessedString()));
-		text.append(getSecurityAttributes().getOutput(format, localPrefix + "."));
+		text.append(buildHTMLTextOutput(format, localPrefix, getValue()));
+		text.append(buildHTMLTextOutput(format, localPrefix + "." + DATE_PROCESSED_NAME, getDateProcessedString()));
+		text.append(getSecurityAttributes().getHTMLTextOutput(format, localPrefix + "."));
 		return (text.toString());
 	}
 

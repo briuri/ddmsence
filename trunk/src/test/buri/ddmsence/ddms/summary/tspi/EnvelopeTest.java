@@ -94,7 +94,7 @@ public class EnvelopeTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "shapeType", "Envelope"));
+		text.append(buildHTMLTextOutput(format, "shapeType", "Envelope"));
 		return (text.toString());
 	}
 

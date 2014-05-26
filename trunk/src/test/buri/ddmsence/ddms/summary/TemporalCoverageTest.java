@@ -162,20 +162,20 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 		if (!version.isAtLeast("4.0.1"))
 			prefix += "TimePeriod.";
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, prefix + "name", TEST_NAME));
+		text.append(buildHTMLTextOutput(format, prefix + "name", TEST_NAME));
 		if (isApproximable) {
 			ApproximableDate start = new ApproximableDate(ApproximableDateTest.getFixtureElement("approximableStart",
 				true));
 			ApproximableDate end = new ApproximableDate(ApproximableDateTest.getFixtureElement("approximableEnd", true));
-			text.append(start.getOutput(format, prefix, ""));
-			text.append(end.getOutput(format, prefix, ""));
+			text.append(start.getHTMLTextOutput(format, prefix, ""));
+			text.append(end.getHTMLTextOutput(format, prefix, ""));
 		}
 		else {
-			text.append(buildOutput(format, prefix + "start", TEST_START));
-			text.append(buildOutput(format, prefix + "end", TEST_END));
+			text.append(buildHTMLTextOutput(format, prefix + "start", TEST_START));
+			text.append(buildHTMLTextOutput(format, prefix + "end", TEST_END));
 		}
 		if (version.isAtLeast("3.0"))
-			text.append(SecurityAttributesTest.getFixture().getOutput(format, prefix));
+			text.append(SecurityAttributesTest.getFixture().getHTMLTextOutput(format, prefix));
 		return (text.toString());
 	}
 

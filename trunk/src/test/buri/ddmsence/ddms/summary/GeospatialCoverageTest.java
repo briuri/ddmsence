@@ -154,7 +154,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = version.isAtLeast("4.0.1") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
-			return (buildOutput(OutputFormat.HTML, prefix + "classification", "U") + buildOutput(OutputFormat.HTML, prefix + "ownerProducer",
+			return (buildHTMLTextOutput(OutputFormat.HTML, prefix + "classification", "U") + buildHTMLTextOutput(OutputFormat.HTML, prefix + "ownerProducer",
 				"USA"));
 		return ("");
 	}
@@ -166,7 +166,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = version.isAtLeast("4.0.1") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
-			return (buildOutput(OutputFormat.TEXT, prefix + "classification", "U") + buildOutput(OutputFormat.TEXT, prefix + "ownerProducer",
+			return (buildHTMLTextOutput(OutputFormat.TEXT, prefix + "classification", "U") + buildHTMLTextOutput(OutputFormat.TEXT, prefix + "ownerProducer",
 				"USA"));
 		return ("");
 	}
@@ -178,13 +178,13 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = version.isAtLeast("4.0.1") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
 		StringBuffer text = new StringBuffer();
-		text.append(GeographicIdentifierTest.getCountryCodeBasedFixture().getOutput(format, prefix, ""));
+		text.append(GeographicIdentifierTest.getCountryCodeBasedFixture().getHTMLTextOutput(format, prefix, ""));
 		if (version.isAtLeast("4.0.1")) {
-			text.append(buildOutput(format, prefix + "precedence", "Primary"));
-			text.append(buildOutput(format, prefix + "order", "1"));
+			text.append(buildHTMLTextOutput(format, prefix + "precedence", "Primary"));
+			text.append(buildHTMLTextOutput(format, prefix + "order", "1"));
 		}
 		if (version.isAtLeast("3.0"))
-			text.append(SecurityAttributesTest.getFixture().getOutput(format, prefix));
+			text.append(SecurityAttributesTest.getFixture().getHTMLTextOutput(format, prefix));
 		return (text.toString());
 	}
 
@@ -486,34 +486,34 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 				// boundingBox
 				Element element = buildComponentElement(BoundingBoxTest.getFixture());
 				elementComponent = getInstance(element, SUCCESS);
-				assertEquals(BoundingBoxTest.getFixture().getOutput(OutputFormat.HTML, prefix, "") + getHtmlIcism(),
+				assertEquals(BoundingBoxTest.getFixture().getHTMLTextOutput(OutputFormat.HTML, prefix, "") + getHtmlIcism(),
 					elementComponent.toHTML());
-				assertEquals(BoundingBoxTest.getFixture().getOutput(OutputFormat.TEXT, prefix, "") + getTextIcism(),
+				assertEquals(BoundingBoxTest.getFixture().getHTMLTextOutput(OutputFormat.TEXT, prefix, "") + getTextIcism(),
 					elementComponent.toText());
 
 				// verticalExtent
 				element = buildComponentElement(VerticalExtentTest.getFixture());
 				elementComponent = getInstance(element, SUCCESS);
-				assertEquals(VerticalExtentTest.getFixture().getOutput(OutputFormat.HTML, prefix, "") + getHtmlIcism(),
+				assertEquals(VerticalExtentTest.getFixture().getHTMLTextOutput(OutputFormat.HTML, prefix, "") + getHtmlIcism(),
 					elementComponent.toHTML());
-				assertEquals(VerticalExtentTest.getFixture().getOutput(OutputFormat.TEXT, prefix, "") + getTextIcism(),
+				assertEquals(VerticalExtentTest.getFixture().getHTMLTextOutput(OutputFormat.TEXT, prefix, "") + getTextIcism(),
 					elementComponent.toText());
 			}
 
 			// boundingGeometry
 			Element element = buildComponentElement(BoundingGeometryTest.getFixture());
 			elementComponent = getInstance(element, SUCCESS);
-			assertEquals(BoundingGeometryTest.getFixture().getOutput(OutputFormat.HTML, prefix, "") + getHtmlIcism(),
+			assertEquals(BoundingGeometryTest.getFixture().getHTMLTextOutput(OutputFormat.HTML, prefix, "") + getHtmlIcism(),
 				elementComponent.toHTML());
-			assertEquals(BoundingGeometryTest.getFixture().getOutput(OutputFormat.TEXT, prefix, "") + getTextIcism(),
+			assertEquals(BoundingGeometryTest.getFixture().getHTMLTextOutput(OutputFormat.TEXT, prefix, "") + getTextIcism(),
 				elementComponent.toText());
 
 			// postalAddress
 			element = buildComponentElement(PostalAddressTest.getFixture());
 			elementComponent = getInstance(element, SUCCESS);
-			assertEquals(PostalAddressTest.getFixture().getOutput(OutputFormat.HTML, prefix, "") + getHtmlIcism(),
+			assertEquals(PostalAddressTest.getFixture().getHTMLTextOutput(OutputFormat.HTML, prefix, "") + getHtmlIcism(),
 				elementComponent.toHTML());
-			assertEquals(PostalAddressTest.getFixture().getOutput(OutputFormat.TEXT, prefix, "") + getTextIcism(),
+			assertEquals(PostalAddressTest.getFixture().getHTMLTextOutput(OutputFormat.TEXT, prefix, "") + getTextIcism(),
 				elementComponent.toText());
 		}
 	}

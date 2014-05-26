@@ -116,8 +116,8 @@ public class FacilityIdentifierTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "facilityIdentifier.beNumber", TEST_BENUMBER));
-		text.append(buildOutput(format, "facilityIdentifier.osuffix", TEST_OSUFFIX));
+		text.append(buildHTMLTextOutput(format, "facilityIdentifier.beNumber", TEST_BENUMBER));
+		text.append(buildHTMLTextOutput(format, "facilityIdentifier.osuffix", TEST_OSUFFIX));
 		return (text.toString());
 	}
 

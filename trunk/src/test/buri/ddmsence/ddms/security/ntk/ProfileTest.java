@@ -128,10 +128,10 @@ public class ProfileTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(SystemNameTest.getFixture().getOutput(format, "profile.", ""));
-		text.append(ProfileValueTest.getFixtureList().get(0).getOutput(format, "profile.", ""));
-		text.append(buildOutput(format, "profile.classification", "U"));
-		text.append(buildOutput(format, "profile.ownerProducer", "USA"));
+		text.append(SystemNameTest.getFixture().getHTMLTextOutput(format, "profile.", ""));
+		text.append(ProfileValueTest.getFixtureList().get(0).getHTMLTextOutput(format, "profile.", ""));
+		text.append(buildHTMLTextOutput(format, "profile.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "profile.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

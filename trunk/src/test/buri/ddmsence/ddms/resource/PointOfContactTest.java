@@ -128,11 +128,11 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(((AbstractBaseComponent) getEntityFixture()).getOutput(format, "pointOfContact.", ""));
+		text.append(((AbstractBaseComponent) getEntityFixture()).getHTMLTextOutput(format, "pointOfContact.", ""));
 		if (version.isAtLeast("4.0.1"))
-			text.append(buildOutput(format, "pointOfContact.pocType", "DoD-Dist-B"));
-		text.append(buildOutput(format, "pointOfContact.classification", "U"));
-		text.append(buildOutput(format, "pointOfContact.ownerProducer", "USA"));
+			text.append(buildHTMLTextOutput(format, "pointOfContact.pocType", "DoD-Dist-B"));
+		text.append(buildHTMLTextOutput(format, "pointOfContact.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "pointOfContact.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

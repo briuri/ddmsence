@@ -138,9 +138,9 @@ public class FormatTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = version.isAtLeast("4.0.1") ? "format." : "format.Media.";
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, prefix + "mimeType", TEST_MIME_TYPE));
-		text.append(ExtentTest.getFixture().getOutput(format, prefix, ""));
-		text.append(buildOutput(format, prefix + "medium", TEST_MEDIUM));
+		text.append(buildHTMLTextOutput(format, prefix + "mimeType", TEST_MIME_TYPE));
+		text.append(ExtentTest.getFixture().getHTMLTextOutput(format, prefix, ""));
+		text.append(buildHTMLTextOutput(format, prefix + "medium", TEST_MEDIUM));
 		return (text.toString());
 	}
 

@@ -98,9 +98,9 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		return ("");
 	}
 

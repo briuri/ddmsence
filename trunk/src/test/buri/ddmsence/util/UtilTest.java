@@ -28,11 +28,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONObject;
+
 import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.resource.Identifier;
 
 /**
@@ -63,6 +66,14 @@ public class UtilTest extends AbstractBaseTestCase {
 		map.put("z", "a");
 		map.put("a", "z");
 		assertEquals("z", map.keySet().toArray()[0]);
+	}
+	
+	public void testGetJSONObject() {
+		Map map = Util.getJSONMap();
+		map.put("a", "z");
+		JSONObject object = Util.getJSONObject("name", map);
+		assertEquals(map, object.get("name"));
+		assertEquals("{\"name\":{\"a\":\"z\"}}", object.toJSONString());
 	}
 
 	public void testGetNonNullStringNull() {
@@ -254,6 +265,17 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals("child2", values.get(1));
 	}
 
+	public void testRequireOutputFormat() {
+		try {
+			Util.requireHTMLText(OutputFormat.JSON);
+			fail("Allowed invalid data.");
+		}
+		catch (IllegalArgumentException e) {
+			expectMessage(e, "This method");
+		}
+		Util.requireHTMLText(OutputFormat.HTML);
+	}
+	
 	public void testRequireDDMSValueNull() {
 		try {
 			Util.requireDDMSValue("description", null);

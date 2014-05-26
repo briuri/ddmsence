@@ -194,41 +194,19 @@ public abstract class AbstractBaseTestCase extends TestCase {
 
 	
 	/**
-	 * Convenience method to build a meta tag for HTML output, a text line for Text output,
-	 * or a JSON String for JSON output.
+	 * Convenience method to build a meta tag for HTML output, or a text line for Text output.
 	 * 
 	 * @param format the desired format of this output
-	 * @param name the name value of the meta tag (will be escaped in HTML, and deprefixed in JSON)
+	 * @param name the name value of the meta tag (will be escaped in HTML)
 	 * @param content the content value of the meta tag (will be escaped in HTML)
 	 * @return a string containing the output
 	 */
-	public static String buildOutput(OutputFormat format, String name, String content) {
+	public static String buildHTMLTextOutput(OutputFormat format, String name, String content) {
 		if (format == OutputFormat.HTML) {
 			name = Util.xmlEscape(name);
 			content = Util.xmlEscape(content);
 		}
-		if (format == OutputFormat.JSON) {
-			String[] tokens = name.split("\\.");
-			name = tokens[tokens.length - 1];
-		}
 		return (String.format(Resource.OUTPUT_TEMPLATES.get(format), name, content));
-	}
-
-	/**
-	 * Convenience method to do any final processing of expected output strings before returning to
-	 * the test case. Currently, we use this to enclose JSON in curly braces and strip any trailing
-	 * commas.
-	 * 
-	 * @param format the desired output format
-	 * @param content the string to format
-	 * @return the formatted string
-	 */
-	protected static String formatOutput(OutputFormat format, String content) {
-		if (format == OutputFormat.JSON) {
-			content = content.replaceAll(",$", "");
-			content = String.format("{%s}", content);
-		}
-		return (content);
 	}
 	
 	/**

@@ -116,8 +116,8 @@ public class IdentifierTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "identifier.qualifier", TEST_QUALIFIER));
-		text.append(buildOutput(format, "identifier.value", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "identifier.qualifier", TEST_QUALIFIER));
+		text.append(buildHTMLTextOutput(format, "identifier.value", TEST_VALUE));
 		return (text.toString());
 	}
 

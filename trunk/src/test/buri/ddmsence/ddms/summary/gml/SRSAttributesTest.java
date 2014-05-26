@@ -131,10 +131,10 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "srsName", TEST_SRS_NAME));
-		text.append(buildOutput(format, "srsDimension", String.valueOf(TEST_SRS_DIMENSION)));
-		text.append(buildOutput(format, "axisLabels", Util.getXsList(TEST_AXIS_LABELS)));
-		text.append(buildOutput(format, "uomLabels", Util.getXsList(TEST_UOM_LABELS)));
+		text.append(buildHTMLTextOutput(format, "srsName", TEST_SRS_NAME));
+		text.append(buildHTMLTextOutput(format, "srsDimension", String.valueOf(TEST_SRS_DIMENSION)));
+		text.append(buildHTMLTextOutput(format, "axisLabels", Util.getXsList(TEST_AXIS_LABELS)));
+		text.append(buildHTMLTextOutput(format, "uomLabels", Util.getXsList(TEST_UOM_LABELS)));
 		return (text.toString());
 	}
 
@@ -280,8 +280,8 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			SRSAttributes attributes = getFixture();
-			assertEquals(getExpectedOutput(OutputFormat.HTML), attributes.getOutput(OutputFormat.HTML, ""));
-			assertEquals(getExpectedOutput(OutputFormat.TEXT), attributes.getOutput(OutputFormat.TEXT, ""));
+			assertEquals(getExpectedOutput(OutputFormat.HTML), attributes.getHTMLTextOutput(OutputFormat.HTML, ""));
+			assertEquals(getExpectedOutput(OutputFormat.TEXT), attributes.getHTMLTextOutput(OutputFormat.TEXT, ""));
 		}
 	}
 

@@ -118,7 +118,7 @@ public class TwoNumberAddressRangeTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "addressType", "TwoNumberAddressRange"));
+		text.append(buildHTMLTextOutput(format, "addressType", "TwoNumberAddressRange"));
 		return (text.toString());
 	}
 

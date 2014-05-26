@@ -154,16 +154,16 @@ public final class Category extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, localPrefix + QUALIFIER_NAME, getQualifier()));
-		text.append(buildOutput(format, localPrefix + CODE_NAME, getCode()));
-		text.append(buildOutput(format, localPrefix + LABEL_NAME, getLabel()));
-		text.append(getSecurityAttributes().getOutput(format, localPrefix));
-		text.append(getExtensibleAttributes().getOutput(format, localPrefix));
+		text.append(buildHTMLTextOutput(format, localPrefix + QUALIFIER_NAME, getQualifier()));
+		text.append(buildHTMLTextOutput(format, localPrefix + CODE_NAME, getCode()));
+		text.append(buildHTMLTextOutput(format, localPrefix + LABEL_NAME, getLabel()));
+		text.append(getSecurityAttributes().getHTMLTextOutput(format, localPrefix));
+		text.append(getExtensibleAttributes().getHTMLTextOutput(format, localPrefix));
 		return (text.toString());
 	}
 

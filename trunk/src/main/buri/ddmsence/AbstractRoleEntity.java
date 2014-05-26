@@ -160,16 +160,16 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, "", suffix);
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, localPrefix + "entityType", getName()));
-		text.append(buildOutput(format, localPrefix + NAME_NAME, getNames()));
-		text.append(buildOutput(format, localPrefix + PHONE_NAME, getPhones()));
-		text.append(buildOutput(format, localPrefix + EMAIL_NAME, getEmails()));
-		text.append(getExtensibleAttributes().getOutput(format, prefix));
+		text.append(buildHTMLTextOutput(format, localPrefix + "entityType", getName()));
+		text.append(buildHTMLTextOutput(format, localPrefix + NAME_NAME, getNames()));
+		text.append(buildHTMLTextOutput(format, localPrefix + PHONE_NAME, getPhones()));
+		text.append(buildHTMLTextOutput(format, localPrefix + EMAIL_NAME, getEmails()));
+		text.append(getExtensibleAttributes().getHTMLTextOutput(format, prefix));
 		return (text.toString());
 	}
 

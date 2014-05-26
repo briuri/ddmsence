@@ -292,19 +292,20 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	}
 
 	/**
-	 * @see AbstractAttributeGroup#getOutput(OutputFormat, String)
+	 * @see AbstractAttributeGroup#getHTMLTextOutput(OutputFormat, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix) {
+		Util.requireHTMLText(format);
 		String localPrefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer();
-		text.append(Resource.buildOutput(format, localPrefix + TYPE_NAME, getType()));
-		text.append(Resource.buildOutput(format, localPrefix + HREF_NAME, getHref()));
-		text.append(Resource.buildOutput(format, localPrefix + ROLE_NAME, getRole()));
-		text.append(Resource.buildOutput(format, localPrefix + TITLE_NAME, getTitle()));
-		text.append(Resource.buildOutput(format, localPrefix + LABEL_NAME, getLabel()));
-		text.append(Resource.buildOutput(format, localPrefix + ARC_ROLE_NAME, getArcrole()));
-		text.append(Resource.buildOutput(format, localPrefix + SHOW_NAME, getShow()));
-		text.append(Resource.buildOutput(format, localPrefix + ACTUATE_NAME, getActuate()));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + TYPE_NAME, getType()));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + HREF_NAME, getHref()));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + ROLE_NAME, getRole()));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + TITLE_NAME, getTitle()));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + LABEL_NAME, getLabel()));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + ARC_ROLE_NAME, getArcrole()));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + SHOW_NAME, getShow()));
+		text.append(Resource.buildHTMLTextOutput(format, localPrefix + ACTUATE_NAME, getActuate()));
 		return (text.toString());
 	}
 

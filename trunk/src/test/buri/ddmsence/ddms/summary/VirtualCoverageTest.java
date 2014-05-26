@@ -121,15 +121,15 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "virtualCoverage.address", TEST_ADDRESS));
-		text.append(buildOutput(format, "virtualCoverage.protocol", TEST_PROTOCOL));
+		text.append(buildHTMLTextOutput(format, "virtualCoverage.address", TEST_ADDRESS));
+		text.append(buildHTMLTextOutput(format, "virtualCoverage.protocol", TEST_PROTOCOL));
 		if (DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
-			text.append(buildOutput(format, "virtualCoverage.access", TEST_ACCESS));
-			text.append(buildOutput(format, "virtualCoverage.network", TEST_NETWORK));
+			text.append(buildHTMLTextOutput(format, "virtualCoverage.access", TEST_ACCESS));
+			text.append(buildHTMLTextOutput(format, "virtualCoverage.network", TEST_NETWORK));
 		}
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
-			text.append(buildOutput(format, "virtualCoverage.classification", "U"));
-			text.append(buildOutput(format, "virtualCoverage.ownerProducer", "USA"));
+			text.append(buildHTMLTextOutput(format, "virtualCoverage.classification", "U"));
+			text.append(buildHTMLTextOutput(format, "virtualCoverage.ownerProducer", "USA"));
 		}
 		return (text.toString());
 	}

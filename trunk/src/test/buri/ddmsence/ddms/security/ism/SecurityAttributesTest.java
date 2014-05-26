@@ -26,8 +26,8 @@ import java.util.Map;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.Security;
@@ -565,16 +565,16 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			Map<String, String> others = new HashMap<String, String>();
 			others.put(SecurityAttributes.DECLASS_DATE_NAME, "2005-10-10");
 			SecurityAttributes dataAttributes = getInstance(null, null, others, SUCCESS);
-			assertEquals(buildOutput(OutputFormat.HTML, "declassDate", "2005-10-10"), dataAttributes.getOutput(OutputFormat.HTML, ""));
-			assertEquals(buildOutput(OutputFormat.TEXT, "declassDate", "2005-10-10"), dataAttributes.getOutput(OutputFormat.TEXT, ""));
+			assertEquals(buildHTMLTextOutput(OutputFormat.HTML, "declassDate", "2005-10-10"), dataAttributes.getHTMLTextOutput(OutputFormat.HTML, ""));
+			assertEquals(buildHTMLTextOutput(OutputFormat.TEXT, "declassDate", "2005-10-10"), dataAttributes.getHTMLTextOutput(OutputFormat.TEXT, ""));
 
 			if (!version.isAtLeast("3.1")) {
 				others = new HashMap<String, String>();
 				others.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2005-10-10");
 				dataAttributes = getInstance(null, null, others, SUCCESS);
-				assertEquals(buildOutput(OutputFormat.HTML, "dateOfExemptedSource", "2005-10-10"),
-					dataAttributes.getOutput(OutputFormat.HTML, ""));
-				assertEquals(buildOutput(OutputFormat.TEXT, "dateOfExemptedSource", "2005-10-10"), dataAttributes.getOutput(OutputFormat.TEXT,
+				assertEquals(buildHTMLTextOutput(OutputFormat.HTML, "dateOfExemptedSource", "2005-10-10"),
+					dataAttributes.getHTMLTextOutput(OutputFormat.HTML, ""));
+				assertEquals(buildHTMLTextOutput(OutputFormat.TEXT, "dateOfExemptedSource", "2005-10-10"), dataAttributes.getHTMLTextOutput(OutputFormat.TEXT,
 					""));
 			}
 		}
@@ -617,8 +617,8 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		DDMSVersion.setCurrentVersion("2.0");
 		map.remove(SecurityAttributes.COMPILATION_REASON_NAME);
 		SecurityAttributes attr = new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
-		assertTrue(attr.getOutput(OutputFormat.HTML, "").contains(buildOutput(OutputFormat.HTML, "declassManualReview", "true")));
-		assertTrue(attr.getOutput(OutputFormat.TEXT, "").contains(buildOutput(OutputFormat.TEXT, "declassManualReview", "true")));
+		assertTrue(attr.getHTMLTextOutput(OutputFormat.HTML, "").contains(buildHTMLTextOutput(OutputFormat.HTML, "declassManualReview", "true")));
+		assertTrue(attr.getHTMLTextOutput(OutputFormat.TEXT, "").contains(buildHTMLTextOutput(OutputFormat.TEXT, "declassManualReview", "true")));
 	}
 	
 	public void test30AttributesIn31() throws InvalidDDMSException {
@@ -689,8 +689,8 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put(SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, "true");
 		SecurityAttributes attributes = new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
-		assertEquals(buildOutput(OutputFormat.HTML, "classification", "U") + buildOutput(OutputFormat.HTML, "declassManualReview", "true")
-			+ buildOutput(OutputFormat.HTML, "ownerProducer", "USA"), attributes.getOutput(OutputFormat.HTML, ""));
+		assertEquals(buildHTMLTextOutput(OutputFormat.HTML, "classification", "U") + buildHTMLTextOutput(OutputFormat.HTML, "declassManualReview", "true")
+			+ buildHTMLTextOutput(OutputFormat.HTML, "ownerProducer", "USA"), attributes.getHTMLTextOutput(OutputFormat.HTML, ""));
 	}
 
 	public void testCVEErrorsByDefault() {
@@ -704,5 +704,4 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			expectMessage(e, "UnknownValue is not a valid enumeration token");
 		}
 	}
-
 }

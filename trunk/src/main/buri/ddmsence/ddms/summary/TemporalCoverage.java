@@ -301,21 +301,21 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		if (!getDDMSVersion().isAtLeast("4.0.1"))
 			localPrefix += TIME_PERIOD_NAME + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, localPrefix + TIME_PERIOD_NAME_NAME, getTimePeriodName()));
-		text.append(buildOutput(format, localPrefix + START_NAME, getStartString()));
-		text.append(buildOutput(format, localPrefix + END_NAME, getEndString()));
+		text.append(buildHTMLTextOutput(format, localPrefix + TIME_PERIOD_NAME_NAME, getTimePeriodName()));
+		text.append(buildHTMLTextOutput(format, localPrefix + START_NAME, getStartString()));
+		text.append(buildHTMLTextOutput(format, localPrefix + END_NAME, getEndString()));
 		if (getApproximableStart() != null)
-			text.append(getApproximableStart().getOutput(format, localPrefix, ""));
+			text.append(getApproximableStart().getHTMLTextOutput(format, localPrefix, ""));
 		if (getApproximableEnd() != null)
-			text.append(getApproximableEnd().getOutput(format, localPrefix, ""));
-		text.append(getSecurityAttributes().getOutput(format, localPrefix));
+			text.append(getApproximableEnd().getHTMLTextOutput(format, localPrefix, ""));
+		text.append(getSecurityAttributes().getHTMLTextOutput(format, localPrefix));
 		return (text.toString());
 	}
 

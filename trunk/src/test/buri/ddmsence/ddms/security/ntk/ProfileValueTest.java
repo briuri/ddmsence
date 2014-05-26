@@ -136,13 +136,13 @@ public class ProfileValueTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "profileValue", TEST_VALUE));
-		text.append(buildOutput(format, "profileValue.vocabulary", TEST_VOCABULARY));
-		text.append(buildOutput(format, "profileValue.id", TEST_ID));
-		text.append(buildOutput(format, "profileValue.idReference", TEST_ID_REFERENCE));
-		text.append(buildOutput(format, "profileValue.qualifier", TEST_QUALIFIER));
-		text.append(buildOutput(format, "profileValue.classification", "U"));
-		text.append(buildOutput(format, "profileValue.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "profileValue", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "profileValue.vocabulary", TEST_VOCABULARY));
+		text.append(buildHTMLTextOutput(format, "profileValue.id", TEST_ID));
+		text.append(buildHTMLTextOutput(format, "profileValue.idReference", TEST_ID_REFERENCE));
+		text.append(buildHTMLTextOutput(format, "profileValue.qualifier", TEST_QUALIFIER));
+		text.append(buildHTMLTextOutput(format, "profileValue.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "profileValue.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

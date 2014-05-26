@@ -154,12 +154,12 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "nonStateActor.value", TEST_VALUE));
-		text.append(buildOutput(format, "nonStateActor.order", String.valueOf(TEST_ORDER)));
+		text.append(buildHTMLTextOutput(format, "nonStateActor.value", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "nonStateActor.order", String.valueOf(TEST_ORDER)));
 		if (version.isAtLeast("4.1"))
-			text.append(buildOutput(format, "nonStateActor.qualifier", TEST_QUALIFIER));
-		text.append(buildOutput(format, "nonStateActor.classification", "U"));
-		text.append(buildOutput(format, "nonStateActor.ownerProducer", "USA"));
+			text.append(buildHTMLTextOutput(format, "nonStateActor.qualifier", TEST_QUALIFIER));
+		text.append(buildHTMLTextOutput(format, "nonStateActor.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "nonStateActor.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

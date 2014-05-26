@@ -54,6 +54,7 @@ import nu.xom.ParsingException;
 import nu.xom.xslt.XSLException;
 import nu.xom.xslt.XSLTransform;
 
+import org.json.simple.JSONObject;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
@@ -61,6 +62,7 @@ import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.ITspiAddress;
 import buri.ddmsence.ddms.ITspiShape;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.security.ism.Notice;
 import buri.ddmsence.ddms.security.ntk.Access;
 import buri.ddmsence.ddms.summary.gml.Point;
@@ -126,6 +128,18 @@ public class Util {
 	 */
 	public static Map<String, Object> getJSONMap() {
 		return (new LinkedHashMap<String, Object>());
+	}
+	
+	/**
+	 * Returns a JSON object wrapepd around a map, with a specified name.
+	 * 
+	 * @param name the name of the object
+	 * @param map the map inserted into the object
+	 */
+	public static JSONObject getJSONObject(String name, Map<String, Object> map) {
+		JSONObject object = new JSONObject();
+		object.put(name, map);
+		return (object);
 	}
 	
 	/**
@@ -252,6 +266,17 @@ public class Util {
 		return (childTexts);
 	}
 
+	/**
+	 * Asserts that the format is either HTML or Text.
+	 * 
+	 * @param format the output format to test
+	 * @throws IllegalArgumentException if the format is incorrect
+	 */
+	public static void requireHTMLText(OutputFormat format) {
+		if (format != OutputFormat.HTML && format != OutputFormat.TEXT)
+			throw new IllegalArgumentException("This method can only be used for HTML or Text output.");
+	}
+	
 	/**
 	 * Asserts that a value required for DDMS is not null or empty.
 	 * 

@@ -116,9 +116,9 @@ public class DescriptionTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "description", TEST_VALUE));
-		text.append(buildOutput(format, "description.classification", "U"));
-		text.append(buildOutput(format, "description.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "description", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "description.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "description.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

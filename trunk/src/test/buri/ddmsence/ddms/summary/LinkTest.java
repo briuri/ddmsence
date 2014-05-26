@@ -158,7 +158,7 @@ public class LinkTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(XLinkAttributesTest.getLocatorFixture().getOutput(format, "link."));
+		text.append(XLinkAttributesTest.getLocatorFixture().getHTMLTextOutput(format, "link."));
 		return (text.toString());
 	}
 

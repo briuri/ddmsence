@@ -118,7 +118,7 @@ public class LandmarkAddressTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "addressType", "LandmarkAddress"));
+		text.append(buildHTMLTextOutput(format, "addressType", "LandmarkAddress"));
 		return (text.toString());
 	}
 

@@ -146,26 +146,26 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "taskingInfo.requesterInfo.entityType", "organization"));
-		text.append(buildOutput(format, "taskingInfo.requesterInfo.name", "DISA"));
-		text.append(buildOutput(format, "taskingInfo.requesterInfo.classification", "U"));
-		text.append(buildOutput(format, "taskingInfo.requesterInfo.ownerProducer", "USA"));
-		text.append(buildOutput(format, "taskingInfo.addressee.entityType", "organization"));
-		text.append(buildOutput(format, "taskingInfo.addressee.name", "DISA"));
-		text.append(buildOutput(format, "taskingInfo.addressee.classification", "U"));
-		text.append(buildOutput(format, "taskingInfo.addressee.ownerProducer", "USA"));
-		text.append(buildOutput(format, "taskingInfo.description", "A transformation service."));
-		text.append(buildOutput(format, "taskingInfo.description.classification", "U"));
-		text.append(buildOutput(format, "taskingInfo.description.ownerProducer", "USA"));
-		text.append(buildOutput(format, "taskingInfo.taskID", "Task #12345"));
-		text.append(buildOutput(format, "taskingInfo.taskID.taskingSystem", "MDR"));
-		text.append(buildOutput(format, "taskingInfo.taskID.type", "simple"));
-		text.append(buildOutput(format, "taskingInfo.taskID.href", "http://en.wikipedia.org/wiki/Tank"));
-		text.append(buildOutput(format, "taskingInfo.taskID.role", "tank"));
-		text.append(buildOutput(format, "taskingInfo.taskID.title", "Tank Page"));
-		text.append(buildOutput(format, "taskingInfo.taskID.arcrole", "arcrole"));
-		text.append(buildOutput(format, "taskingInfo.taskID.show", "new"));
-		text.append(buildOutput(format, "taskingInfo.taskID.actuate", "onLoad"));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.requesterInfo.entityType", "organization"));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.requesterInfo.name", "DISA"));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.requesterInfo.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.requesterInfo.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.addressee.entityType", "organization"));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.addressee.name", "DISA"));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.addressee.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.addressee.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.description", "A transformation service."));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.description.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.description.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.taskID", "Task #12345"));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.taskID.taskingSystem", "MDR"));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.taskID.type", "simple"));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.taskID.href", "http://en.wikipedia.org/wiki/Tank"));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.taskID.role", "tank"));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.taskID.title", "Tank Page"));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.taskID.arcrole", "arcrole"));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.taskID.show", "new"));
+		text.append(buildHTMLTextOutput(format, "taskingInfo.taskID.actuate", "onLoad"));
 		return (text.toString());
 	}
 

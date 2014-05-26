@@ -133,9 +133,9 @@ public class RecordKeeperTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "recordKeeper.recordKeeperID", TEST_ID));
-		text.append(buildOutput(format, "recordKeeper.entityType", "organization"));
-		text.append(buildOutput(format, "recordKeeper.name", TEST_NAME));
+		text.append(buildHTMLTextOutput(format, "recordKeeper.recordKeeperID", TEST_ID));
+		text.append(buildHTMLTextOutput(format, "recordKeeper.entityType", "organization"));
+		text.append(buildHTMLTextOutput(format, "recordKeeper.name", TEST_NAME));
 		return (text.toString());
 	}
 

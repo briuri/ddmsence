@@ -126,10 +126,10 @@ public class ProductionMetricTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "productionMetric.subject", TEST_SUBJECT));
-		text.append(buildOutput(format, "productionMetric.coverage", TEST_COVERAGE));
-		text.append(buildOutput(format, "productionMetric.classification", "U"));
-		text.append(buildOutput(format, "productionMetric.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "productionMetric.subject", TEST_SUBJECT));
+		text.append(buildHTMLTextOutput(format, "productionMetric.coverage", TEST_COVERAGE));
+		text.append(buildHTMLTextOutput(format, "productionMetric.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "productionMetric.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

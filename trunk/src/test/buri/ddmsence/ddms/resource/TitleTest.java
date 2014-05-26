@@ -116,9 +116,9 @@ public class TitleTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "title", TEST_VALUE));
-		text.append(buildOutput(format, "title.classification", "U"));
-		text.append(buildOutput(format, "title.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "title", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "title.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "title.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

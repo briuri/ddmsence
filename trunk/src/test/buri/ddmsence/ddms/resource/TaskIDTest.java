@@ -175,13 +175,13 @@ public class TaskIDTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "taskID", TEST_VALUE));
-		text.append(buildOutput(format, "taskID.taskingSystem", TEST_TASKING_SYSTEM));
-		text.append(buildOutput(format, "taskID.network", TEST_NETWORK));
+		text.append(buildHTMLTextOutput(format, "taskID", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "taskID.taskingSystem", TEST_TASKING_SYSTEM));
+		text.append(buildHTMLTextOutput(format, "taskID.network", TEST_NETWORK));
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
-			text.append(buildOutput(format, "taskID.otherNetwork", getTestOtherNetwork()));
+			text.append(buildHTMLTextOutput(format, "taskID.otherNetwork", getTestOtherNetwork()));
 		}
-		text.append(XLinkAttributesTest.getSimpleFixture().getOutput(format, "taskID."));
+		text.append(XLinkAttributesTest.getSimpleFixture().getHTMLTextOutput(format, "taskID."));
 		return (text.toString());
 	}
 

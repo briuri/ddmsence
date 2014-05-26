@@ -133,12 +133,12 @@ public class GroupValueTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "groupValue", TEST_VALUE));
-		text.append(buildOutput(format, "groupValue.id", TEST_ID));
-		text.append(buildOutput(format, "groupValue.idReference", TEST_ID_REFERENCE));
-		text.append(buildOutput(format, "groupValue.qualifier", TEST_QUALIFIER));
-		text.append(buildOutput(format, "groupValue.classification", "U"));
-		text.append(buildOutput(format, "groupValue.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "groupValue", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "groupValue.id", TEST_ID));
+		text.append(buildHTMLTextOutput(format, "groupValue.idReference", TEST_ID_REFERENCE));
+		text.append(buildHTMLTextOutput(format, "groupValue.qualifier", TEST_QUALIFIER));
+		text.append(buildHTMLTextOutput(format, "groupValue.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "groupValue.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

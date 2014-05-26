@@ -197,14 +197,14 @@ public final class Polygon extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, localPrefix + ID_NAME, getId()));
-		text.append(getSRSAttributes().getOutput(format, localPrefix));
-		text.append(buildOutput(format, localPrefix, getPositions()));
+		text.append(buildHTMLTextOutput(format, localPrefix + ID_NAME, getId()));
+		text.append(getSRSAttributes().getHTMLTextOutput(format, localPrefix));
+		text.append(buildHTMLTextOutput(format, localPrefix, getPositions()));
 		return (text.toString());
 	}
 

@@ -133,12 +133,12 @@ public class IndividualValueTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "individualValue", TEST_VALUE));
-		text.append(buildOutput(format, "individualValue.id", TEST_ID));
-		text.append(buildOutput(format, "individualValue.idReference", TEST_ID_REFERENCE));
-		text.append(buildOutput(format, "individualValue.qualifier", TEST_QUALIFIER));
-		text.append(buildOutput(format, "individualValue.classification", "U"));
-		text.append(buildOutput(format, "individualValue.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "individualValue", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "individualValue.id", TEST_ID));
+		text.append(buildHTMLTextOutput(format, "individualValue.idReference", TEST_ID_REFERENCE));
+		text.append(buildHTMLTextOutput(format, "individualValue.qualifier", TEST_QUALIFIER));
+		text.append(buildHTMLTextOutput(format, "individualValue.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "individualValue.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

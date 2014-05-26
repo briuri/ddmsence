@@ -120,12 +120,12 @@ public class TypeTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
 		if (version.isAtLeast("4.0.1"))
-			text.append(buildOutput(format, "type.description", TEST_DESCRIPTION));
-		text.append(buildOutput(format, "type.qualifier", TEST_QUALIFIER));
-		text.append(buildOutput(format, "type.value", TEST_VALUE));
+			text.append(buildHTMLTextOutput(format, "type.description", TEST_DESCRIPTION));
+		text.append(buildHTMLTextOutput(format, "type.qualifier", TEST_QUALIFIER));
+		text.append(buildHTMLTextOutput(format, "type.value", TEST_VALUE));
 		if (version.isAtLeast("4.0.1")) {
-			text.append(buildOutput(format, "type.classification", "U"));
-			text.append(buildOutput(format, "type.ownerProducer", "USA"));
+			text.append(buildHTMLTextOutput(format, "type.classification", "U"));
+			text.append(buildHTMLTextOutput(format, "type.ownerProducer", "USA"));
 		}
 		return (text.toString());
 	}

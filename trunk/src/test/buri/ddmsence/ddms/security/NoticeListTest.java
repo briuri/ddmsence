@@ -139,21 +139,21 @@ public class NoticeListTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "noticeList.notice.noticeText", "noticeText"));
-		text.append(buildOutput(format, "noticeList.notice.noticeText.pocType", "DoD-Dist-B"));
-		text.append(buildOutput(format, "noticeList.notice.noticeText.classification", "U"));
-		text.append(buildOutput(format, "noticeList.notice.noticeText.ownerProducer", "USA"));
-		text.append(buildOutput(format, "noticeList.notice.classification", "U"));
-		text.append(buildOutput(format, "noticeList.notice.ownerProducer", "USA"));
-		text.append(buildOutput(format, "noticeList.notice.noticeType", "DoD-Dist-B"));
-		text.append(buildOutput(format, "noticeList.notice.noticeReason", "noticeReason"));
-		text.append(buildOutput(format, "noticeList.notice.noticeDate", "2011-09-15"));
-		text.append(buildOutput(format, "noticeList.notice.unregisteredNoticeType", "unregisteredNoticeType"));
+		text.append(buildHTMLTextOutput(format, "noticeList.notice.noticeText", "noticeText"));
+		text.append(buildHTMLTextOutput(format, "noticeList.notice.noticeText.pocType", "DoD-Dist-B"));
+		text.append(buildHTMLTextOutput(format, "noticeList.notice.noticeText.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "noticeList.notice.noticeText.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "noticeList.notice.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "noticeList.notice.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "noticeList.notice.noticeType", "DoD-Dist-B"));
+		text.append(buildHTMLTextOutput(format, "noticeList.notice.noticeReason", "noticeReason"));
+		text.append(buildHTMLTextOutput(format, "noticeList.notice.noticeDate", "2011-09-15"));
+		text.append(buildHTMLTextOutput(format, "noticeList.notice.unregisteredNoticeType", "unregisteredNoticeType"));
 		if (DDMSVersion.getCurrentVersion().isAtLeast("4.1")) {
-			text.append(buildOutput(format, "noticeList.notice.externalNotice", "false"));
+			text.append(buildHTMLTextOutput(format, "noticeList.notice.externalNotice", "false"));
 		}
-		text.append(buildOutput(format, "noticeList.classification", "U"));
-		text.append(buildOutput(format, "noticeList.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "noticeList.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "noticeList.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

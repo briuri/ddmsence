@@ -30,7 +30,10 @@ import buri.ddmsence.AbstractBaseComponent;
 public interface ITspiAddress extends IDDMSComponent {
 	
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * I consider this to be an internal method, that unfortunately must be marked as public to allow cross-package
+	 * access when generating output. Use toHTML() and toText() as the formal, public methods to generate output.
+	 * 
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public abstract String getOutput(OutputFormat format, String prefix, String suffix);
+	public abstract String getHTMLTextOutput(OutputFormat format, String prefix, String suffix);
 }

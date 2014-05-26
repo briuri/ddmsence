@@ -82,12 +82,12 @@ public final class Ellipse extends AbstractTspiShape {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, "", suffix);
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, localPrefix + "shapeType", getName()));
+		text.append(buildHTMLTextOutput(format, localPrefix + "shapeType", getName()));
 		return (text.toString());
 	}
 

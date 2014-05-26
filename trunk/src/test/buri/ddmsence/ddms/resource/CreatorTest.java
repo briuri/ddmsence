@@ -116,11 +116,11 @@ public class CreatorTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(PersonTest.getFixture().getOutput(format, "creator.", ""));
+		text.append(PersonTest.getFixture().getHTMLTextOutput(format, "creator.", ""));
 		if (version.isAtLeast("4.0.1"))
-			text.append(buildOutput(format, "creator.pocType", "DoD-Dist-B"));
-		text.append(buildOutput(format, "creator.classification", "U"));
-		text.append(buildOutput(format, "creator.ownerProducer", "USA"));
+			text.append(buildHTMLTextOutput(format, "creator.pocType", "DoD-Dist-B"));
+		text.append(buildHTMLTextOutput(format, "creator.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "creator.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

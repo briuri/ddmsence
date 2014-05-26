@@ -146,10 +146,10 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "noticeText", TEST_VALUE));
-		text.append(buildOutput(format, "noticeText.pocType", Util.getXsList(TEST_POC_TYPES)));
-		text.append(buildOutput(format, "noticeText.classification", "U"));
-		text.append(buildOutput(format, "noticeText.ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, "noticeText", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "noticeText.pocType", Util.getXsList(TEST_POC_TYPES)));
+		text.append(buildHTMLTextOutput(format, "noticeText.classification", "U"));
+		text.append(buildHTMLTextOutput(format, "noticeText.ownerProducer", "USA"));
 		return (text.toString());
 	}
 

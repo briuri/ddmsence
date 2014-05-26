@@ -140,11 +140,11 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "acquiredOn.description", TEST_DESCRIPTION));
-		text.append(buildOutput(format, "acquiredOn.approximableDate", TEST_APPROXIMABLE_DATE));
-		text.append(buildOutput(format, "acquiredOn.approximableDate.approximation", TEST_APPROXIMATION));
-		text.append(buildOutput(format, "acquiredOn.searchableDate.start", TEST_START_DATE));
-		text.append(buildOutput(format, "acquiredOn.searchableDate.end", TEST_END_DATE));
+		text.append(buildHTMLTextOutput(format, "acquiredOn.description", TEST_DESCRIPTION));
+		text.append(buildHTMLTextOutput(format, "acquiredOn.approximableDate", TEST_APPROXIMABLE_DATE));
+		text.append(buildHTMLTextOutput(format, "acquiredOn.approximableDate.approximation", TEST_APPROXIMATION));
+		text.append(buildHTMLTextOutput(format, "acquiredOn.searchableDate.start", TEST_START_DATE));
+		text.append(buildHTMLTextOutput(format, "acquiredOn.searchableDate.end", TEST_END_DATE));
 		return (text.toString());
 	}
 

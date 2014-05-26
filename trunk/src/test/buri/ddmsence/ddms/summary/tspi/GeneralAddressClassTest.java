@@ -118,7 +118,7 @@ public class GeneralAddressClassTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "addressType", "GeneralAddressClass"));
+		text.append(buildHTMLTextOutput(format, "addressType", "GeneralAddressClass"));
 		return (text.toString());
 	}
 

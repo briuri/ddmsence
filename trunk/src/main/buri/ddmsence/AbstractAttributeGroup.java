@@ -100,13 +100,16 @@ public abstract class AbstractAttributeGroup {
 	}
 
 	/**
-	 * Outputs to HTML, JSON, or Text with a prefix at the beginning of each meta tag or line.
+	 * Outputs to HTML or Text with a prefix at the beginning of each meta tag or line.
+	 * 
+	 * <p>I consider this to be an internal method, that unfortunately must be marked as public to allow cross-package
+	 * access when generating output. Use toHTML() and toText() as the formal, public methods to generate output.</p>
 	 * 
 	 * @param format the desired format of this output
 	 * @param prefix the prefix to add
 	 * @return the output
 	 */
-	public abstract String getOutput(OutputFormat format, String prefix);
+	public abstract String getHTMLTextOutput(OutputFormat format, String prefix);
 
 	/**
 	 * Accessor for the XML namespace of these attributes

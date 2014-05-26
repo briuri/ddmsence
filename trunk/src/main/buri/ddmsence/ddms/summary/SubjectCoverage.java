@@ -222,18 +222,18 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
-	public String getOutput(OutputFormat format, String prefix, String suffix) {
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		if (!getDDMSVersion().isAtLeast("4.0.1"))
 			localPrefix += SUBJECT_NAME + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, localPrefix, getKeywords()));
-		text.append(buildOutput(format, localPrefix, getCategories()));
-		text.append(buildOutput(format, localPrefix, getProductionMetrics()));
-		text.append(buildOutput(format, localPrefix, getNonStateActors()));
-		text.append(getSecurityAttributes().getOutput(format, localPrefix));
+		text.append(buildHTMLTextOutput(format, localPrefix, getKeywords()));
+		text.append(buildHTMLTextOutput(format, localPrefix, getCategories()));
+		text.append(buildHTMLTextOutput(format, localPrefix, getProductionMetrics()));
+		text.append(buildHTMLTextOutput(format, localPrefix, getNonStateActors()));
+		text.append(getSecurityAttributes().getHTMLTextOutput(format, localPrefix));
 		return (text.toString());
 	}
 

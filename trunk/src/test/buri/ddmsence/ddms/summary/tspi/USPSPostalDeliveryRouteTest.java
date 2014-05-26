@@ -118,7 +118,7 @@ public class USPSPostalDeliveryRouteTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "addressType", "USPSPostalDeliveryRoute"));
+		text.append(buildHTMLTextOutput(format, "addressType", "USPSPostalDeliveryRoute"));
 		return (text.toString());
 	}
 

@@ -322,8 +322,8 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 			NoticeAttributes.Builder builder = new NoticeAttributes.Builder();
 			builder.setNoticeDate("2005-10-10");
 			NoticeAttributes dataAttributes = builder.commit();
-			assertEquals(buildOutput(OutputFormat.HTML, "noticeDate", "2005-10-10"), dataAttributes.getOutput(OutputFormat.HTML, ""));
-			assertEquals(buildOutput(OutputFormat.TEXT, "noticeDate", "2005-10-10"), dataAttributes.getOutput(OutputFormat.TEXT, ""));
+			assertEquals(buildHTMLTextOutput(OutputFormat.HTML, "noticeDate", "2005-10-10"), dataAttributes.getHTMLTextOutput(OutputFormat.HTML, ""));
+			assertEquals(buildHTMLTextOutput(OutputFormat.TEXT, "noticeDate", "2005-10-10"), dataAttributes.getHTMLTextOutput(OutputFormat.TEXT, ""));
 		}
 	}
 }

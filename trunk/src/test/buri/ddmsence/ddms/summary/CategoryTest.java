@@ -127,12 +127,12 @@ public class CategoryTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, "category.qualifier", TEST_QUALIFIER));
-		text.append(buildOutput(format, "category.code", TEST_CODE));
-		text.append(buildOutput(format, "category.label", TEST_LABEL));
+		text.append(buildHTMLTextOutput(format, "category.qualifier", TEST_QUALIFIER));
+		text.append(buildHTMLTextOutput(format, "category.code", TEST_CODE));
+		text.append(buildHTMLTextOutput(format, "category.label", TEST_LABEL));
 		if (version.isAtLeast("4.0.1")) {
-			text.append(buildOutput(format, "category.classification", "U"));
-			text.append(buildOutput(format, "category.ownerProducer", "USA"));
+			text.append(buildHTMLTextOutput(format, "category.classification", "U"));
+			text.append(buildHTMLTextOutput(format, "category.ownerProducer", "USA"));
 		}
 		return (text.toString());
 	}

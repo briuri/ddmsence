@@ -128,17 +128,17 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 		String prefix = DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? "relatedResource."
 			: "relatedResources.RelatedResource.";
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, prefix + "relationship", TEST_RELATIONSHIP));
-		text.append(buildOutput(format, prefix + "direction", TEST_DIRECTION));
-		text.append(buildOutput(format, prefix + "qualifier", TEST_QUALIFIER));
-		text.append(buildOutput(format, prefix + "value", TEST_VALUE));
-		text.append(buildOutput(format, prefix + "link.type", "locator"));
-		text.append(buildOutput(format, prefix + "link.href", TEST_VALUE));
-		text.append(buildOutput(format, prefix + "link.role", "tank"));
-		text.append(buildOutput(format, prefix + "link.title", "Tank Page"));
-		text.append(buildOutput(format, prefix + "link.label", "tank"));
-		text.append(buildOutput(format, prefix + "classification", "U"));
-		text.append(buildOutput(format, prefix + "ownerProducer", "USA"));
+		text.append(buildHTMLTextOutput(format, prefix + "relationship", TEST_RELATIONSHIP));
+		text.append(buildHTMLTextOutput(format, prefix + "direction", TEST_DIRECTION));
+		text.append(buildHTMLTextOutput(format, prefix + "qualifier", TEST_QUALIFIER));
+		text.append(buildHTMLTextOutput(format, prefix + "value", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, prefix + "link.type", "locator"));
+		text.append(buildHTMLTextOutput(format, prefix + "link.href", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, prefix + "link.role", "tank"));
+		text.append(buildHTMLTextOutput(format, prefix + "link.title", "Tank Page"));
+		text.append(buildHTMLTextOutput(format, prefix + "link.label", "tank"));
+		text.append(buildHTMLTextOutput(format, prefix + "classification", "U"));
+		text.append(buildHTMLTextOutput(format, prefix + "ownerProducer", "USA"));
 		return (text.toString());
 	}
 
