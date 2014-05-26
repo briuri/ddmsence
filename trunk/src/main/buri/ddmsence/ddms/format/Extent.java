@@ -19,12 +19,17 @@
  */
 package buri.ddmsence.ddms.format;
 
+import java.util.Map;
+
 import nu.xom.Element;
+
+import org.json.simple.JSONValue;
+
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractQualifierValue;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
@@ -114,11 +119,19 @@ public final class Extent extends AbstractQualifierValue {
 	 * @see AbstractBaseComponent#getOutput(OutputFormat, String, String)
 	 */
 	public String getOutput(OutputFormat format, String prefix, String suffix) {
-		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
-		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(format, localPrefix + getQualifierName(), getQualifier()));
-		text.append(buildOutput(format, localPrefix + getValueName(), getValue()));
-		return (text.toString());
+		if (format == OutputFormat.JSON) {
+			Map<String, Object> map = Util.getJSONMap();
+			map.put(getQualifierName(), getQualifier());
+			map.put(getValueName(), getValue());
+			return (JSONValue.toJSONString(map));
+		}
+		else {
+			String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
+			StringBuffer text = new StringBuffer();
+			text.append(buildOutput(format, localPrefix + getQualifierName(), getQualifier()));
+			text.append(buildOutput(format, localPrefix + getValueName(), getValue()));
+			return (text.toString());
+		}
 	}
 
 	/**

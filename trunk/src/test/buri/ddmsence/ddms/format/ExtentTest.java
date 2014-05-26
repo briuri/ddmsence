@@ -120,7 +120,7 @@ public class ExtentTest extends AbstractBaseTestCase {
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(format, "extent.qualifier", TEST_QUALIFIER));
 		text.append(buildOutput(format, "extent.value", TEST_VALUE));
-		return (text.toString());
+		return (formatOutput(format, text.toString()));
 	}
 
 	/**
@@ -242,6 +242,7 @@ public class ExtentTest extends AbstractBaseTestCase {
 
 			Extent elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedOutput(OutputFormat.JSON), elementComponent.toJSON());
 			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}

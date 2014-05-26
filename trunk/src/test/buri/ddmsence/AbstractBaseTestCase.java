@@ -27,9 +27,9 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 import nu.xom.Element;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.DDMSReader;
 import buri.ddmsence.util.DDMSVersion;
@@ -61,6 +61,13 @@ public abstract class AbstractBaseTestCase extends TestCase {
 	protected static final String DEFAULT_NTK_PREFIX = PropertyReader.getPrefix("ntk");
 	protected static final String DEFAULT_TSPI_PREFIX = PropertyReader.getPrefix("tspi");
 
+	private static final Map<OutputFormat, String> OUTPUT_TEMPLATES = new HashMap<OutputFormat, String>();
+	static {
+		OUTPUT_TEMPLATES.put(OutputFormat.HTML, "<meta name=\"%s\" content=\"%s\" />\n");
+		OUTPUT_TEMPLATES.put(OutputFormat.JSON, "\"%s\":\"%s\",");
+		OUTPUT_TEMPLATES.put(OutputFormat.TEXT, "%s: %s\n");
+	}
+	
 	/**
 	 * Resets the in-use version of DDMS.
 	 */
@@ -191,25 +198,45 @@ public abstract class AbstractBaseTestCase extends TestCase {
 		assertEquals(prefix + ":" + name, component.getQualifiedName());
 	}
 
+	
 	/**
-	 * Convenience method to build a meta tag for HTML output or a text line for Text output.
+	 * Convenience method to build a meta tag for HTML output, a text line for Text output,
+	 * or a JSON String for JSON output.
 	 * 
-	 * @param isHTML true for HTML, false for Text
-	 * @param name the name value of the meta tag (will be escaped in HTML)
+	 * @param format the desired format of this output
+	 * @param name the name value of the meta tag (will be escaped in HTML, and deprefixed in JSON)
 	 * @param content the content value of the meta tag (will be escaped in HTML)
 	 * @return a string containing the output
 	 */
 	public static String buildOutput(OutputFormat format, String name, String content) {
-		boolean isHTML = (format == OutputFormat.HTML);
-		StringBuffer tag = new StringBuffer();
-		tag.append(isHTML ? "<meta name=\"" : "");
-		tag.append(isHTML ? Util.xmlEscape(name) : name);
-		tag.append(isHTML ? "\" content=\"" : ": ");
-		tag.append(isHTML ? Util.xmlEscape(content) : content);
-		tag.append(isHTML ? "\" />\n" : "\n");
-		return (tag.toString());
+		if (format == OutputFormat.HTML) {
+			name = Util.xmlEscape(name);
+			content = Util.xmlEscape(content);
+		}
+		if (format == OutputFormat.JSON) {
+			String[] tokens = name.split("\\.");
+			name = tokens[tokens.length - 1];
+		}
+		return (String.format(OUTPUT_TEMPLATES.get(format), name, content));
 	}
 
+	/**
+	 * Convenience method to do any final processing of expected output strings before returning to
+	 * the test case. Currently, we use this to enclose JSON in curly braces and strip any trailing
+	 * commas.
+	 * 
+	 * @param format the desired output format
+	 * @param content the string to format
+	 * @return the formatted string
+	 */
+	protected static String formatOutput(OutputFormat format, String content) {
+		if (format == OutputFormat.JSON) {
+			content = content.replaceAll(",$", "");
+			content = String.format("{%s}", content);
+		}
+		return (content);
+	}
+	
 	/**
 	 * Returns a namespace declaration for DDMS
 	 */

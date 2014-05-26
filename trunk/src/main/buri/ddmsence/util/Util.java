@@ -35,6 +35,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -120,6 +121,14 @@ public class Util {
 		return (_factory);
 	}
 
+	/**
+	 * Returns a map which can be populated for JSON output. This is extracted as a Util call so we can change the
+	 * underlying map type in the future for different sorting strategies.
+	 */
+	public static Map<String, Object> getJSONMap() {
+		return (new TreeMap<String, Object>());
+	}
+	
 	/**
 	 * Returns an empty string in place of a null one.
 	 * 
