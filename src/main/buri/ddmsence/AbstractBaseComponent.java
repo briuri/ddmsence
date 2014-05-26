@@ -191,6 +191,14 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	}
 
 	/**
+	 * @see IDDMSComponent#toJSON()
+	 */
+	public String toJSON() {
+		throw new UnsupportedOperationException("JSON output has not yet been implemented.");
+		//return (getOutput(OutputFormat.JSON, "", ""));
+	}
+	
+	/**
 	 * @see IDDMSComponent#toText()
 	 */
 	public String toText() {
@@ -198,13 +206,13 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	}
 
 	/**
-	 * Renders this component as HTML or Text, with an optional prefix to nest it.
+	 * Renders this component as HTML, JSON, or Text, with an optional prefix to nest it.
 	 * 
 	 * @param format the desired format of this output
 	 * @param prefix an optional prefix to put on each name.
 	 * @param suffix an optional suffix to append to each name, such as an index.
 	 * 
-	 * @return the HTML or Text representation of this component
+	 * @return the representation of this component in the specified format
 	 */
 	public abstract String getOutput(OutputFormat format, String prefix, String suffix);
 

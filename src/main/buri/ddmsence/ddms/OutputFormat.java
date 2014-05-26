@@ -24,6 +24,8 @@ package buri.ddmsence.ddms;
  * 
  * <ul>
  * <li><b>HTML</b>: HTML meta tags, in accordance with the suggested HTML output from the DDMS Specification.</li>
+ * <li><b>JSON</b>: JSON data, which generally follows the naming conventions of the HTML/Text output, rather than
+ *    being a straight XML-to-JSON conversion.</li>
  * <li><b>TEXT</b>: Text name-value pairings, in accordance with the suggested Text output from the DDMS Specification.</li>
  * </ul>
  * 
@@ -31,5 +33,5 @@ package buri.ddmsence.ddms;
  * @since 2.3.0
  */
 public enum OutputFormat {
-	HTML, TEXT
+	HTML, JSON, TEXT
 }

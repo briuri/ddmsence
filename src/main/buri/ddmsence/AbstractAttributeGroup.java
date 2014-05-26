@@ -100,11 +100,11 @@ public abstract class AbstractAttributeGroup {
 	}
 
 	/**
-	 * Outputs to HTML or Text with a prefix at the beginning of each meta tag or line.
+	 * Outputs to HTML, JSON, or Text with a prefix at the beginning of each meta tag or line.
 	 * 
 	 * @param format the desired format of this output
 	 * @param prefix the prefix to add
-	 * @return the HTML or Text output
+	 * @return the output
 	 */
 	public abstract String getOutput(OutputFormat format, String prefix);
 
