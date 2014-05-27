@@ -172,6 +172,7 @@ public final class Format extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
 	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
+		Util.requireHTMLText(format);
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		if (!getDDMSVersion().isAtLeast("4.0.1"))
 			localPrefix += MEDIA_NAME + ".";

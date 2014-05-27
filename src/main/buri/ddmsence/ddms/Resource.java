@@ -26,11 +26,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+
+import org.json.simple.JSONObject;
 
 import nu.xom.Document;
 import nu.xom.Element;
@@ -788,9 +791,19 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
+	 * @see AbstractBaseComponent#getJSONObject()
+	 */
+	protected JSONObject getJSONObject() {
+		Map<String, Object> map = Util.getJSONMap();
+		// TODO
+		return (Util.getJSONObject(getName(), map));
+	}
+	
+	/**
 	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
 	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
+		Util.requireHTMLText(format);
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		if (isResourceElement() != null)

@@ -155,6 +155,15 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 	}
 
 	/**
+	 * Returns the expected JSON output for this unit test
+	 */
+	private String getExpectedJSONOutput() {
+		StringBuffer json = new StringBuffer();
+		json.append("TBD");
+		return (json.toString());
+	}
+	
+	/**
 	 * Returns the expected XML output for this unit test
 	 */
 	private String getExpectedXMLOutput() {
@@ -341,6 +350,8 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
 			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
+			assertEquals(getExpectedJSONOutput(), elementComponent.toJSON());
+			assertValidJson(elementComponent.toJSON());
 			
 			// facility
 			GeographicIdentifier component = getFacIdBasedFixture();
@@ -352,6 +363,7 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 			facIdOutput.append("geographicIdentifier.facilityIdentifier.beNumber: 1234DD56789\n");
 			facIdOutput.append("geographicIdentifier.facilityIdentifier.osuffix: DD123\n");
 			assertEquals(facIdOutput.toString(), component.toText());
+			fail("Need to add JSON test");
 		}
 	}
 

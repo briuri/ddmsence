@@ -19,6 +19,10 @@
  */
 package buri.ddmsence.ddms.summary.tspi;
 
+import java.util.Map;
+
+import org.json.simple.JSONObject;
+
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractTspiAddress;
@@ -78,9 +82,19 @@ public final class GeneralAddressClass extends AbstractTspiAddress {
 	}
 
 	/**
+	 * @see AbstractBaseComponent#getJSONObject()
+	 */
+	protected JSONObject getJSONObject() {
+		Map<String, Object> map = Util.getJSONMap();
+		// TODO
+		return (Util.getJSONObject(getName(), map));
+	}
+	
+	/**
 	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
 	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
+		Util.requireHTMLText(format);
 		String localPrefix = buildPrefix(prefix, "", suffix);
 		StringBuffer text = new StringBuffer();
 		text.append(buildHTMLTextOutput(format, localPrefix + "addressType", getName()));

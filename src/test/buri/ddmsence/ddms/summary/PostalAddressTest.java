@@ -179,6 +179,15 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 	}
 
 	/**
+	 * Returns the expected JSON output for this unit test
+	 */
+	private String getExpectedJSONOutput(boolean hasState) {
+		StringBuffer json = new StringBuffer();
+		json.append("TBD");
+		return (json.toString());
+	}
+	
+	/**
 	 * Returns the expected XML output for this unit test
 	 * 
 	 * @boolean whether this address has a state or a province, ignored in DDMS 5.0
@@ -418,6 +427,8 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(OutputFormat.HTML, true), elementComponent.toHTML());
 			assertEquals(getExpectedOutput(OutputFormat.TEXT, true), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(true), elementComponent.toXML());
+			assertEquals(getExpectedJSONOutput(true), elementComponent.toJSON());
+			assertValidJson(elementComponent.toJSON());
 			
 			PostalAddress.Builder builder = getBaseBuilder();
 			builder.setState(null);
@@ -426,6 +437,8 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(OutputFormat.HTML, false), elementComponent.toHTML());
 			assertEquals(getExpectedOutput(OutputFormat.TEXT, false), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(false), elementComponent.toXML());
+			assertEquals(getExpectedJSONOutput(false), elementComponent.toJSON());
+			assertValidJson(elementComponent.toJSON());
 		}
 	}
 	

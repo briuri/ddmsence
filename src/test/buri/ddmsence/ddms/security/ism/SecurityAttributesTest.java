@@ -490,6 +490,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 	
 	public void testOutput() {
 		// Tested by parent components.
+		fail("Need to add JSON test");
 	}
 	
 	public void testBuilderIsEmpty() throws InvalidDDMSException {

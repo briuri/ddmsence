@@ -20,6 +20,9 @@
 package buri.ddmsence.ddms.resource;
 
 import java.io.Serializable;
+import java.util.Map;
+
+import org.json.simple.JSONObject;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
@@ -96,9 +99,19 @@ public final class Rights extends AbstractBaseComponent {
 	}
 
 	/**
+	 * @see AbstractBaseComponent#getJSONObject()
+	 */
+	protected JSONObject getJSONObject() {
+		Map<String, Object> map = Util.getJSONMap();
+		// TODO
+		return (Util.getJSONObject(getName(), map));
+	}
+	
+	/**
 	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
 	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
+		Util.requireHTMLText(format);
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		text.append(buildHTMLTextOutput(format, localPrefix + PRIVACY_ACT_NAME, String.valueOf(getPrivacyAct())));

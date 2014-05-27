@@ -168,6 +168,15 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 	}
 
 	/**
+	 * Returns the expected JSON output for this unit test
+	 */
+	private String getExpectedJSONOutput(boolean hasLinks) {
+		StringBuffer json = new StringBuffer();
+		json.append("TBD");
+		return (json.toString());
+	}
+	
+	/**
 	 * Returns the expected XML output for this unit test
 	 */
 	private String getExpectedXMLOutput(boolean hasLinks) {
@@ -418,12 +427,16 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(true, OutputFormat.HTML), elementComponent.toHTML());
 			assertEquals(getExpectedOutput(true, OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(true), elementComponent.toXML());
+			assertEquals(getExpectedJSONOutput(true), elementComponent.toJSON());
+			assertValidJson(elementComponent.toJSON());
 			
 			// text
 			elementComponent = getInstance(getTextFixtureElement(false), SUCCESS);
 			assertEquals(getExpectedOutput(false, OutputFormat.HTML), elementComponent.toHTML());
 			assertEquals(getExpectedOutput(false, OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(false), elementComponent.toXML());
+			assertEquals(getExpectedJSONOutput(false), elementComponent.toJSON());
+			assertValidJson(elementComponent.toJSON());
 		}
 	}
 

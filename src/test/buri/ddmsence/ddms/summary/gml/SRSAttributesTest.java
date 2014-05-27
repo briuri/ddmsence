@@ -282,6 +282,7 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 			SRSAttributes attributes = getFixture();
 			assertEquals(getExpectedOutput(OutputFormat.HTML), attributes.getHTMLTextOutput(OutputFormat.HTML, ""));
 			assertEquals(getExpectedOutput(OutputFormat.TEXT), attributes.getHTMLTextOutput(OutputFormat.TEXT, ""));
+			fail("Need to add JSON test");
 		}
 	}
 

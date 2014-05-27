@@ -24,16 +24,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
+
+import org.json.simple.JSONObject;
+
 import buri.ddmsence.AbstractAttributeGroup;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.security.ism.NoticeAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
@@ -229,6 +233,15 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		super.validate(version);
 	}
 
+	/**
+	 * @see AbstractAttributeGroup#getJSONObject()
+	 */
+	public JSONObject getJSONObject() {
+		Map<String, Object> map = Util.getJSONMap();
+		// TODO
+		return (Util.getJSONObject("name!", map));
+	}
+	
 	/**
 	 * @see AbstractAttributeGroup#getHTMLTextOutput(OutputFormat, String)
 	 */

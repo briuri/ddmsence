@@ -267,6 +267,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 			ExtensibleAttributes elementAttributes = getInstance(element, SUCCESS);
 			assertEquals(getExpectedOutput(OutputFormat.HTML), elementAttributes.getHTMLTextOutput(OutputFormat.HTML, ""));
 			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementAttributes.getHTMLTextOutput(OutputFormat.TEXT, ""));
+			fail("Need to add JSON test");
 		}
 	}
 

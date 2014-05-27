@@ -23,6 +23,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+
+import org.json.simple.JSONObject;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractAttributeGroup;
@@ -180,7 +183,16 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 		Util.requireValidNCNames(getUomLabels());
 		super.validate(version);
 	}
-
+	
+	/**
+	 * @see AbstractAttributeGroup#getJSONObject()
+	 */
+	public JSONObject getJSONObject() {
+		Map<String, Object> map = Util.getJSONMap();
+		// TODO
+		return (Util.getJSONObject("name!", map));
+	}
+	
 	/**
 	 * @see AbstractAttributeGroup#getHTMLTextOutput(OutputFormat, String)
 	 */

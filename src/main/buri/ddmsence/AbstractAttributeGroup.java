@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.json.simple.JSONObject;
+
 import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
@@ -99,6 +101,15 @@ public abstract class AbstractAttributeGroup {
 		return (_warnings);
 	}
 
+	/**
+	 * Renders this component as a JSON object, which can either be converted to
+	 * a JSONString or inserted into the parent JSON object.
+	 * 
+	 * <p>I consider this to be an internal method, that unfortunately must be marked as public to allow cross-package
+	 * access when generating output. Use toJSON() as the formal, public method to generate output.</p>
+	 */
+	public abstract JSONObject getJSONObject();
+	
 	/**
 	 * Outputs to HTML or Text with a prefix at the beginning of each meta tag or line.
 	 * 
