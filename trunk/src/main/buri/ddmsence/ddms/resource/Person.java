@@ -25,9 +25,9 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractRoleEntity;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
@@ -171,11 +171,12 @@ public final class Person extends AbstractRoleEntity {
 			throw new InvalidDDMSException("ddms:" + getName() + " must not have extensible attributes after DDMS 3.1.");
 		super.validate();
 	}
-
+	
 	/**
 	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
 	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
+		Util.requireHTMLText(format);
 		String localPrefix = buildPrefix(prefix, "", suffix);
 		StringBuffer text = new StringBuffer(super.getHTMLTextOutput(format, localPrefix, ""));
 		text.append(buildHTMLTextOutput(format, localPrefix + SURNAME_NAME, getSurname()));

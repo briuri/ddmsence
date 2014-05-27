@@ -161,6 +161,15 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 	}
 
 	/**
+	 * Returns the expected JSON output for this unit test
+	 */
+	private String getExpectedJSONOutput() {
+		StringBuffer json = new StringBuffer();
+		json.append("TBD");
+		return (json.toString());
+	}
+	
+	/**
 	 * Returns the expected XML output for this unit test
 	 */
 	private String getExpectedXMLOutput() {
@@ -354,6 +363,8 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
 			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
+			assertEquals(getExpectedJSONOutput(), elementComponent.toJSON());
+			assertValidJson(elementComponent.toJSON());
 
 			if (!version.isAtLeast("5.0")) {
 				Element element = Util.buildDDMSElement(BoundingGeometry.getName(version), null);
@@ -363,6 +374,7 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 					elementComponent.toHTML());
 				assertEquals(PolygonTest.getFixtureList().get(0).getHTMLTextOutput(OutputFormat.TEXT, "boundingGeometry.", ""),
 					elementComponent.toText());
+				fail("Need to add the JSON test.");
 			}
 		}
 	}

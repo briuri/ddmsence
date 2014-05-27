@@ -160,6 +160,15 @@ public class PositionTest extends AbstractBaseTestCase {
 	}
 
 	/**
+	 * Returns the expected JSON output for this unit test
+	 */
+	private String getExpectedJSONOutput() {
+		StringBuffer json = new StringBuffer();
+		json.append("TBD");
+		return (json.toString());
+	}
+	
+	/**
 	 * Returns the expected XML output for this unit test
 	 */
 	private String getExpectedXMLOutput() {
@@ -308,6 +317,8 @@ public class PositionTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
 			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
+			assertEquals(getExpectedJSONOutput(), elementComponent.toJSON());
+			assertValidJson(elementComponent.toJSON());
 		}
 	}
 	

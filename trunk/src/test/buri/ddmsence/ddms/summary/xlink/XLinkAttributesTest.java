@@ -414,14 +414,17 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 			XLinkAttributes attributes = getLocatorFixture();
 			assertEquals(getExpectedOutput(OutputFormat.HTML, "locator"), attributes.getHTMLTextOutput(OutputFormat.HTML, ""));
 			assertEquals(getExpectedOutput(OutputFormat.TEXT, "locator"), attributes.getHTMLTextOutput(OutputFormat.TEXT, ""));
-
+			fail("Need to add JSON test.");
+			
 			attributes = getSimpleFixture();
 			assertEquals(getExpectedOutput(OutputFormat.HTML, "simple"), attributes.getHTMLTextOutput(OutputFormat.HTML, ""));
 			assertEquals(getExpectedOutput(OutputFormat.TEXT, "simple"), attributes.getHTMLTextOutput(OutputFormat.TEXT, ""));
+			fail("Need to add JSON test.");
 
 			attributes = getResourceFixture();
 			assertEquals(getExpectedOutput(OutputFormat.HTML, "resource"), attributes.getHTMLTextOutput(OutputFormat.HTML, ""));
 			assertEquals(getExpectedOutput(OutputFormat.TEXT, "resource"), attributes.getHTMLTextOutput(OutputFormat.TEXT, ""));
+			fail("Need to add JSON test.");
 		}
 	}
 

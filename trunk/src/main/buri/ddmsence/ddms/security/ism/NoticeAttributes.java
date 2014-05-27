@@ -30,6 +30,8 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.json.simple.JSONObject;
+
 import nu.xom.Element;
 import buri.ddmsence.AbstractAttributeGroup;
 import buri.ddmsence.ddms.OutputFormat;
@@ -255,6 +257,16 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 		super.validate(version);
 	}
 
+	/**
+	 * @see AbstractAttributeGroup#getJSONObject()
+	 */
+	public JSONObject getJSONObject() {
+		Map<String, Object> map = Util.getJSONMap();
+		// TODO
+		return (Util.getJSONObject("name!", map));
+	}
+	
+	
 	/**
 	 * @see AbstractAttributeGroup#getHTMLTextOutput(OutputFormat, String)
 	 */

@@ -31,6 +31,8 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.json.simple.JSONObject;
+
 import nu.xom.Element;
 import buri.ddmsence.AbstractAttributeGroup;
 import buri.ddmsence.ddms.OutputFormat;
@@ -537,6 +539,15 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			throw new InvalidDDMSException("At least 1 ownerProducer must exist.");
 	}
 
+	/**
+	 * @see AbstractAttributeGroup#getJSONObject()
+	 */
+	public JSONObject getJSONObject() {
+		Map<String, Object> map = Util.getJSONMap();
+		// TODO
+		return (Util.getJSONObject("name!", map));
+	}
+	
 	/**
 	 * @see AbstractAttributeGroup#getHTMLTextOutput(OutputFormat, String)
 	 */

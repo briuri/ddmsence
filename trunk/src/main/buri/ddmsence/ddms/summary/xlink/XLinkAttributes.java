@@ -21,7 +21,10 @@ package buri.ddmsence.ddms.summary.xlink;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+
+import org.json.simple.JSONObject;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractAttributeGroup;
@@ -291,6 +294,15 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 		super.validate(version);
 	}
 
+	/**
+	 * @see AbstractAttributeGroup#getJSONObject()
+	 */
+	public JSONObject getJSONObject() {
+		Map<String, Object> map = Util.getJSONMap();
+		// TODO
+		return (Util.getJSONObject("name!", map));
+	}
+	
 	/**
 	 * @see AbstractAttributeGroup#getHTMLTextOutput(OutputFormat, String)
 	 */

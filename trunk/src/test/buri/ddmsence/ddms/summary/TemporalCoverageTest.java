@@ -180,6 +180,15 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 	}
 
 	/**
+	 * Returns the expected JSON output for this unit test
+	 */
+	private String getExpectedJSONOutput(boolean isApproximable) {
+		StringBuffer json = new StringBuffer();
+		json.append("TBD");
+		return (json.toString());
+	}
+	
+	/**
 	 * Returns the expected XML output for this unit test
 	 */
 	private String getExpectedXMLOutput(boolean isApproximable) {
@@ -412,6 +421,8 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(OutputFormat.HTML, false), elementComponent.toHTML());
 			assertEquals(getExpectedOutput(OutputFormat.TEXT, false), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(false), elementComponent.toXML());
+			assertEquals(getExpectedJSONOutput(false), elementComponent.toJSON());
+			assertValidJson(elementComponent.toJSON());
 			
 			if (version.isAtLeast("4.1")) {
 				TemporalCoverage.Builder builder = getBaseBuilder();
@@ -423,6 +434,8 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 				assertEquals(getExpectedOutput(OutputFormat.HTML, true), builderComponent.toHTML());
 				assertEquals(getExpectedOutput(OutputFormat.TEXT, true), builderComponent.toText());
 				assertEquals(getExpectedXMLOutput(true), builderComponent.toXML());	
+				assertEquals(getExpectedJSONOutput(true), elementComponent.toJSON());
+				assertValidJson(elementComponent.toJSON());
 			}
 		}
 	}

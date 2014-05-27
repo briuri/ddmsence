@@ -23,9 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.ddms.OutputFormat;
+
+import org.json.simple.JSONObject;
+
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.resource.Creator;
 import buri.ddmsence.ddms.resource.Language;
@@ -163,6 +166,9 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 
 	public void testNullChecks() throws InvalidDDMSException {
 		AbstractBaseComponent component = new AbstractBaseComponent() {
+			protected JSONObject getJSONObject() {
+				return null;
+			}
 			public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 				return null;
 			}
@@ -175,6 +181,10 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 
 	public void testAttributeWarnings() throws InvalidDDMSException {
 		AbstractBaseComponent component = new AbstractBaseComponent() {
+			protected JSONObject getJSONObject() {
+				return null;
+			}
+			
 			public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 				return null;
 			}

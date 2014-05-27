@@ -186,6 +186,7 @@ public class ExtensibleElementTest extends AbstractBaseTestCase {
 			ExtensibleElement elementComponent = getInstance(getFixtureElement(), SUCCESS);
 			assertEquals("", elementComponent.toHTML());
 			assertEquals("", elementComponent.toText());
+			assertEquals("", elementComponent.toJSON());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 		}
 	}

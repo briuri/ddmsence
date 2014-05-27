@@ -132,6 +132,7 @@ public final class Unknown extends AbstractRoleEntity {
 	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */
 	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
+		Util.requireHTMLText(format);
 		String localPrefix = buildPrefix(prefix, "", suffix);
 		StringBuffer text = new StringBuffer(super.getHTMLTextOutput(format, localPrefix, ""));
 		text.append(buildHTMLTextOutput(format, localPrefix + AFFILIATION_NAME, getAffiliations()));
