@@ -262,10 +262,16 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		// TODO: Only load if the attributes exist.
 		return (object);
 	}
 	
+	/**
+	 * @see AbstractAttributeGroup#getName()
+	 */
+	public String getName() {
+		return ("noticeAttributes");
+	}
 	
 	/**
 	 * @see AbstractAttributeGroup#getHTMLTextOutput(OutputFormat, String)

@@ -103,12 +103,18 @@ public abstract class AbstractAttributeGroup {
 
 	/**
 	 * Renders this component as a JSON object, which can either be converted to
-	 * a JSONString or inserted into the parent JSON object.
+	 * a JSON string or inserted into the parent JSON object.
 	 * 
 	 * <p>I consider this to be an internal method, that unfortunately must be marked as public to allow cross-package
 	 * access when generating output. Use toJSON() as the formal, public method to generate output.</p>
 	 */
 	public abstract JsonObject getJSONObject();
+	
+	/**
+	 * Returns a name that describes this attribute group. The format of the name is the class name with a lower-case
+	 * first letter. This method is used in JSON output.
+	 */
+	public abstract String getName();
 	
 	/**
 	 * Outputs to HTML or Text with a prefix at the beginning of each meta tag or line.

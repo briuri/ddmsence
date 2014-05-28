@@ -140,7 +140,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		assertEquals("name: 2.0\n", rights.buildHTMLTextOutput(OutputFormat.TEXT, "name", otherList));
 	}
 
-	public void testOutputJsonFormat() throws InvalidDDMSException {
+	public void testOutputJSONFormat() throws InvalidDDMSException {
 		Extent extent = new Extent("a", "z");
 		PropertyReader.setProperty("output.formatJson", "false");
 		assertEquals("{\"qualifier\":\"a\",\"value\":\"z\"}", extent.toJSON());

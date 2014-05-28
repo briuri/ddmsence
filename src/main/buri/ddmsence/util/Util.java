@@ -57,6 +57,9 @@ import nu.xom.xslt.XSLTransform;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonPrimitive;
+
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.ITspiAddress;
 import buri.ddmsence.ddms.ITspiShape;
@@ -119,6 +122,20 @@ public class Util {
 	 */
 	public static DatatypeFactory getDataTypeFactory() {
 		return (_factory);
+	}
+	
+	/**
+	 * Converts a list of Strings into a JSON Array.
+	 * 
+	 * @param values the string values
+	 * @return a JSON array, with the values in the same order
+	 */
+	public static JsonArray getJSONArray(List<String> values) {
+		JsonArray array = new JsonArray();
+		for (String value : values) {
+			array.add(new JsonPrimitive(value));
+		}
+		return (array);
 	}
 	
 	/**

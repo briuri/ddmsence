@@ -103,7 +103,8 @@ public final class SubDivisionCode extends AbstractQualifierValue {
 	 */
 	protected JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		object.addProperty(getQualifierName(), getQualifier());
+		object.addProperty(getValueName(), getValue());
 		return (object);
 	}
 	

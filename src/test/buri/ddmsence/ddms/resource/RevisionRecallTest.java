@@ -428,7 +428,7 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(true, OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(true), elementComponent.toXML());
 			assertEquals(getExpectedJSONOutput(true), elementComponent.toJSON());
-			assertValidJson(elementComponent.toJSON());
+			assertValidJSON(elementComponent.toJSON());
 			
 			// text
 			elementComponent = getInstance(getTextFixtureElement(false), SUCCESS);
@@ -436,7 +436,7 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(false, OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(false), elementComponent.toXML());
 			assertEquals(getExpectedJSONOutput(false), elementComponent.toJSON());
-			assertValidJson(elementComponent.toJSON());
+			assertValidJSON(elementComponent.toJSON());
 		}
 	}
 
