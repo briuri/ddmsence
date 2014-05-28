@@ -28,7 +28,9 @@ import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.Util;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 /**
@@ -128,6 +130,42 @@ public abstract class AbstractAttributeGroup {
 	 */
 	public abstract String getHTMLTextOutput(OutputFormat format, String prefix);
 
+	/**
+	 * Adds a JSON array to a JSON object, but only if it is not empty.
+	 * 
+	 * @param object the object to add to
+	 * @param name the name of the array, if added
+	 * @param array the array to add
+	 */
+	protected static void addJson(JsonObject object, String name, JsonArray array) {
+		if (array.size() != 0)
+			object.add(name, array);
+	}
+	
+	/**
+	 * Adds a Boolean to a JSON object, but only if it is not null.
+	 * 
+	 * @param object the object to add to
+	 * @param name the name of the property, if added
+	 * @param bool the boolean to add
+	 */
+	protected static void addJson(JsonObject object, String name, Boolean bool) {
+		if (bool != null)
+			object.addProperty(name, bool);
+	}
+	
+	/**
+	 * Adds a String to a JSON object, but only if it is not empty.
+	 * 
+	 * @param object the object to add to
+	 * @param name the name of the property, if added
+	 * @param string the string to add
+	 */
+	protected static void addJson(JsonObject object, String name, String string) {
+		if (!Util.isEmpty(string))
+			object.addProperty(name, string);
+	}
+	
 	/**
 	 * Accessor for the XML namespace of these attributes
 	 */

@@ -156,7 +156,7 @@ public class SubOrganizationTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("{\"subOrganization\":\"PEO-GES\",\"securityAttributes\":{}}");
+		json.append("{\"subOrganization\":\"PEO-GES\",\"securityAttributes\":{\"classification\":\"U\",\"ownerProducer\":[\"USA\"]}}");
 		return (json.toString());
 	}
 	

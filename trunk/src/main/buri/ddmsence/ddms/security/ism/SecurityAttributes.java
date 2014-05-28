@@ -538,13 +538,40 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		if (getOwnerProducers().size() == 0)
 			throw new InvalidDDMSException("At least 1 ownerProducer must exist.");
 	}
-
+	
 	/**
 	 * @see AbstractAttributeGroup#getJSONObject()
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO: Only load if the attributes exist.
+		addJson(object, ATOMIC_ENERGY_MARKINGS_NAME, Util.getJSONArray(getAtomicEnergyMarkings()));
+		addJson(object, CLASSIFICATION_NAME, getClassification());
+		addJson(object, CLASSIFICATION_REASON_NAME, getClassificationReason());
+		addJson(object, CLASSIFIED_BY_NAME, getClassifiedBy());
+		addJson(object, COMPILATION_REASON_NAME, getCompilationReason());
+		if (getDateOfExemptedSource() != null) {
+			addJson(object, DATE_OF_EXEMPTED_SOURCE_NAME, getDateOfExemptedSource().toXMLFormat());
+		}
+		if (getDeclassDate() != null)
+			addJson(object, DECLASS_DATE_NAME, getDeclassDate().toXMLFormat());
+		addJson(object, DECLASS_EVENT_NAME, getDeclassEvent());
+		addJson(object, DECLASS_EXCEPTION_NAME, getDeclassException());
+		if (getDeclassManualReview() != null) {
+			addJson(object, DECLASS_MANUAL_REVIEW_NAME, getDeclassManualReview());
+		}
+		addJson(object, DERIVATIVELY_CLASSIFIED_BY_NAME, getDerivativelyClassifiedBy());
+		addJson(object, DERIVED_FROM_NAME, getDerivedFrom());
+		addJson(object, DISPLAY_ONLY_TO_NAME, Util.getJSONArray(getDisplayOnlyTo()));
+		addJson(object, DISSEMINATION_CONTROLS_NAME, Util.getJSONArray(getDisseminationControls()));
+		addJson(object, FGI_SOURCE_OPEN_NAME, Util.getJSONArray(getFGIsourceOpen()));
+		addJson(object, FGI_SOURCE_PROTECTED_NAME, Util.getJSONArray(getFGIsourceProtected()));
+		addJson(object, NON_IC_MARKINGS_NAME, Util.getJSONArray(getNonICmarkings()));
+		addJson(object, NON_US_CONTROLS_NAME, Util.getJSONArray(getNonUSControls()));
+		addJson(object, OWNER_PRODUCER_NAME, Util.getJSONArray(getOwnerProducers()));
+		addJson(object, RELEASABLE_TO_NAME, Util.getJSONArray(getReleasableTo()));
+		addJson(object, SAR_IDENTIFIER_NAME, Util.getJSONArray(getSARIdentifier()));
+		addJson(object, SCI_CONTROLS_NAME, Util.getJSONArray(getSCIcontrols()));
+		addJson(object, TYPE_OF_EXEMPTED_SOURCE_NAME, getTypeOfExemptedSource());
 		return (object);
 	}
 	
