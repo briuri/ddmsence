@@ -221,8 +221,8 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	}
 
 	/**
-	 * Renders this component as a JSON object, which can either be converted to
-	 * a JSONString or inserted into the parent JSON object.
+	 * Renders this component as a JSON object, which can either be converted to a JSON string or inserted into the
+	 * parent JSON object.
 	 */
 	protected abstract JsonObject getJSONObject();
 	

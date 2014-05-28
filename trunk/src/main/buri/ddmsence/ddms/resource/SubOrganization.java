@@ -98,7 +98,8 @@ public final class SubOrganization extends AbstractSimpleString {
 	 */
 	protected JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		object.addProperty(getName(), getValue());
+		object.add(getSecurityAttributes().getName(), getSecurityAttributes().getJSONObject());
 		return (object);
 	}
 	

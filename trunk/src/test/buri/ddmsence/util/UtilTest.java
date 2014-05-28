@@ -27,6 +27,8 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.JsonArray;
+
 import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Element;
@@ -53,6 +55,15 @@ public class UtilTest extends AbstractBaseTestCase {
 		Constructor<Util> constructor = Util.class.getDeclaredConstructor();
 		constructor.setAccessible(true);
 		constructor.newInstance();
+	}
+	
+	public void testGetJSONArray() {
+		List<String> list = new ArrayList<String>();
+		list.add("Test");
+		list.add("Dog");
+		JsonArray array = Util.getJSONArray(list);
+		assertEquals("Test", array.get(0).getAsString());
+		assertEquals("Dog", array.get(1).getAsString());
 	}
 	
 	public void testGetNonNullStringNull() {

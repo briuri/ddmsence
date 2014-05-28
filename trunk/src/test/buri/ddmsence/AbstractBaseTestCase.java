@@ -199,7 +199,7 @@ public abstract class AbstractBaseTestCase extends TestCase {
 	/**
 	 * Runs a JSON string through a parser.
 	 */
-	protected void assertValidJson(String json) {
+	protected void assertValidJSON(String json) {
 		try {
 			getJsonParser().parse(json);
 		}

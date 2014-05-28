@@ -39,7 +39,9 @@ instead of "ISM", you would set the "ism.prefix" property with a custom value of
 <p>TBD:
 	formatting property,
 	datatypes match datatype on DDMSence component (mostly strings),
-	each component is not named until nested in a parent</p>
+	each component is not named until nested in a parent
+	how to name a pair for free-text (e.g. subOrganization)
+	don't include empty/null values</p>
 
 <h2>Controlling HTML/Text Output</h2>
 

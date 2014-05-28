@@ -428,7 +428,7 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(OutputFormat.TEXT, true), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(true), elementComponent.toXML());
 			assertEquals(getExpectedJSONOutput(true), elementComponent.toJSON());
-			assertValidJson(elementComponent.toJSON());
+			assertValidJSON(elementComponent.toJSON());
 			
 			PostalAddress.Builder builder = getBaseBuilder();
 			builder.setState(null);
@@ -438,7 +438,7 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(OutputFormat.TEXT, false), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(false), elementComponent.toXML());
 			assertEquals(getExpectedJSONOutput(false), elementComponent.toJSON());
-			assertValidJson(elementComponent.toJSON());
+			assertValidJSON(elementComponent.toJSON());
 		}
 	}
 	

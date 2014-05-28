@@ -287,7 +287,7 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 			assertEquals(getExpectedJSONOutput(), elementComponent.toJSON());
-			assertValidJson(elementComponent.toJSON());
+			assertValidJSON(elementComponent.toJSON());
 		}
 	}
 

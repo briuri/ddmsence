@@ -156,7 +156,7 @@ public class SubOrganizationTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"subOrganization\":\"PEO-GES\",\"securityAttributes\":{}}");
 		return (json.toString());
 	}
 	
@@ -251,7 +251,7 @@ public class SubOrganizationTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 			assertEquals(getExpectedJSONOutput(), elementComponent.toJSON());
-			assertValidJson(elementComponent.toJSON());
+			assertValidJSON(elementComponent.toJSON());
 		}
 	}
 
