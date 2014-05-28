@@ -20,19 +20,18 @@
 package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
-import java.util.Map;
-
-import org.json.simple.JSONObject;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
+
+import com.google.gson.JsonObject;
 
 /**
  * An immutable implementation of ddms:keyword.
@@ -144,10 +143,10 @@ public final class Keyword extends AbstractBaseComponent {
 	/**
 	 * @see AbstractBaseComponent#getJSONObject()
 	 */
-	protected JSONObject getJSONObject() {
-		Map<String, Object> map = Util.getJSONMap();
+	protected JsonObject getJSONObject() {
+		JsonObject object = new JsonObject();
 		// TODO
-		return (Util.getJSONObject(getName(), map));
+		return (object);
 	}
 	
 	/**

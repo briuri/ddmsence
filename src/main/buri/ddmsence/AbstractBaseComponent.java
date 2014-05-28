@@ -26,9 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import nu.xom.Element;
-
-import org.json.simple.JSONObject;
-
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.OutputFormat;
@@ -40,6 +37,9 @@ import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
+
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 /**
  * Top-level base class for all DDMS elements and attributes modeled as Java objects.
@@ -206,7 +206,11 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @see IDDMSComponent#toJSON()
 	 */
 	public String toJSON() {
-		return (getJSONObject().toJSONString());
+		GsonBuilder builder = new GsonBuilder();
+		if (Boolean.valueOf(PropertyReader.getProperty("output.formatJson"))) {
+			builder.setPrettyPrinting();
+		}
+		return (builder.create().toJson(getJSONObject()));
 	}
 	
 	/**
@@ -220,7 +224,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * Renders this component as a JSON object, which can either be converted to
 	 * a JSONString or inserted into the parent JSON object.
 	 */
-	protected abstract JSONObject getJSONObject();
+	protected abstract JsonObject getJSONObject();
 	
 	/**
 	 * Renders this component as HTML or Text, with an optional prefix to nest it.

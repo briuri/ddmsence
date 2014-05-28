@@ -128,7 +128,7 @@ public class ExtentTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("{\"extent\":{\"qualifier\":\"sizeBytes\",\"value\":\"75000\"}}");
+		json.append("{\"qualifier\":\"sizeBytes\",\"value\":\"75000\"}");
 		return (json.toString());
 	}
 	

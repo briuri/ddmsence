@@ -24,16 +24,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
-
-import org.json.simple.JSONObject;
-
 import buri.ddmsence.AbstractAttributeGroup;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -47,6 +43,8 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
+
+import com.google.gson.JsonObject;
 
 /**
  * Attribute group representing the xs:anyAttribute tag which appears on various DDMS components.
@@ -236,10 +234,10 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	/**
 	 * @see AbstractAttributeGroup#getJSONObject()
 	 */
-	public JSONObject getJSONObject() {
-		Map<String, Object> map = Util.getJSONMap();
+	public JsonObject getJSONObject() {
+		JsonObject object = new JsonObject();
 		// TODO
-		return (Util.getJSONObject("name!", map));
+		return (object);
 	}
 	
 	/**

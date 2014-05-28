@@ -22,19 +22,18 @@ package buri.ddmsence.ddms.format;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import org.json.simple.JSONObject;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
+
+import com.google.gson.JsonObject;
 
 /**
  * An immutable implementation of ddms:format.
@@ -159,13 +158,13 @@ public final class Format extends AbstractBaseComponent {
 	/**
 	 * @see AbstractBaseComponent#getJSONObject()
 	 */
-	protected JSONObject getJSONObject() {
-		Map<String, Object> map = Util.getJSONMap();
-		map.put(MIME_TYPE_NAME, getMimeType());
+	protected JsonObject getJSONObject() {
+		JsonObject object = new JsonObject();
+		object.addProperty(MIME_TYPE_NAME, getMimeType());
 		if (getExtent() != null)
-			map.putAll(getExtent().getJSONObject());
-		map.put(MEDIUM_NAME, getMedium());
-		return (Util.getJSONObject(getName(), map));
+			object.add(getExtent().getName(), getExtent().getJSONObject());
+		object.addProperty(MEDIUM_NAME, getMedium());
+		return (object);
 	}
 	
 	/**

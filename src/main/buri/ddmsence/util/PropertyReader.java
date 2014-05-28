@@ -57,6 +57,7 @@ public class PropertyReader {
 		CUSTOM_PROPERTIES.add("gml.prefix");
 		CUSTOM_PROPERTIES.add("ism.prefix");
 		CUSTOM_PROPERTIES.add("ntk.prefix");
+		CUSTOM_PROPERTIES.add("output.formatJson");
 		CUSTOM_PROPERTIES.add("output.indexLevel");
 		CUSTOM_PROPERTIES.add("sample.data");
 		CUSTOM_PROPERTIES.add("tspi.prefix");

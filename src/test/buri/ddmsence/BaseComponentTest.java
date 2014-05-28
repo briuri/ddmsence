@@ -23,13 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-
-import org.json.simple.JSONObject;
-
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.ValidationMessage;
+import buri.ddmsence.ddms.format.Extent;
 import buri.ddmsence.ddms.resource.Creator;
 import buri.ddmsence.ddms.resource.Language;
 import buri.ddmsence.ddms.resource.Organization;
@@ -37,6 +35,8 @@ import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
+
+import com.google.gson.JsonObject;
 
 /**
  * <p> Tests related to underlying methods in the base class for DDMS components </p>
@@ -140,6 +140,14 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		assertEquals("name: 2.0\n", rights.buildHTMLTextOutput(OutputFormat.TEXT, "name", otherList));
 	}
 
+	public void testOutputJsonFormat() throws InvalidDDMSException {
+		Extent extent = new Extent("a", "z");
+		PropertyReader.setProperty("output.formatJson", "false");
+		assertEquals("{\"qualifier\":\"a\",\"value\":\"z\"}", extent.toJSON());
+		PropertyReader.setProperty("output.formatJson", "true");
+		assertEquals("{\n  \"qualifier\": \"a\",\n  \"value\": \"z\"\n}", extent.toJSON());
+	}
+	
 	public void testSelfEquality() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
 		assertEquals(rights, rights);
@@ -166,7 +174,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 
 	public void testNullChecks() throws InvalidDDMSException {
 		AbstractBaseComponent component = new AbstractBaseComponent() {
-			protected JSONObject getJSONObject() {
+			protected JsonObject getJSONObject() {
 				return null;
 			}
 			public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
@@ -181,7 +189,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 
 	public void testAttributeWarnings() throws InvalidDDMSException {
 		AbstractBaseComponent component = new AbstractBaseComponent() {
-			protected JSONObject getJSONObject() {
+			protected JsonObject getJSONObject() {
 				return null;
 			}
 			

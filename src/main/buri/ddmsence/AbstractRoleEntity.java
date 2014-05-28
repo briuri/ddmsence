@@ -22,18 +22,17 @@ package buri.ddmsence;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-
-import org.json.simple.JSONObject;
 
 import nu.xom.Element;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IRoleEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
+
+import com.google.gson.JsonObject;
 
 /**
  * Base class for entities which fulfill some role, such as ddms:person and ddms:organization.
@@ -165,10 +164,10 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	/**
 	 * @see AbstractBaseComponent#getJSONObject()
 	 */
-	protected JSONObject getJSONObject() {
-		Map<String, Object> map = Util.getJSONMap();
+	protected JsonObject getJSONObject() {
+		JsonObject object = new JsonObject();
 		// TODO
-		return (Util.getJSONObject(getName(), map));
+		return (object);
 	}
 	
 	/**

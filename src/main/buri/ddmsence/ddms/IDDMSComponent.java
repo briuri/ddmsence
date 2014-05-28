@@ -107,21 +107,22 @@ public interface IDDMSComponent {
 	public String toHTML();
 
 	/**
-	 * Renders this component as JSON.
+	 * Renders this component as JSON. Use the <code>output.formatJson</code> property to control pretty printing of the
+	 * output.
 	 * 
 	 * @return the JSON representation of this component
 	 */
 	public String toJSON();
 	
 	/**
-	 * Renders this component as Text.
+	 * Renders this component as Text. Use the <code>output.indexLevel</code> property to add indices to the output.
 	 * 
 	 * @return the text-based representation of this component
 	 */
 	public String toText();
 
 	/**
-	 * Renders this component as XML.
+	 * Renders this component as XML. Use the <code>output.indexLevel</code> property to add indices to the output.
 	 * 
 	 * @return the XML representation of this component
 	 */

@@ -16,7 +16,7 @@ complete text of this license can be found below.</p>
 do not need to download them separately.</p>
 
 <ul>
-	<li><a href="https://code.google.com/p/json-simple/">JSON.simple 1.1.1</a> 
+	<li><a href="https://code.google.com/p/google-gson/">google-gson 2.2.4</a> 
 		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Core library needed for JSON output (unmodified).</li>
 	<li><a href="http://www.schematron.com/">Rick Jelliffe's ISO Schematron implementation 4-21-2010</a> 
 		(<a href="http://www.opensource.org/licenses/zlib-license.php">zlib/libpng License</a>): Core library needed for Schematron validation (unmodified).</li>
