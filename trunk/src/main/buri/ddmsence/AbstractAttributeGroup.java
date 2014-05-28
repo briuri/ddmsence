@@ -23,13 +23,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.json.simple.JSONObject;
-
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
+
+import com.google.gson.JsonObject;
 
 /**
  * Top-level base class for attribute groups, such as {@link SecurityAttributes}.
@@ -108,7 +108,7 @@ public abstract class AbstractAttributeGroup {
 	 * <p>I consider this to be an internal method, that unfortunately must be marked as public to allow cross-package
 	 * access when generating output. Use toJSON() as the formal, public method to generate output.</p>
 	 */
-	public abstract JSONObject getJSONObject();
+	public abstract JsonObject getJSONObject();
 	
 	/**
 	 * Outputs to HTML or Text with a prefix at the beginning of each meta tag or line.

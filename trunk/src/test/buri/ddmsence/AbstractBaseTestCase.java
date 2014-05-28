@@ -25,9 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 import junit.framework.TestCase;
 import nu.xom.Element;
 import buri.ddmsence.ddms.IDDMSComponent;
@@ -40,6 +37,9 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+
 /**
  * Base class for DDMSence test cases.
  * 
@@ -49,7 +49,7 @@ import buri.ddmsence.util.Util;
 public abstract class AbstractBaseTestCase extends TestCase {
 
 	private String _type;
-	private JSONParser _jsonParser = new JSONParser();
+	private JsonParser _jsonParser = new JsonParser();
 	private List<String> _supportedVersions = new ArrayList<String>(DDMSVersion.getSupportedVersions());
 
 	private static Map<String, Element> _elementMap = new HashMap<String, Element>();
@@ -203,7 +203,7 @@ public abstract class AbstractBaseTestCase extends TestCase {
 		try {
 			getJsonParser().parse(json);
 		}
-		catch (ParseException e) {
+		catch (JsonSyntaxException e) {
 			fail("Invalid JSON string: " + json);
 		}
 	}
@@ -286,7 +286,7 @@ public abstract class AbstractBaseTestCase extends TestCase {
 	/**
 	 * Accessor for the JSON parser, used to validate JSON strings.
 	 */
-	private JSONParser getJsonParser() {
+	private JsonParser getJsonParser() {
 		return (_jsonParser);
 	}
 	

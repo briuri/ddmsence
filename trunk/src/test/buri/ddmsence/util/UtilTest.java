@@ -26,9 +26,6 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import org.json.simple.JSONObject;
 
 import nu.xom.Attribute;
 import nu.xom.Document;
@@ -58,24 +55,6 @@ public class UtilTest extends AbstractBaseTestCase {
 		constructor.newInstance();
 	}
 	
-	public void testGetJSONMap() {
-		Map map = Util.getJSONMap();
-		assertNotNull(map);
-		
-		// Test sort order (currently a LinkedHashMap, so put-order)
-		map.put("z", "a");
-		map.put("a", "z");
-		assertEquals("z", map.keySet().toArray()[0]);
-	}
-	
-	public void testGetJSONObject() {
-		Map map = Util.getJSONMap();
-		map.put("a", "z");
-		JSONObject object = Util.getJSONObject("name", map);
-		assertEquals(map, object.get("name"));
-		assertEquals("{\"name\":{\"a\":\"z\"}}", object.toJSONString());
-	}
-
 	public void testGetNonNullStringNull() {
 		assertEquals("", Util.getNonNullString(null));
 	}

@@ -23,19 +23,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-
-import org.json.simple.JSONObject;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractAttributeGroup;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
+
+import com.google.gson.JsonObject;
 
 /**
  * Attribute group for the four SRS attributes used on GML and TSPI-based shapes.
@@ -187,10 +186,10 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	/**
 	 * @see AbstractAttributeGroup#getJSONObject()
 	 */
-	public JSONObject getJSONObject() {
-		Map<String, Object> map = Util.getJSONMap();
+	public JsonObject getJSONObject() {
+		JsonObject object = new JsonObject();
 		// TODO
-		return (Util.getJSONObject("name!", map));
+		return (object);
 	}
 	
 	/**

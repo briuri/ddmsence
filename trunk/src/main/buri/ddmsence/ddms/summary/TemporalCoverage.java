@@ -23,25 +23,24 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.json.simple.JSONObject;
-
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.ApproximableDate;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
+
+import com.google.gson.JsonObject;
 
 /**
  * An immutable implementation of ddms:temporalCoverage.
@@ -306,10 +305,10 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	/**
 	 * @see AbstractBaseComponent#getJSONObject()
 	 */
-	protected JSONObject getJSONObject() {
-		Map<String, Object> map = Util.getJSONMap();
+	protected JsonObject getJSONObject() {
+		JsonObject object = new JsonObject();
 		// TODO
-		return (Util.getJSONObject(getName(), map));
+		return (object);
 	}
 	
 	/**

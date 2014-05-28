@@ -19,12 +19,7 @@
  */
 package buri.ddmsence.ddms.format;
 
-import java.util.Map;
-
 import nu.xom.Element;
-
-import org.json.simple.JSONObject;
-
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractQualifierValue;
 import buri.ddmsence.ddms.IBuilder;
@@ -32,6 +27,8 @@ import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
+
+import com.google.gson.JsonObject;
 
 /**
  * An immutable implementation of ddms:extent.
@@ -116,11 +113,11 @@ public final class Extent extends AbstractQualifierValue {
 	/**
 	 * @see AbstractBaseComponent#getJSONObject()
 	 */
-	protected JSONObject getJSONObject() {
-		Map<String, Object> map = Util.getJSONMap();
-		map.put(getQualifierName(), getQualifier());
-		map.put(getValueName(), getValue());
-		return (Util.getJSONObject(getName(), map));
+	protected JsonObject getJSONObject() {
+		JsonObject object = new JsonObject();
+		object.addProperty(getQualifierName(), getQualifier());
+		object.addProperty(getValueName(), getValue());
+		return (object);
 	}
 	
 	/**

@@ -21,14 +21,13 @@ package buri.ddmsence.ddms;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-
-import org.json.simple.JSONObject;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.util.Util;
+
+import com.google.gson.JsonObject;
 
 /**
  * Base class for DDMS elements which are an approximable date, such as ddms:dates/ddms:acquiredOn.
@@ -209,10 +208,10 @@ public final class ApproximableDate extends AbstractBaseComponent {
 	/**
 	 * @see AbstractBaseComponent#getJSONObject()
 	 */
-	protected JSONObject getJSONObject() {
-		Map<String, Object> map = Util.getJSONMap();
+	protected JsonObject getJSONObject() {
+		JsonObject object = new JsonObject();
 		// TODO
-		return (Util.getJSONObject(getName(), map));
+		return (object);
 	}
 	
 	/**

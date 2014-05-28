@@ -31,18 +31,18 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.json.simple.JSONObject;
-
 import nu.xom.Element;
 import buri.ddmsence.AbstractAttributeGroup;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
+
+import com.google.gson.JsonObject;
 
 /**
  * Attribute group for the ISM markings used throughout DDMS.
@@ -542,10 +542,10 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	/**
 	 * @see AbstractAttributeGroup#getJSONObject()
 	 */
-	public JSONObject getJSONObject() {
-		Map<String, Object> map = Util.getJSONMap();
+	public JsonObject getJSONObject() {
+		JsonObject object = new JsonObject();
 		// TODO
-		return (Util.getJSONObject("name!", map));
+		return (object);
 	}
 	
 	/**

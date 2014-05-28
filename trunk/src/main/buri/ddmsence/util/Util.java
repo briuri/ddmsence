@@ -54,7 +54,6 @@ import nu.xom.ParsingException;
 import nu.xom.xslt.XSLException;
 import nu.xom.xslt.XSLTransform;
 
-import org.json.simple.JSONObject;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
@@ -120,26 +119,6 @@ public class Util {
 	 */
 	public static DatatypeFactory getDataTypeFactory() {
 		return (_factory);
-	}
-
-	/**
-	 * Returns a map which can be populated for JSON output. This is extracted as a Util call so we can change the
-	 * underlying map type in the future for different sorting strategies.
-	 */
-	public static Map<String, Object> getJSONMap() {
-		return (new LinkedHashMap<String, Object>());
-	}
-	
-	/**
-	 * Returns a JSON object wrapepd around a map, with a specified name.
-	 * 
-	 * @param name the name of the object
-	 * @param map the map inserted into the object
-	 */
-	public static JSONObject getJSONObject(String name, Map<String, Object> map) {
-		JSONObject object = new JSONObject();
-		object.put(name, map);
-		return (object);
 	}
 	
 	/**

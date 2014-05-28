@@ -149,10 +149,10 @@ public class FormatTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("{\"format\":{");
-		json.append("\"mimeType\":\"text\\/xml\",");
+		json.append("{");
+		json.append("\"mimeType\":\"text/xml\",");
 		json.append("\"extent\":{\"qualifier\":\"sizeBytes\",\"value\":\"75000\"},");
-		json.append("\"medium\":\"digital\"}}");
+		json.append("\"medium\":\"digital\"}");
 		return (json.toString());
 	}
 	

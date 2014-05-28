@@ -24,6 +24,7 @@ instead of "ISM", you would set the "ism.prefix" property with a custom value of
 <tr><td>gml.prefix</td><td>Default GML prefix used when generating components from scratch</td><td><code>gml</code></td></tr>
 <tr><td>ism.prefix</td><td>Default ISM prefix used when generating components from scratch</td><td><code>ISM</code></td></tr>
 <tr><td>ntk.prefix</td><td>Default NTK prefix used when generating components from scratch</td><td><code>ntk</code></td></tr>
+<tr><td>output.formatJson</td><td>Outputs JSON strings with whitespace and indentation</td><td><code>false</code></td></tr>
 <tr><td>output.indexLevel</td><td>Controls the placement of 1-based indices on the HTML/Text output of fields which are allowed to have multiples (0 = Never use, 1 = Use unless exactly 1 item exists, 2 = Always use)</td><td><code>0</code></td></tr>
 <tr><td>sample.data</td><td>Default data directory used by sample applications</td><td><code>data/sample/</code></td></tr>
 <tr><td>tspi.prefix</td><td>Default TSPI prefix used when generating components from scratch</td><td><code>tspi</code></td></tr>
@@ -32,6 +33,13 @@ instead of "ISM", you would set the "ism.prefix" property with a custom value of
 <tr><td>xml.transform.TransformerFactory</td><td>XSLT Engine class name, for Schematron validation<td><code>net.sf.saxon.TransformerFactoryImpl</code></td></tr>
 </table>
 <p class="figure">Table 1. Configurable Properties</p>
+
+<h2>Controlling JSON Output</h2>
+
+<p>TBD:
+	formatting property,
+	datatypes match datatype on DDMSence component (mostly strings),
+	each component is not named until nested in a parent</p>
 
 <h2>Controlling HTML/Text Output</h2>
 
