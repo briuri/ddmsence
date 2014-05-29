@@ -135,11 +135,23 @@ public abstract class AbstractAttributeGroup {
 	 * 
 	 * @param object the object to add to
 	 * @param name the name of the array, if added
-	 * @param array the array to add
+	 * @param value the array to add
 	 */
-	protected static void addJson(JsonObject object, String name, JsonArray array) {
-		if (array.size() != 0)
-			object.add(name, array);
+	protected static void addJson(JsonObject object, String name, JsonArray value) {
+		if (value.size() != 0)
+			object.add(name, value);
+	}
+	
+	/**
+	 * Adds an Integer to a JSON object, but only if it is not null.
+	 * 
+	 * @param object the object to add to
+	 * @param name the name of the property, if added
+	 * @param value the integer to add
+	 */
+	protected static void addJson(JsonObject object, String name, Integer value) {
+		if (value != null)
+			object.addProperty(name, value);
 	}
 	
 	/**
@@ -147,11 +159,11 @@ public abstract class AbstractAttributeGroup {
 	 * 
 	 * @param object the object to add to
 	 * @param name the name of the property, if added
-	 * @param bool the boolean to add
+	 * @param value the boolean to add
 	 */
-	protected static void addJson(JsonObject object, String name, Boolean bool) {
-		if (bool != null)
-			object.addProperty(name, bool);
+	protected static void addJson(JsonObject object, String name, Boolean value) {
+		if (value != null)
+			object.addProperty(name, value);
 	}
 	
 	/**
@@ -159,11 +171,11 @@ public abstract class AbstractAttributeGroup {
 	 * 
 	 * @param object the object to add to
 	 * @param name the name of the property, if added
-	 * @param string the string to add
+	 * @param value the string to add
 	 */
-	protected static void addJson(JsonObject object, String name, String string) {
-		if (!Util.isEmpty(string))
-			object.addProperty(name, string);
+	protected static void addJson(JsonObject object, String name, String value) {
+		if (!Util.isEmpty(value))
+			object.addProperty(name, value);
 	}
 	
 	/**

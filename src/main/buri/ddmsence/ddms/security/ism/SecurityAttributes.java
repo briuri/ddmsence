@@ -556,9 +556,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			addJson(object, DECLASS_DATE_NAME, getDeclassDate().toXMLFormat());
 		addJson(object, DECLASS_EVENT_NAME, getDeclassEvent());
 		addJson(object, DECLASS_EXCEPTION_NAME, getDeclassException());
-		if (getDeclassManualReview() != null) {
-			addJson(object, DECLASS_MANUAL_REVIEW_NAME, getDeclassManualReview());
-		}
+		addJson(object, DECLASS_MANUAL_REVIEW_NAME, getDeclassManualReview());
 		addJson(object, DERIVATIVELY_CLASSIFIED_BY_NAME, getDerivativelyClassifiedBy());
 		addJson(object, DERIVED_FROM_NAME, getDerivedFrom());
 		addJson(object, DISPLAY_ONLY_TO_NAME, Util.getJSONArray(getDisplayOnlyTo()));

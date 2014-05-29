@@ -126,7 +126,8 @@ public class ProfileTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
+	private String getExpectedHTMLTextOutput(OutputFormat format) throws InvalidDDMSException {
+		Util.requireHTMLText(format);
 		StringBuffer text = new StringBuffer();
 		text.append(SystemNameTest.getFixture().getHTMLTextOutput(format, "profile.", ""));
 		text.append(ProfileValueTest.getFixtureList().get(0).getHTMLTextOutput(format, "profile.", ""));
@@ -253,8 +254,8 @@ public class ProfileTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Profile elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 			assertEquals(getExpectedJSONOutput(), elementComponent.toJSON());
 			assertValidJSON(elementComponent.toJSON());

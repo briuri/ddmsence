@@ -19,6 +19,8 @@
  */
 package buri.ddmsence.ddms.security.ism;
 
+import com.google.gson.Gson;
+
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.OutputFormat;
@@ -107,6 +109,22 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 			expectMessage(e, message);
 		}
 		return (component);
+	}
+	
+	/**
+	 * Returns the expected JSON output for this unit test
+	 */
+	private String getExpectedJSONOutput() {
+		StringBuffer json = new StringBuffer();
+		json.append("{\"noticeType\":\"DoD-Dist-B\",");
+		json.append("\"noticeReason\":\"noticeReason\",");
+		json.append("\"noticeDate\":\"2011-09-15\",");
+		json.append("\"unregisteredNoticeType\":\"unregisteredNoticeType\"");
+		if (DDMSVersion.getCurrentVersion().isAtLeast("4.1")) {
+			json.append(",\"externalNotice\":false");
+		}
+		json.append("}");		
+		return (json.toString());
 	}
 
 	/**
@@ -254,9 +272,18 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 		
-	public void testOutput() {
-		// Tested by parent components.
-		fail("Need to add JSON test");
+	public void testHTMLTextOutput() {
+		// HTML/Text tested by parent components.
+	}
+	
+	public void testJSONOutput() {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			NoticeAttributes attr = getFixture();
+			String json = new Gson().toJson(attr.getJSONObject());
+			assertEquals(getExpectedJSONOutput(), json);
+			assertValidJSON(json);
+		}
 	}
 	
 	public void testBuilderIsEmpty() throws InvalidDDMSException {

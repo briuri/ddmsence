@@ -22,6 +22,8 @@ package buri.ddmsence.ddms.extensible;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
+
 import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
@@ -168,12 +170,22 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(OutputFormat format) {
+	private String getExpectedHTMLTextOutput(OutputFormat format) {
+		Util.requireHTMLText(format);
 		StringBuffer text = new StringBuffer();
 		text.append(buildHTMLTextOutput(format, "ddmsence.relevance", "95"));
 		return (text.toString());
 	}
 
+	/**
+	 * Returns the expected output for the test instance of this component
+	 */
+	private String getExpectedJSONOutput() {
+		StringBuffer text = new StringBuffer();
+		text.append("{\"ddmsence.relevance\":\"95\"}");
+		return (text.toString());
+	}
+	
 	public void testConstructors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -265,9 +277,12 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 			Element element = getTestElement();
 			element.addAttribute(new Attribute(getTestAttribute()));
 			ExtensibleAttributes elementAttributes = getInstance(element, SUCCESS);
-			assertEquals(getExpectedOutput(OutputFormat.HTML), elementAttributes.getHTMLTextOutput(OutputFormat.HTML, ""));
-			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementAttributes.getHTMLTextOutput(OutputFormat.TEXT, ""));
-			fail("Need to add JSON test");
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.HTML), elementAttributes.getHTMLTextOutput(OutputFormat.HTML, ""));
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.TEXT), elementAttributes.getHTMLTextOutput(OutputFormat.TEXT, ""));
+			
+			String json = new Gson().toJson(elementAttributes.getJSONObject());
+			assertEquals(getExpectedJSONOutput(), json);
+			assertValidJSON(json);
 		}
 	}
 

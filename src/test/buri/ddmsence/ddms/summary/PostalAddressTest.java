@@ -160,7 +160,8 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(OutputFormat format, boolean hasState) throws InvalidDDMSException {
+	private String getExpectedHTMLTextOutput(OutputFormat format, boolean hasState) throws InvalidDDMSException {
+		Util.requireHTMLText(format);
 		StringBuffer text = new StringBuffer();
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
 			text.append(buildHTMLTextOutput(format, "postalAddress.street", TEST_STREETS.get(0)));
@@ -424,8 +425,8 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			PostalAddress elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(OutputFormat.HTML, true), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(OutputFormat.TEXT, true), elementComponent.toText());
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.HTML, true), elementComponent.toHTML());
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.TEXT, true), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(true), elementComponent.toXML());
 			assertEquals(getExpectedJSONOutput(true), elementComponent.toJSON());
 			assertValidJSON(elementComponent.toJSON());
@@ -434,8 +435,8 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 			builder.setState(null);
 			builder.setProvince(TEST_PROVINCE);
 			elementComponent = builder.commit();
-			assertEquals(getExpectedOutput(OutputFormat.HTML, false), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(OutputFormat.TEXT, false), elementComponent.toText());
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.HTML, false), elementComponent.toHTML());
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.TEXT, false), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(false), elementComponent.toXML());
 			assertEquals(getExpectedJSONOutput(false), elementComponent.toJSON());
 			assertValidJSON(elementComponent.toJSON());
