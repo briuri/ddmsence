@@ -240,6 +240,16 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	}
 	
 	/**
+	 * Adds an attribute group's JSON object to a JSON object, but only if it is not empty. This method delegates to Util, so the
+	 * individual JSON implementations are cleaner.
+	 * 
+	 * @param object the object to add to
+	 * @param value the value to add
+	 */
+	protected static void addJson(JsonObject object, AbstractAttributeGroup value) {
+		addJson(object, value.getName(), value);
+	}
+	/**
 	 * Renders this component as HTML or Text, with an optional prefix to nest it.
 	 * 
 	 * <p>I consider this to be an internal method, that unfortunately must be marked as public to allow cross-package

@@ -184,6 +184,14 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	}
 	
 	/**
+	 * @see AbstractAttributeGroup#isEmpty()
+	 */
+	public boolean isEmpty() {
+		return (Util.isEmpty(getSrsName()) && getSrsDimension() == null && getAxisLabels().isEmpty()
+			&& getUomLabels().isEmpty());
+	}
+	
+	/**
 	 * @see AbstractAttributeGroup#getJSONObject()
 	 */
 	public JsonObject getJSONObject() {

@@ -127,7 +127,7 @@ public class FacilityIdentifierTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"beNumber\":\"1234DD56789\",\"osuffix\":\"DD123\"}");
 		return (json.toString());
 	}
 	

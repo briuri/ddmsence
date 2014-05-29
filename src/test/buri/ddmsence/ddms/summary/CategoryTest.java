@@ -142,8 +142,15 @@ public class CategoryTest extends AbstractBaseTestCase {
 	 * Returns the expected JSON output for this unit test
 	 */
 	private String getExpectedJSONOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"qualifier\":\"http://metadata.dod.mil/mdr/artifiact/MET/severeWeatherCode_enum/xml\",");
+		json.append("\"code\":\"T\",");
+		json.append("\"label\":\"TORNADO\"");
+		if (version.isAtLeast("4.0.1")) {
+			json.append(",\"securityAttributes\":{\"classification\":\"U\",\"ownerProducer\":[\"USA\"]}");	
+		}		
+		json.append("}");
 		return (json.toString());
 	}
 	

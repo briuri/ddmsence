@@ -416,9 +416,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	}
 
 	/**
-	 * Checks if any attributes have been set.
-	 * 
-	 * @return true if no attributes have values, false otherwise
+	 * @see AbstractAttributeGroup#isEmpty()
 	 */
 	public boolean isEmpty() {
 		return (getAtomicEnergyMarkings().isEmpty() && Util.isEmpty(getClassification())
