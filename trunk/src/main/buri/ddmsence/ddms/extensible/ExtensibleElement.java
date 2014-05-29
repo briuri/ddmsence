@@ -51,10 +51,11 @@ import com.google.gson.JsonObject;
  * </code></ul>
  * 
  * <p>Because it is impossible to cover all of the HTML/JSON/Text output cases for ExtensibleElements, DDMSence
- * will simply print out the existence of extensible elements:</p>
+ * will simply print out the existence of extensible elements at the Resource level:</p>
  * <ul><code>
  * Extensible Layer: true<br />
  * &lt;meta name="extensible.layer" content="true" /&gt;<br />
+ * {"extensible.layer":true}<br />
  * </code></ul></p>
  * 
  * <p>Details about the XOM Element class can be found at:
@@ -103,9 +104,7 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getJSONObject()
 	 */
 	protected JsonObject getJSONObject() {
-		JsonObject object = new JsonObject();
-		// TODO
-		return (object);
+		return (new JsonObject());
 	}
 	
 	/**
