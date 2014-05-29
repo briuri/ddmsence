@@ -30,7 +30,6 @@ import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 /**
@@ -129,53 +128,17 @@ public abstract class AbstractAttributeGroup {
 	 * @return the output
 	 */
 	public abstract String getHTMLTextOutput(OutputFormat format, String prefix);
-
+	
 	/**
-	 * Adds a JSON array to a JSON object, but only if it is not empty.
+	 * Adds a value to a JSON object, but only if it is not empty and not null. This method delegates to Util, so the
+	 * individual JSON implementations are cleaner.
 	 * 
 	 * @param object the object to add to
 	 * @param name the name of the array, if added
-	 * @param value the array to add
+	 * @param value the value to add
 	 */
-	protected static void addJson(JsonObject object, String name, JsonArray value) {
-		if (value.size() != 0)
-			object.add(name, value);
-	}
-	
-	/**
-	 * Adds an Integer to a JSON object, but only if it is not null.
-	 * 
-	 * @param object the object to add to
-	 * @param name the name of the property, if added
-	 * @param value the integer to add
-	 */
-	protected static void addJson(JsonObject object, String name, Integer value) {
-		if (value != null)
-			object.addProperty(name, value);
-	}
-	
-	/**
-	 * Adds a Boolean to a JSON object, but only if it is not null.
-	 * 
-	 * @param object the object to add to
-	 * @param name the name of the property, if added
-	 * @param value the boolean to add
-	 */
-	protected static void addJson(JsonObject object, String name, Boolean value) {
-		if (value != null)
-			object.addProperty(name, value);
-	}
-	
-	/**
-	 * Adds a String to a JSON object, but only if it is not empty.
-	 * 
-	 * @param object the object to add to
-	 * @param name the name of the property, if added
-	 * @param value the string to add
-	 */
-	protected static void addJson(JsonObject object, String name, String value) {
-		if (!Util.isEmpty(value))
-			object.addProperty(name, value);
+	protected static void addJson(JsonObject object, String name, Object value) {
+		Util.addNonEmptyJsonProperty(object, name, value);
 	}
 	
 	/**

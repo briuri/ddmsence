@@ -27,8 +27,6 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.JsonArray;
-
 import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Element;
@@ -36,6 +34,10 @@ import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.resource.Identifier;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 /**
  * A collection of Util tests.
@@ -66,6 +68,42 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals("Dog", array.get(1).getAsString());
 	}
 	
+	public void testaddNonEmptyJsonProperty() {
+		JsonObject object = new JsonObject();
+		
+		// JsonArray
+		JsonArray array = new JsonArray();
+		Util.addNonEmptyJsonProperty(object, "array", array);
+		assertFalse(object.has("array"));
+		array.add(new JsonPrimitive("test"));
+		Util.addNonEmptyJsonProperty(object, "array", array);
+		assertTrue(object.has("array"));
+		
+		// JsonObject
+		Util.addNonEmptyJsonProperty(object, "object", (JsonObject) null);
+		assertFalse(object.has("object"));
+		Util.addNonEmptyJsonProperty(object, "object", new JsonObject());
+		assertTrue(object.has("object"));
+		
+		// Integer
+		Util.addNonEmptyJsonProperty(object, "integer", (Integer) null);
+		assertFalse(object.has("integer"));
+		Util.addNonEmptyJsonProperty(object, "integer", Integer.valueOf(1));
+		assertTrue(object.has("integer"));
+		
+		// Boolean
+		Util.addNonEmptyJsonProperty(object, "boolean", (Boolean) null);
+		assertFalse(object.has("boolean"));
+		Util.addNonEmptyJsonProperty(object, "boolean", Boolean.TRUE);
+		assertTrue(object.has("boolean"));
+		
+		// String
+		Util.addNonEmptyJsonProperty(object, "string", "");
+		assertFalse(object.has("string"));
+		Util.addNonEmptyJsonProperty(object, "string", "test");
+		assertTrue(object.has("string"));
+	}
+		
 	public void testGetNonNullStringNull() {
 		assertEquals("", Util.getNonNullString(null));
 	}

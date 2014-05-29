@@ -58,6 +58,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 import buri.ddmsence.ddms.IDDMSComponent;
@@ -136,6 +137,41 @@ public class Util {
 			array.add(new JsonPrimitive(value));
 		}
 		return (array);
+	}
+	
+	/**
+	 * Adds a value to a JSON object, but only if it is not empty and not null.
+	 * 
+	 * @param object the object to add to
+	 * @param name the name of the array, if added
+	 * @param value the value to add
+	 */
+	public static void addNonEmptyJsonProperty(JsonObject object, String name, Object value) {
+		if (value instanceof JsonArray) {
+			JsonArray castValue = (JsonArray) value;
+			if (castValue.size() != 0)
+				object.add(name, castValue);
+		}
+		else if (value instanceof JsonObject) {
+			JsonObject castValue = (JsonObject) value;
+			if (castValue != null)
+				object.add(name, castValue);
+		}
+		else if (value instanceof Integer) {
+			Integer castValue = (Integer) value;
+			if (castValue != null)
+				object.addProperty(name, castValue);
+		}
+		else if (value instanceof Boolean) {
+			Boolean castValue = (Boolean) value;
+			if (castValue != null)
+				object.addProperty(name, castValue);
+		}
+		else if (value instanceof String) {
+			String castValue = (String) value;
+			if (!Util.isEmpty(castValue))
+				object.addProperty(name, castValue);
+		}
 	}
 	
 	/**

@@ -551,32 +551,6 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 	
-	public void testJSONOutputEmptyArray() throws InvalidDDMSException {
-		SecurityAttributes attr = new SecurityAttributes(null, new ArrayList<String>(), null);
-		assertEquals("{}", new Gson().toJson(attr.getJSONObject()));
-		attr = new SecurityAttributes(null, Util.getXsListAsList("USA"), null);
-		assertEquals("{\"ownerProducer\":[\"USA\"]}", new Gson().toJson(attr.getJSONObject()));
-	}
-	
-	public void testJSONOutputNullBoolean() throws InvalidDDMSException {
-		DDMSVersion.setCurrentVersion("2.0");
-		Map<String, String> others = new HashMap<String, String>();
-		others.put(SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, null);
-		
-		SecurityAttributes attr = new SecurityAttributes(null, null, others);
-		assertEquals("{}", new Gson().toJson(attr.getJSONObject()));
-		others.put(SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, "true");
-		attr = new SecurityAttributes(null, null, others);
-		assertEquals("{\"declassManualReview\":true}", new Gson().toJson(attr.getJSONObject()));
-	}
-	
-	public void testJSONOutputEmptyString() throws InvalidDDMSException {
-		SecurityAttributes attr = new SecurityAttributes(null, null, null);
-		assertEquals("{}", new Gson().toJson(attr.getJSONObject()));
-		attr = new SecurityAttributes("U", null, null);
-		assertEquals("{\"classification\":\"U\"}", new Gson().toJson(attr.getJSONObject()));
-	}
-	
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
