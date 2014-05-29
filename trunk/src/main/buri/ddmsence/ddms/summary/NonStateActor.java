@@ -144,7 +144,7 @@ public final class NonStateActor extends AbstractSimpleString {
 	/**
 	 * @see AbstractBaseComponent#getJSONObject()
 	 */
-	protected JsonObject getJSONObject() {
+	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
 		// TODO
 		return (object);

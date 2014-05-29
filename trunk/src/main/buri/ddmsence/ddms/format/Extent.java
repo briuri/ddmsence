@@ -113,10 +113,10 @@ public final class Extent extends AbstractQualifierValue {
 	/**
 	 * @see AbstractBaseComponent#getJSONObject()
 	 */
-	protected JsonObject getJSONObject() {
+	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		object.addProperty(getQualifierName(), getQualifier());
-		object.addProperty(getValueName(), getValue());
+		addJson(object, getQualifierName(), getQualifier());
+		addJson(object, getValueName(), getValue());
 		return (object);
 	}
 	

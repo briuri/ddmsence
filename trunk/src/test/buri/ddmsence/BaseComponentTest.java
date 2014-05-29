@@ -36,7 +36,9 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 /**
  * <p> Tests related to underlying methods in the base class for DDMS components </p>
@@ -148,6 +150,24 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		assertEquals("{\n  \"qualifier\": \"a\",\n  \"value\": \"z\"\n}", extent.toJSON());
 	}
 	
+	public void testAddJsonString() {
+		JsonObject object = new JsonObject();
+		AbstractBaseComponent.addJson(object, "test", (String) null);
+		assertFalse(object.has("test"));
+		AbstractBaseComponent.addJson(object, "test", "test");
+		assertTrue(object.has("test"));
+	}
+	
+	public void testAddJsonArray() {
+		JsonObject object = new JsonObject();
+		JsonArray array = new JsonArray();
+		AbstractBaseComponent.addJson(object, "test", array);
+		assertFalse(object.has("test"));
+		array.add(new JsonPrimitive("test"));
+		AbstractBaseComponent.addJson(object, "test", array);
+		assertTrue(object.has("test"));
+	}
+	
 	public void testSelfEquality() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
 		assertEquals(rights, rights);
@@ -174,7 +194,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 
 	public void testNullChecks() throws InvalidDDMSException {
 		AbstractBaseComponent component = new AbstractBaseComponent() {
-			protected JsonObject getJSONObject() {
+			public JsonObject getJSONObject() {
 				return null;
 			}
 			public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
@@ -189,7 +209,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 
 	public void testAttributeWarnings() throws InvalidDDMSException {
 		AbstractBaseComponent component = new AbstractBaseComponent() {
-			protected JsonObject getJSONObject() {
+			public JsonObject getJSONObject() {
 				return null;
 			}
 			
