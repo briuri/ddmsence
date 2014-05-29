@@ -160,7 +160,11 @@ public final class Category extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, QUALIFIER_NAME, getQualifier());
+		addJson(object, CODE_NAME, getCode());
+		addJson(object, LABEL_NAME, getLabel());
+		addJson(object, getSecurityAttributes());
+		addJson(object, getExtensibleAttributes());
 		return (object);
 	}
 	

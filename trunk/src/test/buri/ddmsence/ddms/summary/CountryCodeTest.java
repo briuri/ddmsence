@@ -143,7 +143,10 @@ public class CountryCodeTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		if (DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
+			json.append("{\"codespace\":\"ISO-3166\",\"code\":\"USA\"}");
+		else
+			json.append("{\"qualifier\":\"ISO-3166\",\"value\":\"USA\"}");
 		return (json.toString());
 	}
 	

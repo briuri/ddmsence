@@ -101,7 +101,8 @@ public final class CountryCode extends AbstractQualifierValue {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, getQualifierName(), getQualifier());
+		addJson(object, getValueName(), getValue());
 		return (object);
 	}
 	

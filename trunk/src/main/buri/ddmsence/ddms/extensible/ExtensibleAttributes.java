@@ -219,9 +219,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	}
 
 	/**
-	 * Checks if any attributes have been set.
-	 * 
-	 * @return true if no attributes have values, false otherwise
+	 * @see AbstractAttributeGroup#isEmpty()
 	 */
 	public boolean isEmpty() {
 		return (getAttributes().isEmpty());

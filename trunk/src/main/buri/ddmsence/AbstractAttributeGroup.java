@@ -103,6 +103,13 @@ public abstract class AbstractAttributeGroup {
 	}
 
 	/**
+	 * Checks if any attributes have been set.
+	 * 
+	 * @return true if no attributes have values, false otherwise
+	 */
+	public abstract boolean isEmpty();
+
+	/**
 	 * Renders this component as a JSON object, which can either be converted to
 	 * a JSON string or inserted into the parent JSON object.
 	 * 
@@ -139,6 +146,17 @@ public abstract class AbstractAttributeGroup {
 	 */
 	protected static void addJson(JsonObject object, String name, Object value) {
 		Util.addNonEmptyJsonProperty(object, name, value);
+	}
+	
+	/**
+	 * Adds an attribute group's JSON object to a JSON object, but only if it is not empty. This method delegates to Util, so the
+	 * individual JSON implementations are cleaner.
+	 * 
+	 * @param object the object to add to
+	 * @param value the value to add
+	 */
+	protected static void addJson(JsonObject object, AbstractAttributeGroup value) {
+		addJson(object, value.getName(), value);
 	}
 	
 	/**

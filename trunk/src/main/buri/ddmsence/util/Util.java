@@ -61,6 +61,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
+import buri.ddmsence.AbstractAttributeGroup;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.ITspiAddress;
 import buri.ddmsence.ddms.ITspiShape;
@@ -156,6 +157,11 @@ public class Util {
 			JsonObject castValue = (JsonObject) value;
 			if (castValue != null)
 				object.add(name, castValue);
+		}
+		else if (value instanceof AbstractAttributeGroup) {
+			AbstractAttributeGroup castValue = (AbstractAttributeGroup) value;
+			if (!castValue.isEmpty())
+				object.add(name, castValue.getJSONObject());
 		}
 		else if (value instanceof Integer) {
 			Integer castValue = (Integer) value;

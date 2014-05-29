@@ -310,6 +310,15 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	}
 	
 	/**
+	 * @see AbstractAttributeGroup#isEmpty()
+	 */
+	public boolean isEmpty() {
+		return (Util.isEmpty(getType()) && Util.isEmpty(getHref()) && Util.isEmpty(getRole())
+			&& Util.isEmpty(getTitle()) && Util.isEmpty(getLabel()) && Util.isEmpty(getArcrole())
+			&& Util.isEmpty(getShow()) && Util.isEmpty(getActuate()));
+	}
+	
+	/**
 	 * @see AbstractAttributeGroup#getName()
 	 */
 	public String getName() {
