@@ -139,8 +139,16 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 	 * Returns the expected JSON output for this unit test
 	 */
 	private String getExpectedJSONOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"address\":\"123.456.789.0\",\"protocol\":\"IP\"");
+		if (version.isAtLeast("5.0")) {
+			json.append(",\"access\":\"namespace1|key1^value1|key2^value1|key2^value2\",\"network\":\"NIPRNet\"");
+		}
+		if (version.isAtLeast("3.0")) {
+			json.append(",").append(SecurityAttributesTest.getBasicJSON());
+		}
+		json.append("}");
 		return (json.toString());
 	}
 	

@@ -148,7 +148,7 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"unitOfMeasure\":\"Meter\",\"datum\":\"AGL\",\"minimum\":0.1,\"maximum\":100.1}");
 		return (json.toString());
 	}
 	
