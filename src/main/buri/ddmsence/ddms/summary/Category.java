@@ -158,7 +158,7 @@ public final class Category extends AbstractBaseComponent {
 	/**
 	 * @see AbstractBaseComponent#getJSONObject()
 	 */
-	protected JsonObject getJSONObject() {
+	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
 		// TODO
 		return (object);

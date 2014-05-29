@@ -208,9 +208,13 @@ public final class ApproximableDate extends AbstractBaseComponent {
 	/**
 	 * @see AbstractBaseComponent#getJSONObject()
 	 */
-	protected JsonObject getJSONObject() {
+	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, DESCRIPTION_NAME, getDescription());
+		addJson(object, APPROXIMABLE_DATE_NAME, getApproximableDateString());
+		addJson(object, APPROXIMABLE_DATE_NAME + "." + APPROXIMATION_NAME, getApproximation());
+		addJson(object, SEARCHABLE_DATE_NAME + "." + START_NAME, getSearchableStartString());
+		addJson(object, SEARCHABLE_DATE_NAME + "." + END_NAME, getSearchableEndString());
 		return (object);
 	}
 	

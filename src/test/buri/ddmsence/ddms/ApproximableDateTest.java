@@ -154,7 +154,11 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"description\":\"description\",");
+		json.append("\"approximableDate\":\"2012\",");
+		json.append("\"approximableDate.approximation\":\"1st qtr\",");
+		json.append("\"searchableDate.start\":\"2012-01\",");
+		json.append("\"searchableDate.end\":\"2012-03-31\"}");
 		return (json.toString());
 	}
 	

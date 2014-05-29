@@ -39,6 +39,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 /**
@@ -222,9 +223,34 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 
 	/**
 	 * Renders this component as a JSON object, which can either be converted to a JSON string or inserted into the
-	 * parent JSON object.
+	 * parent JSON object. Although this method is marked a public, it is only intended to be used internally, and
+	 * is not part of the IDDMSComponent interface. Use the toJSON() method as the public way to get JSON output.
 	 */
-	protected abstract JsonObject getJSONObject();
+	public abstract JsonObject getJSONObject();
+	
+	/**
+	 * Adds a collection to a JSON object, but only if it is not empty.
+	 * 
+	 * @param object the object to add to
+	 * @param name the name of the array, if added
+	 * @param value the array to add
+	 */
+	protected static void addJson(JsonObject object, String name, JsonArray value) {
+		if (value.size() != 0)
+			object.add(name, value);
+	}
+	
+	/**
+	 * Adds a String to a JSON object, but only if it is not empty.
+	 * 
+	 * @param object the object to add to
+	 * @param name the name of the property, if added
+	 * @param value the string to add
+	 */
+	protected static void addJson(JsonObject object, String name, String value) {
+		if (!Util.isEmpty(value))
+			object.addProperty(name, value);
+	}
 	
 	/**
 	 * Renders this component as HTML or Text, with an optional prefix to nest it.

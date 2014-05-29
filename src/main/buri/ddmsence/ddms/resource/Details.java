@@ -104,7 +104,7 @@ public final class Details extends AbstractSimpleString {
 	/**
 	 * @see AbstractBaseComponent#getJSONObject()
 	 */
-	protected JsonObject getJSONObject() {
+	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
 		// TODO
 		return (object);

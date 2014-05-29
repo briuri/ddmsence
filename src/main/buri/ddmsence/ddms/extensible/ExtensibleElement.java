@@ -103,7 +103,7 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 	/**
 	 * @see AbstractBaseComponent#getJSONObject()
 	 */
-	protected JsonObject getJSONObject() {
+	public JsonObject getJSONObject() {
 		return (new JsonObject());
 	}
 	

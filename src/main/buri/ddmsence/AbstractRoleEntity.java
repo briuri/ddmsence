@@ -164,7 +164,7 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	/**
 	 * @see AbstractBaseComponent#getJSONObject()
 	 */
-	protected JsonObject getJSONObject() {
+	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
 		// TODO
 		return (object);

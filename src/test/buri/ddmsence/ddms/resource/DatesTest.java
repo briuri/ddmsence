@@ -26,8 +26,8 @@ import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.ApproximableDate;
 import buri.ddmsence.ddms.ApproximableDateTest;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
@@ -171,9 +171,26 @@ public class DatesTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected JSON output for this unit test
 	 */
-	private String getExpectedJSONOutput() {
+	private String getExpectedJSONOutput() throws InvalidDDMSException {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{");
+		if (version.isAtLeast("4.1")) {
+			json.append("\"acquiredOn\":[");
+			for (ApproximableDate acquiredOn : getTestAcquiredOns()) {
+				json.append(acquiredOn.toJSON());
+			}
+			json.append("],");
+		}
+		json.append("\"created\":\"2003\",");
+		json.append("\"posted\":\"2003-02\",");
+		json.append("\"validTil\":\"2003-02-15\",");
+		json.append("\"infoCutOff\":\"2001-10-31T17:00:00Z\"");
+		if (version.isAtLeast("3.1"))
+			json.append(",\"approvedOn\":\"2003-02-16\"");
+		if (version.isAtLeast("4.0.1"))
+			json.append(",\"receivedOn\":\"2003-02-17\"");
+		json.append("}");		
 		return (json.toString());
 	}
 	
