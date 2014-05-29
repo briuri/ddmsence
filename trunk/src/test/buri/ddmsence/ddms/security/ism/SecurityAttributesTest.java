@@ -228,115 +228,46 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 	 * Returns the expected JSON output for this unit test
 	 */
 	private String getExpectedJSONOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer json = new StringBuffer();
-		if (DDMSVersion.getCurrentVersion().getVersion().equals("2.0")) {
-			json.append("{\"classification\":\"U\",");
-			json.append("\"classificationReason\":\"PQ\",");
-			json.append("\"classifiedBy\":\" MN\",");
+		json.append("{");
+		if (version.isAtLeast("3.1"))
+			json.append("\"atomicEnergyMarkings\":[\"RD\"],");
+		json.append("\"classification\":\"U\",");
+		json.append("\"classificationReason\":\"PQ\",");
+		json.append("\"classifiedBy\":\" MN\",");
+		if (version.isAtLeast("3.0"))
+			json.append("\"compilationReason\":\"NO\",");
+		if (!version.isAtLeast("3.1"))
 			json.append("\"dateOfExemptedSource\":\"2005-10-11\",");
-			json.append("\"declassDate\":\"2005-10-10\",");
-			json.append("\"declassEvent\":\"RS\",");
-			json.append("\"declassException\":\"25X1\",");
+		json.append("\"declassDate\":\"2005-10-10\",");
+		json.append("\"declassEvent\":\"RS\",");
+		json.append("\"declassException\":\"25X1\",");
+		if (!version.isAtLeast("3.0"))
 			json.append("\"declassManualReview\":true,");
-			json.append("\"derivativelyClassifiedBy\":\"OP\",");
-			json.append("\"derivedFrom\":\"QR\",");
-			json.append("\"disseminationControls\":[\"FOUO\"],");
-			json.append("\"FGIsourceOpen\":[\"ALA\"],");
-			json.append("\"FGIsourceProtected\":[\"FGI\"],");
-			json.append("\"nonICmarkings\":[\"SINFO\"],");
-			json.append("\"ownerProducer\":[\"USA\"],");
-			json.append("\"releasableTo\":[\"AIA\"],");
-			json.append("\"SARIdentifier\":[\"SAR-USA\"],");
-			json.append("\"SCIcontrols\":[\"HCS\"],");
-			json.append("\"typeOfExemptedSource\":\"OADR\"}");
-		}
-		else if (DDMSVersion.getCurrentVersion().getVersion().equals("3.0")) {
-			json.append("{\"classification\":\"U\",");
-			json.append("\"classificationReason\":\"PQ\",");
-			json.append("\"classifiedBy\":\" MN\",");
-			json.append("\"compilationReason\":\"NO\",");
-			json.append("\"dateOfExemptedSource\":\"2005-10-11\",");
-			json.append("\"declassDate\":\"2005-10-10\",");
-			json.append("\"declassEvent\":\"RS\",");
-			json.append("\"declassException\":\"25X1\",");
-			json.append("\"derivativelyClassifiedBy\":\"OP\",");
-			json.append("\"derivedFrom\":\"QR\",");
-			json.append("\"disseminationControls\":[\"FOUO\"],");
-			json.append("\"FGIsourceOpen\":[\"ALA\"],");
-			json.append("\"FGIsourceProtected\":[\"FGI\"],");
-			json.append("\"nonICmarkings\":[\"SINFO\"],");
-			json.append("\"ownerProducer\":[\"USA\"],");
-			json.append("\"releasableTo\":[\"AIA\"],");
-			json.append("\"SARIdentifier\":[\"SAR-USA\"],");
-			json.append("\"SCIcontrols\":[\"HCS\"],");
-			json.append("\"typeOfExemptedSource\":\"OADR\"}");
-		}
-		else if (DDMSVersion.getCurrentVersion().getVersion().equals("3.1")) {
-			json.append("{\"atomicEnergyMarkings\":[\"RD\"],");
-			json.append("\"classification\":\"U\",");
-			json.append("\"classificationReason\":\"PQ\",");
-			json.append("\"classifiedBy\":\" MN\",");
-			json.append("\"compilationReason\":\"NO\",");
-			json.append("\"declassDate\":\"2005-10-10\",");
-			json.append("\"declassEvent\":\"RS\",");
-			json.append("\"declassException\":\"25X1\",");
-			json.append("\"derivativelyClassifiedBy\":\"OP\",");
-			json.append("\"derivedFrom\":\"QR\",");
+		json.append("\"derivativelyClassifiedBy\":\"OP\",");
+		json.append("\"derivedFrom\":\"QR\",");
+		if (version.isAtLeast("3.1"))
 			json.append("\"displayOnlyTo\":[\"AIA\"],");
-			json.append("\"disseminationControls\":[\"FOUO\"],");
+		json.append("\"disseminationControls\":[\"FOUO\"],");
+		if (!version.isAtLeast("5.0"))
 			json.append("\"FGIsourceOpen\":[\"ALA\"],");
-			json.append("\"FGIsourceProtected\":[\"FGI\"],");
-			json.append("\"nonICmarkings\":[\"SINFO\"],");
-			json.append("\"nonUSControls\":[\"ATOMAL\"],");
-			json.append("\"ownerProducer\":[\"USA\"],");
-			json.append("\"releasableTo\":[\"AIA\"],");
-			json.append("\"SARIdentifier\":[\"SAR-USA\"],");
-			json.append("\"SCIcontrols\":[\"HCS\"]}");
-		}
-		else if (DDMSVersion.getCurrentVersion().getVersion().equals("4.1")) {
-			json.append("{\"atomicEnergyMarkings\":[\"RD\"],");
-			json.append("\"classification\":\"U\",");
-			json.append("\"classificationReason\":\"PQ\",");
-			json.append("\"classifiedBy\":\" MN\",");
-			json.append("\"compilationReason\":\"NO\",");
-			json.append("\"declassDate\":\"2005-10-10\",");
-			json.append("\"declassEvent\":\"RS\",");
-			json.append("\"declassException\":\"25X1\",");
-			json.append("\"derivativelyClassifiedBy\":\"OP\",");
-			json.append("\"derivedFrom\":\"QR\",");
-			json.append("\"displayOnlyTo\":[\"AIA\"],");
-			json.append("\"disseminationControls\":[\"FOUO\"],");
-			json.append("\"FGIsourceOpen\":[\"ALA\"],");
-			json.append("\"FGIsourceProtected\":[\"FGI\"],");
-			json.append("\"nonICmarkings\":[\"DS\"],");
-			json.append("\"nonUSControls\":[\"ATOMAL\"],");
-			json.append("\"ownerProducer\":[\"USA\"],");
-			json.append("\"releasableTo\":[\"AIA\"],");
-			json.append("\"SARIdentifier\":[\"SAR-USA\"],");
-			json.append("\"SCIcontrols\":[\"HCS\"]}");
-		}
-		else if (DDMSVersion.getCurrentVersion().getVersion().equals("5.0")) {
-			json.append("{\"atomicEnergyMarkings\":[\"RD\"],");
-			json.append("\"classification\":\"U\",");
-			json.append("\"classificationReason\":\"PQ\",");
-			json.append("\"classifiedBy\":\" MN\",");
-			json.append("\"compilationReason\":\"NO\",");
-			json.append("\"declassDate\":\"2005-10-10\",");
-			json.append("\"declassEvent\":\"RS\",");
-			json.append("\"declassException\":\"25X1\",");
-			json.append("\"derivativelyClassifiedBy\":\"OP\",");
-			json.append("\"derivedFrom\":\"QR\",");
-			json.append("\"displayOnlyTo\":[\"AIA\"],");
-			json.append("\"disseminationControls\":[\"FOUO\"],");
+		else
 			json.append("\"FGIsourceOpen\":[\"ABW\"],");
-			json.append("\"FGIsourceProtected\":[\"FGI\"],");
+		json.append("\"FGIsourceProtected\":[\"FGI\"],");
+		if (!version.isAtLeast("4.1"))
+			json.append("\"nonICmarkings\":[\"SINFO\"],");
+		else
 			json.append("\"nonICmarkings\":[\"DS\"],");
+		if (version.isAtLeast("3.1"))
 			json.append("\"nonUSControls\":[\"ATOMAL\"],");
-			json.append("\"ownerProducer\":[\"USA\"],");
-			json.append("\"releasableTo\":[\"AIA\"],");
-			json.append("\"SARIdentifier\":[\"SAR-USA\"],");
-			json.append("\"SCIcontrols\":[\"HCS\"]}");
-		}				
+		json.append("\"ownerProducer\":[\"USA\"],");
+		json.append("\"releasableTo\":[\"AIA\"],");
+		json.append("\"SARIdentifier\":[\"SAR-USA\"],");
+		json.append("\"SCIcontrols\":[\"HCS\"]");
+		if (!version.isAtLeast("3.1"))
+			json.append(",\"typeOfExemptedSource\":\"OADR\"");
+		json.append("}");
 		return (json.toString());
 	}
 
@@ -614,7 +545,9 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			SecurityAttributes attr = getFullFixture();
-			assertEquals(getExpectedJSONOutput(), new Gson().toJson(attr.getJSONObject()));
+			String json = new Gson().toJson(attr.getJSONObject());
+			assertEquals(getExpectedJSONOutput(), json);
+			assertValidJSON(json);
 		}
 	}
 	

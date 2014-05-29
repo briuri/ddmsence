@@ -262,7 +262,13 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO: Only load if the attributes exist.
+		addJson(object, NOTICE_TYPE_NAME, getNoticeType());
+		addJson(object, NOTICE_REASON_NAME, getNoticeReason());
+		if (getNoticeDate() != null) {
+			addJson(object, NOTICE_DATE_NAME, getNoticeDate().toXMLFormat());
+		}
+		addJson(object, UNREGISTERED_NOTICE_TYPE_NAME, getUnregisteredNoticeType());
+		addJson(object, EXTERNAL_NOTICE_NAME, isExternalReference());
 		return (object);
 	}
 	

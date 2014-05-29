@@ -298,7 +298,14 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO: Only load if the attributes exist.
+		addJson(object, TYPE_NAME, getType());
+		addJson(object, HREF_NAME, getHref());
+		addJson(object, ROLE_NAME, getRole());
+		addJson(object, TITLE_NAME, getTitle());
+		addJson(object, LABEL_NAME, getLabel());
+		addJson(object, ARC_ROLE_NAME, getArcrole());
+		addJson(object, SHOW_NAME, getShow());
+		addJson(object, ACTUATE_NAME, getActuate());
 		return (object);
 	}
 	

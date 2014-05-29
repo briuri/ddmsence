@@ -145,7 +145,8 @@ public class AddresseeTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
+	private String getExpectedHTMLTextOutput(OutputFormat format) throws InvalidDDMSException {
+		Util.requireHTMLText(format);
 		StringBuffer text = new StringBuffer();
 		text.append(buildHTMLTextOutput(format, "addressee.entityType", "organization"));
 		text.append(buildHTMLTextOutput(format, "addressee.name", "DISA"));
@@ -269,8 +270,8 @@ public class AddresseeTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Addressee elementComponent = getInstance(getFixtureElement(true), SUCCESS);
-			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 			assertEquals(getExpectedJSONOutput(), elementComponent.toJSON());
 			assertValidJSON(elementComponent.toJSON());

@@ -156,7 +156,8 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(OutputFormat format, boolean isApproximable) throws InvalidDDMSException {
+	private String getExpectedHTMLTextOutput(OutputFormat format, boolean isApproximable) throws InvalidDDMSException {
+		Util.requireHTMLText(format);
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = "temporalCoverage.";
 		if (!version.isAtLeast("4.0.1"))
@@ -418,8 +419,8 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			TemporalCoverage elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(OutputFormat.HTML, false), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(OutputFormat.TEXT, false), elementComponent.toText());
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.HTML, false), elementComponent.toHTML());
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.TEXT, false), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(false), elementComponent.toXML());
 			assertEquals(getExpectedJSONOutput(false), elementComponent.toJSON());
 			assertValidJSON(elementComponent.toJSON());
@@ -431,8 +432,8 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 				builder.setEndString(null);
 				builder.setApproximableEnd(getTestApproximableEnd());
 				TemporalCoverage builderComponent = getInstance(builder, SUCCESS);
-				assertEquals(getExpectedOutput(OutputFormat.HTML, true), builderComponent.toHTML());
-				assertEquals(getExpectedOutput(OutputFormat.TEXT, true), builderComponent.toText());
+				assertEquals(getExpectedHTMLTextOutput(OutputFormat.HTML, true), builderComponent.toHTML());
+				assertEquals(getExpectedHTMLTextOutput(OutputFormat.TEXT, true), builderComponent.toText());
 				assertEquals(getExpectedXMLOutput(true), builderComponent.toXML());	
 				assertEquals(getExpectedJSONOutput(true), elementComponent.toJSON());
 				assertValidJSON(elementComponent.toJSON());

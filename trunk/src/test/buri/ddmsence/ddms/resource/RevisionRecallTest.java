@@ -141,7 +141,7 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(boolean hasLinks, OutputFormat format) throws InvalidDDMSException {
+	private String getExpectedHTMLTextOutput(boolean hasLinks, OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		if (!hasLinks)
 			text.append(buildHTMLTextOutput(format, "revisionRecall", TEST_VALUE));
@@ -424,16 +424,16 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 
 			// links & details
 			RevisionRecall elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(true, OutputFormat.HTML), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(true, OutputFormat.TEXT), elementComponent.toText());
+			assertEquals(getExpectedHTMLTextOutput(true, OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedHTMLTextOutput(true, OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(true), elementComponent.toXML());
 			assertEquals(getExpectedJSONOutput(true), elementComponent.toJSON());
 			assertValidJSON(elementComponent.toJSON());
 			
 			// text
 			elementComponent = getInstance(getTextFixtureElement(false), SUCCESS);
-			assertEquals(getExpectedOutput(false, OutputFormat.HTML), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(false, OutputFormat.TEXT), elementComponent.toText());
+			assertEquals(getExpectedHTMLTextOutput(false, OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedHTMLTextOutput(false, OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(false), elementComponent.toXML());
 			assertEquals(getExpectedJSONOutput(false), elementComponent.toJSON());
 			assertValidJSON(elementComponent.toJSON());

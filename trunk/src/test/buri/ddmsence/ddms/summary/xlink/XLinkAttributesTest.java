@@ -21,12 +21,14 @@ package buri.ddmsence.ddms.summary.xlink;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
+
+import com.google.gson.Gson;
 
 /**
  * <p> Tests related to the XLINK attributes on ddms:link and ddms:taskID elements </p>
@@ -145,7 +147,8 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(OutputFormat format, String type) {
+	private String getExpectedHTMLTextOutput(OutputFormat format, String type) {
+		Util.requireHTMLText(format);
 		StringBuffer text = new StringBuffer();
 		text.append(buildHTMLTextOutput(format, "type", type));
 		if (!"resource".equals(type))
@@ -162,6 +165,28 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 		return (text.toString());
 	}
 
+	/**
+	 * Returns the expected JSON output for this unit test
+	 */
+	private String getExpectedJSONOutput(String type) {
+		StringBuffer json = new StringBuffer();
+		json.append("{\"type\":\"").append(type).append("\",");
+		if (!"resource".equals(type)) {
+			json.append("\"href\":\"http://en.wikipedia.org/wiki/Tank\",");	
+		}
+		json.append("\"role\":\"tank\",");
+		json.append("\"title\":\"Tank Page\",");
+		if (!"simple".equals(type))
+			json.append("\"label\":\"tank\"");
+		if ("simple".equals(type)) {
+			json.append("\"arcrole\":\"arcrole\",");
+			json.append("\"show\":\"new\",");
+			json.append("\"actuate\":\"onLoad\"");
+		}
+		json.append("}");		
+		return (json.toString());
+	}
+	
 	/**
 	 * Helper method to add attributes to a XOM element. The element is not validated.
 	 * 
@@ -407,27 +432,45 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 		// No tests.
 	}
 	
-	public void testOutput() throws InvalidDDMSException {
+	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			XLinkAttributes attributes = getLocatorFixture();
-			assertEquals(getExpectedOutput(OutputFormat.HTML, "locator"), attributes.getHTMLTextOutput(OutputFormat.HTML, ""));
-			assertEquals(getExpectedOutput(OutputFormat.TEXT, "locator"), attributes.getHTMLTextOutput(OutputFormat.TEXT, ""));
-			fail("Need to add JSON test.");
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.HTML, "locator"), attributes.getHTMLTextOutput(OutputFormat.HTML, ""));
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.TEXT, "locator"), attributes.getHTMLTextOutput(OutputFormat.TEXT, ""));
 			
 			attributes = getSimpleFixture();
-			assertEquals(getExpectedOutput(OutputFormat.HTML, "simple"), attributes.getHTMLTextOutput(OutputFormat.HTML, ""));
-			assertEquals(getExpectedOutput(OutputFormat.TEXT, "simple"), attributes.getHTMLTextOutput(OutputFormat.TEXT, ""));
-			fail("Need to add JSON test.");
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.HTML, "simple"), attributes.getHTMLTextOutput(OutputFormat.HTML, ""));
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.TEXT, "simple"), attributes.getHTMLTextOutput(OutputFormat.TEXT, ""));
 
 			attributes = getResourceFixture();
-			assertEquals(getExpectedOutput(OutputFormat.HTML, "resource"), attributes.getHTMLTextOutput(OutputFormat.HTML, ""));
-			assertEquals(getExpectedOutput(OutputFormat.TEXT, "resource"), attributes.getHTMLTextOutput(OutputFormat.TEXT, ""));
-			fail("Need to add JSON test.");
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.HTML, "resource"), attributes.getHTMLTextOutput(OutputFormat.HTML, ""));
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.TEXT, "resource"), attributes.getHTMLTextOutput(OutputFormat.TEXT, ""));
 		}
 	}
 
+	public void testJSONOutput() {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			XLinkAttributes attributes = getLocatorFixture();
+			String json = new Gson().toJson(attributes.getJSONObject());
+			assertEquals(getExpectedJSONOutput("locator"), json);
+			assertValidJSON(json);
+			
+			attributes = getSimpleFixture();
+			json = new Gson().toJson(attributes.getJSONObject());
+			assertEquals(getExpectedJSONOutput("simple"), json);
+			assertValidJSON(json);
+			
+			attributes = getResourceFixture();
+			json = new Gson().toJson(attributes.getJSONObject());
+			assertEquals(getExpectedJSONOutput("resource"), json);
+			assertValidJSON(json);
+		}
+	}
+	
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

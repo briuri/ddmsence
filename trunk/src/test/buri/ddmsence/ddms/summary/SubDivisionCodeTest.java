@@ -129,7 +129,8 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
+	private String getExpectedHTMLTextOutput(OutputFormat format) throws InvalidDDMSException {
+		Util.requireHTMLText(format);
 		StringBuffer text = new StringBuffer();
 		text.append(buildHTMLTextOutput(format, "subDivisionCode." + getTestQualifierName(), TEST_QUALIFIER));
 		text.append(buildHTMLTextOutput(format, "subDivisionCode." + getTestValueName(), TEST_VALUE));
@@ -243,8 +244,8 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			SubDivisionCode elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 			assertEquals(getExpectedJSONOutput(), elementComponent.toJSON());
 			assertValidJSON(elementComponent.toJSON());

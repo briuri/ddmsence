@@ -354,7 +354,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
+	private String getExpectedHTMLTextOutput(OutputFormat format) throws InvalidDDMSException {
+		Util.requireHTMLText(format);
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String resourcePrefix = Resource.getName(version);
 		boolean isAtLeast30 = version.isAtLeast("3.0");
@@ -1005,8 +1006,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			Resource elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 			assertEquals(getExpectedJSONOutput(), elementComponent.toJSON());
 			assertValidJSON(elementComponent.toJSON());

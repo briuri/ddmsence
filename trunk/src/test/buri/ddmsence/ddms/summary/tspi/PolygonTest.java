@@ -92,7 +92,7 @@ public class PolygonTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(OutputFormat format) throws InvalidDDMSException {
+	private String getExpectedHTMLTextOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		text.append(buildHTMLTextOutput(format, "shapeType", "Polygon"));
 		return (text.toString());
@@ -200,8 +200,8 @@ public class PolygonTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Polygon elementComponent = getInstance(getValidElement(sVersion), SUCCESS);
-			assertEquals(getExpectedOutput(OutputFormat.HTML), elementComponent.toHTML());
-			assertEquals(getExpectedOutput(OutputFormat.TEXT), elementComponent.toText());
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.HTML), elementComponent.toHTML());
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
 			assertEquals(getExpectedJSONOutput(), elementComponent.toJSON());
 			assertValidJSON(elementComponent.toJSON());

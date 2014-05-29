@@ -24,12 +24,14 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
+
+import com.google.gson.Gson;
 
 /**
  * <p> Tests related to the SRS attributes on gml: elements </p>
@@ -129,7 +131,8 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected output for the test instance of this component
 	 */
-	private String getExpectedOutput(OutputFormat format) {
+	private String getExpectedHTMLTextOutput(OutputFormat format) {
+		Util.requireHTMLText(format);
 		StringBuffer text = new StringBuffer();
 		text.append(buildHTMLTextOutput(format, "srsName", TEST_SRS_NAME));
 		text.append(buildHTMLTextOutput(format, "srsDimension", String.valueOf(TEST_SRS_DIMENSION)));
@@ -138,6 +141,18 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 		return (text.toString());
 	}
 
+	/**
+	 * Returns the expected JSON output for this unit test
+	 */
+	private String getExpectedJSONOutput() {
+		StringBuffer json = new StringBuffer();
+		json.append("{\"srsName\":\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\",");
+		json.append("\"srsDimension\":10,");
+		json.append("\"axisLabels\":[\"A\",\"B\",\"C\"],");
+		json.append("\"uomLabels\":[\"Meter\",\"Meter\",\"Meter\"]}");		
+		return (json.toString());
+	}
+	
 	/**
 	 * Helper method to add srs attributes to a XOM element. The element is not validated.
 	 * 
@@ -275,15 +290,34 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 		// No tests.
 	}
 
-	public void testOutput() throws InvalidDDMSException {
+	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			SRSAttributes attributes = getFixture();
-			assertEquals(getExpectedOutput(OutputFormat.HTML), attributes.getHTMLTextOutput(OutputFormat.HTML, ""));
-			assertEquals(getExpectedOutput(OutputFormat.TEXT), attributes.getHTMLTextOutput(OutputFormat.TEXT, ""));
-			fail("Need to add JSON test");
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.HTML), attributes.getHTMLTextOutput(OutputFormat.HTML, ""));
+			assertEquals(getExpectedHTMLTextOutput(OutputFormat.TEXT), attributes.getHTMLTextOutput(OutputFormat.TEXT, ""));
 		}
+	}
+	
+	public void testJSONOutput() {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			SRSAttributes attr = getFixture();
+			String json = new Gson().toJson(attr.getJSONObject());
+			assertEquals(getExpectedJSONOutput(), json);
+			assertValidJSON(json);
+		}
+	}
+	
+	public void testJSONOutputNullInteger() throws InvalidDDMSException {
+		SRSAttributes attr = new SRSAttributes("name", null, null, null);
+		String json = new Gson().toJson(attr.getJSONObject());
+		assertEquals("{\"srsName\":\"name\"}", json);
+
+		attr = new SRSAttributes("name", TEST_SRS_DIMENSION, null, null);
+		json = new Gson().toJson(attr.getJSONObject());
+		assertEquals("{\"srsName\":\"name\",\"srsDimension\":10}", json);		
 	}
 
 	public void testBuilderIsEmpty() throws InvalidDDMSException {

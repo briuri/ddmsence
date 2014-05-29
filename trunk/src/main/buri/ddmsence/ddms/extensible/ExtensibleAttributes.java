@@ -236,7 +236,9 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO: Only load if the attributes exist.
+		for (Attribute attribute : getAttributes()) {
+			addJson(object, attribute.getNamespacePrefix() + "." + attribute.getLocalName(), attribute.getValue());
+		}
 		return (object);
 	}
 	
