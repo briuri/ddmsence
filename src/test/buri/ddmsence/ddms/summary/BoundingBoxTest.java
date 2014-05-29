@@ -161,8 +161,12 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 	 * Returns the expected JSON output for this unit test
 	 */
 	private String getExpectedJSONOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		if (!version.isAtLeast("4.0.1"))
+			json.append("{\"WestBL\":12.3,\"EastBL\":23.4,\"SouthBL\":34.5,\"NorthBL\":45.6}");
+		else
+			json.append("{\"westBL\":12.3,\"eastBL\":23.4,\"southBL\":34.5,\"northBL\":45.6}");
 		return (json.toString());
 	}
 	

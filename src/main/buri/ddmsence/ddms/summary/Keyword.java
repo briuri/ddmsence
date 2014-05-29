@@ -145,7 +145,9 @@ public final class Keyword extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, getName(), getValue());
+		addJson(object, getSecurityAttributes());
+		addJson(object, getExtensibleAttributes());
 		return (object);
 	}
 	

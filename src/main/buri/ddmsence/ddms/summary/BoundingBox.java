@@ -143,7 +143,10 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, getWestBLName(), getWestBL());
+		addJson(object, getEastBLName(), getEastBL());
+		addJson(object, getSouthBLName(), getSouthBL());
+		addJson(object, getNorthBLName(), getNorthBL());
 		return (object);
 	}
 	

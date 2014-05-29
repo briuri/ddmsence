@@ -148,36 +148,41 @@ public class Util {
 	 * @param value the value to add
 	 */
 	public static void addNonEmptyJsonProperty(JsonObject object, String name, Object value) {
-		if (value instanceof JsonArray) {
+		if (value == null)
+			return;
+		if (value instanceof AbstractAttributeGroup) {
+			AbstractAttributeGroup castValue = (AbstractAttributeGroup) value;
+			if (!castValue.isEmpty())
+				object.add(name, castValue.getJSONObject());
+		}
+		else if (value instanceof Boolean) {
+			Boolean castValue = (Boolean) value;
+			object.addProperty(name, castValue);
+		}
+		else if (value instanceof Double) {
+			Double castValue = (Double) value;
+			object.addProperty(name, castValue);
+		}
+		else if (value instanceof Integer) {
+			Integer castValue = (Integer) value;
+			object.addProperty(name, castValue);
+		}
+		else if (value instanceof JsonArray) {
 			JsonArray castValue = (JsonArray) value;
 			if (castValue.size() != 0)
 				object.add(name, castValue);
 		}
 		else if (value instanceof JsonObject) {
 			JsonObject castValue = (JsonObject) value;
-			if (castValue != null)
-				object.add(name, castValue);
-		}
-		else if (value instanceof AbstractAttributeGroup) {
-			AbstractAttributeGroup castValue = (AbstractAttributeGroup) value;
-			if (!castValue.isEmpty())
-				object.add(name, castValue.getJSONObject());
-		}
-		else if (value instanceof Integer) {
-			Integer castValue = (Integer) value;
-			if (castValue != null)
-				object.addProperty(name, castValue);
-		}
-		else if (value instanceof Boolean) {
-			Boolean castValue = (Boolean) value;
-			if (castValue != null)
-				object.addProperty(name, castValue);
+			object.add(name, castValue);
 		}
 		else if (value instanceof String) {
 			String castValue = (String) value;
 			if (!Util.isEmpty(castValue))
 				object.addProperty(name, castValue);
 		}
+		else
+			throw new IllegalArgumentException("Unexpected class for JSON property: " + value);
 	}
 	
 	/**

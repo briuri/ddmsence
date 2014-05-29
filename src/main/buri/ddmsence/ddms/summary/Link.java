@@ -153,7 +153,8 @@ public final class Link extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, getXLinkAttributes());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

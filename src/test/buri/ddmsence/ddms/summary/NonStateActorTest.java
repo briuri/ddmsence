@@ -155,7 +155,7 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 		Util.requireHTMLText(format);
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(buildHTMLTextOutput(format, "nonStateActor.value", TEST_VALUE));
+		text.append(buildHTMLTextOutput(format, "nonStateActor", TEST_VALUE));
 		text.append(buildHTMLTextOutput(format, "nonStateActor.order", String.valueOf(TEST_ORDER)));
 		if (version.isAtLeast("4.1"))
 			text.append(buildHTMLTextOutput(format, "nonStateActor.qualifier", TEST_QUALIFIER));
@@ -169,7 +169,8 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"nonStateActor\":\"Laotian Monks\",\"order\":1,\"qualifier\":\"urn:sample\",");
+		json.append(SecurityAttributesTest.getBasicJSON()).append("}");
 		return (json.toString());
 	}
 	

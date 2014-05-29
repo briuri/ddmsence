@@ -181,6 +181,13 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 	}
 
 	/**
+	 * Returns the basic JSON output of a security attributes instance with a test classification and 1 ownerProducer.
+	 */
+	public static String getBasicJSON() {
+		return ("\"securityAttributes\":{\"classification\":\"U\",\"ownerProducer\":[\"USA\"]}");
+	}
+	
+	/**
 	 * Returns a fixture object for testing. These attributes will be a full set, including optional attributes.
 	 */
 	public static SecurityAttributes getFullFixture() {

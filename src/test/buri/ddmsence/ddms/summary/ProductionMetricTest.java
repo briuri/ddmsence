@@ -139,7 +139,8 @@ public class ProductionMetricTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"subject\":\"FOOD\",\"coverage\":\"AFG\",");
+		json.append(SecurityAttributesTest.getBasicJSON()).append("}");
 		return (json.toString());
 	}
 	
