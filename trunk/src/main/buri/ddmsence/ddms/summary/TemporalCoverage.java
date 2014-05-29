@@ -307,7 +307,14 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, TIME_PERIOD_NAME_NAME, getTimePeriodName());
+		addJson(object, START_NAME, getStartString());
+		addJson(object, END_NAME, getEndString());
+		if (getApproximableStart() != null)
+			addJson(object, getApproximableStart().getName(), getApproximableStart().getJSONObject());
+		if (getApproximableEnd() != null)
+			addJson(object, getApproximableEnd().getName(), getApproximableEnd().getJSONObject());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	
@@ -421,7 +428,6 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		if (Util.isEmpty(value))
 			return (DEFAULT_VALUE);
 		return (value);
-		// return (Util.isEmpty(value) ? DEFAULT_VALUE : value);
 	}
 
 	/**

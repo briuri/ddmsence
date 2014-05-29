@@ -184,8 +184,19 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 	 * Returns the expected JSON output for this unit test
 	 */
 	private String getExpectedJSONOutput(boolean isApproximable) {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"name\":\"My Time Period\"");
+		if (isApproximable) {
+			json.append(",\"approximableStart\":").append(ApproximableDateTest.getExpectedJSONOutput());
+			json.append(",\"approximableEnd\":").append(ApproximableDateTest.getExpectedJSONOutput());
+		}
+		else {
+			json.append(",\"start\":\"1979-09-15\",\"end\":\"Not Applicable\"");
+		}
+		if (version.isAtLeast("3.0"))
+			json.append(",").append(SecurityAttributesTest.getBasicJSON());
+		json.append("}");
 		return (json.toString());
 	}
 	
@@ -435,8 +446,8 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 				assertEquals(getExpectedHTMLTextOutput(OutputFormat.HTML, true), builderComponent.toHTML());
 				assertEquals(getExpectedHTMLTextOutput(OutputFormat.TEXT, true), builderComponent.toText());
 				assertEquals(getExpectedXMLOutput(true), builderComponent.toXML());	
-				assertEquals(getExpectedJSONOutput(true), elementComponent.toJSON());
-				assertValidJSON(elementComponent.toJSON());
+				assertEquals(getExpectedJSONOutput(true), builderComponent.toJSON());
+				assertValidJSON(builderComponent.toJSON());
 			}
 		}
 	}

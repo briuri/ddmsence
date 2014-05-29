@@ -215,7 +215,10 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, UOM_NAME, getUnitOfMeasure());
+		addJson(object, DATUM_NAME, getDatum());
+		addJson(object, "minimum", getMinVerticalExtent());
+		addJson(object, "maximum", getMaxVerticalExtent());
 		return (object);
 	}
 	

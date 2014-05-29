@@ -180,7 +180,11 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, ADDRESS_NAME, getAddress());
+		addJson(object, PROTOCOL_NAME, getProtocol());
+		addJson(object, ACCESS_NAME, getAccess());
+		addJson(object, NETWORK_NAME, getNetwork());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

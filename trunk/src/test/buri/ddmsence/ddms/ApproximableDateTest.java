@@ -152,7 +152,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected JSON output for this unit test
 	 */
-	private String getExpectedJSONOutput() {
+	public static String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
 		json.append("{\"description\":\"description\",");
 		json.append("\"approximableDate\":\"2012\",");
