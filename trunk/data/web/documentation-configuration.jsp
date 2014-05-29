@@ -43,7 +43,6 @@ instead of "ISM", you would set the "ism.prefix" property with a custom value of
 	how to name a pair for free-text (e.g. subOrganization)
 	don't include empty/null values,
 	attribute groups are enclosed,
-	extensible attributes get namespace prefix, always strings
 	localName vs prefixed name</p>
 
 <h2>Controlling HTML/Text Output</h2>

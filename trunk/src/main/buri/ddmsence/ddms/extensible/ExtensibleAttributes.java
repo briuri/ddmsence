@@ -70,10 +70,15 @@ import com.google.gson.JsonObject;
  * approach is used. In general, the output of extensible attributes will be prefixed with the name of the
  * element being marked. For example:</p>
  * 
- * <ul><code> keyword opensearch:relevance: 95<br /> keyword opensearch:confidence: 82<br />
+ * <ul><code> keyword opensearch:relevance: 95<br /> keyword opensearch:confidence: 82<br /><br />
  * &lt;meta name="subjectCoverage.Subject.keyword.opensearch.relevance" content="95" /&gt;<br />
  * &lt;meta name="subjectCoverage.Subject.keyword.opensearch.confidence" content="82" /&gt;<br />
  * </code></ul>
+ * 
+ * <p>When output as JSON, properties will retain their namespace prefix. Because all values are stored as Strings, no
+ * casting is performed to Boolean or Number types.</p>
+ * 
+ * <ul><code> {"extensibleAttributes":{"opensearch.relevance":"95","opensearch.confidence":"82"}} </code></ul>
  * 
  * <p>Details about the XOM Attribute class can be found at:
  * <i>http://www.xom.nu/apidocs/index.html?nu/xom/Attribute.html</i></p>
