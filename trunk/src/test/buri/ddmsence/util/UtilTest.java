@@ -34,6 +34,7 @@ import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.resource.Identifier;
+import buri.ddmsence.ddms.summary.gml.SRSAttributes;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -68,8 +69,32 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals("Dog", array.get(1).getAsString());
 	}
 	
-	public void testaddNonEmptyJsonProperty() {
+	public void testaddNonEmptyJsonProperty() throws InvalidDDMSException {
 		JsonObject object = new JsonObject();
+		
+		// AbstractAttributeGroup
+		Util.addNonEmptyJsonProperty(object, "attr", new SRSAttributes(null, null, null, null));
+		assertFalse(object.has("attr"));
+		Util.addNonEmptyJsonProperty(object, "attr", new SRSAttributes("test", null, null, null));
+		assertTrue(object.has("attr"));
+		
+		// Boolean
+		Util.addNonEmptyJsonProperty(object, "boolean", (Boolean) null);
+		assertFalse(object.has("boolean"));
+		Util.addNonEmptyJsonProperty(object, "boolean", Boolean.TRUE);
+		assertTrue(object.has("boolean"));
+
+		// Double
+		Util.addNonEmptyJsonProperty(object, "double", (Double) null);
+		assertFalse(object.has("double"));
+		Util.addNonEmptyJsonProperty(object, "double", Double.valueOf(1));
+		assertTrue(object.has("double"));
+		
+		// Integer
+		Util.addNonEmptyJsonProperty(object, "integer", (Integer) null);
+		assertFalse(object.has("integer"));
+		Util.addNonEmptyJsonProperty(object, "integer", Integer.valueOf(1));
+		assertTrue(object.has("integer"));
 		
 		// JsonArray
 		JsonArray array = new JsonArray();
@@ -85,23 +110,19 @@ public class UtilTest extends AbstractBaseTestCase {
 		Util.addNonEmptyJsonProperty(object, "object", new JsonObject());
 		assertTrue(object.has("object"));
 		
-		// Integer
-		Util.addNonEmptyJsonProperty(object, "integer", (Integer) null);
-		assertFalse(object.has("integer"));
-		Util.addNonEmptyJsonProperty(object, "integer", Integer.valueOf(1));
-		assertTrue(object.has("integer"));
-		
-		// Boolean
-		Util.addNonEmptyJsonProperty(object, "boolean", (Boolean) null);
-		assertFalse(object.has("boolean"));
-		Util.addNonEmptyJsonProperty(object, "boolean", Boolean.TRUE);
-		assertTrue(object.has("boolean"));
-		
 		// String
 		Util.addNonEmptyJsonProperty(object, "string", "");
 		assertFalse(object.has("string"));
 		Util.addNonEmptyJsonProperty(object, "string", "test");
 		assertTrue(object.has("string"));
+		
+		// Unknown
+		try {
+			Util.addNonEmptyJsonProperty(object, "byte", Byte.valueOf("1"));
+		}
+		catch (IllegalArgumentException e) {
+			expectMessage(e, "Unexpected class");
+		}
 	}
 		
 	public void testGetNonNullStringNull() {

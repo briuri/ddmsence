@@ -30,6 +30,7 @@ import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.ddms.resource.Rights;
+import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
@@ -148,7 +149,7 @@ public class CategoryTest extends AbstractBaseTestCase {
 		json.append("\"code\":\"T\",");
 		json.append("\"label\":\"TORNADO\"");
 		if (version.isAtLeast("4.0.1")) {
-			json.append(",\"securityAttributes\":{\"classification\":\"U\",\"ownerProducer\":[\"USA\"]}");	
+			json.append(",").append(SecurityAttributesTest.getBasicJSON());
 		}		
 		json.append("}");
 		return (json.toString());

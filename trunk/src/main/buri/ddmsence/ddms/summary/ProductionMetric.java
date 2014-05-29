@@ -123,7 +123,9 @@ public final class ProductionMetric extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, SUBJECT_NAME, getSubject());
+		addJson(object, COVERAGE_NAME, getCoverage());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

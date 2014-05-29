@@ -128,7 +128,8 @@ public class DescriptionTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("{\"description\":\"A transformation service.\",\"securityAttributes\":{\"classification\":\"U\",\"ownerProducer\":[\"USA\"]}}");
+		json.append("{\"description\":\"A transformation service.\",");
+		json.append(SecurityAttributesTest.getBasicJSON()).append("}");
 		return (json.toString());
 	}
 	

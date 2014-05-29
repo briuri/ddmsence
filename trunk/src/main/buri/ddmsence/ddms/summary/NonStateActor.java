@@ -146,7 +146,10 @@ public final class NonStateActor extends AbstractSimpleString {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, getName(), getValue());
+		addJson(object, ORDER_NAME, getOrder());
+		addJson(object, QUALIFIER_NAME, getQualifier());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	
@@ -155,12 +158,12 @@ public final class NonStateActor extends AbstractSimpleString {
 	 */
 	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
 		Util.requireHTMLText(format);
-		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
+		String localPrefix = buildPrefix(prefix, getName(), suffix);
 		StringBuffer text = new StringBuffer();
-		text.append(buildHTMLTextOutput(format, localPrefix + "value", getValue()));
-		text.append(buildHTMLTextOutput(format, localPrefix + ORDER_NAME, String.valueOf(getOrder())));
-		text.append(buildHTMLTextOutput(format, localPrefix + QUALIFIER_NAME, getQualifier()));
-		text.append(getSecurityAttributes().getHTMLTextOutput(format, localPrefix));
+		text.append(buildHTMLTextOutput(format, localPrefix, getValue()));
+		text.append(buildHTMLTextOutput(format, localPrefix + "." + ORDER_NAME, String.valueOf(getOrder())));
+		text.append(buildHTMLTextOutput(format, localPrefix + "." + QUALIFIER_NAME, getQualifier()));
+		text.append(getSecurityAttributes().getHTMLTextOutput(format, localPrefix + "."));
 		return (text.toString());
 	}
 
