@@ -118,8 +118,6 @@ creator.surname: Uri
 creator.phone[1]: 703-885-1000</pre> 
 <p class="figure">Figure 7. The Text output of this creator when output.indexLevel is 2</p>
 
-<p>Indices are off by default, since this is not a part of the official specification.</p>
-
 <p>
 	<a href="#top">Back to Top</a><br>
 	<a href="documentation.jsp#tips">Back to Power Tips</a>
