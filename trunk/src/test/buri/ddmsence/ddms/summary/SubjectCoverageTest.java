@@ -181,8 +181,21 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 	 * Returns the expected JSON output for this unit test
 	 */
 	private String getExpectedJSONOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"keyword\":[{\"keyword\":\"DDMSence\"},{\"keyword\":\"Uri\"}],");
+		json.append("\"category\":[{\"qualifier\":\"urn:buri:ddmsence:categories\",\"code\":\"DDMS\",\"label\":\"DDMS\"}]");
+		if (version.isAtLeast("4.0.1")) {
+			json.append(",\"productionMetric\":[{\"subject\":\"FOOD\",\"coverage\":\"AFG\"");
+			json.append(",").append(SecurityAttributesTest.getBasicJSON());
+			json.append("}],\"nonStateActor\":[{\"nonStateActor\":\"Laotian Monks\",\"order\":1,\"qualifier\":\"urn:sample\"");
+			json.append(",").append(SecurityAttributesTest.getBasicJSON());
+			json.append("}]");
+		}
+		if (version.isAtLeast("3.0")) {
+			json.append(",").append(SecurityAttributesTest.getBasicJSON());
+		}
+		json.append("}");
 		return (json.toString());
 	}
 	

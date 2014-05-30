@@ -33,6 +33,7 @@ import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.OutputFormat;
+import buri.ddmsence.ddms.format.Extent;
 import buri.ddmsence.ddms.resource.Identifier;
 import buri.ddmsence.ddms.summary.gml.SRSAttributes;
 
@@ -60,13 +61,29 @@ public class UtilTest extends AbstractBaseTestCase {
 		constructor.newInstance();
 	}
 	
-	public void testGetJSONArray() {
+	public void testGetJSONArray() throws InvalidDDMSException {
 		List<String> list = new ArrayList<String>();
 		list.add("Test");
 		list.add("Dog");
 		JsonArray array = Util.getJSONArray(list);
 		assertEquals("Test", array.get(0).getAsString());
 		assertEquals("Dog", array.get(1).getAsString());
+		
+		List<Extent> list2 = new ArrayList<Extent>();
+		list2.add(new Extent("qualifier", "value"));
+		array = Util.getJSONArray(list2);
+		assertEquals(1, array.size());
+		
+		// Unknown
+		try {
+			List<Long> list3 = new ArrayList<Long>();
+			list3.add(Long.valueOf(1));
+			Util.getJSONArray(list3);
+			fail("Allowed invalid data.");
+		}
+		catch (IllegalArgumentException e) {
+			expectMessage(e, "Unexpected class");
+		}
 	}
 	
 	public void testaddNonEmptyJsonProperty() throws InvalidDDMSException {
@@ -119,6 +136,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		// Unknown
 		try {
 			Util.addNonEmptyJsonProperty(object, "byte", Byte.valueOf("1"));
+			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
 			expectMessage(e, "Unexpected class");

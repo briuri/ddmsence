@@ -62,6 +62,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 import buri.ddmsence.AbstractAttributeGroup;
+import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.ITspiAddress;
 import buri.ddmsence.ddms.ITspiShape;
@@ -127,15 +128,24 @@ public class Util {
 	}
 	
 	/**
-	 * Converts a list of Strings into a JSON Array.
+	 * Converts a list of items into a JSON Array.
 	 * 
-	 * @param values the string values
+	 * @param values the values
 	 * @return a JSON array, with the values in the same order
 	 */
-	public static JsonArray getJSONArray(List<String> values) {
+	public static JsonArray getJSONArray(List<?> values) {
 		JsonArray array = new JsonArray();
-		for (String value : values) {
-			array.add(new JsonPrimitive(value));
+		for (Iterator iterator = values.iterator(); iterator.hasNext();) {
+			Object value = (Object) iterator.next();
+			if (value instanceof String) {
+				array.add(new JsonPrimitive((String) value));
+			}
+			else if (value instanceof AbstractBaseComponent) {
+				array.add(((AbstractBaseComponent) value).getJSONObject());
+			}
+			else {
+				throw new IllegalArgumentException("Unexpected class for JSON property: " + value);
+			}
 		}
 		return (array);
 	}

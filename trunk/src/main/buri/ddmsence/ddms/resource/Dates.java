@@ -39,7 +39,6 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 /**
@@ -217,11 +216,7 @@ public final class Dates extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		JsonArray array = new JsonArray();
-		for (ApproximableDate date : getAcquiredOns()) {
-			array.add(date.getJSONObject());
-		}
-		addJson(object, ACQUIRED_ON_NAME, array);
+		addJson(object, ACQUIRED_ON_NAME, Util.getJSONArray(getAcquiredOns()));
 		addJson(object, CREATED_NAME, getCreatedString());
 		addJson(object, POSTED_NAME, getPostedString());
 		addJson(object, VALID_TIL_NAME, getValidTilString());
