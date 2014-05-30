@@ -9,6 +9,9 @@ Copyright 2010 - 2014 by Brian Uri!
 Release History
 ===========================================================================
 
+v 2.3.0 (05/30/2014):
+This stable release adds built-in support for JSON output.
+
 v 2.2.1 (05/13/2014):
 This stable release is functionally equivalent to 2.2.0, but provides compiled
 binaries that can be used in a Java 1.6 environment. 
