@@ -542,7 +542,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		addJson(object, ATOMIC_ENERGY_MARKINGS_NAME, Util.getJSONArray(getAtomicEnergyMarkings()));
+		addJson(object, ATOMIC_ENERGY_MARKINGS_NAME, getAtomicEnergyMarkings());
 		addJson(object, CLASSIFICATION_NAME, getClassification());
 		addJson(object, CLASSIFICATION_REASON_NAME, getClassificationReason());
 		addJson(object, CLASSIFIED_BY_NAME, getClassifiedBy());
@@ -557,16 +557,16 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		addJson(object, DECLASS_MANUAL_REVIEW_NAME, getDeclassManualReview());
 		addJson(object, DERIVATIVELY_CLASSIFIED_BY_NAME, getDerivativelyClassifiedBy());
 		addJson(object, DERIVED_FROM_NAME, getDerivedFrom());
-		addJson(object, DISPLAY_ONLY_TO_NAME, Util.getJSONArray(getDisplayOnlyTo()));
-		addJson(object, DISSEMINATION_CONTROLS_NAME, Util.getJSONArray(getDisseminationControls()));
-		addJson(object, FGI_SOURCE_OPEN_NAME, Util.getJSONArray(getFGIsourceOpen()));
-		addJson(object, FGI_SOURCE_PROTECTED_NAME, Util.getJSONArray(getFGIsourceProtected()));
-		addJson(object, NON_IC_MARKINGS_NAME, Util.getJSONArray(getNonICmarkings()));
-		addJson(object, NON_US_CONTROLS_NAME, Util.getJSONArray(getNonUSControls()));
-		addJson(object, OWNER_PRODUCER_NAME, Util.getJSONArray(getOwnerProducers()));
-		addJson(object, RELEASABLE_TO_NAME, Util.getJSONArray(getReleasableTo()));
-		addJson(object, SAR_IDENTIFIER_NAME, Util.getJSONArray(getSARIdentifier()));
-		addJson(object, SCI_CONTROLS_NAME, Util.getJSONArray(getSCIcontrols()));
+		addJson(object, DISPLAY_ONLY_TO_NAME, getDisplayOnlyTo());
+		addJson(object, DISSEMINATION_CONTROLS_NAME, getDisseminationControls());
+		addJson(object, FGI_SOURCE_OPEN_NAME, getFGIsourceOpen());
+		addJson(object, FGI_SOURCE_PROTECTED_NAME, getFGIsourceProtected());
+		addJson(object, NON_IC_MARKINGS_NAME, getNonICmarkings());
+		addJson(object, NON_US_CONTROLS_NAME, getNonUSControls());
+		addJson(object, OWNER_PRODUCER_NAME, getOwnerProducers());
+		addJson(object, RELEASABLE_TO_NAME, getReleasableTo());
+		addJson(object, SAR_IDENTIFIER_NAME, getSARIdentifier());
+		addJson(object, SCI_CONTROLS_NAME, getSCIcontrols());
 		addJson(object, TYPE_OF_EXEMPTED_SOURCE_NAME, getTypeOfExemptedSource());
 		return (object);
 	}

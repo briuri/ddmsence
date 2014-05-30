@@ -158,9 +158,20 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected JSON output for this unit test
 	 */
-	private String getExpectedJSONOutput() {
+	private String getExpectedJSONOutput(boolean hasFacility) {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		if (!hasFacility) {
+			json.append("{\"name\":[\"The White House\"],\"region\":[\"Mid-Atlantic States\"],");
+			json.append("\"countryCode\":").append(CountryCodeTest.getFixture().toJSON());
+			if (version.isAtLeast("4.0.1")) {
+				json.append(",\"subDivisionCode\":").append(SubDivisionCodeTest.getFixture().toJSON());
+			}
+		}
+		else {
+			json.append("{\"facilityIdentifier\":").append(FacilityIdentifierTest.getFixture().toJSON());
+		}
+		json.append("}");
 		return (json.toString());
 	}
 	
@@ -351,7 +362,7 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedHTMLTextOutput(OutputFormat.HTML), elementComponent.toHTML());
 			assertEquals(getExpectedHTMLTextOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
-			assertEquals(getExpectedJSONOutput(), elementComponent.toJSON());
+			assertEquals(getExpectedJSONOutput(false), elementComponent.toJSON());
 			assertValidJSON(elementComponent.toJSON());
 			
 			// facility
@@ -364,7 +375,8 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 			facIdOutput.append("geographicIdentifier.facilityIdentifier.beNumber: 1234DD56789\n");
 			facIdOutput.append("geographicIdentifier.facilityIdentifier.osuffix: DD123\n");
 			assertEquals(facIdOutput.toString(), component.toText());
-			fail("Need to add JSON test");
+			assertEquals(getExpectedJSONOutput(true), component.toJSON());
+			assertValidJSON(component.toJSON());
 		}
 	}
 

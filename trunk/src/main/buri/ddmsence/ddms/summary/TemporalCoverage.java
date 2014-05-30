@@ -310,10 +310,8 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		addJson(object, TIME_PERIOD_NAME_NAME, getTimePeriodName());
 		addJson(object, START_NAME, getStartString());
 		addJson(object, END_NAME, getEndString());
-		if (getApproximableStart() != null)
-			addJson(object, getApproximableStart().getName(), getApproximableStart().getJSONObject());
-		if (getApproximableEnd() != null)
-			addJson(object, getApproximableEnd().getName(), getApproximableEnd().getJSONObject());
+		addJson(object, getApproximableStart());
+		addJson(object, getApproximableEnd());
 		addJson(object, getSecurityAttributes());
 		return (object);
 	}

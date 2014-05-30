@@ -161,8 +161,7 @@ public final class Format extends AbstractBaseComponent {
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
 		addJson(object, MIME_TYPE_NAME, getMimeType());
-		if (getExtent() != null)
-			addJson(object, getExtent().getName(), getExtent().getJSONObject());
+		addJson(object, getExtent());
 		addJson(object, MEDIUM_NAME, getMedium());
 		return (object);
 	}

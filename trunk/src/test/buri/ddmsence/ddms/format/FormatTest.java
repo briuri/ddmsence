@@ -152,8 +152,8 @@ public class FormatTest extends AbstractBaseTestCase {
 		StringBuffer json = new StringBuffer();
 		json.append("{");
 		json.append("\"mimeType\":\"text/xml\",");
-		json.append("\"extent\":{\"qualifier\":\"sizeBytes\",\"value\":\"75000\"},");
-		json.append("\"medium\":\"digital\"}");
+		json.append("\"extent\":").append(ExtentTest.getFixture().toJSON());
+		json.append(",\"medium\":\"digital\"}");
 		return (json.toString());
 	}
 	

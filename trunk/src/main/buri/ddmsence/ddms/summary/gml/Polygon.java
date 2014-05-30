@@ -203,7 +203,9 @@ public final class Polygon extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, ID_NAME, getId());
+		addJson(object, getSRSAttributes());
+		addJson(object, Position.getName(getDDMSVersion()), getPositions());
 		return (object);
 	}
 	

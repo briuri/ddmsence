@@ -149,6 +149,19 @@ public abstract class AbstractAttributeGroup {
 	}
 	
 	/**
+	 * Adds a list of values to a JSON object, but only if it is not empty and not null. This method delegates to Util,
+	 * so the
+	 * individual JSON implementations are cleaner.
+	 * 
+	 * @param object the object to add to
+	 * @param name the name of the array, if added
+	 * @param value the value to add, converted into a JSON array
+	 */
+	protected static void addJson(JsonObject object, String name, List<?> value) {
+		Util.addNonEmptyJsonProperty(object, name, Util.getJSONArray(value));
+	}
+	
+	/**
 	 * Adds an attribute group's JSON object to a JSON object, but only if it is not empty. This method delegates to Util, so the
 	 * individual JSON implementations are cleaner.
 	 * 
