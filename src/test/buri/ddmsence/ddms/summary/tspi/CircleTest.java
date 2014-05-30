@@ -104,7 +104,7 @@ public class CircleTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"shapeType\":\"Circle\"}");
 		return (json.toString());
 	}
 	

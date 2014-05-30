@@ -24,11 +24,8 @@ import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractTspiShape;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
-
-import com.google.gson.JsonObject;
 
 /**
  * An immutable implementation of tspi:Circle.
@@ -81,26 +78,6 @@ public final class Circle extends AbstractTspiShape {
 	protected void validate() throws InvalidDDMSException {
 		Util.requireQName(getXOMElement(), getNamespace(), Circle.getName(getDDMSVersion()));
 		super.validate();
-	}
-
-	/**
-	 * @see AbstractBaseComponent#getJSONObject()
-	 */
-	public JsonObject getJSONObject() {
-		JsonObject object = new JsonObject();
-		// TODO
-		return (object);
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
-	 */
-	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
-		Util.requireHTMLText(format);
-		String localPrefix = buildPrefix(prefix, "", suffix);
-		StringBuffer text = new StringBuffer();
-		text.append(buildHTMLTextOutput(format, localPrefix + "shapeType", getName()));
-		return (text.toString());
 	}
 
 	/**

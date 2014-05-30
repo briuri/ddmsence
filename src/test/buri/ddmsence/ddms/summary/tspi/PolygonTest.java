@@ -103,7 +103,7 @@ public class PolygonTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"shapeType\":\"Polygon\"}");
 		return (json.toString());
 	}
 	

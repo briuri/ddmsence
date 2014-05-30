@@ -128,7 +128,7 @@ public class UnnumberedThoroughfareAddressTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"addressType\":\"UnnumberedThoroughfareAddress\"}");
 		return (json.toString());
 	}
 	

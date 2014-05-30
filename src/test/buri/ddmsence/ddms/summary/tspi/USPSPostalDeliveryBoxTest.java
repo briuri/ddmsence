@@ -128,7 +128,7 @@ public class USPSPostalDeliveryBoxTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"addressType\":\"USPSPostalDeliveryBox\"}");
 		return (json.toString());
 	}
 	
