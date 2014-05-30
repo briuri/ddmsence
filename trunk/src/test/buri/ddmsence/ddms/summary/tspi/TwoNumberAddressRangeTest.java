@@ -128,7 +128,7 @@ public class TwoNumberAddressRangeTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"addressType\":\"TwoNumberAddressRange\"}");
 		return (json.toString());
 	}
 	

@@ -21,10 +21,13 @@ package buri.ddmsence;
 
 import java.io.Serializable;
 
+import com.google.gson.JsonObject;
+
 import nu.xom.Element;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.ITspiShape;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.summary.gml.SRSAttributes;
 import buri.ddmsence.util.Util;
 
@@ -96,6 +99,27 @@ public abstract class AbstractTspiShape extends AbstractBaseComponent implements
 		Util.requireDDMSValue(ID_NAME, getId());
 		Util.requireValidNCName(getId());		
 		super.validate();
+	}
+	
+
+	/**
+	 * @see AbstractBaseComponent#getJSONObject()
+	 */
+	public JsonObject getJSONObject() {
+		JsonObject object = new JsonObject();
+		addJson(object, "shapeType", getName());
+		return (object);
+	}
+	
+	/**
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
+	 */
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
+		Util.requireHTMLText(format);
+		String localPrefix = buildPrefix(prefix, "", suffix);
+		StringBuffer text = new StringBuffer();
+		text.append(buildHTMLTextOutput(format, localPrefix + "shapeType", getName()));
+		return (text.toString());
 	}
 	
 	/**

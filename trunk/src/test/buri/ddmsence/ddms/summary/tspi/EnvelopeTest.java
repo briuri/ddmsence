@@ -104,7 +104,7 @@ public class EnvelopeTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"shapeType\":\"Envelope\"}");
 		return (json.toString());
 	}
 	

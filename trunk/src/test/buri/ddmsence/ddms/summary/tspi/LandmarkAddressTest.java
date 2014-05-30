@@ -128,7 +128,7 @@ public class LandmarkAddressTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"addressType\":\"LandmarkAddress\"}");
 		return (json.toString());
 	}
 	

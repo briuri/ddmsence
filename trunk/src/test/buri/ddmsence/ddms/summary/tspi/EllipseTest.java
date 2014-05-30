@@ -104,7 +104,7 @@ public class EllipseTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"shapeType\":\"Ellipse\"}");
 		return (json.toString());
 	}
 	

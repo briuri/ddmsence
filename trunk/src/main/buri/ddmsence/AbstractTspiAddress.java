@@ -23,10 +23,13 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.gson.JsonObject;
+
 import nu.xom.Element;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.ITspiAddress;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.util.Util;
 
 /**
@@ -99,6 +102,27 @@ public abstract class AbstractTspiAddress extends AbstractBaseComponent implemen
 		if (!Util.isEmpty(getAction()) &&!ACTIONS.contains(getAction()))
 			throw new InvalidDDMSException("The action attribute must be one of " + ACTIONS);		
 		super.validate();
+	}
+	
+
+	/**
+	 * @see AbstractBaseComponent#getJSONObject()
+	 */
+	public JsonObject getJSONObject() {
+		JsonObject object = new JsonObject();
+		addJson(object, "addressType", getName());
+		return (object);
+	}
+	
+	/**
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
+	 */
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
+		Util.requireHTMLText(format);
+		String localPrefix = buildPrefix(prefix, "", suffix);
+		StringBuffer text = new StringBuffer();
+		text.append(buildHTMLTextOutput(format, localPrefix + "addressType", getName()));
+		return (text.toString());
 	}
 	
 	/**

@@ -128,7 +128,7 @@ public class USPSGeneralDeliveryOfficeTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"addressType\":\"USPSGeneralDeliveryOffice\"}");
 		return (json.toString());
 	}
 	
