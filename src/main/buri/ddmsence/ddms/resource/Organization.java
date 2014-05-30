@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.gson.JsonObject;
+
 import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.AbstractBaseComponent;
@@ -147,6 +149,16 @@ public final class Organization extends AbstractRoleEntity {
 		if (getDDMSVersion().isAtLeast("5.0") && !getExtensibleAttributes().isEmpty())
 			throw new InvalidDDMSException("ddms:" + getName() + " must not have extensible attributes after DDMS 4.1.");
 		super.validate();
+	}
+	
+	/**
+	 * @see AbstractBaseComponent#getJSONObject()
+	 */
+	public JsonObject getJSONObject() {
+		JsonObject object = super.getJSONObject();
+		addJson(object, "subOrganization", getSubOrganizations());
+		addJson(object, ACRONYM_NAME, getAcronym());
+		return (object);
 	}
 	
 	/**

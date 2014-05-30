@@ -187,7 +187,9 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, (AbstractBaseComponent) getEntity());
+		addJson(object, POC_TYPE_NAME, getPocTypes());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

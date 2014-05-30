@@ -155,8 +155,15 @@ public class OrganizationTest extends AbstractBaseTestCase {
 	 * Returns the expected JSON output for this unit test
 	 */
 	private String getExpectedJSONOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"entityType\":\"organization\",\"name\":[\"DISA\",\"PEO-GES\"],\"phone\":[\"703-882-1000\",\"703-885-1000\"],\"email\":[\"ddms@fgm.com\"]");
+		if (version.isAtLeast("4.0.1")) {
+			json.append(",\"subOrganization\":[");
+			json.append(SubOrganizationTest.getFixtureList().get(0).toJSON()).append(",");
+			json.append(SubOrganizationTest.getFixtureList().get(1).toJSON()).append("],\"acronym\":\"DISA\"");
+		}
+		json.append("}");
 		return (json.toString());
 	}
 	

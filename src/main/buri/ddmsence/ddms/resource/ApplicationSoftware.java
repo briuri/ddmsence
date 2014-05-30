@@ -106,7 +106,8 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, getName(), getValue());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

@@ -160,7 +160,8 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"organization\":").append(OrganizationTest.getFixture().toJSON());
+		json.append(",").append(SecurityAttributesTest.getBasicJSON()).append("}");
 		return (json.toString());
 	}
 	

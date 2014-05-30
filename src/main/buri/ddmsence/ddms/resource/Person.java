@@ -22,6 +22,8 @@ package buri.ddmsence.ddms.resource;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.gson.JsonObject;
+
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractRoleEntity;
@@ -170,6 +172,17 @@ public final class Person extends AbstractRoleEntity {
 		if (getDDMSVersion().isAtLeast("4.0.1") && !getExtensibleAttributes().isEmpty())
 			throw new InvalidDDMSException("ddms:" + getName() + " must not have extensible attributes after DDMS 3.1.");
 		super.validate();
+	}
+	
+	/**
+	 * @see AbstractBaseComponent#getJSONObject()
+	 */
+	public JsonObject getJSONObject() {
+		JsonObject object = super.getJSONObject();
+		addJson(object, SURNAME_NAME, getSurname());
+		addJson(object, USERID_NAME, getUserID());
+		addJson(object, AFFILIATION_NAME, getAffiliations());
+		return (object);
 	}
 	
 	/**
