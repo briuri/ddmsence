@@ -64,6 +64,7 @@ import buri.ddmsence.ddms.resource.Type;
 import buri.ddmsence.ddms.resource.TypeTest;
 import buri.ddmsence.ddms.resource.Unknown;
 import buri.ddmsence.ddms.security.SecurityTest;
+import buri.ddmsence.ddms.security.ism.NoticeAttributesTest;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.ddms.summary.DescriptionTest;
@@ -459,7 +460,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			text.append(buildHTMLTextOutput(format, geospatialPrefix + "boundingGeometry.Point.pos", "32.1 40.1"));
 		}
 		else {
-			text.append(buildHTMLTextOutput(format, geospatialPrefix + "boundingGeometry.shapeType", "Point"));
+			text.append(buildHTMLTextOutput(format, geospatialPrefix + "boundingGeometry.shapeType", "point"));
 		}
 		text.append(buildHTMLTextOutput(format, relatedPrefix + "relationship", "http://purl.org/dc/terms/references"));
 		text.append(buildHTMLTextOutput(format, relatedPrefix + "direction", "outbound"));
@@ -496,8 +497,81 @@ public class ResourceTest extends AbstractBaseTestCase {
 	 * Returns the expected JSON output for this unit test
 	 */
 	private String getExpectedJSONOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		boolean isAtLeast30 = version.isAtLeast("3.0");
+		boolean isAtLeast401 = version.isAtLeast("4.0.1");
+		boolean is41 = "4.1".equals(version.getVersion());
+		boolean isAtLeast50 = version.isAtLeast("5.0");
+		
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{");
+		if (isAtLeast50) {
+			json.append("\"compliesWith\":[\"DDMSRules\"],");
+		}
+		else {
+			if (isAtLeast30)
+				json.append("\"resourceElement\":true,\"createDate\":\"2010-01-21\",");
+			json.append("\"ism.DESVersion\":").append(getTestIsmDesVersion()).append(",");
+			if (isAtLeast401)
+				json.append("\"ntk.DESVersion\":").append(getTestNtkDesVersion()).append(",");
+			if (isAtLeast30)
+				json.append(SecurityAttributesTest.getBasicJSON()).append(",");
+		}
+		if (is41) {
+			json.append("\"noticeAttributes\":");
+			json.append(NoticeAttributesTest.getFixture().getJSONObject().toString()).append(",");
+		}
+		if (isAtLeast401) {
+			json.append("\"metacardInfo\":").append(MetacardInfoTest.getFixture().toJSON()).append(",");
+		}
+		json.append("\"identifier\":[");
+		json.append(IdentifierTest.getFixture().toJSON()).append("],");
+		json.append("\"title\":[");
+		json.append(TitleTest.getFixture().toJSON()).append("],");
+		json.append("\"subtitle\":[");
+		json.append(SubtitleTest.getFixture().toJSON()).append("],");
+		json.append("\"description\":").append(DescriptionTest.getFixture().toJSON()).append(",");
+		json.append("\"language\":[");
+		json.append(LanguageTest.getFixture().toJSON()).append("],");
+		json.append("\"dates\":").append(DatesTest.getFixture().toJSON()).append(",");
+		json.append("\"rights\":").append(RightsTest.getFixture().toJSON()).append(",");
+		json.append("\"source\":[");
+		json.append(SourceTest.getFixture().toJSON()).append("],");
+		json.append("\"type\":[");
+		json.append(TypeTest.getFixture().toJSON()).append("],");		
+		json.append("\"creator\":[");
+		json.append(CreatorTest.getFixture().toJSON()).append("],");
+		json.append("\"publisher\":[");
+		json.append(PublisherTest.getFixture().toJSON()).append("],");
+		json.append("\"contributor\":[");
+		json.append(ContributorTest.getFixture().toJSON()).append("],");
+		json.append("\"pointOfContact\":[");
+		json.append(PointOfContactTest.getFixture().toJSON()).append("],");
+		json.append("\"format\":").append(FormatTest.getFixture().toJSON()).append(",");
+		json.append("\"subjectCoverage\":[");
+		json.append(SubjectCoverageTest.getFixture().toJSON()).append("],");
+		json.append("\"virtualCoverage\":[");
+		json.append(VirtualCoverageTest.getFixture().toJSON()).append("],");
+		json.append("\"temporalCoverage\":[");
+		json.append(TemporalCoverageTest.getFixture().toJSON()).append("],");
+		json.append("\"geospatialCoverage\":[");
+		json.append(GeospatialCoverageTest.getFixture().toJSON()).append("],");
+		json.append("\"relatedResource\":[");
+		json.append(RelatedResourceTest.getFixture().toJSON()).append("],");
+		if (isAtLeast401) {
+			json.append("\"resourceManagement\":");
+			json.append(ResourceManagementTest.getFixture().toJSON()).append(",");
+		}
+		if (!isAtLeast50) {
+			json.append("\"security\":");
+			json.append(SecurityTest.getFixture().toJSON()).append(",");
+		}
+		json.append("\"extensible.layer\":false,");
+		json.append("\"ddms.generator\":\"DDMSence ");
+		json.append(PropertyReader.getProperty("version")).append("\",");
+		json.append("\"ddms.version\":\"");
+		json.append(DDMSVersion.getVersionForNamespace(version.getNamespace()).getVersion());
+		json.append("\"}");		
 		return (json.toString());
 	}
 	

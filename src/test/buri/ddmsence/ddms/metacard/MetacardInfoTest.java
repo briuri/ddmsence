@@ -177,7 +177,33 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"identifier\":[");
+		json.append(IdentifierTest.getFixture().toJSON()).append("],");
+		json.append("\"dates\":");
+		json.append(DatesTest.getFixture().toJSON()).append(",");
+		json.append("\"publisher\":[");
+		json.append(PublisherTest.getFixture().toJSON()).append("],");
+		json.append("\"contributor\":[");
+		json.append(ContributorTest.getFixture().toJSON()).append("],");
+		json.append("\"creator\":[");
+		json.append(CreatorTest.getFixture().toJSON()).append("],");
+		json.append("\"pointOfContact\":[");
+		json.append(PointOfContactTest.getFixture().toJSON()).append("],");
+		json.append("\"description\":");
+		json.append(DescriptionTest.getFixture().toJSON()).append(",");
+		json.append("\"processingInfo\":[");
+		json.append(ProcessingInfoTest.getFixture().toJSON()).append("],");
+		json.append("\"revisionRecall\":");
+		json.append(RevisionRecallTest.getTextFixture().toJSON()).append(",");
+		json.append("\"recordsManagementInfo\":");
+		json.append(RecordsManagementInfoTest.getFixture().toJSON()).append(",");
+		if ("4.1".equals(DDMSVersion.getCurrentVersion().getVersion())) {
+			json.append("\"noticeList\":");
+			json.append(NoticeListTest.getFixture().toJSON()).append(",");
+			json.append("\"access\":");
+			json.append(AccessTest.getFixture().toJSON()).append(",");
+		}
+		json.append(SecurityAttributesTest.getBasicJSON()).append("}");
 		return (json.toString());
 	}
 	

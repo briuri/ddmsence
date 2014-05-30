@@ -306,7 +306,19 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, "identifier", getIdentifiers());
+		addJson(object, getDates());		
+		addJson(object, "publisher", getPublishers());
+		addJson(object, "contributor", getContributors());
+		addJson(object, "creator", getCreators());
+		addJson(object, "pointOfContact", getPointOfContacts());
+		addJson(object, getDescription());
+		addJson(object, "processingInfo", getProcessingInfos());
+		addJson(object, getRevisionRecall());
+		addJson(object, getRecordsManagementInfo());
+		addJson(object, getNoticeList());
+		addJson(object, getAccess());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

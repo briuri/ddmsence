@@ -794,7 +794,40 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, RESOURCE_ELEMENT_NAME, isResourceElement());
+		if (getCreateDate() != null)
+			addJson(object, CREATE_DATE_NAME, getCreateDate().toXMLFormat());
+		addJson(object, COMPLIES_WITH_NAME, getCompliesWiths());
+		addJson(object, "ism." + DES_VERSION_NAME, getIsmDESVersion());
+		addJson(object, "ntk." + DES_VERSION_NAME, getNtkDESVersion());
+		addJson(object, getSecurityAttributes());
+		addJson(object, getNoticeAttributes());
+		addJson(object, getExtensibleAttributes());
+		addJson(object, getMetacardInfo());
+		addJson(object, "identifier", getIdentifiers());
+		addJson(object, "title", getTitles());
+		addJson(object, "subtitle", getSubtitles());
+		addJson(object, getDescription());
+		addJson(object, "language", getLanguages());
+		addJson(object, getDates());
+		addJson(object, getRights());
+		addJson(object, "source", getSources());
+		addJson(object, "type", getTypes());
+		addJson(object, "creator", getCreators());
+		addJson(object, "publisher", getPublishers());
+		addJson(object, "contributor", getContributors());
+		addJson(object, "pointOfContact", getPointOfContacts());
+		addJson(object, getFormat());
+		addJson(object, "subjectCoverage", getSubjectCoverages());
+		addJson(object, "virtualCoverage", getVirtualCoverages());
+		addJson(object, "temporalCoverage", getTemporalCoverages());
+		addJson(object, "geospatialCoverage", getGeospatialCoverages());
+		addJson(object, "relatedResource", getRelatedResources());
+		addJson(object, getResourceManagement());
+		addJson(object, getSecurity());
+		addJson(object, "extensible.layer", !getExtensibleElements().isEmpty());
+		addJson(object, "ddms.generator", "DDMSence " + PropertyReader.getProperty("version"));
+		addJson(object, "ddms.version", getDDMSVersion().getVersion());
 		return (object);
 	}
 	
