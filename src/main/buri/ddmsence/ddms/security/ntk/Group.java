@@ -30,13 +30,10 @@ import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
-
-import com.google.gson.JsonObject;
 
 /**
  * An immutable implementation of ntk:AccessGroup.
@@ -133,31 +130,19 @@ public final class Group extends AbstractAccessEntity {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getJSONObject()
+	 * @see AbstractAccessEntity#getOutputName()
 	 */
-	public JsonObject getJSONObject() {
-		JsonObject object = new JsonObject();
-		if (getSystemName() != null)
-			addJson(object, "systemName", getSystemName().getJSONObject());
-		addJson(object, "groupValue", getGroupValues());
-		addJson(object, getSecurityAttributes());
-		return (object);
+	protected String getOutputName() {
+		return ("group");
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
+	 * @see AbstractAccessEntity#getOutputValues()
 	 */
-	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
-		Util.requireHTMLText(format);
-		String localPrefix = buildPrefix(prefix, "group", suffix) + ".";
-		StringBuffer text = new StringBuffer();
-		if (getSystemName() != null)
-			text.append(getSystemName().getHTMLTextOutput(format, localPrefix, ""));
-		text.append(buildHTMLTextOutput(format, localPrefix, getGroupValues()));
-		text.append(getSecurityAttributes().getHTMLTextOutput(format, localPrefix));
-		return (text.toString());
+	protected List<?> getOutputValues() {
+		return (getGroupValues());
 	}
-
+	
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
