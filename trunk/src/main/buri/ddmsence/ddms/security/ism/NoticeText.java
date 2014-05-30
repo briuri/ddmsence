@@ -145,7 +145,7 @@ public final class NoticeText extends AbstractSimpleString {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		addJson(object, getName(), getValue());
+		addJson(object, "noticeText", getValue());
 		addJson(object, POC_TYPE_NAME, getPocTypes());
 		addJson(object, getSecurityAttributes());
 		return (object);

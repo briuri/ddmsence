@@ -44,7 +44,7 @@ import com.google.gson.JsonObject;
  * <br /><br />
  * {@ddms.versions 00010}
  * 
- * <p></p>
+ * <p>In JSON output, an extra layer is added around the individualList and groupList, to make the output consistent with the profileList.</p>
  * 
  * {@table.header History}
  * 		<p>This class was introduced to support NTK components in DDMS 4.1. Those components are
@@ -218,12 +218,21 @@ public final class Access extends AbstractBaseComponent {
 	}
 
 	/**
+	 * An extra layer is added around the individualList and groupList, to make the output consistent with the profileList.
+	 * 
 	 * @see AbstractBaseComponent#getJSONObject()
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		addJson(object, "individualList", getIndividuals());
-		addJson(object, "groupList", getGroups());
+
+		JsonObject individualList = new JsonObject();
+		individualList.add("individual", Util.getJSONArray(getIndividuals()));		
+		addJson(object, "individualList", individualList);
+		
+		JsonObject groupList = new JsonObject();
+		groupList.add("group", Util.getJSONArray(getGroups()));
+		addJson(object, "groupList", groupList);
+		
 		if (getProfileList() != null)
 			addJson(object, "profileList", getProfileList().getJSONObject());
 		addJson(object, EXTERNAL_REFERENCE_NAME, isExternalReference());
