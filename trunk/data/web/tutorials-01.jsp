@@ -47,7 +47,7 @@ XML namespace. Next, we create a DDMSReader instance that will load the file. Fi
 _resource = getReader(fileVersion).getDDMSResource(file);
 
 // Apply pretty-printing to JSON
-PropertyReader.setProperty("output.formatJson", "true");
+PropertyReader.setProperty("output.json.prettyPrint", "true");
 
 // The four output formats
 String xmlFormat = getResource().toXML();
@@ -98,8 +98,9 @@ a other versions of DDMS is covered in the <a href="documentation.jsp#tips">Powe
 attempts to be consistent across components. Specific instances where DDMSence diverges from the DDMS suggestions are noted in the class comments for
 the affected components.</p>
 
-<p>The DDMS specification provides no guidance on JSON output, but the format is generally based upon the patterns used in the HTML and Text outputs. Here are a few rules of
-thumb which describe this format:</p>
+<p>The DDMS specification provides no guidance on JSON output, but the format is generally based upon the patterns used in the HTML and Text outputs. 
+If you are unsure of how the JSON output will appear for a particular component, you can use the Essentials application as a visual aid.
+Here are a few rules of thumb which describe this format:</p>
 <ul>
 	<li>The datatypes of the JSON data match the datatypes in the Java classes.</li>
 	<li>The JSON data for individual components does not contain the name of that component, until it has been nested into a parent component.</li>
@@ -109,7 +110,7 @@ thumb which describe this format:</p>
 	<li>If a property can have multiple values, it will always appear as an array, even if only one value exists.</li>	   
 </ul>
 
-<p>If you are unsure of how the JSON output will appear for a particular component, you can use the Essentials application as a visual aid.</p>
+<p>Additional <a href="documentation-configuration.jsp">configurable properties</a> are available to control the formatting of the output.</p>
 
 <h3>Conclusion</h3>
 

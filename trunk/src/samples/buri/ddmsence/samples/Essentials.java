@@ -113,7 +113,7 @@ public class Essentials extends AbstractSample {
 			_resource = getReader(fileVersion).getDDMSResource(file);
 			
 			// Apply pretty-printing to JSON
-			PropertyReader.setProperty("output.formatJson", "true");
+			PropertyReader.setProperty("output.json.prettyPrint", "true");
 			
 			// The four output formats
 			String xmlFormat = getResource().toXML();
