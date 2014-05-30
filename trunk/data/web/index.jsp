@@ -126,7 +126,6 @@
 	-->
 	</div><br /><br />
 	
-	<div class="feed">New Release Feed: <a href="http://code.google.com/feeds/p/ddmsence/downloads/basic"><img border="0" src="./images/atom.png" width="14" height="14" title="Atom Feed" /></a></div>	
 	<div class="feed">SVN Code Feed: <a href="http://code.google.com/feeds/p/ddmsence/svnchanges/basic"><img border="0" src="./images/atom.png" width="14" height="14" title="Atom Feed" /></a></div>
 	<div class="feed">Issue Tracker Feed: <a href="http://code.google.com/feeds/p/ddmsence/issueupdates/basic"><img border="0" src="./images/atom.png" width="14" height="14" title="Atom Feed" /></a></div>
 	
