@@ -148,7 +148,7 @@ public final class Position extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		addJson(object, getName(), getCoordinates());
+		addJson(object, "coordinates", getCoordinates());
 		addJson(object, getSRSAttributes());
 		return (object);
 	}

@@ -213,7 +213,14 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		if (!getDDMSVersion().isAtLeast("5.0")) {
+			addJson(object, Polygon.getName(getDDMSVersion()), getGmlPolygons());
+			addJson(object, Point.getName(getDDMSVersion()), getGmlPoints());
+		}
+		else {
+			for (ITspiShape shape : getTspiShapes())
+				addJson(object, (AbstractBaseComponent) shape);
+		}
 		return (object);
 	}
 	
