@@ -36,20 +36,25 @@ instead of "ISM", you would set the "ism.prefix" property with a custom value of
 
 <h2>Controlling JSON Output</h2>
 
-<p>TBD:
-	formatting property,
-	datatypes match datatype on DDMSence component (mostly strings),
-	each component is not named until nested in a parent
-	how to name a pair for free-text (e.g. subOrganization)
-	don't include empty/null values,
-	attribute groups are enclosed,
-	localName vs prefixed name</p>
+<p>The <code>output.formatJson</code> property applies pretty-printing to a JSON string, via the <a href="https://code.google.com/p/google-gson/">google-gson</a> library.
+The examples below show the expected output when this property is set to true or false, respectively:</p>
+
+<pre class="brush: xml">
+    {
+      "qualifier": "http://purl.org/dc/elements/1.1/language",
+      "value": "en"
+    }</pre>
+<p class="figure">Figure 2. The JSON output of a Language component, with <code>output.formatJson</code> set to true.</p>
+
+<pre class="brush: xml">
+{"qualifier": "http://purl.org/dc/elements/1.1/language","value": "en"}</pre>
+<p class="figure">Figure 3. The JSON output of a Language component, with <code>output.formatJson</code> set to false.</p>
 
 <h2>Controlling HTML/Text Output</h2>
 
-<p>The DDMS specification has no convention for the HTML/Text output of fields which might have multiple values, such as the name and phone number fields on a person. DDMSence optionally adds
-indices to the names of these values, based on the value of the <code>output.indexLevel</code> property. The example below shows a sample XML instance, and the expected output at each
-indexLevel:</p>
+<p>The DDMS specification has no convention for the HTML/Text output of fields which might have multiple values, such as the name and phone number fields on a person. 
+DDMSence optionally adds indices to the names of these values, based on the value of the <code>output.indexLevel</code> property. 
+The example below shows a sample XML instance, and the expected output at each indexLevel:</p>
 
 <pre class="brush: xml">
 &lt;ddms:creator&gt;
@@ -60,25 +65,25 @@ indexLevel:</p>
       &lt;ddms:phone&gt;703-885-1000&lt;/ddms:phone&gt;
    &lt;/ddms:person&gt;
 &lt;/ddms:creator&gt;</pre>
-<p class="figure">Figure 2. A sample XML instance representing a creator with 2 names and 1 phone number.</p>
+<p class="figure">Figure 4. A sample XML instance representing a creator with 2 names and 1 phone number.</p>
 
 <pre class="brush: xml">creator.name: Brian
 creator.name: BU
 creator.surname: Uri
 creator.phone: 703-885-1000</pre> 
-<p class="figure">Figure 3. The Text output of this creator when output.indexLevel is 0</p>
+<p class="figure">Figure 5. The Text output of this creator when output.indexLevel is 0</p>
 
 <pre class="brush: xml">creator.name[1]: Brian
 creator.name[2]: BU
 creator.surname: Uri
 creator.phone: 703-885-1000</pre> 
-<p class="figure">Figure 3. The Text output of this creator when output.indexLevel is 1</p>
+<p class="figure">Figure 6. The Text output of this creator when output.indexLevel is 1</p>
 
 <pre class="brush: xml">creator.name[1]: Brian
 creator.name[2]: BU
 creator.surname: Uri
 creator.phone[1]: 703-885-1000</pre> 
-<p class="figure">Figure 3. The Text output of this creator when output.indexLevel is 2</p>
+<p class="figure">Figure 7. The Text output of this creator when output.indexLevel is 2</p>
 
 <p>Indices are off by default, since this is not a part of the official specification.</p>
 

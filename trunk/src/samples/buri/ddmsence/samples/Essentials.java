@@ -26,6 +26,7 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.filechooser.FileFilter;
 
 import org.xml.sax.SAXException;
@@ -37,13 +38,14 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * DDMSsentials is a simple reader application which loads a DDMS Resource from a file, and displays it in three
+ * DDMSsentials is a simple reader application which loads a DDMS Resource from a file, and displays it in four
  * formats.
  * 
  * <ol>
  * <li>The original XML</li>
- * <li>HTML, as defined by the DDMS Specification</li>
- * <li>Text, as defined by the DDMS Specification</li>
+ * <li>HTML, as suggested by the DDMS Specification</li>
+ * <li>Text, as suggested by the DDMS Specification</li>
+ * <li>JSON, in a comparable structure as the HTML/Text output</li>
  * </ol>
  * 
  * <p>
@@ -109,19 +111,24 @@ public class Essentials extends AbstractSample {
 			DDMSVersion fileVersion = guessVersion(file);
 			// The DDMS reader builds a Resource object from the XML in the file.
 			_resource = getReader(fileVersion).getDDMSResource(file);
-
-			// The three output formats
+			
+			// Apply pretty-printing to JSON
+			PropertyReader.setProperty("output.formatJson", "true");
+			
+			// The four output formats
 			String xmlFormat = getResource().toXML();
 			String htmlFormat = getResource().toHTML();
 			String textFormat = getResource().toText();
+			String jsonFormat = getResource().toJSON();
 
 			// Render the formats in the Swing GUI
-			JPanel htmlTextPanel = new JPanel(new GridLayout(1, 0));
-			htmlTextPanel.add(buildLabelledPanel(file.getName() + " in HTML", htmlFormat));
-			htmlTextPanel.add(buildLabelledPanel(file.getName() + " in Text", textFormat));
-			resultPanel = new JPanel(new GridLayout(0, 1));
-			resultPanel.add(buildLabelledPanel(file.getName() + " in XML", xmlFormat));
-			resultPanel.add(htmlTextPanel);
+			JTabbedPane pane = new JTabbedPane(JTabbedPane.TOP);
+			pane.add("XML", buildLabelledPanel(file.getName() + " in XML", xmlFormat));
+			pane.add("HTML", buildLabelledPanel(file.getName() + " in HTML", htmlFormat));
+			pane.add("Text", buildLabelledPanel(file.getName() + " in Text", textFormat));
+			pane.add("JSON", buildLabelledPanel(file.getName() + " in JSON", jsonFormat));
+			resultPanel = new JPanel(new GridLayout(1, 1));
+			resultPanel.add(pane);
 		}
 		catch (Exception e) {
 			resultPanel = buildErrorPanel("Could not create the DDMS Resource: ", e);

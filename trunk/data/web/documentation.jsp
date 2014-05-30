@@ -69,7 +69,7 @@ real-world solutions.</p>
 <h5>Essentials</h5>
 
 <p><u>Essentials</u> is a simple reader application which loads an XML file containing a DDMS Resource and displays it in four different formats: the
-original XML, HTML, JSON, and Text. The source code for this application provides an example of how to create DDMS components from an XML file.</p>
+original XML, HTML, Text, and JSON. The source code for this application provides an example of how to create DDMS components from an XML file.</p>
 
 <ul>
 	<li><a href="tutorials-01.jsp">Tutorial #1: Essentials</a></li>
