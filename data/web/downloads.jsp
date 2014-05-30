@@ -25,7 +25,7 @@ I have also included a <code>.project</code> file if you wish to import the proj
 <h1>Latest Release: v2.3.0</h1>
 
 <p>Version <b>2.3.0</b> (05/30/2014) is a stable release which adds built-in support for JSON output. It is backwards compatible with all versions since 2.0.0.
-Additional information can be found in <a href="tutorials-01.jsp">Tutorial #1: Essentials</a>.</p>
+Additional information about JSON output can be found in <a href="tutorials-01.jsp">Tutorial #1: Essentials</a>.</p>
 
 <ul>
 <li><b><a href="http://ddmsence.urizone.net/files/ddmsence-bin-2.3.0.zip"><code>ddmsence-bin-2.3.0.zip</code></a></b> (7.1 MB, compiled with JDK1.7.0_17, source level 1.6, target level 1.6)</li>
