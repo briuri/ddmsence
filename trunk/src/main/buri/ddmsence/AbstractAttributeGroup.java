@@ -162,17 +162,6 @@ public abstract class AbstractAttributeGroup {
 	}
 	
 	/**
-	 * Adds an attribute group's JSON object to a JSON object, but only if it is not empty. This method delegates to Util, so the
-	 * individual JSON implementations are cleaner.
-	 * 
-	 * @param object the object to add to
-	 * @param value the value to add
-	 */
-	protected static void addJson(JsonObject object, AbstractAttributeGroup value) {
-		addJson(object, value.getName(), value);
-	}
-	
-	/**
 	 * Accessor for the XML namespace of these attributes
 	 */
 	protected String getNamespace() {
