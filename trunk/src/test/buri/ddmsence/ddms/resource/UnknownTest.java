@@ -44,7 +44,7 @@ public class UnknownTest extends AbstractBaseTestCase {
 	static {
 		TEST_NAMES.add("Unknown Entity");
 		TEST_PHONES.add("703-882-1000");
-		TEST_EMAILS.add("ddms@fgm.com");
+		TEST_EMAILS.add("ddms@novetta.com");
 		TEST_AFFILIATIONS.add("DISA");
 	}
 
@@ -150,7 +150,7 @@ public class UnknownTest extends AbstractBaseTestCase {
 	private String getExpectedJSONOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer json = new StringBuffer();
-		json.append("{\"entityType\":\"unknown\",\"name\":[\"Unknown Entity\"],\"phone\":[\"703-882-1000\"],\"email\":[\"ddms@fgm.com\"]");
+		json.append("{\"entityType\":\"unknown\",\"name\":[\"Unknown Entity\"],\"phone\":[\"703-882-1000\"],\"email\":[\"ddms@novetta.com\"]");
 		if (version.isAtLeast("5.0")) {
 			json.append(",\"affiliation\":[\"DISA\"]");
 		}
