@@ -23,6 +23,7 @@ import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
@@ -135,8 +136,15 @@ public class TypeTest extends AbstractBaseTestCase {
 	 * Returns the expected JSON output for this unit test
 	 */
 	private String getExpectedJSONOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{");
+		if (version.isAtLeast("4.0.1"))
+			json.append("\"description\":\"Description\",");
+		json.append("\"qualifier\":\"DCMITYPE\",\"value\":\"http://purl.org/dc/dcmitype/Text\"");
+		if (version.isAtLeast("4.0.1"))
+			json.append(",").append(SecurityAttributesTest.getBasicJSON());
+		json.append("}");
 		return (json.toString());
 	}
 	

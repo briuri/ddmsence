@@ -122,7 +122,9 @@ public final class ProcessingInfo extends AbstractSimpleString {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, getName(), getValue());
+		addJson(object, DATE_PROCESSED_NAME, getDateProcessedString());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

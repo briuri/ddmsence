@@ -145,7 +145,10 @@ public final class Type extends AbstractQualifierValue {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, "description", getDescription());
+		addJson(object, getQualifierName(), getQualifier());
+		addJson(object, getValueName(), getValue());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

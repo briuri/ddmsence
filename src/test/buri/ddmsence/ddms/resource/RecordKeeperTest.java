@@ -145,7 +145,8 @@ public class RecordKeeperTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"recordKeeperID\":\"#289-99202.9\",\"organization\":");
+		json.append(OrganizationTest.getFixture().toJSON()).append("}");
 		return (json.toString());
 	}
 	

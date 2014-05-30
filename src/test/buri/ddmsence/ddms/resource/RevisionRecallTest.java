@@ -172,7 +172,19 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput(boolean hasLinks) {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{");
+		if (!hasLinks)
+			json.append("\"revisionRecall\":\"Description of Recall\",");
+		json.append("\"revisionID\":1,\"revisionType\":\"ADMINISTRATIVE RECALL\",\"network\":\"NIPRNet\",");
+		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
+			json.append("\"otherNetwork\":\"PBS\",");
+		if (hasLinks) {
+			json.append("\"link\":[").append(LinkTest.getLocatorFixture(true).toJSON()).append("],");
+			json.append("\"detail\":[").append(DetailsTest.getFixture().toJSON()).append("],");
+		}
+		json.append("\"xlinkAttributes\":").append(XLinkAttributesTest.getResourceFixture().getJSONObject().toString()).append(",");
+		json.append(SecurityAttributesTest.getBasicJSON());
+		json.append("}");
 		return (json.toString());
 	}
 	

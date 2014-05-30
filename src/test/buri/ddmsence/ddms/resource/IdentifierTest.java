@@ -127,7 +127,7 @@ public class IdentifierTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"qualifier\":\"URI\",\"value\":\"urn:buri:ddmsence:testIdentifier\"}");
 		return (json.toString());
 	}
 	

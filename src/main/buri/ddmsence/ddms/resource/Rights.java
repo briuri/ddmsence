@@ -102,7 +102,9 @@ public final class Rights extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, PRIVACY_ACT_NAME, getPrivacyAct());
+		addJson(object, INTELLECTUAL_PROPERY_NAME, getIntellectualProperty());
+		addJson(object, COPYRIGHT_NAME, getCopyright());
 		return (object);
 	}
 	

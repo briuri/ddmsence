@@ -104,7 +104,8 @@ public final class Subtitle extends AbstractSimpleString {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, getName(), getValue());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

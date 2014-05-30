@@ -146,7 +146,11 @@ public final class Source extends AbstractQualifierValue {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, getQualifierName(), getQualifier());
+		addJson(object, getValueName(), getValue());
+		addJson(object, SCHEMA_QUALIFIER_NAME, getSchemaQualifier());
+		addJson(object, SCHEMA_HREF_NAME, getSchemaHref());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

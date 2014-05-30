@@ -147,7 +147,8 @@ public class RecordKeeper extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, RECORD_KEEPER_ID_NAME, getRecordKeeperID());
+		addJson(object, getOrganization());
 		return (object);
 	}
 	

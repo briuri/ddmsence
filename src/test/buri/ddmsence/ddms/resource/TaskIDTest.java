@@ -191,7 +191,12 @@ public class TaskIDTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"taskID\":\"Task #12345\",\"taskingSystem\":\"MDR\",\"network\":\"NIPRNet\",");
+		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
+			json.append("\"otherNetwork\":\"PBS\",");
+		}
+		json.append("\"xlinkAttributes\":").append(XLinkAttributesTest.getSimpleFixture().getJSONObject().toString());
+		json.append("}");
 		return (json.toString());
 	}
 	

@@ -144,7 +144,8 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"processingInfo\":\"XSLT Transformation to convert DDMS 2.0 to DDMS 3.1.\",\"dateProcessed\":\"2011-08-19\",");
+		json.append(SecurityAttributesTest.getBasicJSON()).append("}");
 		return (json.toString());
 	}
 	

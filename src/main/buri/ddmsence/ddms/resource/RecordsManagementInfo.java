@@ -133,7 +133,9 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, getRecordKeeper());
+		addJson(object, getApplicationSoftware());
+		addJson(object, VITAL_RECORD_INDICATOR_NAME, getVitalRecordIndicator());
 		return (object);
 	}
 	
