@@ -222,7 +222,12 @@ public final class Access extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, "individualList", getIndividuals());
+		addJson(object, "groupList", getGroups());
+		if (getProfileList() != null)
+			addJson(object, "profileList", getProfileList().getJSONObject());
+		addJson(object, EXTERNAL_REFERENCE_NAME, isExternalReference());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

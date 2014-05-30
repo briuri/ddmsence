@@ -141,7 +141,9 @@ public class GroupTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"systemName\":").append(SystemNameTest.getFixture().toJSON()).append(",");
+		json.append("\"groupValue\":[").append(GroupValueTest.getFixture().toJSON()).append("]");
+		json.append(",").append(SecurityAttributesTest.getBasicJSON()).append("}");
 		return (json.toString());
 	}
 	

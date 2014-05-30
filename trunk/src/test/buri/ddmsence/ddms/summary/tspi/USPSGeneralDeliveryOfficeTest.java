@@ -119,7 +119,7 @@ public class USPSGeneralDeliveryOfficeTest extends AbstractBaseTestCase {
 	private String getExpectedHTMLTextOutput(OutputFormat format) throws InvalidDDMSException {
 		Util.requireHTMLText(format);
 		StringBuffer text = new StringBuffer();
-		text.append(buildHTMLTextOutput(format, "addressType", "USPSGeneralDeliveryOffice"));
+		text.append(buildHTMLTextOutput(format, "addressType", "uspsGeneralDeliveryOffice"));
 		return (text.toString());
 	}
 
@@ -128,7 +128,7 @@ public class USPSGeneralDeliveryOfficeTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("{\"addressType\":\"USPSGeneralDeliveryOffice\"}");
+		json.append("{\"addressType\":\"uspsGeneralDeliveryOffice\"}");
 		return (json.toString());
 	}
 	

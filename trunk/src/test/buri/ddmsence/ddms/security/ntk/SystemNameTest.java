@@ -136,7 +136,8 @@ public class SystemNameTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"systemName\":\"DIAS\",\"id\":\"ID\",\"idReference\":\"ID\",\"qualifier\":\"qualifier\",");
+		json.append(SecurityAttributesTest.getBasicJSON()).append("}");
 		return (json.toString());
 	}
 	

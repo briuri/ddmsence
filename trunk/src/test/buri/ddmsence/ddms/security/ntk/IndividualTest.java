@@ -141,7 +141,9 @@ public class IndividualTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"systemName\":").append(SystemNameTest.getFixture().toJSON()).append(",");
+		json.append("\"individualValue\":[").append(IndividualValueTest.getFixture().toJSON()).append("]");
+		json.append(",").append(SecurityAttributesTest.getBasicJSON()).append("}");
 		return (json.toString());
 	}
 	

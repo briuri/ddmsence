@@ -146,7 +146,8 @@ public final class NoticeList extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, Notice.getName(getDDMSVersion()), getNotices());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

@@ -196,7 +196,7 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 			json.append("}");
 		}
 		else
-			json.append("{\"addressType\":\"GeneralAddressClass\"}");
+			json.append("{\"addressType\":\"generalAddressClass\"}");
 		return (json.toString());
 	}
 	

@@ -941,6 +941,22 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals("Ddms", Util.capitalize("ddms"));
 	}
 
+	public void testDecapitalizeEmpty() {
+		assertEquals(null, Util.decapitalize(null));
+	}
+
+	public void testDecapitalizeOneChar() {
+		assertEquals("a", Util.decapitalize("A"));
+	}
+
+	public void testDecapitalizeNotLetter() {
+		assertEquals("123", Util.decapitalize("123"));
+	}
+
+	public void testDecapitalizeSuccess() {
+		assertEquals("ddms", Util.decapitalize("Ddms"));
+	}
+	
 	public void testBuildElementEmptyPrefix() {
 		Element element = Util.buildElement(null, "test", "", null);
 		assertNotNull(element);

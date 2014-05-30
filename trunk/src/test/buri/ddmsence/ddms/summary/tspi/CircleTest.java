@@ -95,7 +95,7 @@ public class CircleTest extends AbstractBaseTestCase {
 	private String getExpectedHTMLTextOutput(OutputFormat format) throws InvalidDDMSException {
 		Util.requireHTMLText(format);
 		StringBuffer text = new StringBuffer();
-		text.append(buildHTMLTextOutput(format, "shapeType", "Circle"));
+		text.append(buildHTMLTextOutput(format, "shapeType", "circle"));
 		return (text.toString());
 	}
 
@@ -104,7 +104,7 @@ public class CircleTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("{\"shapeType\":\"Circle\"}");
+		json.append("{\"shapeType\":\"circle\"}");
 		return (json.toString());
 	}
 	

@@ -137,7 +137,10 @@ public final class Group extends AbstractAccessEntity {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		if (getSystemName() != null)
+			addJson(object, "systemName", getSystemName().getJSONObject());
+		addJson(object, "groupValue", getGroupValues());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

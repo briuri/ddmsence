@@ -159,7 +159,8 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"NoticeText\":\"noticeText\",\"pocType\":[\"DoD-Dist-B\"],");
+		json.append(SecurityAttributesTest.getBasicJSON()).append("}");
 		return (json.toString());
 	}
 	

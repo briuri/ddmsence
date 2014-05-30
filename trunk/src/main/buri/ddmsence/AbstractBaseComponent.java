@@ -271,7 +271,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 */
 	protected static void addJson(JsonObject object, AbstractBaseComponent value) {
 		if (value != null)
-			addJson(object, value.getName(), value.getJSONObject());
+			addJson(object, Util.decapitalize(value.getName()), value.getJSONObject());
 	}
 	
 	/**

@@ -119,7 +119,7 @@ public class IntersectionAddressTest extends AbstractBaseTestCase {
 	private String getExpectedHTMLTextOutput(OutputFormat format) throws InvalidDDMSException {
 		Util.requireHTMLText(format);
 		StringBuffer text = new StringBuffer();
-		text.append(buildHTMLTextOutput(format, "addressType", "IntersectionAddress"));
+		text.append(buildHTMLTextOutput(format, "addressType", "intersectionAddress"));
 		return (text.toString());
 	}
 
@@ -128,7 +128,7 @@ public class IntersectionAddressTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("{\"addressType\":\"IntersectionAddress\"}");
+		json.append("{\"addressType\":\"intersectionAddress\"}");
 		return (json.toString());
 	}
 	

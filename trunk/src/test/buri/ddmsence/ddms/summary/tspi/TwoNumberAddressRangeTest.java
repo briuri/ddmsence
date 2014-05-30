@@ -119,7 +119,7 @@ public class TwoNumberAddressRangeTest extends AbstractBaseTestCase {
 	private String getExpectedHTMLTextOutput(OutputFormat format) throws InvalidDDMSException {
 		Util.requireHTMLText(format);
 		StringBuffer text = new StringBuffer();
-		text.append(buildHTMLTextOutput(format, "addressType", "TwoNumberAddressRange"));
+		text.append(buildHTMLTextOutput(format, "addressType", "twoNumberAddressRange"));
 		return (text.toString());
 	}
 
@@ -128,7 +128,7 @@ public class TwoNumberAddressRangeTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("{\"addressType\":\"TwoNumberAddressRange\"}");
+		json.append("{\"addressType\":\"twoNumberAddressRange\"}");
 		return (json.toString());
 	}
 	

@@ -119,7 +119,7 @@ public class LandmarkAddressTest extends AbstractBaseTestCase {
 	private String getExpectedHTMLTextOutput(OutputFormat format) throws InvalidDDMSException {
 		Util.requireHTMLText(format);
 		StringBuffer text = new StringBuffer();
-		text.append(buildHTMLTextOutput(format, "addressType", "LandmarkAddress"));
+		text.append(buildHTMLTextOutput(format, "addressType", "landmarkAddress"));
 		return (text.toString());
 	}
 
@@ -128,7 +128,7 @@ public class LandmarkAddressTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("{\"addressType\":\"LandmarkAddress\"}");
+		json.append("{\"addressType\":\"landmarkAddress\"}");
 		return (json.toString());
 	}
 	

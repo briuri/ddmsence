@@ -110,7 +110,8 @@ public abstract class AbstractTspiAddress extends AbstractBaseComponent implemen
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		addJson(object, "addressType", getName());
+		String name = getName().replaceAll("USPS", "usps");
+		addJson(object, "addressType", Util.decapitalize(name));
 		return (object);
 	}
 	
@@ -121,7 +122,8 @@ public abstract class AbstractTspiAddress extends AbstractBaseComponent implemen
 		Util.requireHTMLText(format);
 		String localPrefix = buildPrefix(prefix, "", suffix);
 		StringBuffer text = new StringBuffer();
-		text.append(buildHTMLTextOutput(format, localPrefix + "addressType", getName()));
+		String name = getName().replaceAll("USPS", "usps");
+		text.append(buildHTMLTextOutput(format, localPrefix + "addressType", Util.decapitalize(name)));
 		return (text.toString());
 	}
 	
