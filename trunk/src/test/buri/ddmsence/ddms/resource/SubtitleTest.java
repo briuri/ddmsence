@@ -128,7 +128,8 @@ public class SubtitleTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"subtitle\":\"Version 0.1\",");
+		json.append(SecurityAttributesTest.getBasicJSON()).append("}");
 		return (json.toString());
 	}
 	

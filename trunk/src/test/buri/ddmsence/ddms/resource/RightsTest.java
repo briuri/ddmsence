@@ -125,7 +125,7 @@ public class RightsTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"privacyAct\":true,\"intellectualProperty\":true,\"copyright\":false}");
 		return (json.toString());
 	}
 	

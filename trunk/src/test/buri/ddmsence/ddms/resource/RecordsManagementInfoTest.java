@@ -128,7 +128,9 @@ public class RecordsManagementInfoTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"recordKeeper\":").append(RecordKeeperTest.getFixture().toJSON()).append(",");
+		json.append("\"applicationSoftware\":").append(ApplicationSoftwareTest.getFixture().toJSON()).append(",");
+		json.append("\"vitalRecordIndicator\":true}");
 		return (json.toString());
 	}
 	

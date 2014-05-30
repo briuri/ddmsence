@@ -174,7 +174,10 @@ public final class TaskingInfo extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, "requesterInfo", getRequesterInfos());
+		addJson(object, "addressee", getAddressees());
+		addJson(object, getDescription());
+		addJson(object, getTaskID());
 		return (object);
 	}
 	

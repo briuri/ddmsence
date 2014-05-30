@@ -127,7 +127,7 @@ public class LanguageTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"qualifier\":\"http://purl.org/dc/elements/1.1/language\",\"value\":\"en\"}");
 		return (json.toString());
 	}
 	

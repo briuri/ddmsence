@@ -168,7 +168,11 @@ public final class TaskID extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, getName(), getValue());
+		addJson(object, TASKING_SYSTEM_NAME, getTaskingSystem());
+		addJson(object, NETWORK_NAME, getNetwork());
+		addJson(object, OTHER_NETWORK_NAME, getOtherNetwork());
+		addJson(object, getXLinkAttributes());
 		return (object);
 	}
 	

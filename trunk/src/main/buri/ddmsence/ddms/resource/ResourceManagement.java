@@ -168,7 +168,11 @@ public final class ResourceManagement extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, getRecordsManagementInfo());
+		addJson(object, getRevisionRecall());
+		addJson(object, "taskingInfo", getTaskingInfos());
+		addJson(object, "processingInfo", getProcessingInfos());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

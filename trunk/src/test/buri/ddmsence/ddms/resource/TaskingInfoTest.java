@@ -173,9 +173,15 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected JSON output for this unit test
 	 */
-	private String getExpectedJSONOutput() {
+	private String getExpectedJSONOutput() throws InvalidDDMSException {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"requesterInfo\":[");
+		json.append(RequesterInfoTest.getFixtureList().get(0).toJSON()).append("],");
+		json.append("\"addressee\":[");
+		json.append(AddresseeTest.getFixtureList().get(0).toJSON()).append("],");
+		json.append("\"description\":");
+		json.append(DescriptionTest.getFixture().toJSON()).append(",");
+		json.append("\"taskID\":").append(new TaskID(TaskIDTest.getFixtureElementNoNetwork()).toJSON()).append("}");
 		return (json.toString());
 	}
 	

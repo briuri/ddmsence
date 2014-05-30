@@ -299,8 +299,18 @@ public final class RevisionRecall extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getJSONObject()
 	 */
 	public JsonObject getJSONObject() {
+		boolean hasNestedElements = (!getLinks().isEmpty() || !getDetails().isEmpty());
 		JsonObject object = new JsonObject();
-		// TODO
+		if (!hasNestedElements)
+			addJson(object, getName(), getValue());
+		addJson(object, REVISION_ID_NAME, getRevisionID());
+		addJson(object, REVISION_TYPE_NAME, getRevisionType());
+		addJson(object, NETWORK_NAME, getNetwork());
+		addJson(object, OTHER_NETWORK_NAME, getOtherNetwork());
+		addJson(object, "link", getLinks());
+		addJson(object, "detail", getDetails());
+		addJson(object, getXLinkAttributes());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

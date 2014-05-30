@@ -138,7 +138,12 @@ public class SourceTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"qualifier\":\"URL\",\"value\":\"http://www.xmethods.com\",\"schemaQualifier\":\"WSDL\",");
+		json.append("\"schemaHref\":\"http://www.xmethods.com/sd/2001/TemperatureService?wsdl\"");
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
+			json.append(",").append(SecurityAttributesTest.getBasicJSON());
+		}
+		json.append("}");
 		return (json.toString());
 	}
 	
