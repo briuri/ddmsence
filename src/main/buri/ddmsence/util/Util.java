@@ -650,6 +650,20 @@ public class Util {
 	}
 
 	/**
+	 * Lowers the first letter of a String. Silently does nothing if the string is null, empty, or not a letter.
+	 * 
+	 * @param string the string to change
+	 * @return the changed string
+	 */
+	public static String decapitalize(String string) {
+		if (isEmpty(string))
+			return (string);
+		if (string.length() == 1)
+			return (string.toLowerCase());
+		return (string.substring(0, 1).toLowerCase() + string.substring(1, string.length()));
+	}
+	
+	/**
 	 * Helper method to add a ddms attribute to an element. Will not add the attribute if the value
 	 * is empty or null. This method uses the DDMS namespace defined with DDMSVersion.getCurrentVersion().
 	 * 

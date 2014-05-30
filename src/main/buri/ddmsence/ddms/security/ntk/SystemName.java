@@ -103,7 +103,11 @@ public final class SystemName extends AbstractNtkString {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, "systemName", getValue());
+		addJson(object, "id", getID());
+		addJson(object, "idReference", getIDReference());
+		addJson(object, "qualifier", getQualifier());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

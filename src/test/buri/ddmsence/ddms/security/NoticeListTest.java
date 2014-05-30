@@ -21,8 +21,8 @@ package buri.ddmsence.ddms.security;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.security.ism.NoticeTest;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -163,7 +163,9 @@ public class NoticeListTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"Notice\":[");
+		json.append(NoticeTest.getFixtureList().get(0).toJSON());
+		json.append("],").append(SecurityAttributesTest.getBasicJSON()).append("}");
 		return (json.toString());
 	}
 	

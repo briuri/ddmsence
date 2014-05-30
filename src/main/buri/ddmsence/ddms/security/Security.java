@@ -163,7 +163,10 @@ public final class Security extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, EXCLUDE_FROM_ROLLUP_NAME, getExcludeFromRollup());
+		addJson(object, getNoticeList());
+		addJson(object, getAccess());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

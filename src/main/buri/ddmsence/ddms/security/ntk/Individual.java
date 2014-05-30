@@ -137,7 +137,10 @@ public final class Individual extends AbstractAccessEntity {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		if (getSystemName() != null)
+			addJson(object, "systemName", getSystemName().getJSONObject());
+		addJson(object, "individualValue", getIndividualValues());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

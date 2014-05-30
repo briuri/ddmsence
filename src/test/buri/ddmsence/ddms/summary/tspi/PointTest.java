@@ -95,7 +95,7 @@ public class PointTest extends AbstractBaseTestCase {
 	private String getExpectedHTMLTextOutput(OutputFormat format) throws InvalidDDMSException {
 		Util.requireHTMLText(format);
 		StringBuffer text = new StringBuffer();
-		text.append(buildHTMLTextOutput(format, "shapeType", "Point"));
+		text.append(buildHTMLTextOutput(format, "shapeType", "point"));
 		return (text.toString());
 	}
 
@@ -104,7 +104,7 @@ public class PointTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("{\"shapeType\":\"Point\"}");
+		json.append("{\"shapeType\":\"point\"}");
 		return (json.toString());
 	}
 	

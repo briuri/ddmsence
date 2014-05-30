@@ -107,7 +107,7 @@ public abstract class AbstractTspiShape extends AbstractBaseComponent implements
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		addJson(object, "shapeType", getName());
+		addJson(object, "shapeType", Util.decapitalize(getName()));
 		return (object);
 	}
 	
@@ -118,7 +118,7 @@ public abstract class AbstractTspiShape extends AbstractBaseComponent implements
 		Util.requireHTMLText(format);
 		String localPrefix = buildPrefix(prefix, "", suffix);
 		StringBuffer text = new StringBuffer();
-		text.append(buildHTMLTextOutput(format, localPrefix + "shapeType", getName()));
+		text.append(buildHTMLTextOutput(format, localPrefix + "shapeType", Util.decapitalize(getName())));
 		return (text.toString());
 	}
 	

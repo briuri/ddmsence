@@ -129,7 +129,12 @@ public final class ProfileValue extends AbstractNtkString {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, "profileValue", getValue());
+		addJson(object, "vocabulary", getVocabulary());
+		addJson(object, "id", getID());
+		addJson(object, "idReference", getIDReference());
+		addJson(object, "qualifier", getQualifier());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

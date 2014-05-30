@@ -94,7 +94,7 @@ public class PolygonTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedHTMLTextOutput(OutputFormat format) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildHTMLTextOutput(format, "shapeType", "Polygon"));
+		text.append(buildHTMLTextOutput(format, "shapeType", "polygon"));
 		return (text.toString());
 	}
 
@@ -103,7 +103,7 @@ public class PolygonTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("{\"shapeType\":\"Polygon\"}");
+		json.append("{\"shapeType\":\"polygon\"}");
 		return (json.toString());
 	}
 	

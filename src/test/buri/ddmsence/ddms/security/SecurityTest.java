@@ -153,8 +153,17 @@ public class SecurityTest extends AbstractBaseTestCase {
 	 * Returns the expected JSON output for this unit test
 	 */
 	private String getExpectedJSONOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{");
+		if (version.isAtLeast("3.0")) {
+			json.append("\"excludeFromRollup\":true,");
+		}
+		if (version.isAtLeast("4.1")) {
+			json.append("\"noticeList\":").append(NoticeListTest.getFixture().toJSON());
+			json.append(",\"access\":").append(AccessTest.getFixture().toJSON()).append(",");
+		}
+		json.append(SecurityAttributesTest.getBasicJSON()).append("}");
 		return (json.toString());
 	}
 	

@@ -95,7 +95,7 @@ public class EllipseTest extends AbstractBaseTestCase {
 	private String getExpectedHTMLTextOutput(OutputFormat format) throws InvalidDDMSException {
 		Util.requireHTMLText(format);
 		StringBuffer text = new StringBuffer();
-		text.append(buildHTMLTextOutput(format, "shapeType", "Ellipse"));
+		text.append(buildHTMLTextOutput(format, "shapeType", "ellipse"));
 		return (text.toString());
 	}
 
@@ -104,7 +104,7 @@ public class EllipseTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("{\"shapeType\":\"Ellipse\"}");
+		json.append("{\"shapeType\":\"ellipse\"}");
 		return (json.toString());
 	}
 	

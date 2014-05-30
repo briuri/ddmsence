@@ -119,7 +119,7 @@ public class UnnumberedThoroughfareAddressTest extends AbstractBaseTestCase {
 	private String getExpectedHTMLTextOutput(OutputFormat format) throws InvalidDDMSException {
 		Util.requireHTMLText(format);
 		StringBuffer text = new StringBuffer();
-		text.append(buildHTMLTextOutput(format, "addressType", "UnnumberedThoroughfareAddress"));
+		text.append(buildHTMLTextOutput(format, "addressType", "unnumberedThoroughfareAddress"));
 		return (text.toString());
 	}
 
@@ -128,7 +128,7 @@ public class UnnumberedThoroughfareAddressTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("{\"addressType\":\"UnnumberedThoroughfareAddress\"}");
+		json.append("{\"addressType\":\"unnumberedThoroughfareAddress\"}");
 		return (json.toString());
 	}
 	

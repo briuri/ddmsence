@@ -148,7 +148,8 @@ public class IndividualValueTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"individualValue\":\"user_2321889:Doe_John_H\",\"id\":\"ID\",\"idReference\":\"ID\",\"qualifier\":\"qualifier\",");
+		json.append(SecurityAttributesTest.getBasicJSON()).append("}");
 		return (json.toString());
 	}
 	

@@ -95,7 +95,7 @@ public class EnvelopeTest extends AbstractBaseTestCase {
 	private String getExpectedHTMLTextOutput(OutputFormat format) throws InvalidDDMSException {
 		Util.requireHTMLText(format);
 		StringBuffer text = new StringBuffer();
-		text.append(buildHTMLTextOutput(format, "shapeType", "Envelope"));
+		text.append(buildHTMLTextOutput(format, "shapeType", "envelope"));
 		return (text.toString());
 	}
 
@@ -104,7 +104,7 @@ public class EnvelopeTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("{\"shapeType\":\"Envelope\"}");
+		json.append("{\"shapeType\":\"envelope\"}");
 		return (json.toString());
 	}
 	

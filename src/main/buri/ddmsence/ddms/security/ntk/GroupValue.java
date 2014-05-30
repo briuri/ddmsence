@@ -113,7 +113,11 @@ public final class GroupValue extends AbstractNtkString {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, "groupValue", getValue());
+		addJson(object, "id", getID());
+		addJson(object, "idReference", getIDReference());
+		addJson(object, "qualifier", getQualifier());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

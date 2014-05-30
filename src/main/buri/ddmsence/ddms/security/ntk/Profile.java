@@ -136,7 +136,10 @@ public final class Profile extends AbstractAccessEntity {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		if (getSystemName() != null)
+			addJson(object, "systemName", getSystemName().getJSONObject());
+		addJson(object, "profileValue", getProfileValues());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

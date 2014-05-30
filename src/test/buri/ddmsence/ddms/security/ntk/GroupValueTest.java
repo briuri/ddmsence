@@ -148,7 +148,8 @@ public class GroupValueTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"groupValue\":\"WISE/RODCA\",\"id\":\"ID\",\"idReference\":\"ID\",\"qualifier\":\"qualifier\",");
+		json.append(SecurityAttributesTest.getBasicJSON()).append("}");
 		return (json.toString());
 	}
 	

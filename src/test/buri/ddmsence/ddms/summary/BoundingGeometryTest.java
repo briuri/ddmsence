@@ -168,13 +168,13 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 		StringBuffer json = new StringBuffer();
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
 			if (!hasPolygon)
-				json.append("{\"Point\":[").append(PointTest.getFixtureList().get(0).toJSON());
+				json.append("{\"point\":[").append(PointTest.getFixtureList().get(0).toJSON());
 			else
-				json.append("{\"Polygon\":[").append(PolygonTest.getFixtureList().get(0).toJSON());
+				json.append("{\"polygon\":[").append(PolygonTest.getFixtureList().get(0).toJSON());
 			json.append("]}");
 		}
 		else
-			json.append("{\"Envelope\":{\"shapeType\":\"Envelope\"}}");
+			json.append("{\"envelope\":{\"shapeType\":\"envelope\"}}");
 		return (json.toString());
 	}
 	

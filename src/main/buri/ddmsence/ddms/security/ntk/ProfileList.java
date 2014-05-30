@@ -144,7 +144,8 @@ public final class ProfileList extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, "profile", getProfiles());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

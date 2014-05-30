@@ -119,7 +119,7 @@ public class GeneralAddressClassTest extends AbstractBaseTestCase {
 	private String getExpectedHTMLTextOutput(OutputFormat format) throws InvalidDDMSException {
 		Util.requireHTMLText(format);
 		StringBuffer text = new StringBuffer();
-		text.append(buildHTMLTextOutput(format, "addressType", "GeneralAddressClass"));
+		text.append(buildHTMLTextOutput(format, "addressType", "generalAddressClass"));
 		return (text.toString());
 	}
 
@@ -128,7 +128,7 @@ public class GeneralAddressClassTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("{\"addressType\":\"GeneralAddressClass\"}");
+		json.append("{\"addressType\":\"generalAddressClass\"}");
 		return (json.toString());
 	}
 	
