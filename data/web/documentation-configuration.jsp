@@ -24,7 +24,8 @@ instead of "ISM", you would set the "ism.prefix" property with a custom value of
 <tr><td>gml.prefix</td><td>Default GML prefix used when generating components from scratch</td><td><code>gml</code></td></tr>
 <tr><td>ism.prefix</td><td>Default ISM prefix used when generating components from scratch</td><td><code>ISM</code></td></tr>
 <tr><td>ntk.prefix</td><td>Default NTK prefix used when generating components from scratch</td><td><code>ntk</code></td></tr>
-<tr><td>output.formatJson</td><td>Outputs JSON strings with whitespace and indentation</td><td><code>false</code></td></tr>
+<tr><td>output.json.inlineAttributes</td><td>Renders attributes with other component properties, rather than in a separate enclosure</td><td><code>false</code></td></tr>
+<tr><td>output.json.prettyPrint</td><td>Outputs JSON strings with whitespace and indentation</td><td><code>false</code></td></tr>
 <tr><td>output.indexLevel</td><td>Controls the placement of 1-based indices on the HTML/Text output of fields which are allowed to have multiples (0 = Never use, 1 = Use unless exactly 1 item exists, 2 = Always use)</td><td><code>0</code></td></tr>
 <tr><td>sample.data</td><td>Default data directory used by sample applications</td><td><code>data/sample/</code></td></tr>
 <tr><td>tspi.prefix</td><td>Default TSPI prefix used when generating components from scratch</td><td><code>tspi</code></td></tr>
@@ -36,7 +37,34 @@ instead of "ISM", you would set the "ism.prefix" property with a custom value of
 
 <h2>Controlling JSON Output</h2>
 
-<p>The <code>output.formatJson</code> property applies pretty-printing to a JSON string, via the <a href="https://code.google.com/p/google-gson/">google-gson</a> library.
+<p>The <code>output.json.inlineAttributes</code> property renders attribute groups inline with the parent component. Normally, attributes are enclosed together, matching the class
+hierarchy of DDMSence. Setting this property to true removes the enclosure. The examples below show the expected output when this property is set to true or false, respectively:</p>
+
+<pre class="brush: xml">{
+  "security": {
+    "excludeFromRollup": true,
+    "classification": "U",
+    "ownerProducer": [
+      "USA"
+    ]
+  }
+}</pre>
+<p class="figure">Figure 2. The JSON output of a Security component, with <code>output.json.inlineAttributes</code> set to true.</p>
+
+<pre class="brush: xml">{
+  "security": {
+    "excludeFromRollup": true,
+    "securityAttributes": {
+      "classification": "U",
+      "ownerProducer": [
+        "USA"
+      ]
+    }
+  }
+}</pre>
+<p class="figure">Figure 3. The JSON output of a Security component, with <code>output.json.inlineAttributes</code> set to false.</p>
+
+<p>The <code>output.json.prettyPrint</code> property applies pretty-printing to a JSON string, via the <a href="https://code.google.com/p/google-gson/">google-gson</a> library.
 The examples below show the expected output when this property is set to true or false, respectively:</p>
 
 <pre class="brush: xml">
@@ -44,11 +72,16 @@ The examples below show the expected output when this property is set to true or
       "qualifier": "http://purl.org/dc/elements/1.1/language",
       "value": "en"
     }</pre>
-<p class="figure">Figure 2. The JSON output of a Language component, with <code>output.formatJson</code> set to true.</p>
+<p class="figure">Figure 2. The JSON output of a Language component, with <code>output.json.prettyPrint</code> set to true.</p>
 
 <pre class="brush: xml">
 {"qualifier": "http://purl.org/dc/elements/1.1/language","value": "en"}</pre>
-<p class="figure">Figure 3. The JSON output of a Language component, with <code>output.formatJson</code> set to false.</p>
+<p class="figure">Figure 3. The JSON output of a Language component, with <code>output.json.prettyPrint</code> set to false.</p>
+
+
+
+
+
 
 <h2>Controlling HTML/Text Output</h2>
 

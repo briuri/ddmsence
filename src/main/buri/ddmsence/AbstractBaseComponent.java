@@ -207,7 +207,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 */
 	public String toJSON() {
 		GsonBuilder builder = new GsonBuilder();
-		if (Boolean.valueOf(PropertyReader.getProperty("output.formatJson"))) {
+		if (Boolean.valueOf(PropertyReader.getProperty("output.json.prettyPrint"))) {
 			builder.setPrettyPrinting();
 		}
 		return (builder.create().toJson(getJSONObject()));

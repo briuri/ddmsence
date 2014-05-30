@@ -79,7 +79,8 @@ public abstract class AbstractBaseTestCase extends TestCase {
 	protected void tearDown() throws Exception {
 		DDMSVersion.clearCurrentVersion();
 		PropertyReader.setProperty("output.indexLevel", "0");
-		PropertyReader.setProperty("output.formatJson", "false");
+		PropertyReader.setProperty("output.json.inlineAttributes", "false");
+		PropertyReader.setProperty("output.json.prettyPrint", "false");
 	}
 
 	/**

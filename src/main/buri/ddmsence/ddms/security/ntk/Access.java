@@ -225,13 +225,17 @@ public final class Access extends AbstractBaseComponent {
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
 
-		JsonObject individualList = new JsonObject();
-		individualList.add("individual", Util.getJSONArray(getIndividuals()));		
-		addJson(object, "individualList", individualList);
+		if (!getIndividuals().isEmpty()) {
+			JsonObject individualList = new JsonObject();
+			individualList.add("individual", Util.getJSONArray(getIndividuals()));		
+			addJson(object, "individualList", individualList);
+		}
 		
-		JsonObject groupList = new JsonObject();
-		groupList.add("group", Util.getJSONArray(getGroups()));
-		addJson(object, "groupList", groupList);
+		if (!getGroups().isEmpty()) {
+			JsonObject groupList = new JsonObject();
+			groupList.add("group", Util.getJSONArray(getGroups()));
+			addJson(object, "groupList", groupList);
+		}
 		
 		if (getProfileList() != null)
 			addJson(object, "profileList", getProfileList().getJSONObject());

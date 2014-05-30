@@ -34,6 +34,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -57,10 +58,6 @@ import nu.xom.xslt.XSLTransform;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-
 import buri.ddmsence.AbstractAttributeGroup;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.IDDMSComponent;
@@ -72,6 +69,11 @@ import buri.ddmsence.ddms.security.ism.Notice;
 import buri.ddmsence.ddms.security.ntk.Access;
 import buri.ddmsence.ddms.summary.gml.Point;
 import buri.ddmsence.ddms.summary.gml.Polygon;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 /**
  * A collection of static utility methods.
@@ -165,8 +167,17 @@ public class Util {
 			return;
 		if (value instanceof AbstractAttributeGroup) {
 			AbstractAttributeGroup castValue = (AbstractAttributeGroup) value;
-			if (!castValue.isEmpty())
-				object.add(name, castValue.getJSONObject());
+			if (!castValue.isEmpty()) {
+				if (Boolean.valueOf(PropertyReader.getProperty("output.json.inlineAttributes"))) {
+					JsonObject enclosure = castValue.getJSONObject();
+					for (Entry<String, JsonElement> entry : enclosure.entrySet()) {
+						object.add(entry.getKey(), entry.getValue());
+					}
+				}
+				else {
+					object.add(name, castValue.getJSONObject());
+				}
+			}
 		}
 		else if (value instanceof Boolean) {
 			Boolean castValue = (Boolean) value;

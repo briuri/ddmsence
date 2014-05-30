@@ -32,6 +32,8 @@ import buri.ddmsence.ddms.resource.Creator;
 import buri.ddmsence.ddms.resource.Language;
 import buri.ddmsence.ddms.resource.Organization;
 import buri.ddmsence.ddms.resource.Rights;
+import buri.ddmsence.ddms.security.Security;
+import buri.ddmsence.ddms.security.SecurityTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -140,14 +142,23 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		assertEquals("name: 2.0\n", rights.buildHTMLTextOutput(OutputFormat.TEXT, "name", otherList));
 	}
 
-	public void testOutputJSONFormat() throws InvalidDDMSException {
+	public void testOutputJSONPrettyPrint() throws InvalidDDMSException {
 		Extent extent = new Extent("a", "z");
-		PropertyReader.setProperty("output.formatJson", "false");
+		PropertyReader.setProperty("output.json.prettyPrint", "false");
 		assertEquals("{\"qualifier\":\"a\",\"value\":\"z\"}", extent.toJSON());
-		PropertyReader.setProperty("output.formatJson", "true");
+		PropertyReader.setProperty("output.json.prettyPrint", "true");
 		assertEquals("{\n  \"qualifier\": \"a\",\n  \"value\": \"z\"\n}", extent.toJSON());
 	}
-		
+	
+	public void testOutputJSONInline() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("4.1");
+		Security security = SecurityTest.getFixture();
+		PropertyReader.setProperty("output.json.inlineAttributes", "false");
+		assertEquals("{\"excludeFromRollup\":true,\"securityAttributes\":{\"classification\":\"U\",\"ownerProducer\":[\"USA\"]}}", security.toJSON());
+		PropertyReader.setProperty("output.json.inlineAttributes", "true");
+		assertEquals("{\"excludeFromRollup\":true,\"classification\":\"U\",\"ownerProducer\":[\"USA\"]}", security.toJSON());
+	}
+	
 	public void testSelfEquality() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
 		assertEquals(rights, rights);

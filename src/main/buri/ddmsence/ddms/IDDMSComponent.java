@@ -107,7 +107,7 @@ public interface IDDMSComponent {
 	public String toHTML();
 
 	/**
-	 * Renders this component as JSON. Use the <code>output.formatJson</code> property to control pretty printing of the
+	 * Renders this component as JSON. Use the <code>output.json.prettyPrint</code> property to control pretty printing of the
 	 * output.
 	 * 
 	 * @return the JSON representation of this component
