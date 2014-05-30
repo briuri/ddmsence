@@ -23,10 +23,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.JsonObject;
+
 import nu.xom.Element;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ntk.Group;
 import buri.ddmsence.ddms.security.ntk.Individual;
@@ -115,6 +118,42 @@ public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 		super.validate();
 	}
 
+	/**
+	 * @see AbstractBaseComponent#getJSONObject()
+	 */
+	public JsonObject getJSONObject() {
+		JsonObject object = new JsonObject();
+		if (getSystemName() != null)
+			addJson(object, "systemName", getSystemName().getJSONObject());
+		addJson(object, getOutputName() + "Value", getOutputValues());
+		addJson(object, getSecurityAttributes());
+		return (object);
+	}
+	
+	/**
+	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
+	 */
+	public String getHTMLTextOutput(OutputFormat format, String prefix, String suffix) {
+		Util.requireHTMLText(format);
+		String localPrefix = buildPrefix(prefix, getOutputName(), suffix) + ".";
+		StringBuffer text = new StringBuffer();
+		if (getSystemName() != null)
+			text.append(getSystemName().getHTMLTextOutput(format, localPrefix, ""));
+		text.append(buildHTMLTextOutput(format, localPrefix, getOutputValues()));
+		text.append(getSecurityAttributes().getHTMLTextOutput(format, localPrefix));
+		return (text.toString());
+	}
+	
+	/**
+	 * Allows inheriting classes to provide a name for HTML/Text/JSON output.
+	 */
+	protected abstract String getOutputName();
+
+	/**
+	 * Allows inheriting classes to provide the access values for HTML/Text/JSON output.
+	 */
+	protected abstract List<?> getOutputValues();
+	
 	/**
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
