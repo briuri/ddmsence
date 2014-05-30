@@ -508,4 +508,12 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 		output = XLinkAttributes.getNonNullInstance(getLocatorFixture());
 		assertEquals(getLocatorFixture(), output);
 	}
+	
+	public void testEmpty() throws InvalidDDMSException {
+		XLinkAttributes attr = new XLinkAttributes();
+		assertTrue(attr.isEmpty());
+		
+		attr = new XLinkAttributes(TEST_ROLE, TEST_TITLE, TEST_LABEL);
+		assertFalse(attr.isEmpty());
+	}
 }
