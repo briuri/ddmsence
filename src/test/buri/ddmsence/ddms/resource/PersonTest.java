@@ -49,7 +49,7 @@ public class PersonTest extends AbstractBaseTestCase {
 		TEST_NAMES.add("Brian");
 		TEST_NAMES.add("BU");
 		TEST_PHONES.add("703-885-1000");
-		TEST_EMAILS.add("ddms@fgm.com");
+		TEST_EMAILS.add("ddms@novetta.com");
 		TEST_AFFILIATIONS.add("DISA");
 	}
 
@@ -153,7 +153,7 @@ public class PersonTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("{\"entityType\":\"person\",\"name\":[\"Brian\",\"BU\"],\"phone\":[\"703-885-1000\"],\"email\":[\"ddms@fgm.com\"],");
+		json.append("{\"entityType\":\"person\",\"name\":[\"Brian\",\"BU\"],\"phone\":[\"703-885-1000\"],\"email\":[\"ddms@novetta.com\"],");
 		json.append("\"surname\":\"Uri\",\"userID\":\"123\",\"affiliation\":[\"DISA\"]}");
 		return (json.toString());
 	}

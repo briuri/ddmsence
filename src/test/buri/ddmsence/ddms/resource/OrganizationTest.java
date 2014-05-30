@@ -48,7 +48,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 		TEST_NAMES.add("PEO-GES");
 		TEST_PHONES.add("703-882-1000");
 		TEST_PHONES.add("703-885-1000");
-		TEST_EMAILS.add("ddms@fgm.com");
+		TEST_EMAILS.add("ddms@novetta.com");
 	}
 
 	/**
@@ -157,7 +157,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 	private String getExpectedJSONOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer json = new StringBuffer();
-		json.append("{\"entityType\":\"organization\",\"name\":[\"DISA\",\"PEO-GES\"],\"phone\":[\"703-882-1000\",\"703-885-1000\"],\"email\":[\"ddms@fgm.com\"]");
+		json.append("{\"entityType\":\"organization\",\"name\":[\"DISA\",\"PEO-GES\"],\"phone\":[\"703-882-1000\",\"703-885-1000\"],\"email\":[\"ddms@novetta.com\"]");
 		if (version.isAtLeast("4.0.1")) {
 			json.append(",\"subOrganization\":[");
 			json.append(SubOrganizationTest.getFixtureList().get(0).toJSON()).append(",");

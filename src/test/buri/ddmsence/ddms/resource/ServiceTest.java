@@ -44,7 +44,7 @@ public class ServiceTest extends AbstractBaseTestCase {
 	static {
 		TEST_NAMES.add("https://metadata.dod.mil/ebxmlquery/soap");
 		TEST_PHONES.add("703-882-1000");
-		TEST_EMAILS.add("ddms@fgm.com");
+		TEST_EMAILS.add("ddms@novetta.com");
 		TEST_AFFILIATIONS.add("DISA");
 	}
 
@@ -149,7 +149,7 @@ public class ServiceTest extends AbstractBaseTestCase {
 	private String getExpectedJSONOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer json = new StringBuffer();
-		json.append("{\"entityType\":\"service\",\"name\":[\"https://metadata.dod.mil/ebxmlquery/soap\"],\"phone\":[\"703-882-1000\"],\"email\":[\"ddms@fgm.com\"]");
+		json.append("{\"entityType\":\"service\",\"name\":[\"https://metadata.dod.mil/ebxmlquery/soap\"],\"phone\":[\"703-882-1000\"],\"email\":[\"ddms@novetta.com\"]");
 		if (version.isAtLeast("5.0")) {
 			json.append(",\"affiliation\":[\"DISA\"]");
 		}
