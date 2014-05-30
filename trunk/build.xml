@@ -7,7 +7,7 @@
 		3) Update index and web downloads page with latest release.
 		4) Update CHANGES-template.txt.
 		5) Run "dist" target and review archives.
-		6) Upload archives and deprecate last release.
+		6) Upload archives to /files/.
 		7) Delete and reupload javadoc.
 		8) Upload web files.
 		9) Upload new DDMSence JAR to webserver and bounce.
@@ -17,7 +17,7 @@
 		13) Announcements (Google Groups / freecode / LinkedIn / Ohloh)
 	-->
 
-	<property name="version" value="2.3.0-unstable" />
+	<property name="version" value="2.3.0" />
 	<property name="conf.dir" value="conf" />
 	<property name="data.dir" value="data" />
 	<property name="local.web.dir" value="/projects/urizone/output/tomcat/webapps/ddmsence" />

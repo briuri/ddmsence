@@ -85,6 +85,7 @@
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
 	<!-- TDF Location: http://www.dni.gov/index.php/about/organization/chief-information-officer/trusted-data-format -->
+	<div class="newsUpdate"><u>05/30/2014</u>: <a href="downloads.jsp">v2.3.0</a> released.</div>
 	<div class="newsUpdate"><u>05/13/2014</u>: <a href="downloads.jsp">v2.2.1</a> released.</div>
 	<div class="newsUpdate"><u>12/15/2013</u>: <a href="downloads.jsp">v2.2.0</a> released, adding support for DDMS 5.0.</div>
 	<div class="newsUpdate"><u>04/10/2013</u>: Statistics about the DDMSence codebase can now be viewed at <a href="https://www.ohloh.net/p/ddmsence" target="_new">Ohloh</a>.</div>
