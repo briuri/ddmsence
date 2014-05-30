@@ -153,7 +153,8 @@ public class PersonTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"entityType\":\"person\",\"name\":[\"Brian\",\"BU\"],\"phone\":[\"703-885-1000\"],\"email\":[\"ddms@fgm.com\"],");
+		json.append("\"surname\":\"Uri\",\"userID\":\"123\",\"affiliation\":[\"DISA\"]}");
 		return (json.toString());
 	}
 	

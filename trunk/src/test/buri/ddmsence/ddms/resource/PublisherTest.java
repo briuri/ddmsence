@@ -129,8 +129,13 @@ public class PublisherTest extends AbstractBaseTestCase {
 	 * Returns the expected JSON output for this unit test
 	 */
 	private String getExpectedJSONOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"service\":");
+		json.append(ServiceTest.getFixture().toJSON()).append(",");
+		if (version.isAtLeast("4.0.1"))
+			json.append("\"pocType\":[\"DoD-Dist-B\"],");
+		json.append(SecurityAttributesTest.getBasicJSON()).append("}");
 		return (json.toString());
 	}
 	

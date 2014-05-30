@@ -148,8 +148,13 @@ public class UnknownTest extends AbstractBaseTestCase {
 	 * Returns the expected JSON output for this unit test
 	 */
 	private String getExpectedJSONOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"entityType\":\"unknown\",\"name\":[\"Unknown Entity\"],\"phone\":[\"703-882-1000\"],\"email\":[\"ddms@fgm.com\"]");
+		if (version.isAtLeast("5.0")) {
+			json.append(",\"affiliation\":[\"DISA\"]");
+		}
+		json.append("}");
 		return (json.toString());
 	}
 	

@@ -22,6 +22,8 @@ package buri.ddmsence.ddms.resource;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.gson.JsonObject;
+
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractRoleEntity;
@@ -127,6 +129,15 @@ public final class Service extends AbstractRoleEntity {
 		super.validate();
 	}
 
+	/**
+	 * @see AbstractBaseComponent#getJSONObject()
+	 */
+	public JsonObject getJSONObject() {
+		JsonObject object = super.getJSONObject();
+		addJson(object, AFFILIATION_NAME, getAffiliations());
+		return (object);
+	}
+	
 	/**
 	 * @see AbstractBaseComponent#getHTMLTextOutput(OutputFormat, String, String)
 	 */

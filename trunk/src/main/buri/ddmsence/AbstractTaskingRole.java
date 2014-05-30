@@ -154,7 +154,8 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, (AbstractBaseComponent) getEntity());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	
