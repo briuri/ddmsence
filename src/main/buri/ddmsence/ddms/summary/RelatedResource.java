@@ -235,7 +235,12 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, RELATIONSHIP_NAME, getRelationship());
+		addJson(object, DIRECTION_NAME, getDirection());
+		addJson(object, getQualifierName(), getQualifier());
+		addJson(object, getValueName(), getValue());
+		addJson(object, Link.getName(getDDMSVersion()), getLinks());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

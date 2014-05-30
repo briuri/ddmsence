@@ -240,6 +240,18 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	}
 	
 	/**
+	 * Adds a list of values to a JSON object, but only if it is not empty and not null. This method delegates to Util,
+	 * so the individual JSON implementations are cleaner.
+	 * 
+	 * @param object the object to add to
+	 * @param name the name of the array, if added
+	 * @param value the value to add, converted into a JSON array
+	 */
+	protected static void addJson(JsonObject object, String name, List<?> value) {
+		Util.addNonEmptyJsonProperty(object, name, Util.getJSONArray(value));
+	}
+	
+	/**
 	 * Adds an attribute group's JSON object to a JSON object, but only if it is not empty. This method delegates to Util, so the
 	 * individual JSON implementations are cleaner.
 	 * 
@@ -249,6 +261,19 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	protected static void addJson(JsonObject object, AbstractAttributeGroup value) {
 		addJson(object, value.getName(), value);
 	}
+	
+	/**
+	 * Adds a DMMS component's JSON object to a JSON object. This method delegates to Util, so the individual JSON
+	 * implementations are cleaner.
+	 * 
+	 * @param object the object to add to
+	 * @param value the value to add
+	 */
+	protected static void addJson(JsonObject object, AbstractBaseComponent value) {
+		if (value != null)
+			addJson(object, value.getName(), value.getJSONObject());
+	}
+	
 	/**
 	 * Renders this component as HTML or Text, with an optional prefix to nest it.
 	 * 

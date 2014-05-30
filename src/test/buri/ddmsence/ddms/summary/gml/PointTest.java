@@ -133,7 +133,10 @@ public class PointTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"id\":\"IDValue\",\"srsAttributes\":");
+		json.append(SRSAttributesTest.getFixture().getJSONObject().toString());
+		json.append(",\"pos\":").append(PositionTest.getFixture().toJSON());
+		json.append("}");
 		return (json.toString());
 	}
 	

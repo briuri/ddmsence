@@ -165,7 +165,8 @@ public class PositionTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"pos\":[32.1,40.1],\"srsAttributes\":");
+		json.append(SRSAttributesTest.getFixture().getJSONObject().toString()).append("}");
 		return (json.toString());
 	}
 	

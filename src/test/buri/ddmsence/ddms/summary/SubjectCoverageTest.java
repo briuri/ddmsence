@@ -184,13 +184,10 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer json = new StringBuffer();
 		json.append("{\"keyword\":[{\"keyword\":\"DDMSence\"},{\"keyword\":\"Uri\"}],");
-		json.append("\"category\":[{\"qualifier\":\"urn:buri:ddmsence:categories\",\"code\":\"DDMS\",\"label\":\"DDMS\"}]");
+		json.append("\"category\":[").append(CategoryTest.getFixtureList().get(0).toJSON()).append("]");
 		if (version.isAtLeast("4.0.1")) {
-			json.append(",\"productionMetric\":[{\"subject\":\"FOOD\",\"coverage\":\"AFG\"");
-			json.append(",").append(SecurityAttributesTest.getBasicJSON());
-			json.append("}],\"nonStateActor\":[{\"nonStateActor\":\"Laotian Monks\",\"order\":1,\"qualifier\":\"urn:sample\"");
-			json.append(",").append(SecurityAttributesTest.getBasicJSON());
-			json.append("}]");
+			json.append(",\"productionMetric\":[").append(ProductionMetricTest.getFixtureList().get(0).toJSON()).append("]");
+			json.append(",\"nonStateActor\":[").append(NonStateActorTest.getFixtureList().get(0).toJSON()).append("]");
 		}
 		if (version.isAtLeast("3.0")) {
 			json.append(",").append(SecurityAttributesTest.getBasicJSON());

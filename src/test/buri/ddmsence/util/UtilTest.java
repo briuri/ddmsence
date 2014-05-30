@@ -62,23 +62,31 @@ public class UtilTest extends AbstractBaseTestCase {
 	}
 	
 	public void testGetJSONArray() throws InvalidDDMSException {
-		List<String> list = new ArrayList<String>();
-		list.add("Test");
-		list.add("Dog");
-		JsonArray array = Util.getJSONArray(list);
+		// Double
+		List<Double> doubles = new ArrayList<Double>();
+		doubles.add(Double.valueOf(1));
+		JsonArray array = Util.getJSONArray(doubles);
+		assertEquals(1, array.size());
+		
+		// String
+		List<String> strings = new ArrayList<String>();
+		strings.add("Test");
+		strings.add("Dog");
+		array = Util.getJSONArray(strings);
 		assertEquals("Test", array.get(0).getAsString());
 		assertEquals("Dog", array.get(1).getAsString());
 		
-		List<Extent> list2 = new ArrayList<Extent>();
-		list2.add(new Extent("qualifier", "value"));
-		array = Util.getJSONArray(list2);
+		// AbstractBaseComponent
+		List<Extent> components = new ArrayList<Extent>();
+		components.add(new Extent("qualifier", "value"));
+		array = Util.getJSONArray(components);
 		assertEquals(1, array.size());
 		
 		// Unknown
 		try {
-			List<Long> list3 = new ArrayList<Long>();
-			list3.add(Long.valueOf(1));
-			Util.getJSONArray(list3);
+			List<Long> unknowns = new ArrayList<Long>();
+			unknowns.add(Long.valueOf(1));
+			Util.getJSONArray(unknowns);
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {

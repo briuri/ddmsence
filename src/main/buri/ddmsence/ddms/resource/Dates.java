@@ -216,7 +216,7 @@ public final class Dates extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		addJson(object, ACQUIRED_ON_NAME, Util.getJSONArray(getAcquiredOns()));
+		addJson(object, ACQUIRED_ON_NAME, getAcquiredOns());
 		addJson(object, CREATED_NAME, getCreatedString());
 		addJson(object, POSTED_NAME, getPostedString());
 		addJson(object, VALID_TIL_NAME, getValidTilString());

@@ -26,6 +26,7 @@ import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributes;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -148,7 +149,11 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"relationship\":\"http://purl.org/dc/terms/references\",\"direction\":\"outbound\",");
+		json.append("\"qualifier\":\"http://purl.org/dc/terms/URI\",\"value\":\"http://en.wikipedia.org/wiki/Tank\",");
+		json.append("\"link\":[{\"xlinkAttributes\":").append(XLinkAttributesTest.getLocatorFixture().getJSONObject().toString());
+		json.append("}],");
+		json.append(SecurityAttributesTest.getBasicJSON()).append("}");
 		return (json.toString());
 	}
 	

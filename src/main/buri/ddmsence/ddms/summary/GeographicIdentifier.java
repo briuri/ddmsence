@@ -246,7 +246,11 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, NAME_NAME, getNames());
+		addJson(object, REGION_NAME, getRegions());
+		addJson(object, getCountryCode());
+		addJson(object, getSubDivisionCode());
+		addJson(object, getFacilityIdentifier());
 		return (object);
 	}
 	

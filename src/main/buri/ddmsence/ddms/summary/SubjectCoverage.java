@@ -228,10 +228,10 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		addJson(object, Keyword.getName(getDDMSVersion()), Util.getJSONArray(getKeywords()));
-		addJson(object, Category.getName(getDDMSVersion()), Util.getJSONArray(getCategories()));
-		addJson(object, ProductionMetric.getName(getDDMSVersion()), Util.getJSONArray(getProductionMetrics()));
-		addJson(object, NonStateActor.getName(getDDMSVersion()), Util.getJSONArray(getNonStateActors()));
+		addJson(object, Keyword.getName(getDDMSVersion()), getKeywords());
+		addJson(object, Category.getName(getDDMSVersion()), getCategories());
+		addJson(object, ProductionMetric.getName(getDDMSVersion()), getProductionMetrics());
+		addJson(object, NonStateActor.getName(getDDMSVersion()), getNonStateActors());
 		addJson(object, getSecurityAttributes());
 		return (object);
 	}

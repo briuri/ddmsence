@@ -168,8 +168,8 @@ public class LinkTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("{\"xlinkAttributes\":{\"type\":\"locator\",\"href\":\"http://en.wikipedia.org/wiki/Tank\",");
-		json.append("\"role\":\"tank\",\"title\":\"Tank Page\",\"label\":\"tank\"}}");
+		json.append("{\"xlinkAttributes\":").append(XLinkAttributesTest.getLocatorFixture().getJSONObject().toString());
+		json.append("}");
 		return (json.toString());
 	}
 	

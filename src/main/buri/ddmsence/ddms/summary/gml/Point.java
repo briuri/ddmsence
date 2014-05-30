@@ -150,7 +150,9 @@ public final class Point extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, ID_NAME, getId());
+		addJson(object, getSRSAttributes());
+		addJson(object, getPosition());
 		return (object);
 	}
 	

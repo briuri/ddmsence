@@ -137,7 +137,10 @@ public class Util {
 		JsonArray array = new JsonArray();
 		for (Iterator iterator = values.iterator(); iterator.hasNext();) {
 			Object value = (Object) iterator.next();
-			if (value instanceof String) {
+			if (value instanceof Double) {
+				array.add(new JsonPrimitive((Double) value));
+			}
+			else if (value instanceof String) {
 				array.add(new JsonPrimitive((String) value));
 			}
 			else if (value instanceof AbstractBaseComponent) {

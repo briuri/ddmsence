@@ -20,6 +20,7 @@
 package buri.ddmsence.ddms.summary.gml;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import nu.xom.Element;
@@ -152,7 +153,16 @@ public class PolygonTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		json.append("{\"id\":\"IDValue\",\"srsAttributes\":");
+		json.append(SRSAttributesTest.getFixture().getJSONObject().toString());
+		json.append(",\"pos\":[");
+		for (Iterator iterator = PositionTest.getFixtureList().iterator(); iterator.hasNext();) {
+			Position pos = (Position) iterator.next();
+			json.append(pos.toJSON());
+			if (iterator.hasNext())
+				json.append(",");
+		}
+		json.append("]}");
 		return (json.toString());
 	}
 	

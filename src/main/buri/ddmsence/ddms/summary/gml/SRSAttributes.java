@@ -198,8 +198,8 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 		JsonObject object = new JsonObject();
 		addJson(object, "srsName", getSrsName());
 		addJson(object, "srsDimension", getSrsDimension());
-		addJson(object, "axisLabels", Util.getJSONArray(getAxisLabels()));
-		addJson(object, "uomLabels", Util.getJSONArray(getUomLabels()));
+		addJson(object, "axisLabels", getAxisLabels());
+		addJson(object, "uomLabels", getUomLabels());
 		return (object);
 	}
 	
