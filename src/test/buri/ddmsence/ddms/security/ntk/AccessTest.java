@@ -137,10 +137,10 @@ public class AccessTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput() {
 		StringBuffer json = new StringBuffer();
-		json.append("{\"individualList\":[");
-		json.append(IndividualTest.getFixture().toJSON()).append("],");
-		json.append("\"groupList\":[");
-		json.append(GroupTest.getFixture().toJSON()).append("],");
+		json.append("{\"individualList\":{\"individual\":[");
+		json.append(IndividualTest.getFixture().toJSON()).append("]},");
+		json.append("\"groupList\":{\"group\":[");
+		json.append(GroupTest.getFixture().toJSON()).append("]},");
 		json.append("\"profileList\":");
 		json.append(ProfileListTest.getFixture().toJSON()).append(",");
 		json.append("\"externalReference\":true,").append(SecurityAttributesTest.getBasicJSON()).append("}");

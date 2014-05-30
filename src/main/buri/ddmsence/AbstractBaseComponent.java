@@ -236,7 +236,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @param value the value to add
 	 */
 	protected static void addJson(JsonObject object, String name, Object value) {
-		Util.addNonEmptyJsonProperty(object, name, value);
+		Util.addNonEmptyJsonProperty(object, Util.decapitalize(name), value);
 	}
 	
 	/**
@@ -248,7 +248,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @param value the value to add, converted into a JSON array
 	 */
 	protected static void addJson(JsonObject object, String name, List<?> value) {
-		Util.addNonEmptyJsonProperty(object, name, Util.getJSONArray(value));
+		Util.addNonEmptyJsonProperty(object, Util.decapitalize(name), Util.getJSONArray(value));
 	}
 	
 	/**
@@ -271,7 +271,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 */
 	protected static void addJson(JsonObject object, AbstractBaseComponent value) {
 		if (value != null)
-			addJson(object, Util.decapitalize(value.getName()), value.getJSONObject());
+			addJson(object, value.getName(), value.getJSONObject());
 	}
 	
 	/**
