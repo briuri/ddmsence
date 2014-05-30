@@ -11,8 +11,8 @@
 
 <p>
 <img src="./images/essentials-flow.png" width="400" height="156" title="Essentials Workflow" align="right" />
-<u>Essentials</u> is a simple reader application which loads an XML file containing a DDMS Resource and displays it in three different formats: the
-original XML, HTML, and Text. The source code for this application provides an example of how to create DDMS components from an XML file.</p>
+<u>Essentials</u> is a simple reader application which loads an XML file containing a DDMS Resource and displays it in four different formats: the
+original XML, HTML, Text, and JSON. The source code for this application provides an example of how to create DDMS components from an XML file.</p>
 
 <h2>Getting Started</h2>
 
@@ -30,32 +30,37 @@ selecting the sample file, <code>3.1-identifierPostalAddressExample.xml</code> a
 <img src="./images/essentials-02.png" width="300" height="212" title="Essentials File Chooser" />
 <p class="figure">Figure 1. Selecting an existing DDMS Record from an XML file</p>
 
-<p>The application will convert the XML file into a Java object model and then display the results in three separate panes.</p>
+<p>The application will convert the XML file into a Java object model and then display the results in four separate tabs.</p>
 
-<img src="./images/essentials-01.png" width="800" height="535" title="Essentials Screenshot" />
-<p class="figure">Figure 1. The three output formats</p>
+<img src="./images/essentials-01.png" width="800" height="534" title="Essentials Screenshot" />
+<p class="figure">Figure 1. The four output formats</p>
 
-<p>The top pane contains the result of calling <code>toXML()</code> on the Resource object. It should be identical to the data from the file.
-The two lower panes contain the results of calling <code>toHTML()</code> and <code>toText()</code>, respectively, on the Resource object.</p> 
+<p>The first tab contains the result of calling <code>toXML()</code> on the Resource object. It should be identical to the data from the file.
+The next three tabs contain the results of calling <code>toHTML()</code>, <code>toText()</code>, and <code>toJSON()</code>, respectively, on the Resource object.</p> 
 
-<p>Now, let's take a look at the source code in <code>/src/samples/buri/ddmsence/samples/Essentials.java</code> to see how this was accomplished. The important lines are found in the
-<code>loadFile()</code> method. First, we try to guess the version of DDMS used in the file, based upon the XML namespace. Next, we create a DDMSReader instance that
-will load the file. Finally, we store the loaded resource in the <code>_resource</code> variable:</p>
+<p>Now, let's take a look at the source code in <code>/src/samples/buri/ddmsence/samples/Essentials.java</code> to see how this was accomplished. 
+The important lines are found in the <code>loadFile()</code> method. First, we try to guess the version of DDMS used in the file, based upon the 
+XML namespace. Next, we create a DDMSReader instance that will load the file. Finally, we store the loaded resource in the <code>_resource</code> variable:</p>
 
 <pre class="brush: java">DDMSVersion fileVersion = guessVersion(file);
 // The DDMS reader builds a Resource object from the XML in the file.
 _resource = getReader(fileVersion).getDDMSResource(file);
-			
-// The three output formats
+
+// Apply pretty-printing to JSON
+PropertyReader.setProperty("output.formatJson", "true");
+
+// The four output formats
 String xmlFormat = getResource().toXML();
 String htmlFormat = getResource().toHTML();
-String textFormat = getResource().toText();</pre>
+String textFormat = getResource().toText();
+String jsonFormat = getResource().toJSON();</pre>
 <p class="figure">Figure 3. The main Essentials code</p>
 
 <p>The remaining code in this method merely renders the data on the screen.</p>
 
 <p>As you can see from the code, building an object model from an XML file only requires a single-line call to <code>DDMSReader.getDDMSResource()</code>. The conversion of
-the Resource into XML, HTML, and Text is built-in to the Object. The primary purpose of the DDMSReader class is to load a metacard from an XML file. You can also use the <code>getElement()</code> methods of the DDMSReader to load XOM Elements representing any of the global DDMS components.</p>
+the Resource into XML, HTML, Text, and JSON is built-in to the Object. The primary purpose of the DDMSReader class is to load a metacard from an XML file. 
+You can also use the <code>getElement()</code> methods of the DDMSReader to load XOM Elements representing any of the global DDMS components.</p>
 
 <p>Now that you have seen a valid Resource, let's try opening an invalid one. Return to the <i>File</i> menu and select the sample file, <code>3.0-invalidResourceExample.xml</code> from the
 samples directory. This XML file is invalid, because it tries to use an incorrect security classification (SuperSecret).</p>
@@ -86,6 +91,25 @@ at any given time.</p>
 
 <p>The <u>Essentials</u> program can open metacards of any supported DDMS Version. An example is provided in the file, <code>2.0-earlierVersionExample.xml</code>. Working with
 a other versions of DDMS is covered in the <a href="documentation.jsp#tips">Power Tips</a> section.</p>
+
+<h3>Output Formats</h3>
+
+<p>The HTML and Text output formats are based upon the suggestions in the DDMS specification. Where the specification is unclear or inconsistent, DDMSence
+attempts to be consistent across components. Specific instances where DDMSence diverges from the DDMS suggestions are noted in the class comments for
+the affected components.</p>
+
+<p>The DDMS specification provides no guidance on JSON output, but the format is generally based upon the patterns used in the HTML and Text outputs. Here are a few rules of
+thumb which describe this format:</p>
+<ul>
+	<li>The datatypes of the JSON data match the datatypes in the Java classes.</li>
+	<li>The JSON data for individual components does not contain the name of that component, until it has been nested into a parent component.</li>
+	<li>When an XML element (such as the <code>ddms:description</code> element) contains free-text, the JSON property name matches the component name.</li>
+	<li>If a value is empty or null, it is not included in the JSON output.</li>
+	<li>Groups of related attributes (such as ISM) are always grouped together.</li>
+	<li>If a property can have multiple values, it will always appear as an array, even if only one value exists.</li>	   
+</ul>
+
+<p>If you are unsure of how the JSON output will appear for a particular component, you can use the Essentials application as a visual aid.</p>
 
 <h3>Conclusion</h3>
 
