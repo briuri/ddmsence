@@ -24,9 +24,9 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.ITspiShape;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.summary.gml.Point;
 import buri.ddmsence.ddms.summary.gml.PointTest;
@@ -164,9 +164,17 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected JSON output for this unit test
 	 */
-	private String getExpectedJSONOutput() {
+	private String getExpectedJSONOutput(boolean hasPolygon) {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
+			if (!hasPolygon)
+				json.append("{\"Point\":[").append(PointTest.getFixtureList().get(0).toJSON());
+			else
+				json.append("{\"Polygon\":[").append(PolygonTest.getFixtureList().get(0).toJSON());
+			json.append("]}");
+		}
+		else
+			json.append("{\"Envelope\":{\"shapeType\":\"Envelope\"}}");
 		return (json.toString());
 	}
 	
@@ -364,7 +372,7 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedHTMLTextOutput(OutputFormat.HTML), elementComponent.toHTML());
 			assertEquals(getExpectedHTMLTextOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
-			assertEquals(getExpectedJSONOutput(), elementComponent.toJSON());
+			assertEquals(getExpectedJSONOutput(false), elementComponent.toJSON());
 			assertValidJSON(elementComponent.toJSON());
 
 			if (!version.isAtLeast("5.0")) {
@@ -375,7 +383,8 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 					elementComponent.toHTML());
 				assertEquals(PolygonTest.getFixtureList().get(0).getHTMLTextOutput(OutputFormat.TEXT, "boundingGeometry.", ""),
 					elementComponent.toText());
-				fail("Need to add the JSON test.");
+				assertEquals(getExpectedJSONOutput(true), elementComponent.toJSON());
+				assertValidJSON(elementComponent.toJSON());
 			}
 		}
 	}

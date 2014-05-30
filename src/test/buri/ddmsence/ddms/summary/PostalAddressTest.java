@@ -184,7 +184,19 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedJSONOutput(boolean hasState) {
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
+			json.append("{\"street\":[\"1600 Pennsylvania Avenue, NW\"],\"city\":\"Washington\",");
+			if (hasState) {
+				json.append("\"state\":\"DC\",");
+			}
+			else {
+				json.append("\"province\":\"Alberta\",");
+			}
+			json.append("\"postalCode\":\"20500\",\"countryCode\":").append(CountryCodeTest.getFixture().toJSON());
+			json.append("}");
+		}
+		else
+			json.append("{\"addressType\":\"GeneralAddressClass\"}");
 		return (json.toString());
 	}
 	

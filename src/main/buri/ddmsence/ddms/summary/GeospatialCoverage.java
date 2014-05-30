@@ -263,7 +263,14 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		addJson(object, getGeographicIdentifier());
+		addJson(object, getBoundingBox());
+		addJson(object, getBoundingGeometry());
+		addJson(object, getPostalAddress());
+		addJson(object, getVerticalExtent());
+		addJson(object, PRECEDENCE_NAME, getPrecedence());
+		addJson(object, ORDER_NAME, getOrder());
+		addJson(object, getSecurityAttributes());
 		return (object);
 	}
 	

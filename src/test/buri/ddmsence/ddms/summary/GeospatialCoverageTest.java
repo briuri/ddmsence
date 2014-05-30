@@ -24,10 +24,10 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.ITspiShape;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.ddms.summary.gml.PointTest;
@@ -192,9 +192,25 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 	/**
 	 * Returns the expected JSON output for this unit test
 	 */
-	private String getExpectedJSONOutput() {
+	private String getExpectedJSONOutput(Class theClass) throws InvalidDDMSException {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer json = new StringBuffer();
-		json.append("TBD");
+		if (theClass == GeographicIdentifier.class) {
+			json.append("{\"geographicIdentifier\":").append(GeographicIdentifierTest.getCountryCodeBasedFixture().toJSON());
+			if (version.isAtLeast("4.0.1"))
+				json.append(",\"precedence\":\"Primary\",\"order\":1");
+		}
+		else if (theClass == BoundingBox.class)
+			json.append("{\"boundingBox\":").append(BoundingBoxTest.getFixture().toJSON());
+		else if (theClass == BoundingGeometry.class)
+			json.append("{\"boundingGeometry\":").append(BoundingGeometryTest.getFixture().toJSON());
+		else if (theClass == PostalAddress.class)
+			json.append("{\"postalAddress\":").append(PostalAddressTest.getFixture().toJSON());
+		else if (theClass == VerticalExtent.class)
+			json.append("{\"verticalExtent\":").append(VerticalExtentTest.getFixture().toJSON());
+		if (version.isAtLeast("3.0"))
+			json.append(",").append(SecurityAttributesTest.getBasicJSON());
+		json.append("}");
 		return (json.toString());
 	}
 	
@@ -491,7 +507,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedHTMLTextOutput(OutputFormat.HTML), elementComponent.toHTML());
 			assertEquals(getExpectedHTMLTextOutput(OutputFormat.TEXT), elementComponent.toText());
 			assertEquals(getExpectedXMLOutput(), elementComponent.toXML());
-			assertEquals(getExpectedJSONOutput(), elementComponent.toJSON());
+			assertEquals(getExpectedJSONOutput(GeographicIdentifier.class), elementComponent.toJSON());
 			assertValidJSON(elementComponent.toJSON());
 
 			if (!version.isAtLeast("5.0")) {
@@ -502,7 +518,8 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 					elementComponent.toHTML());
 				assertEquals(BoundingBoxTest.getFixture().getHTMLTextOutput(OutputFormat.TEXT, prefix, "") + getTextIcism(),
 					elementComponent.toText());
-				fail("Need to add JSON test");
+				assertEquals(getExpectedJSONOutput(BoundingBox.class), elementComponent.toJSON());
+				assertValidJSON(elementComponent.toJSON());
 
 				// verticalExtent
 				element = buildComponentElement(VerticalExtentTest.getFixture());
@@ -511,7 +528,8 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 					elementComponent.toHTML());
 				assertEquals(VerticalExtentTest.getFixture().getHTMLTextOutput(OutputFormat.TEXT, prefix, "") + getTextIcism(),
 					elementComponent.toText());
-				fail("Need to add JSON test");
+				assertEquals(getExpectedJSONOutput(VerticalExtent.class), elementComponent.toJSON());
+				assertValidJSON(elementComponent.toJSON());
 			}
 
 			// boundingGeometry
@@ -521,7 +539,8 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 				elementComponent.toHTML());
 			assertEquals(BoundingGeometryTest.getFixture().getHTMLTextOutput(OutputFormat.TEXT, prefix, "") + getTextIcism(),
 				elementComponent.toText());
-			fail("Need to add JSON test");
+			assertEquals(getExpectedJSONOutput(BoundingGeometry.class), elementComponent.toJSON());
+			assertValidJSON(elementComponent.toJSON());
 
 			// postalAddress
 			element = buildComponentElement(PostalAddressTest.getFixture());
@@ -530,7 +549,8 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 				elementComponent.toHTML());
 			assertEquals(PostalAddressTest.getFixture().getHTMLTextOutput(OutputFormat.TEXT, prefix, "") + getTextIcism(),
 				elementComponent.toText());
-			fail("Need to add JSON test");
+			assertEquals(getExpectedJSONOutput(PostalAddress.class), elementComponent.toJSON());
+			assertValidJSON(elementComponent.toJSON());
 		}
 	}
 

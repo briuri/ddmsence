@@ -299,7 +299,18 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 */
 	public JsonObject getJSONObject() {
 		JsonObject object = new JsonObject();
-		// TODO
+		if (!getDDMSVersion().isAtLeast("5.0")) {
+			addJson(object, STREET_NAME, getStreets());
+			addJson(object, CITY_NAME, getCity());
+			addJson(object, STATE_NAME, getState());
+			addJson(object, PROVINCE_NAME, getProvince());
+			addJson(object, POSTAL_CODE_NAME, getPostalCode());
+			addJson(object, getCountryCode());
+		}
+		else {
+			AbstractBaseComponent tspi = (AbstractBaseComponent) getTspiAddress();
+			addJson(object, "addressType", tspi.getJSONObject().get("addressType").getAsString());
+		}
 		return (object);
 	}
 	
