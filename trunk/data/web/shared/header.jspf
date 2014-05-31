@@ -1,5 +1,6 @@
 <script type="text/javascript" src="./shared/ddmsence.js"></script>
 <script type="text/javascript" src="./shared/shCore.js"></script>
+<script type="text/javascript" src="./shared/shBrushJScript.js"></script>
 <script type="text/javascript" src="./shared/shBrushJava.js"></script>
 <script type="text/javascript" src="./shared/shBrushXml.js"></script>
 <link type="text/css" rel="stylesheet" href="./shared/ddmsence.css"   />
