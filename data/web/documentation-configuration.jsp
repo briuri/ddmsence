@@ -72,16 +72,11 @@ The examples below show the expected output when this property is set to true or
       "qualifier": "http://purl.org/dc/elements/1.1/language",
       "value": "en"
     }</pre>
-<p class="figure">Figure 2. The JSON output of a Language component, with <code>output.json.prettyPrint</code> set to true.</p>
+<p class="figure">Figure 4. The JSON output of a Language component, with <code>output.json.prettyPrint</code> set to true.</p>
 
 <pre class="brush: javascript">
 {"qualifier":"http://purl.org/dc/elements/1.1/language","value":"en"}</pre>
-<p class="figure">Figure 3. The JSON output of a Language component, with <code>output.json.prettyPrint</code> set to false.</p>
-
-
-
-
-
+<p class="figure">Figure 5. The JSON output of a Language component, with <code>output.json.prettyPrint</code> set to false.</p>
 
 <h2>Controlling HTML/Text Output</h2>
 
@@ -98,25 +93,25 @@ The example below shows a sample XML instance, and the expected output at each i
       &lt;ddms:phone&gt;703-885-1000&lt;/ddms:phone&gt;
    &lt;/ddms:person&gt;
 &lt;/ddms:creator&gt;</pre>
-<p class="figure">Figure 4. A sample XML instance representing a creator with 2 names and 1 phone number.</p>
+<p class="figure">Figure 6. A sample XML instance representing a creator with 2 names and 1 phone number.</p>
 
 <pre class="brush: xml">creator.name: Brian
 creator.name: BU
 creator.surname: Uri
 creator.phone: 703-885-1000</pre> 
-<p class="figure">Figure 5. The Text output of this creator when output.indexLevel is 0</p>
+<p class="figure">Figure 7. The Text output of this creator when output.indexLevel is 0</p>
 
 <pre class="brush: xml">creator.name[1]: Brian
 creator.name[2]: BU
 creator.surname: Uri
 creator.phone: 703-885-1000</pre> 
-<p class="figure">Figure 6. The Text output of this creator when output.indexLevel is 1</p>
+<p class="figure">Figure 8. The Text output of this creator when output.indexLevel is 1</p>
 
 <pre class="brush: xml">creator.name[1]: Brian
 creator.name[2]: BU
 creator.surname: Uri
 creator.phone[1]: 703-885-1000</pre> 
-<p class="figure">Figure 7. The Text output of this creator when output.indexLevel is 2</p>
+<p class="figure">Figure 9. The Text output of this creator when output.indexLevel is 2</p>
 
 <p>
 	<a href="#top">Back to Top</a><br>
