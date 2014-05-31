@@ -40,7 +40,7 @@ instead of "ISM", you would set the "ism.prefix" property with a custom value of
 <p>The <code>output.json.inlineAttributes</code> property renders attribute groups inline with the parent component. Normally, attributes are enclosed together, matching the class
 hierarchy of DDMSence. Setting this property to true removes the enclosure. The examples below show the expected output when this property is set to true or false, respectively:</p>
 
-<pre class="brush: xml">{
+<pre class="brush: javascript">{
   "security": {
     "excludeFromRollup": true,
     "classification": "U",
@@ -51,7 +51,7 @@ hierarchy of DDMSence. Setting this property to true removes the enclosure. The 
 }</pre>
 <p class="figure">Figure 2. The JSON output of a Security component, with <code>output.json.inlineAttributes</code> set to true.</p>
 
-<pre class="brush: xml">{
+<pre class="brush: javascript">{
   "security": {
     "excludeFromRollup": true,
     "securityAttributes": {
@@ -67,14 +67,14 @@ hierarchy of DDMSence. Setting this property to true removes the enclosure. The 
 <p>The <code>output.json.prettyPrint</code> property applies pretty-printing to a JSON string, via the <a href="https://code.google.com/p/google-gson/">google-gson</a> library.
 The examples below show the expected output when this property is set to true or false, respectively:</p>
 
-<pre class="brush: xml">
+<pre class="brush: javascript">
     {
       "qualifier": "http://purl.org/dc/elements/1.1/language",
       "value": "en"
     }</pre>
 <p class="figure">Figure 2. The JSON output of a Language component, with <code>output.json.prettyPrint</code> set to true.</p>
 
-<pre class="brush: xml">
+<pre class="brush: javascript">
 {"qualifier": "http://purl.org/dc/elements/1.1/language","value": "en"}</pre>
 <p class="figure">Figure 3. The JSON output of a Language component, with <code>output.json.prettyPrint</code> set to false.</p>
 
