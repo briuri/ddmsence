@@ -37,8 +37,9 @@ instead of "ISM", you would set the "ism.prefix" property with a custom value of
 
 <h2>Controlling JSON Output</h2>
 
-<p>The <code>output.json.inlineAttributes</code> property renders attribute groups inline with the parent component. Normally, attributes are enclosed together, matching the class
-hierarchy of DDMSence. Setting this property to true removes the enclosure. The examples below show the expected output when this property is set to true or false, respectively:</p>
+<p>The <code>output.json.inlineAttributes</code> property renders attribute groups inline with the parent component. 
+Normally, related attributes are enclosed together, matching the class hierarchy of DDMSence. 
+Setting this property to true removes the enclosure. The examples below show the expected output when this property is set to true or false, respectively:</p>
 
 <pre class="brush: javascript">{
   "security": {
