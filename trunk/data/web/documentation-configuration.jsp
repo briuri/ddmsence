@@ -75,7 +75,7 @@ The examples below show the expected output when this property is set to true or
 <p class="figure">Figure 2. The JSON output of a Language component, with <code>output.json.prettyPrint</code> set to true.</p>
 
 <pre class="brush: javascript">
-{"qualifier": "http://purl.org/dc/elements/1.1/language","value": "en"}</pre>
+{"qualifier":"http://purl.org/dc/elements/1.1/language","value":"en"}</pre>
 <p class="figure">Figure 3. The JSON output of a Language component, with <code>output.json.prettyPrint</code> set to false.</p>
 
 
