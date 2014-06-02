@@ -19,7 +19,11 @@
  */
 package buri.ddmsence.ddms;
 
+import static org.junit.Assert.*;
 import nu.xom.Element;
+
+import org.junit.Test;
+
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -177,6 +181,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		return (xml.toString());
 	}
 
+	@Test
 	public void testNameAndNamespace() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -187,6 +192,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -199,6 +205,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testConstructorsMinimal() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -216,6 +223,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testValidationErrors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -242,6 +250,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -259,6 +268,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -300,12 +310,14 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testVersionSpecific() {
 		ApproximableDate.Builder builder = getBaseBuilder();
 		DDMSVersion.setCurrentVersion("2.0");
 		getInstance(builder, "The acquiredOn element must not ");
 	}
 
+	@Test
 	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -319,6 +331,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

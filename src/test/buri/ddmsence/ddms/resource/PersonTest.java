@@ -19,13 +19,18 @@
  */
 package buri.ddmsence.ddms.resource;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
+
+import org.junit.Test;
+
 import buri.ddmsence.AbstractBaseTestCase;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -190,6 +195,7 @@ public class PersonTest extends AbstractBaseTestCase {
 		return (xml.toString());
 	}
 
+	@Test
 	public void testNameAndNamespace() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -200,6 +206,7 @@ public class PersonTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -212,6 +219,7 @@ public class PersonTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testConstructorsMinimal() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -227,6 +235,7 @@ public class PersonTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testValidationErrors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -258,6 +267,7 @@ public class PersonTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testValidationWarnings() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -268,6 +278,7 @@ public class PersonTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -297,6 +308,7 @@ public class PersonTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testVersionSpecific() throws InvalidDDMSException {	
 		// extensible attributes in 4.0.1
 		ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
@@ -306,6 +318,7 @@ public class PersonTest extends AbstractBaseTestCase {
 		getInstance(builder, "ddms:person must not have");
 	}
 	
+	@Test
 	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -319,6 +332,7 @@ public class PersonTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -332,6 +346,7 @@ public class PersonTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testBuilderLazyList() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -342,6 +357,7 @@ public class PersonTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testConstructorChaining() throws InvalidDDMSException {
 		Person person = new Person(TEST_NAMES, TEST_SURNAME, null, null, null, null);
 		Person personFull = new Person(TEST_NAMES, TEST_SURNAME, null, null, null, null, null);

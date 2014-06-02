@@ -19,7 +19,12 @@
  */
 package buri.ddmsence.util;
 
+import static org.junit.Assert.*;
 import java.util.List;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import buri.ddmsence.AbstractBaseTestCase;
 
@@ -38,17 +43,20 @@ public class PropertyReaderTest extends AbstractBaseTestCase {
 	/**
 	 * Resets the in-use prefix for DDMS.
 	 */
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		PropertyReader.setProperty("ddms.prefix", "ddms");
 	}
 
 	/**
 	 * Resets the in-use prefix for DDMS.
 	 */
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		PropertyReader.setProperty("ddms.prefix", "ddms");
 	}
 
+	@Test
 	public void testGetPropertyInvalid() {
 		try {
 			PropertyReader.getProperty("unknown.property");
@@ -59,11 +67,13 @@ public class PropertyReaderTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetListPropertyValid() {
 		List<String> properties = PropertyReader.getListProperty("ddms.supportedVersions");
 		assertEquals(5, properties.size());
 	}
 
+	@Test
 	public void testSetPropertyInvalidName() {
 		// This also handles unconfigurable properties.
 		try {
@@ -75,6 +85,7 @@ public class PropertyReaderTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testSetPropertyValid() {
 		PropertyReader.setProperty("ddms.prefix", "DDMS");
 		assertEquals("DDMS", PropertyReader.getPrefix("ddms"));

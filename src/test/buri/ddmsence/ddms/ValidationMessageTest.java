@@ -20,6 +20,9 @@
 package buri.ddmsence.ddms;
 
 import junit.framework.TestCase;
+
+import org.junit.Test;
+
 import buri.ddmsence.ddms.resource.Rights;
 
 /**
@@ -30,6 +33,7 @@ import buri.ddmsence.ddms.resource.Rights;
  */
 public class ValidationMessageTest extends TestCase {
 
+	@Test
 	public void testFactory() {
 		ValidationMessage message = ValidationMessage.newWarning("Test", "ddms:test");
 		assertEquals(ValidationMessage.WARNING_TYPE, message.getType());
@@ -42,6 +46,7 @@ public class ValidationMessageTest extends TestCase {
 		assertEquals("/ddms:test", message.getLocator());
 	}
 
+	@Test
 	public void testEquality() {
 		ValidationMessage message1 = ValidationMessage.newWarning("Test", "ddms:test");
 		ValidationMessage message2 = ValidationMessage.newWarning("Test", "ddms:test");
@@ -51,6 +56,7 @@ public class ValidationMessageTest extends TestCase {
 		assertEquals(message1.toString(), message2.toString());
 	}
 
+	@Test
 	public void testInequalityDifferentValues() throws InvalidDDMSException {
 		ValidationMessage message1 = ValidationMessage.newWarning("Test", "ddms:test");
 		ValidationMessage message2 = ValidationMessage.newError("Test", "ddms:test");
@@ -63,12 +69,14 @@ public class ValidationMessageTest extends TestCase {
 		assertFalse(message1.equals(message2));
 	}
 
+	@Test
 	public void testInequalityWrongClass() throws InvalidDDMSException {
 		ValidationMessage message = ValidationMessage.newWarning("Test", "ddms:test");
 		Rights wrongComponent = new Rights(true, true, true);
 		assertFalse(message.equals(wrongComponent));
 	}
 
+	@Test
 	public void testLocatorEquality() throws InvalidDDMSException {
 		InvalidDDMSException e = new InvalidDDMSException("test");
 		e.setLocator("test");

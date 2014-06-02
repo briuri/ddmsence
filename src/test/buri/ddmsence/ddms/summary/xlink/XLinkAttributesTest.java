@@ -19,7 +19,11 @@
  */
 package buri.ddmsence.ddms.summary.xlink;
 
+import static org.junit.Assert.*;
 import nu.xom.Element;
+
+import org.junit.Test;
+
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.OutputFormat;
@@ -248,6 +252,7 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 		Util.addAttribute(element, xlinkPrefix, "label", xlinkNamespace, label);
 	}
 
+	@Test
 	public void testConstructors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -275,6 +280,7 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testConstructorsMinimal() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -287,6 +293,7 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testValidationErrors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -327,6 +334,7 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testValidationWarnings() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -339,6 +347,7 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -428,10 +437,12 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testVersionSpecific() throws InvalidDDMSException {
 		// No tests.
 	}
 	
+	@Test
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -450,6 +461,7 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testJSONOutput() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -471,6 +483,7 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -488,6 +501,7 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testAddTo() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -500,6 +514,7 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetNonNull() throws InvalidDDMSException {
 		XLinkAttributes component = new XLinkAttributes();
 		XLinkAttributes output = XLinkAttributes.getNonNullInstance(null);
@@ -509,6 +524,7 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 		assertEquals(getLocatorFixture(), output);
 	}
 	
+	@Test
 	public void testEmpty() throws InvalidDDMSException {
 		XLinkAttributes attr = new XLinkAttributes();
 		assertTrue(attr.isEmpty());

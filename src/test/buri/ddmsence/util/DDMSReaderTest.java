@@ -19,6 +19,8 @@
  */
 package buri.ddmsence.util;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -27,6 +29,7 @@ import java.io.InputStream;
 import java.io.LineNumberReader;
 import java.io.Reader;
 
+import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import buri.ddmsence.AbstractBaseTestCase;
@@ -44,6 +47,7 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 		super(null);
 	}
 
+	@Test
 	public void testGetElementNullFile() throws InvalidDDMSException {
 		try {
 			getReader(null).getElement((File) null);
@@ -57,6 +61,7 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetElementNullString() throws InvalidDDMSException {
 		try {
 			getReader(null).getElement((String) null);
@@ -70,6 +75,7 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetElementNullInputStream() throws InvalidDDMSException {
 		try {
 			getReader(null).getElement((InputStream) null);
@@ -83,6 +89,7 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetElementNullReader() throws InvalidDDMSException {
 		try {
 			getReader(null).getElement((Reader) null);
@@ -96,6 +103,7 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetElementDoesNotExistFile() throws InvalidDDMSException {
 		try {
 			getReader(null).getElement(new File("doesnotexist"));
@@ -106,6 +114,7 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetElementDoesNotExistString() throws InvalidDDMSException {
 		try {
 			getReader(null).getElement("<wrong></wrong>");
@@ -119,6 +128,7 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetElementDoesNotExistInputStream() throws InvalidDDMSException {
 		try {
 			getReader(null).getElement(new FileInputStream(new File("doesnotexist")));
@@ -129,6 +139,7 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetElementDoesNotExistReader() throws InvalidDDMSException {
 		try {
 			getReader(null).getElement(new FileReader(new File("doesnotexist")));
@@ -139,6 +150,7 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetElementNotXML() throws IOException {
 		try {
 			getReader(null).getElement(new File("conf/ddmsence.properties"));
@@ -149,10 +161,12 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetElementFileSuccess() throws InvalidDDMSException, IOException {
 		getReader("3.0").getElement(new File(PropertyReader.getProperty("test.unit.data"), "3.0/rights.xml"));
 	}
 
+	@Test
 	public void testGetElementStringSuccess() throws InvalidDDMSException, IOException {
 		getReader("3.0").getElement(
 			"<?xml version=\"1.0\" encoding=\"UTF-8\"?><ddms:language "
@@ -160,15 +174,18 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 				+ " ddms:qualifier=\"http://purl.org/dc/elements/1.1/language\" ddms:value=\"en\" />");
 	}
 
+	@Test
 	public void testGetElementInputStreamSuccess() throws InvalidDDMSException, IOException {
 		getReader("3.0").getElement(
 			new FileInputStream(new File(PropertyReader.getProperty("test.unit.data"), "3.0/rights.xml")));
 	}
 
+	@Test
 	public void testGetElementReaderSuccess() throws InvalidDDMSException, IOException {
 		getReader("3.0").getElement(new FileReader(new File(PropertyReader.getProperty("test.unit.data"), "3.0/rights.xml")));
 	}
 
+	@Test
 	public void testGetResourceFailure() throws IOException {
 		try {
 			getReader("3.0").getDDMSResource(new File(PropertyReader.getProperty("test.unit.data"), "3.0/rights.xml"));
@@ -179,11 +196,13 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetResourceSuccessFile() throws InvalidDDMSException, IOException {
 		DDMSVersion.setCurrentVersion("3.0");
 		getReader("3.0").getDDMSResource(new File(PropertyReader.getProperty("test.unit.data"), "3.0/resource.xml"));
 	}
 
+	@Test
 	public void testGetResourceSuccessString() throws InvalidDDMSException, IOException {
 		LineNumberReader reader = null;
 		try {
@@ -203,16 +222,19 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetResourceSuccessInputStream() throws InvalidDDMSException, IOException {
 		getReader("3.0").getDDMSResource(
 			new FileInputStream(new File(PropertyReader.getProperty("test.unit.data"), "3.0/resource.xml")));
 	}
 
+	@Test
 	public void testGetResourceSuccessReader() throws InvalidDDMSException, IOException {
 		getReader("3.0").getDDMSResource(
 			new FileReader(new File(PropertyReader.getProperty("test.unit.data"), "3.0/resource.xml")));
 	}
 
+	@Test
 	public void testGetExternalSchemaLocation() {
 		String externalLocations = getReader("3.0").getExternalSchemaLocations();
 		assertEquals(4, externalLocations.split(" ").length);
@@ -220,6 +242,7 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 		assertTrue(externalLocations.contains("http://www.opengis.net/gml"));
 	}
 
+	@Test
 	public void testGetLocalSchemaLocation() {
 		assertTrue(getReader("5.0").getLocalSchemaLocation("/schemas/5.0/DDMS/ddms.xsd").contains("/schemas/5.0/"));
 		try {

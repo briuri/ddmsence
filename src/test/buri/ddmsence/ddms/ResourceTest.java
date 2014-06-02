@@ -19,6 +19,8 @@
  */
 package buri.ddmsence.ddms;
 
+import static org.junit.Assert.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -28,6 +30,9 @@ import java.util.List;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
+
+import org.junit.Test;
+
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
@@ -761,6 +766,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		return (xml.toString());
 	}
 
+	@Test
 	public void testNameAndNamespace() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -771,6 +777,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testConstructors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -832,6 +839,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testConstructorsMinimal() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -853,6 +861,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -972,6 +981,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -1012,6 +1022,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -1049,6 +1060,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testVersionSpecific() throws InvalidDDMSException {
 		// compliesWith before 3.1
 		DDMSVersion.setCurrentVersion("3.0");
@@ -1075,6 +1087,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		getInstance(builder, "The resource must not have extensible");
 	}
 
+	@Test
 	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -1099,6 +1112,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -1142,6 +1156,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testBuilderLazyList() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -1164,6 +1179,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testBuilderSerialization() throws Exception {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -1183,6 +1199,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRelatedResourcesMediation() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -1200,6 +1217,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testConstructorChaining() throws InvalidDDMSException {
 		// DDMS 2.0
 		DDMSVersion.setCurrentVersion("2.0");
@@ -1227,6 +1245,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		assertEquals(resource, fullResource);
 	}
 
+	@Test
 	public void testLoad30Commit20() throws InvalidDDMSException {
 		// Direct mapping works
 		DDMSVersion.setCurrentVersion("3.0");
@@ -1242,6 +1261,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		getInstance(builder, SUCCESS);
 	}
 
+	@Test
 	public void testLoad20Commit30() throws InvalidDDMSException {
 		// Direct mapping works
 		DDMSVersion.setCurrentVersion("2.0");
@@ -1261,6 +1281,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		getInstance(builder, SUCCESS);
 	}
 
+	@Test
 	public void testLoad30Commit31() throws InvalidDDMSException {
 		// Direct mapping works
 		DDMSVersion.setCurrentVersion("3.0");
@@ -1276,6 +1297,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		getInstance(builder, SUCCESS);
 	}
 
+	@Test
 	public void testLoad31Commit41() throws InvalidDDMSException {
 		// Direct mapping works
 		DDMSVersion.setCurrentVersion("3.1");
@@ -1297,6 +1319,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		getInstance(builder, SUCCESS);
 	}
 
+	@Test
 	public void testLoad41Commit50() throws InvalidDDMSException {
 		// Direct mapping works
 		DDMSVersion.setCurrentVersion("4.1");
@@ -1320,6 +1343,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		getInstance(builder, SUCCESS);
 	}
 
+	@Test
 	public void testExtensibleAttributes() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -1335,6 +1359,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void test20ExtensibleSizes() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		createComponents();
@@ -1453,6 +1478,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		assertEquals(3, component.getExtensibleAttributes().getAttributes().size());
 	}
 
+	@Test
 	public void testExtensibleDuplicates() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -1490,6 +1516,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testExtensibleCardinality() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		createComponents();
@@ -1508,6 +1535,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		getInstance(builder, SUCCESS);
 	}
 
+	@Test
 	public void test20DeclassManualReviewAttribute() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		createComponents();

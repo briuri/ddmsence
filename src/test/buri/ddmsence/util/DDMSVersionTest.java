@@ -19,6 +19,10 @@
  */
 package buri.ddmsence.util;
 
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.UnsupportedVersionException;
 
@@ -34,6 +38,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		super(null);
 	}
 
+	@Test
 	public void testGetVersionForInvalid() {
 		try {
 			DDMSVersion.getVersionFor("1.4");
@@ -44,6 +49,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetVersionForDDMSNamespace() {
 		assertEquals(DDMSVersion.getVersionFor("2.0"),
 			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/2.0/"));
@@ -64,6 +70,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetVersionForGMLNamespace() {
 		assertEquals(DDMSVersion.getVersionFor("2.0"), DDMSVersion.getVersionForNamespace("http://www.opengis.net/gml"));
 		assertEquals(DDMSVersion.getVersionFor("5.0"),
@@ -77,6 +84,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetVersionForISMNamespace() {
 		assertEquals(DDMSVersion.getVersionFor("2.0"), DDMSVersion.getVersionForNamespace("urn:us:gov:ic:ism:v2"));
 		assertEquals(DDMSVersion.getVersionFor("5.0"), DDMSVersion.getVersionForNamespace("urn:us:gov:ic:ism"));
@@ -89,6 +97,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetVersionForNTKNamespace() {
 		assertEquals(DDMSVersion.getVersionFor("5.0"), DDMSVersion.getVersionForNamespace("urn:us:gov:ic:ntk"));
 		try {
@@ -100,6 +109,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetVersionForXlinkNamespace() {
 		assertEquals(DDMSVersion.getVersionFor("5.0"),
 			DDMSVersion.getVersionForNamespace("http://www.w3.org/1999/xlink"));
@@ -112,29 +122,35 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetSupportedVersions() {
 		assertFalse(DDMSVersion.getSupportedVersions().isEmpty());
 		assertTrue(DDMSVersion.getSupportedVersions().contains("3.0"));
 	}
 
+	@Test
 	public void testIsSupportedXmlNamespace() {
 		assertTrue(DDMSVersion.isSupportedDDMSNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/"));
 		assertFalse(DDMSVersion.isSupportedDDMSNamespace("http://metadata.dod.mil/mdr/ns/DDMS/1.4/"));
 	}
 
+	@Test
 	public void testGetCurrentSchema() {
 		assertEquals("/schemas/5.0/DDMS/ddms.xsd", DDMSVersion.getCurrentVersion().getSchema());
 	}
 
+	@Test
 	public void testGetCurrentNamespace() {
 		assertEquals("urn:us:mil:ces:metadata:ddms:5", DDMSVersion.getCurrentVersion().getNamespace());
 	}
 
+	@Test
 	public void testGetNamespaceForValid() {
 		DDMSVersion.setCurrentVersion("2.0");
 		assertEquals("http://metadata.dod.mil/mdr/ns/DDMS/2.0/", DDMSVersion.getCurrentVersion().getNamespace());
 	}
 
+	@Test
 	public void testSetCurrentVersionInvalid() {
 		try {
 			DDMSVersion.setCurrentVersion("1.4");
@@ -145,16 +161,19 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetSchemaForValid() {
 		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		assertEquals("/schemas/2.0/DDMS/ddms.xsd", DDMSVersion.getCurrentVersion().getSchema());
 		assertEquals("2.0", version.getVersion());
 	}
 
+	@Test
 	public void testToString() {
 		assertEquals(DDMSVersion.getCurrentVersion().getVersion(), DDMSVersion.getCurrentVersion().toString());
 	}
 
+	@Test
 	public void testAccessors() {
 		DDMSVersion.setCurrentVersion("3.0");
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
@@ -171,6 +190,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		assertEquals("/schemas/4.1/NTK/IC-NTK.xsd", version.getNtkSchema());
 	}
 
+	@Test
 	public void testAliasVersion() {
 		DDMSVersion.setCurrentVersion("3.0.1");
 		assertEquals("3.0", DDMSVersion.getCurrentVersion().getVersion());
@@ -178,6 +198,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		assertTrue(DDMSVersion.getCurrentVersion().getVersion().equals("3.0"));
 	}
 
+	@Test
 	public void testIsNewerThan() {
 		assertTrue(DDMSVersion.getVersionFor("2.0").isAtLeast("2.0"));
 		assertFalse(DDMSVersion.getVersionFor("2.0").isAtLeast("3.0"));

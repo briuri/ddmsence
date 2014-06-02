@@ -19,7 +19,10 @@
  */
 package buri.ddmsence.ddms;
 
+import static org.junit.Assert.*;
 import java.util.List;
+
+import org.junit.Test;
 
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.resource.Person;
@@ -49,6 +52,7 @@ public class RoleEntityTest extends AbstractBaseTestCase {
 			: Util.getXsListAsList(""));
 	}
 
+	@Test
 	public void testIndexLevelsStringLists() throws InvalidDDMSException {
 		List<String> names = Util.getXsListAsList("Brian BU");
 		List<String> phones = Util.getXsListAsList("703-885-1000");
@@ -66,6 +70,7 @@ public class RoleEntityTest extends AbstractBaseTestCase {
 			person.toText());
 	}
 
+	@Test
 	public void testExtensibleFailure() throws InvalidDDMSException {
 		// No failure cases to test right now.
 		// ISM attributes are at creator/contributor level, so they never clash with extensibles on the entity level.

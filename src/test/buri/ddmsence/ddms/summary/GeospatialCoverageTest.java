@@ -19,10 +19,15 @@
  */
 package buri.ddmsence.ddms.summary;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
+
+import org.junit.Test;
+
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.ITspiShape;
@@ -283,6 +288,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		return (element);
 	}
 
+	@Test
 	public void testNameAndNamespace() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -293,6 +299,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -347,10 +354,12 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testConstructorsMinimal() {
 		// No tests.
 	}
 
+	@Test
 	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -406,6 +415,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testValidationWarnings() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -424,6 +434,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -476,6 +487,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testVersionSpecific() throws InvalidDDMSException {
 		// No security attributes in DDMS 2.0
 		DDMSVersion.setCurrentVersion("3.1");
@@ -495,6 +507,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		getInstance(builder, "The ddms:order attribute must not be used");
 	}
 
+	@Test
 	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -554,6 +567,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -567,6 +581,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetLocatorSuffix() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -576,6 +591,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testPrecedenceRestrictions() {
 		DDMSVersion.setCurrentVersion("4.0.1");
 		try {

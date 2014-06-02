@@ -19,6 +19,7 @@
  */
 package buri.ddmsence.util;
 
+import static org.junit.Assert.*;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,6 +31,9 @@ import java.util.List;
 import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Element;
+
+import org.junit.Test;
+
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.OutputFormat;
@@ -55,12 +59,14 @@ public class UtilTest extends AbstractBaseTestCase {
 		super(null);
 	}
 
+	@Test
 	public void testPrivateConstructorForCoverage() throws Exception {
 		Constructor<Util> constructor = Util.class.getDeclaredConstructor();
 		constructor.setAccessible(true);
 		constructor.newInstance();
 	}
 	
+	@Test
 	public void testGetJSONArray() throws InvalidDDMSException {
 		// Double
 		List<Double> doubles = new ArrayList<Double>();
@@ -94,6 +100,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testaddNonEmptyJsonProperty() throws InvalidDDMSException {
 		JsonObject object = new JsonObject();
 		
@@ -151,14 +158,17 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 		
+	@Test
 	public void testGetNonNullStringNull() {
 		assertEquals("", Util.getNonNullString(null));
 	}
 
+	@Test
 	public void testGetNonNullStringValue() {
 		assertEquals("Test", Util.getNonNullString("Test"));
 	}
 
+	@Test
 	public void testGetXsList() {
 		List<String> list = new ArrayList<String>();
 		list.add("Test");
@@ -166,34 +176,42 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals("Test Dog", Util.getXsList(list));
 	}
 
+	@Test
 	public void testGetXsListNull() {
 		assertEquals("", Util.getXsList(null));
 	}
 
+	@Test
 	public void testBooleanHashCodeTrue() {
 		assertEquals(1, Util.booleanHashCode(true));
 	}
 
+	@Test
 	public void testBooleanHashCodeFalse() {
 		assertEquals(0, Util.booleanHashCode(false));
 	}
 
+	@Test
 	public void testIsEmptyNull() {
 		assertTrue(Util.isEmpty(null));
 	}
 
+	@Test
 	public void testIsEmptyWhitespace() {
 		assertTrue(Util.isEmpty(" "));
 	}
 
+	@Test
 	public void testIsEmptyEmptyString() {
 		assertTrue(Util.isEmpty(""));
 	}
 
+	@Test
 	public void testIsEmptyNot() {
 		assertFalse(Util.isEmpty("DDMSence"));
 	}
 
+	@Test
 	public void testContainsEmptyStringFalse() {
 		assertFalse(Util.containsOnlyEmptyValues(null));
 		List<String> list = new ArrayList<String>();
@@ -203,6 +221,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertFalse(Util.containsOnlyEmptyValues(list));
 	}
 
+	@Test
 	public void testContainsEmptyStringTrue() {
 		List<String> list = new ArrayList<String>();
 		assertTrue(Util.containsOnlyEmptyValues(list));
@@ -213,6 +232,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertTrue(Util.containsOnlyEmptyValues(list));
 	}
 
+	@Test
 	public void testGetFirstDDMSChildValueNullParent() {
 		try {
 			Util.getFirstDDMSChildValue(null, "test");
@@ -223,6 +243,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetFirstDDMSChildValueNullChild() {
 		try {
 			Util.getFirstDDMSChildValue(Util.buildDDMSElement("test", null), null);
@@ -233,6 +254,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetFirstDDMSChildValueWrongNamespace() {
 		Element element = Util.buildElement("ddmsence", "test", "http://ddmsence.urizone.net/", null);
 		try {
@@ -244,6 +266,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetFirstDDMSChildValueIndependentOfCurrentVersion() {
 		DDMSVersion.setCurrentVersion("3.0");
 		Element element = Util.buildDDMSElement("test", null);
@@ -254,11 +277,13 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals("childText1", value);
 	}
 
+	@Test
 	public void testGetFirstDDMSChildValueNoValue() {
 		String value = Util.getFirstDDMSChildValue(Util.buildDDMSElement("test", null), "unknown");
 		assertEquals("", value);
 	}
 
+	@Test
 	public void testGetFirstDDMSChildValueWithValue() {
 		Element element = Util.buildDDMSElement("test", null);
 		element.appendChild(Util.buildDDMSElement("child", "childText1"));
@@ -267,6 +292,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals("childText1", value);
 	}
 
+	@Test
 	public void testGetDDMSChildValuesNullParent() {
 		try {
 			Util.getDDMSChildValues(null, "test");
@@ -277,6 +303,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetDDMSChildValuesNullChild() {
 		try {
 			Util.getDDMSChildValues(Util.buildDDMSElement("test", null), null);
@@ -287,6 +314,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetDDMSChildValuesWrongNamespace() {
 		Element element = Util.buildElement("ddmsence", "test", "http://ddmsence.urizone.net/", null);
 		element.appendChild(Util.buildDDMSElement("child", "child1"));
@@ -300,6 +328,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetDDMSChildValuesIndependentOfCurrentVersion() {
 		DDMSVersion.setCurrentVersion("3.0");
 		Element element = Util.buildDDMSElement("test", null);
@@ -313,6 +342,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals("child2", values.get(1));
 	}
 
+	@Test
 	public void testGetDDMSChildValuesNoValues() {
 		Element element = Util.buildDDMSElement("test", null);
 		List<String> values = Util.getDDMSChildValues(element, "unknown");
@@ -320,6 +350,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertTrue(values.isEmpty());
 	}
 
+	@Test
 	public void testGetDDMSChildValuesEmptyValues() {
 		Element element = Util.buildDDMSElement("test", null);
 		element.appendChild(Util.buildDDMSElement("child", ""));
@@ -329,6 +360,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals("", values.get(0));
 	}
 
+	@Test
 	public void testGetDDMSChildValuesWithValues() {
 		Element element = Util.buildDDMSElement("test", null);
 		element.appendChild(Util.buildDDMSElement("child", "child1"));
@@ -340,6 +372,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals("child2", values.get(1));
 	}
 
+	@Test
 	public void testRequireOutputFormat() {
 		try {
 			Util.requireHTMLText(OutputFormat.JSON);
@@ -351,6 +384,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		Util.requireHTMLText(OutputFormat.HTML);
 	}
 	
+	@Test
 	public void testRequireDDMSValueNull() {
 		try {
 			Util.requireDDMSValue("description", null);
@@ -361,6 +395,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireDDMSValueEmpty() {
 		try {
 			Util.requireDDMSValue("description", "");
@@ -371,6 +406,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireDDMSValueNotEmpty() {
 		try {
 			Util.requireDDMSValue("description", "DDMSence");
@@ -380,6 +416,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireDDMSDateFormatSuccess() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -402,6 +439,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireDDMSDateFormatFailure() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -444,6 +482,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireDDMSQNameSuccess() {
 		try {
 			Element element = Util.buildDDMSElement("name", null);
@@ -454,6 +493,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireDDMSQNameFailure() {
 		// Bad URI
 		try {
@@ -476,6 +516,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireQNameSuccess() {
 		try {
 			Element element = Util.buildDDMSElement("name", null);
@@ -495,6 +536,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireQNameFailure() {
 		// Bad URI
 		try {
@@ -517,6 +559,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireValueNull() {
 		try {
 			Util.requireValue("description", null);
@@ -527,6 +570,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireValueEmpty() {
 		try {
 			Util.requireValue("description", "");
@@ -537,6 +581,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireValueNotEmpty() {
 		try {
 			Util.requireValue("description", "DDMSence");
@@ -546,6 +591,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireBoundedDDMSChildCountNullParent() {
 		try {
 			Util.requireBoundedChildCount(null, "test", 0, 1);
@@ -559,6 +605,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireBoundedDDMSChildCountNullChild() {
 		try {
 			Util.requireBoundedChildCount(Util.buildDDMSElement("test", null), null, 0, 1);
@@ -572,6 +619,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireBoundedDDMSChildCountBounded() {
 		Element element = Util.buildDDMSElement("test", null);
 		element.appendChild(Util.buildDDMSElement("name", "nameValue"));
@@ -583,6 +631,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireBoundedDDMSChildCountExactly1() {
 		Element element = Util.buildDDMSElement("test", null);
 		element.appendChild(Util.buildDDMSElement("name", "nameValue"));
@@ -595,6 +644,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireBoundedDDMSChildCountExactlyX() {
 		Element element = Util.buildDDMSElement("test", null);
 		element.appendChild(Util.buildDDMSElement("name", "nameValue"));
@@ -607,6 +657,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireBoundedDDMSChildCountNoMoreThan1() {
 		Element element = Util.buildDDMSElement("test", null);
 		element.appendChild(Util.buildDDMSElement("phone", "phoneValue"));
@@ -620,6 +671,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireBoundedDDMSChildCountNoMoreThanX() {
 		Element element = Util.buildDDMSElement("test", null);
 		element.appendChild(Util.buildDDMSElement("phone", "phoneValue"));
@@ -634,6 +686,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireBoundedDDMSChildCountGenericUnbounded() {
 		Element element = Util.buildDDMSElement("test", null);
 		try {
@@ -645,6 +698,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireBoundedChildCountIndependentOfCurrentVersion() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
 		Element element = Util.buildDDMSElement("test", null);
@@ -653,16 +707,19 @@ public class UtilTest extends AbstractBaseTestCase {
 		Util.requireBoundedChildCount(element, "phone", 1, 1);
 	}
 
+	@Test
 	public void testRequireValidNCNamesNull() throws InvalidDDMSException {
 		Util.requireValidNCNames(null);
 	}
 
+	@Test
 	public void testRequireValidNCNamesValid() throws InvalidDDMSException {
 		List<String> names = new ArrayList<String>();
 		names.add("test");
 		Util.requireValidNCNames(names);
 	}
 
+	@Test
 	public void testRequireValidNCNamesInvalid() throws InvalidDDMSException {
 		List<String> names = new ArrayList<String>();
 		names.add("1test");
@@ -675,6 +732,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireValidNCNameNull() {
 		try {
 			Util.requireValidNCName(null);
@@ -685,6 +743,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireValidNCNameInvalidName() {
 		try {
 			Util.requireValidNCName("1TEST");
@@ -695,6 +754,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireValidNCNameInvalidNamespace() {
 		try {
 			Util.requireValidNCName("xmlns:TEST");
@@ -705,10 +765,12 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireValidNCNameValid() throws InvalidDDMSException {
 		Util.requireValidNCName("name");
 	}
 
+	@Test
 	public void testRequireValidNMTokenNull() {
 		try {
 			Util.requireValidNMToken(null);
@@ -719,22 +781,27 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireValidNMTokenValidName() throws InvalidDDMSException {
 		Util.requireValidNMToken("1TEST");
 	}
 
+	@Test
 	public void testRequireValidNMTokenValidNamespace() throws InvalidDDMSException {
 		Util.requireValidNMToken("xmlns:TEST");
 	}
 
+	@Test
 	public void testRequireValidNMTokenValid() throws InvalidDDMSException {
 		Util.requireValidNMToken("name");
 	}
 
+	@Test
 	public void testRequireDDMSValidURIValid() throws InvalidDDMSException {
 		Util.requireDDMSValidURI("test");
 	}
 
+	@Test
 	public void testRequireDDMSValidURIInvalid() {
 		try {
 			Util.requireDDMSValidURI(":::::");
@@ -745,6 +812,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireDDMSValidURINull() throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValidURI(null);
@@ -755,6 +823,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireValidLongitudeNull() {
 		try {
 			Util.requireValidLongitude(null);
@@ -765,6 +834,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireValidLongitudeOutOfBounds() {
 		try {
 			Util.requireValidLongitude(new Double(-181));
@@ -782,10 +852,12 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireValidLongitudeValid() throws InvalidDDMSException {
 		Util.requireValidLongitude(new Double(0));
 	}
 
+	@Test
 	public void testRequireValidLatitudeNull() {
 		try {
 			Util.requireValidLatitude(null);
@@ -796,6 +868,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireValidLatitudeOutOfBounds() {
 		try {
 			Util.requireValidLatitude(new Double(-91));
@@ -813,10 +886,12 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireValidLatitudeValid() throws InvalidDDMSException {
 		Util.requireValidLatitude(new Double(0));
 	}
 
+	@Test
 	public void testIsBoundedBadRange() {
 		try {
 			Util.isBounded(0, 10, 0);
@@ -827,30 +902,37 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testIsBoundedLow() {
 		assertFalse(Util.isBounded(0, 1, 3));
 	}
 
+	@Test
 	public void testIsBoundedHigh() {
 		assertFalse(Util.isBounded(4, 1, 3));
 	}
 
+	@Test
 	public void testIsBoundedMiddle() {
 		assertTrue(Util.isBounded(1, 0, 2));
 	}
 
+	@Test
 	public void testIsBoundedLowEdge() {
 		assertTrue(Util.isBounded(1, 1, 3));
 	}
 
+	@Test
 	public void testIsBoundedHighEdge() {
 		assertTrue(Util.isBounded(3, 1, 3));
 	}
 
+	@Test
 	public void testIsBoundedOnlyOne() {
 		assertTrue(Util.isBounded(1, 1, 1));
 	}
 
+	@Test
 	public void testListEqualsNullLists() {
 		try {
 			Util.listEquals(null, null);
@@ -869,18 +951,21 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testListEqualsSameList() {
 		List<String> list = new ArrayList<String>();
 		list.add("Test");
 		assertTrue(Util.listEquals(list, list));
 	}
 
+	@Test
 	public void testListEqualsEmptyLists() {
 		List<String> list1 = new ArrayList<String>();
 		List<String> list2 = new ArrayList<String>();
 		assertTrue(Util.listEquals(list1, list2));
 	}
 
+	@Test
 	public void testListEqualsSizes() {
 		List<String> list1 = new ArrayList<String>();
 		list1.add("Test");
@@ -890,6 +975,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertFalse(Util.listEquals(list1, list2));
 	}
 
+	@Test
 	public void testListEqualsNullValues() {
 		List<String> list1 = new ArrayList<String>();
 		list1.add(null);
@@ -900,6 +986,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertTrue(Util.listEquals(list1, list2));
 	}
 
+	@Test
 	public void testListEqualsNullValue() {
 		List<String> list1 = new ArrayList<String>();
 		list1.add(null);
@@ -910,6 +997,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertFalse(Util.listEquals(list1, list2));
 	}
 
+	@Test
 	public void testListEqualsDifferentValue() {
 		List<String> list1 = new ArrayList<String>();
 		list1.add("Test1");
@@ -918,6 +1006,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertFalse(Util.listEquals(list1, list2));
 	}
 
+	@Test
 	public void testXmlEscape() {
 		String testString = "<test>\"Brian's DDMSense & DDMS\"</test>";
 		assertEquals("&lt;test&gt;&quot;Brian&apos;s DDMSense &amp; DDMS&quot;&lt;/test&gt;",
@@ -925,38 +1014,47 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals(null, Util.xmlEscape(null));
 	}
 
+	@Test
 	public void testCapitalizeEmpty() {
 		assertEquals(null, Util.capitalize(null));
 	}
 
+	@Test
 	public void testCapitalizeOneChar() {
 		assertEquals("A", Util.capitalize("a"));
 	}
 
+	@Test
 	public void testCapitalizeNotLetter() {
 		assertEquals("123", Util.capitalize("123"));
 	}
 
+	@Test
 	public void testCapitalizeSuccess() {
 		assertEquals("Ddms", Util.capitalize("ddms"));
 	}
 
+	@Test
 	public void testDecapitalizeEmpty() {
 		assertEquals(null, Util.decapitalize(null));
 	}
 
+	@Test
 	public void testDecapitalizeOneChar() {
 		assertEquals("a", Util.decapitalize("A"));
 	}
 
+	@Test
 	public void testDecapitalizeNotLetter() {
 		assertEquals("123", Util.decapitalize("123"));
 	}
 
+	@Test
 	public void testDecapitalizeSuccess() {
 		assertEquals("ddms", Util.decapitalize("Ddms"));
 	}
 	
+	@Test
 	public void testBuildElementEmptyPrefix() {
 		Element element = Util.buildElement(null, "test", "", null);
 		assertNotNull(element);
@@ -967,6 +1065,7 @@ public class UtilTest extends AbstractBaseTestCase {
 
 	}
 
+	@Test
 	public void testBuildDDMSElement() {
 		Element element = Util.buildDDMSElement("test", null);
 		assertNotNull(element);
@@ -975,6 +1074,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals(PropertyReader.getPrefix("ddms"), element.getNamespacePrefix());
 	}
 
+	@Test
 	public void testBuildDDMSElementNullName() {
 		try {
 			Util.buildDDMSElement(null, null);
@@ -985,6 +1085,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testBuildDDMSElementChildText() {
 		Element element = Util.buildDDMSElement("test", "testValue");
 		assertNotNull(element);
@@ -994,6 +1095,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals(PropertyReader.getPrefix("ddms"), element.getNamespacePrefix());
 	}
 
+	@Test
 	public void testBuildDDMSElementNoChildText() {
 		Element element = Util.buildDDMSElement("test", null);
 		assertNotNull(element);
@@ -1003,6 +1105,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals(PropertyReader.getPrefix("ddms"), element.getNamespacePrefix());
 	}
 
+	@Test
 	public void testBuildAttribute() {
 		Attribute attribute = Util.buildAttribute("ddms", "test", DDMSVersion.getCurrentVersion().getNamespace(),
 			"testValue");
@@ -1013,6 +1116,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals(PropertyReader.getPrefix("ddms"), attribute.getNamespacePrefix());
 	}
 
+	@Test
 	public void testBuildAttributeEmptyValues() {
 		Attribute attribute = Util.buildAttribute(null, "test", null, "testValue");
 		assertNotNull(attribute);
@@ -1022,6 +1126,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals("", attribute.getNamespacePrefix());
 	}
 
+	@Test
 	public void testBuildDDMSAttribute() {
 		Attribute attribute = Util.buildDDMSAttribute("test", "testValue");
 		assertNotNull(attribute);
@@ -1031,6 +1136,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals(PropertyReader.getPrefix("ddms"), attribute.getNamespacePrefix());
 	}
 
+	@Test
 	public void testBuildDDMSAttributeNullName() {
 		try {
 			Util.buildDDMSAttribute(null, "testValue");
@@ -1041,6 +1147,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testBuildDDMSAttributeNullValue() {
 		try {
 			Util.buildDDMSAttribute("test", null);
@@ -1051,6 +1158,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testRequireSameVersionSuccess() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		Identifier identifier = new Identifier("Test", "Value");
@@ -1058,6 +1166,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		Util.requireCompatibleVersion(identifier, identifier2);
 	}
 
+	@Test
 	public void testRequireSameVersionFailure() {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
@@ -1072,12 +1181,14 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testAddDdmsAttributeEmptyValue() {
 		Element element = new Element("test", "http://test.com");
 		Util.addDDMSAttribute(element, "testAttribute", null);
 		assertNull(element.getAttribute("testAttribute", DDMSVersion.getCurrentVersion().getNamespace()));
 	}
 
+	@Test
 	public void testAddDdmsAttributeValue() {
 		Element element = new Element("test", "http://test.com");
 		Util.addDDMSAttribute(element, "testAttribute", "dog");
@@ -1088,12 +1199,14 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals("dog", element.getAttributeValue("testAttribute", DDMSVersion.getCurrentVersion().getNamespace()));
 	}
 
+	@Test
 	public void testAddDdmsChildElementEmptyValue() {
 		Element element = new Element("test", "http://test.com");
 		Util.addDDMSChildElement(element, "child", null);
 		assertEquals(0, element.getChildElements().size());
 	}
 
+	@Test
 	public void testAddDdmsChildElementValue() {
 		Element element = new Element("test", "http://test.com");
 		Util.addDDMSChildElement(element, "child", "dog");
@@ -1105,10 +1218,12 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals("dog", child.getValue());
 	}
 
+	@Test
 	public void testGetDatatypeFactory() {
 		assertNotNull(Util.getDataTypeFactory());
 	}
 
+	@Test
 	public void testGetAsList() {
 		assertTrue(Util.getXsListAsList(null).isEmpty());
 		assertTrue(Util.getXsListAsList("").isEmpty());
@@ -1122,12 +1237,14 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals("b", list.get(1));
 	}
 
+	@Test
 	public void testBuildXmlDocument() throws Exception {
 		File testFile = new File(PropertyReader.getProperty("test.unit.data") + "5.0/", "resource.xml");
 		String expectedXmlOutput = new DDMSReader(DDMSVersion.getVersionFor("5.0")).getDDMSResource(testFile).toXML();
 		assertEquals(expectedXmlOutput, Util.buildXmlDocument(new FileInputStream(testFile)).getRootElement().toXML());
 	}
 
+	@Test
 	public void testBuildXmlDocumentBadFile() throws Exception {
 		try {
 			Util.buildXmlDocument(null);
@@ -1146,6 +1263,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testSchematronQueryBinding() throws Exception {
 		Document schDocument = Util.buildXmlDocument(new FileInputStream(
 			"data/sample/schematron/testPublisherValueXslt1.sch"));
@@ -1154,10 +1272,12 @@ public class UtilTest extends AbstractBaseTestCase {
 		assertEquals("xslt2", Util.getSchematronQueryBinding(schDocument));
 	}
 	
+	@Test
 	public void testCommitXml() throws InvalidDDMSException {
 		Util.commitXml("<test />");
 	}
 	
+	@Test
 	public void testCommitXmlFailure() {
 		try {
 			Util.commitXml("notXml");

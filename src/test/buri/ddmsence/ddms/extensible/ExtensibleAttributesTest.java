@@ -19,20 +19,25 @@
  */
 package buri.ddmsence.ddms.extensible;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.Gson;
-
 import nu.xom.Attribute;
 import nu.xom.Element;
+
+import org.junit.Test;
+
 import buri.ddmsence.AbstractBaseTestCase;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.summary.Keyword;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
+
+import com.google.gson.Gson;
 
 /**
  * <p>
@@ -186,6 +191,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 		return (text.toString());
 	}
 	
+	@Test
 	public void testConstructors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -200,6 +206,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testConstructorsMinimal() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -212,10 +219,12 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testValidationErrors() {
 		// No invalid cases right now. The validation occurs when the attributes are added to some component.
 	}
 
+	@Test
 	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -228,6 +237,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -266,10 +276,12 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testVersionSpecific() {
 		// No tests.
 	}
 
+	@Test
 	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -286,6 +298,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -299,6 +312,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testBuilderLazyList() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -308,6 +322,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testAddTo() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -332,6 +347,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetNonNull() throws InvalidDDMSException {
 		ExtensibleAttributes component = new ExtensibleAttributes((List) null);
 		ExtensibleAttributes output = ExtensibleAttributes.getNonNullInstance(null);
@@ -341,6 +357,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 		assertEquals(getFixture(), output);
 	}
 
+	@Test
 	public void testIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -350,6 +367,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testXsiAttributes() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

@@ -19,6 +19,7 @@
  */
 package buri.ddmsence.ddms;
 
+import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +28,9 @@ import java.util.List;
 import java.util.Map;
 
 import nu.xom.xslt.XSLException;
+
+import org.junit.Test;
+
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.resource.Person;
 import buri.ddmsence.util.DDMSVersion;
@@ -53,6 +57,7 @@ public class SchematronValidationTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testSchematronValidationXslt1() throws InvalidDDMSException, IOException, XSLException {
 		List<String> supportedXslt1Processors = new ArrayList<String>();
 		if (System.getProperty("java.version").indexOf("1.5.0") == -1)
@@ -95,6 +100,7 @@ public class SchematronValidationTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testSchematronValidationXslt2() throws InvalidDDMSException, IOException, XSLException {
 		String[] supportedXslt1Processors = new String[] { "net.sf.saxon.TransformerFactoryImpl" };
 		for (String processor : supportedXslt1Processors) {
@@ -124,6 +130,7 @@ public class SchematronValidationTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testSchematronValidationInvalid() throws InvalidDDMSException, IOException, XSLException {
 		String[] supportedXslt1Processors = new String[] { "net.sf.saxon.TransformerFactoryImpl" };
 		for (String processor : supportedXslt1Processors) {
