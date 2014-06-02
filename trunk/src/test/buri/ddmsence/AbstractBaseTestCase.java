@@ -19,14 +19,19 @@
  */
 package buri.ddmsence;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.TestCase;
 import nu.xom.Element;
+
+import org.junit.After;
+import org.junit.Before;
+
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.OutputFormat;
@@ -46,7 +51,7 @@ import com.google.gson.JsonSyntaxException;
  * @author Brian Uri!
  * @since 0.9.b
  */
-public abstract class AbstractBaseTestCase extends TestCase {
+public abstract class AbstractBaseTestCase {
 
 	private String _type;
 	private JsonParser _jsonParser = new JsonParser();
@@ -69,14 +74,16 @@ public abstract class AbstractBaseTestCase extends TestCase {
 	/**
 	 * Resets the in-use version of DDMS.
 	 */
-	protected void setUp() throws Exception {
+	@Before
+	public void baseSetUp() throws Exception {
 		DDMSVersion.clearCurrentVersion();
 	}
 
 	/**
 	 * Resets the in-use version of DDMS.
 	 */
-	protected void tearDown() throws Exception {
+	@After
+	public void baseTearDown() throws Exception {
 		DDMSVersion.clearCurrentVersion();
 		PropertyReader.setProperty("output.indexLevel", "0");
 		PropertyReader.setProperty("output.json.inlineAttributes", "false");

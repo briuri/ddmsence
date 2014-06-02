@@ -19,13 +19,18 @@
  */
 package buri.ddmsence.ddms.resource;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
+
+import org.junit.Test;
+
 import buri.ddmsence.AbstractBaseTestCase;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -193,6 +198,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 		return (xml.toString());
 	}
 
+	@Test
 	public void testNameAndNamespace() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -203,6 +209,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -215,6 +222,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testConstructorsMinimal() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -229,6 +237,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testValidationErrors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -240,6 +249,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testValidationWarnings() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -250,6 +260,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -285,6 +296,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testVersionSpecific() throws InvalidDDMSException {
 		// acronym before 4.1
 		DDMSVersion.setCurrentVersion("3.1");
@@ -300,6 +312,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 		getInstance(builder, "ddms:organization must not have");
 	}
 
+	@Test
 	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -313,6 +326,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -336,6 +350,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testBuilderLazyList() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -346,6 +361,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 		}
 	}
 		
+	@Test
 	public void testIndexLevelsObjectLists() throws InvalidDDMSException {
 		List<String> names = Util.getXsListAsList("DISA");
 		Organization org = new Organization(names, null, null, SubOrganizationTest.getFixtureList(), null, null);
@@ -371,6 +387,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 			org.toText());
 	}
 	
+	@Test
 	public void testConstructorChaining() throws InvalidDDMSException {
 		Organization org = new Organization(TEST_NAMES, null, null, null, null);
 		Organization orgFull = new Organization(TEST_NAMES, null, null, null, null, null);

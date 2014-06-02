@@ -21,6 +21,8 @@ package buri.ddmsence.ddms;
 
 import junit.framework.TestCase;
 
+import org.junit.Test;
+
 /**
  * <p> Tests related to OutputFormat </p>
  * 
@@ -29,6 +31,7 @@ import junit.framework.TestCase;
  */
 public class OutputFormatTest extends TestCase {
 
+	@Test
 	public void testValueOf() {
 		// Hack to get coverage of bytecode, by calling valueOf one time.
 		assertEquals(OutputFormat.HTML, OutputFormat.valueOf("HTML"));

@@ -19,12 +19,16 @@
  */
 package buri.ddmsence.ddms.resource;
 
+import static org.junit.Assert.*;
 import nu.xom.Element;
+
+import org.junit.Test;
+
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractBaseTestCase;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.IRoleEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -181,6 +185,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 		return (xml.toString());
 	}
 
+	@Test
 	public void testNameAndNamespace() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -191,6 +196,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -203,6 +209,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testConstructorsMinimal() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -217,6 +224,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -242,6 +250,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -252,6 +261,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -277,6 +287,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testVersionSpecific() throws InvalidDDMSException {
 		// pocType before 4.0.1
 		DDMSVersion.setCurrentVersion("3.1");
@@ -285,6 +296,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 		getInstance(builder, "This component must not have a pocType");
 	}
 
+	@Test
 	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -298,6 +310,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

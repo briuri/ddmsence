@@ -19,6 +19,8 @@
  */
 package buri.ddmsence.util;
 
+import static org.junit.Assert.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -27,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import org.junit.Test;
 
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractBaseTestCase;
@@ -47,6 +51,7 @@ public class LazyListTest extends AbstractBaseTestCase {
 		super(null);
 	}
 
+	@Test
 	public void testSerializableInterface() throws Exception {
 		LazyList list = new LazyList(Dates.Builder.class);
 		list.add(new Dates.Builder());
@@ -66,6 +71,7 @@ public class LazyListTest extends AbstractBaseTestCase {
 			((Dates.Builder) (unserializedList.get(0))).getCreated());
 	}
 
+	@Test
 	public void testUnmodifiableList() {
 		List<String> list = new ArrayList<String>();
 		list.add("Test");
@@ -78,6 +84,7 @@ public class LazyListTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testObjectMethods() {
 		List<String> list = new ArrayList<String>();
 		list.add("Test");
@@ -88,6 +95,7 @@ public class LazyListTest extends AbstractBaseTestCase {
 		assertEquals(lazyList.toString(), list.toString());
 	}
 
+	@Test
 	public void testListInterface() {
 		// Because a Java ArrayList underlies this Object, I'm not too worried that these tests are necessary.
 
@@ -153,6 +161,7 @@ public class LazyListTest extends AbstractBaseTestCase {
 		assertTrue(list.isEmpty());
 	}
 
+	@Test
 	public void testSublist() {
 		LazyList list = new LazyList(Dates.Builder.class);
 		Rights.Builder rightsBuilder = new Rights.Builder();
@@ -170,6 +179,7 @@ public class LazyListTest extends AbstractBaseTestCase {
 		assertNotNull(subList.get(10));
 	}
 
+	@Test
 	public void testGet() {
 		LazyList list = new LazyList(Dates.Builder.class);
 		assertTrue(list.isEmpty());
@@ -181,6 +191,7 @@ public class LazyListTest extends AbstractBaseTestCase {
 		assertEquals(4, list.size());
 	}
 
+	@Test
 	public void testNullList() {
 		try {
 			new LazyList(null, String.class);
@@ -190,6 +201,7 @@ public class LazyListTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testListGetExceptions() {
 		LazyList list = new LazyList(null, AbstractBaseComponent.class);
 		try {

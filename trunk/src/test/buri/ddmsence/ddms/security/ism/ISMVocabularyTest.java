@@ -19,6 +19,10 @@
  */
 package buri.ddmsence.ddms.security.ism;
 
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.util.DDMSVersion;
 
@@ -37,6 +41,7 @@ public class ISMVocabularyTest extends AbstractBaseTestCase {
 		super(null);
 	}
 
+	@Test
 	public void testBadKey() {
 		try {
 			ISMVocabulary.getEnumerationTokens("unknownKey");
@@ -47,6 +52,7 @@ public class ISMVocabularyTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testEnumerationTokens() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -107,6 +113,7 @@ public class ISMVocabularyTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testEnumerationPatterns() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -135,12 +142,14 @@ public class ISMVocabularyTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testIsUSMarking() {
 		ISMVocabulary.setDDMSVersion(DDMSVersion.getVersionFor("2.0"));
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, "TS"));
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, "CTS"));
 	}
 
+	@Test
 	public void testInvalidMessage() {
 		assertEquals("Dog is not a valid enumeration token for this attribute, as specified in Cat.",
 			ISMVocabulary.getInvalidMessage("Cat", "Dog"));

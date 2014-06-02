@@ -19,14 +19,19 @@
  */
 package buri.ddmsence.ddms.summary;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
+
+import org.junit.Test;
+
 import buri.ddmsence.AbstractBaseTestCase;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.ddms.resource.Rights;
@@ -166,6 +171,7 @@ public class KeywordTest extends AbstractBaseTestCase {
 		return (xml.toString());
 	}
 
+	@Test
 	public void testNameAndNamespace() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -176,6 +182,7 @@ public class KeywordTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -188,10 +195,12 @@ public class KeywordTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testConstructorsMinimal() {
 		// No tests.
 	}
 
+	@Test
 	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -202,6 +211,7 @@ public class KeywordTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testValidationWarnings() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -212,6 +222,7 @@ public class KeywordTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -233,6 +244,7 @@ public class KeywordTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testVersionSpecific() throws InvalidDDMSException {
 		// No security attributes in DDMS 3.1
 		Keyword.Builder builder = getBaseBuilder();
@@ -258,6 +270,7 @@ public class KeywordTest extends AbstractBaseTestCase {
 		getInstance(builder, "The extensible attribute with the name, ddms:value");
 	}
 	
+	@Test
 	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -271,6 +284,7 @@ public class KeywordTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

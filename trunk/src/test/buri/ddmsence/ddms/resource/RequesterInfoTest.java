@@ -19,13 +19,17 @@
  */
 package buri.ddmsence.ddms.resource;
 
+import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
+
+import org.junit.Test;
+
 import buri.ddmsence.AbstractBaseTestCase;
-import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -177,6 +181,7 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 		return (xml.toString());
 	}
 
+	@Test
 	public void testNameAndNamespace() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -187,6 +192,7 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -205,10 +211,12 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testConstructorsMinimal() {
 		// No tests.
 	}
 
+	@Test
 	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -235,6 +243,7 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -245,6 +254,7 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -261,11 +271,13 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testVersionSpecific() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		getInstance(getFixtureElement(true), "The requesterInfo element must not ");
 	}
 
+	@Test
 	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -279,6 +291,7 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

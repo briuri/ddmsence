@@ -19,10 +19,15 @@
  */
 package buri.ddmsence;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
+
+import org.junit.Test;
+
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.OutputFormat;
@@ -52,6 +57,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		super(null);
 	}
 
+	@Test
 	public void testBuildIndexInvalidInputBounds() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
 
@@ -80,6 +86,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testBuildIndexValidInputBounds() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
 
@@ -90,6 +97,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		rights.buildIndex(1, 2);
 	}
 
+	@Test
 	public void testBuildIndexLevel0() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
 
@@ -106,6 +114,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		assertEquals("", index);
 	}
 
+	@Test
 	public void testBuildIndexLevel1() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
 
@@ -116,6 +125,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		assertEquals("[3]", index);
 	}
 
+	@Test
 	public void testBuildIndexLevel2() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
 
@@ -126,6 +136,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		assertEquals("[3]", index);
 	}
 
+	@Test
 	public void testBuildOutput() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
 		List<IDDMSComponent> objectList = new ArrayList<IDDMSComponent>();
@@ -142,6 +153,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		assertEquals("name: 2.0\n", rights.buildHTMLTextOutput(OutputFormat.TEXT, "name", otherList));
 	}
 
+	@Test
 	public void testOutputJSONPrettyPrint() throws InvalidDDMSException {
 		Extent extent = new Extent("a", "z");
 		PropertyReader.setProperty("output.json.prettyPrint", "false");
@@ -150,6 +162,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		assertEquals("{\n  \"qualifier\": \"a\",\n  \"value\": \"z\"\n}", extent.toJSON());
 	}
 	
+	@Test
 	public void testOutputJSONInline() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("4.1");
 		Security security = SecurityTest.getFixture();
@@ -159,21 +172,25 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		assertEquals("{\"excludeFromRollup\":true,\"classification\":\"U\",\"ownerProducer\":[\"USA\"]}", security.toJSON());
 	}
 	
+	@Test
 	public void testSelfEquality() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
 		assertEquals(rights, rights);
 	}
 
+	@Test
 	public void testToString() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
 		assertEquals(rights.toString(), rights.toXML());
 	}
 
+	@Test
 	public void testVersion() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
 		assertEquals(DDMSVersion.getCurrentVersion().getNamespace(), rights.getNamespace());
 	}
 
+	@Test
 	public void testCustomPrefix() throws InvalidDDMSException {
 		String namespace = DDMSVersion.getCurrentVersion().getNamespace();
 		Element element = Util.buildElement("customPrefix", Language.getName(DDMSVersion.getCurrentVersion()),
@@ -183,6 +200,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		new Language(element);
 	}
 
+	@Test
 	public void testNullChecks() throws InvalidDDMSException {
 		AbstractBaseComponent component = new AbstractBaseComponent() {
 			public JsonObject getJSONObject() {
@@ -198,6 +216,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		assertEquals("", component.toXML());
 	}
 
+	@Test
 	public void testAttributeWarnings() throws InvalidDDMSException {
 		AbstractBaseComponent component = new AbstractBaseComponent() {
 			public JsonObject getJSONObject() {
@@ -218,6 +237,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		assertEquals("//locator", component.getValidationWarnings().get(0).getLocator());
 	}
 
+	@Test
 	public void testSameVersion() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
 		Organization org = new Organization(Util.getXsListAsList("DISA"), null, null, null, null, null);

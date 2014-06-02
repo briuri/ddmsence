@@ -19,7 +19,11 @@
  */
 package buri.ddmsence.ddms.summary;
 
+import static org.junit.Assert.*;
 import nu.xom.Element;
+
+import org.junit.Test;
+
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.OutputFormat;
@@ -184,6 +188,7 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 		return (xml.toString());
 	}
 
+	@Test
 	public void testNameAndNamespace() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -194,6 +199,7 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testConstructors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -206,10 +212,12 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testConstructorsMinimal() {
 		// No tests.
 	}
 	
+	@Test
 	public void testValidationErrors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -249,6 +257,7 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testValidationWarnings() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -259,6 +268,7 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -299,6 +309,7 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testVersionSpecific() throws InvalidDDMSException {
 		// Not in 5.0
 		DDMSVersion.setCurrentVersion("4.1");
@@ -307,6 +318,7 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 		getInstance(builder, "The boundingBox element must not be used");
 	}
 
+	@Test
 	public void testOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -320,6 +332,7 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

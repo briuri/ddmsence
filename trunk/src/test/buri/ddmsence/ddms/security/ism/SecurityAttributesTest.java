@@ -19,12 +19,16 @@
  */
 package buri.ddmsence.ddms.security.ism;
 
+import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import nu.xom.Element;
+
+import org.junit.Test;
+
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.OutputFormat;
@@ -157,13 +161,6 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 	 */
 	public SecurityAttributesTest() {
 		super(null);
-	}
-
-	/**
-	 * Resets the validation property.
-	 */
-	protected void tearDown() throws Exception {
-		super.tearDown();
 	}
 
 	/**
@@ -367,6 +364,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		return (new SecurityAttributes.Builder(getFixture()));
 	}
 	
+	@Test
 	public void testConstructors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -387,6 +385,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testConstructorsMinimal() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -406,6 +405,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testValidationErrors() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -467,6 +467,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testValidationWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -477,6 +478,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -529,6 +531,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testVersionSpecific() throws InvalidDDMSException {
 		// Can't attach to a different version.
 		DDMSVersion.setCurrentVersion("3.0");
@@ -544,10 +547,12 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testHTMLTextOutput() {
 		// HTML/Text tested by parent components.
 	}
 	
+	@Test
 	public void testJSONOutput() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -558,6 +563,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -572,6 +578,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testBuilderLazyList() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -593,6 +600,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testIsEmpty() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -604,6 +612,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testAddTo() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -616,6 +625,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetNonNull() throws InvalidDDMSException {
 		SecurityAttributes component = new SecurityAttributes(null, null, null);
 		SecurityAttributes output = SecurityAttributes.getNonNullInstance(null);
@@ -625,6 +635,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		assertEquals(getFixture(), output);
 	}
 
+	@Test
 	public void testDateOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -646,6 +657,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void testOldClassifications() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		getInstance("NS-S", TEST_OWNERS, null, SUCCESS);
@@ -655,6 +667,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		getInstance("NS-A", TEST_OWNERS, null, "NS-A is not a valid enumeration token for this attribute");
 	}
 
+	@Test
 	public void test30AttributesIn20() throws InvalidDDMSException {
 		try {
 			DDMSVersion.setCurrentVersion("3.0");
@@ -668,6 +681,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	@Test
 	public void test20AttributesIn30() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		Map<String, String> map = getOtherAttributes(SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, "true");
@@ -687,6 +701,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		assertTrue(attr.getHTMLTextOutput(OutputFormat.TEXT, "").contains(buildHTMLTextOutput(OutputFormat.TEXT, "declassManualReview", "true")));
 	}
 	
+	@Test
 	public void test30AttributesIn31() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.1");
 		Map<String, String> others = getOtherAttributes(SecurityAttributes.TYPE_OF_EXEMPTED_SOURCE_NAME, "OADR");
@@ -708,6 +723,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void test31AttributesIn30() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
 		Map<String, String> others = getOtherAttributes(SecurityAttributes.ATOMIC_ENERGY_MARKINGS_NAME, "RD");
@@ -738,18 +754,21 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
 	public void testMultipleDeclassException() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		Map<String, String> map = getOtherAttributes(SecurityAttributes.DECLASS_EXCEPTION_NAME, "25X1 25X2");
 		new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
 	}
 
+	@Test
 	public void testMultipleTypeExempted() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		Map<String, String> map = getOtherAttributes(SecurityAttributes.TYPE_OF_EXEMPTED_SOURCE_NAME, "X1 X2");
 		new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
 	}
 
+	@Test
 	public void testDeclassManualReviewHtmlOutput() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		Map<String, String> map = new HashMap<String, String>();
@@ -759,6 +778,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			+ buildHTMLTextOutput(OutputFormat.HTML, "ownerProducer", "USA"), attributes.getHTMLTextOutput(OutputFormat.HTML, ""));
 	}
 
+	@Test
 	public void testCVEErrorsByDefault() {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put(SecurityAttributes.DECLASS_EXCEPTION_NAME, "UnknownValue");
