@@ -6,7 +6,7 @@
 </head>
 <body>
 <%@ include file="../shared/header.jspf" %>
-<img src="./images/splashImage.jpg" width="302" height="210" title="DDMSence" align="right" />
+
 <h1>Documentation</h1>
 
 
@@ -141,7 +141,7 @@ into a complete DDMS metacard. The second way uses the <a href="documentation-bu
 more flexibility of implementation. The latter approach follows the pattern of a step-by-step wizard that builds the metacard over several steps, and then commits and validates the metacard
 at the very end.</p>
 
-<h4>Editing existing metacards</h4>
+<h4>Editing or transforming existing metacards</h4>
 
 <p>The Component Builder framework also allows you to load an existing metacard, make changes to it, and then revalidate it. It might also be used to programmatically update or
 correct errors in a collection of DDMS metacards. For example, if your assets have moved to a different web server, you could programmatically update all of your DDMS Identifiers
@@ -272,7 +272,7 @@ contact me directly by email at
 	</script>
 </p>
 
-<br /><br /><br /><br /><br /><br />
+<br /><br /><br />
 
 <div class="clear"></div>
 <%@ include file="../shared/footer.jspf" %>

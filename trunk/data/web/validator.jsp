@@ -184,7 +184,7 @@ can be submitted by pasting XML text, uploading a file, or referencing a URL.</p
 		<label id="lurl" for="url">DDMS URL: *</label>
 		http://<form:input path="url" size="50" maxlength="2000" />
 	</c:if>
-	<br />
+	<br /><br />
 	<span class="formElement">
 		<input type="submit" class="button" name="submit" value="Submit">
 		<input type="reset" class="button" name="reset" value="Reset">
