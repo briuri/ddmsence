@@ -119,11 +119,9 @@
 		<div class="newsUpdate"><u>04/21/2010</u>: v1.2.0 released.</div>
 		<div class="newsUpdate"><u>04/08/2010</u>: v1.1.0 released.</div>
 		<div class="newsUpdate"><u>04/01/2010</u>: v1.0.0 released.</div>
-	<!-- 
 		<div class="newsUpdate"><u>03/29/2010</u>: v0.9.d released.</div>
 		<div class="newsUpdate"><u>03/25/2010</u>: v0.9.c released.</div>
 		<div class="newsUpdate"><u>03/24/2010</u>: v0.9.b released.</div>
-	-->
 	</div><br /><br />
 	
 	<div class="feed">SVN Code Feed: <a href="http://code.google.com/feeds/p/ddmsence/svnchanges/basic"><img border="0" src="./images/atom.png" width="14" height="14" title="Atom Feed" /></a></div>
@@ -136,37 +134,33 @@
 <p>
 DDMSence (pronounced "<i>dee-dee-em-<font color="#660000">Essence</font></i>") is the only open-source Java library that fully supports the 
 <a href="http://metadata.ces.mil/mdr/irs/DDMS/" target="_new">DoD Discovery Metadata Specification (DDMS)</a>. 
-It converts XML DDMS Resources (also called assertions or metacards) into a Java object model, allowing them to be manipulated or traversed within the context of a Java environment. 
+It converts DDMS Resources (also called assertions or metacards) into a Java object model, allowing them to be manipulated or traversed within 
+the context of a Java environment. 
 </p>
 
 <ul>
-	<li>Provides a complete implementation of the DDMS specification (including the Extensible Layer) using any version of DDMS between 2.0 and 5.0.</li>
-	<li>Java object model can be created from existing XML files, or built up from scratch with basic Java data types. Components automatically transform into valid, well-formed XML, HTML, JSON, and Text records.</li>
-	<li>Validates assertions against the complete specification, not just the schemas. Integrated with the Controlled Vocabulary Enumerations for ISM attributes, as defined by the Intelligence Community, and supports Schematron-based custom validation rules.</li>
+	<li>Provides a complete implementation of the DDMS specification using any version of DDMS between 2.0 and 5.0, suitable for several
+		<a href="documentation.jsp#useCases">use cases</a>.</li><br />
+	<li>Java object model can be created from existing XML files, or built up from scratch with basic Java data types. 
+		Components automatically transform into well-formed XML, HTML, JSON, and Text output.</li><br />
+	<li>Validates assertions against the complete specification, not just the XML schemas. 
+		Integrated with the Controlled Vocabulary Enumerations for ISM attributes, as defined by the Intelligence Community, 
+		and supports Schematron-based custom validation rules.</li><br />
 	<li>Three sample applications and accompanying <a href="documentation.jsp#started">tutorials</a> provide an introduction to the library,
 		and <a href="documentation.jsp#tips">Power Tips</a> are available for more experienced users.</li>
 </ul>
-<h2>Suggested Use Cases</h2>
-
-<ul>
-<li>Reading existing DDMS metacards, possibly as part of a query or search service</li>
-<li>Creating new DDMS metacards from scratch, possibly as part of a web-based wizard</li>
-<li>Editing existing DDMS metacards</li>
-<li>Transforming older DDMS metacards to the latest version of DDMS</li>
-<li>Applying custom Community of Interest (COI) constraints to a DDMS metacard with Schematron</li>
-</ul>
 
 <p>DDMSence comes with a complete set of JUnit tests, and is released under the GNU Lesser General Public License (<a href="license.jsp">LGPL</a>).</p>
-		
-<img src="./images/chart.png" width="720" height="280" title="DDMSence Flow Chart"  />
 
+<img src="./images/chart.png" width="720" height="280" title="DDMSence Flow Chart"  />
+		
 <h1>About the Author</h1>
 
 <p><img src="./images/BU.jpg" width="90" height="90" title="BU" class="bordered" align="left" />
 <b><a href="http://www.linkedin.com/profile/view?id=10317277">Brian Uri!</a></b> is a Technical Lead at <a href="http://www.novetta.com/" target="_new">Novetta Solutions</a> 
-in Reston, Virginia. He has been involved with DISA's enterprise services and data strategy efforts (including DDMS, UCore, the 
-<a href="http://metadata.ces.mil/" target="_new">Data Services Environment</a>, ESM and SKIWeb) since the inception of the Net-Centric Enterprise Services 
-(NCES) program in 2005.</p>
+in Reston, Virginia. He has been involved with DISA's enterprise services and data strategy efforts (including DDMS, Universal Core, the 
+<a href="http://metadata.ces.mil/" target="_new">Data Services Environment</a>, Enterprise Service Monitoring and Strategic Knowledge Integration Web) since 
+the inception of the Net-Centric Enterprise Services (NCES) program in 2005.</p>
 
 <p>DDMSence was conceived in January 2010 and grew out of Brian's desire to gain more practical XML Schema experience, to write something useful which had never 
 been done before, and an unusually large amount of free time.</p>

@@ -11,14 +11,16 @@
 
 <p>Downloads come in two flavors:</p>
 
-<p><b><code>ddmsence-bin-version.zip</code></b>: This download is intended for end users who wish to use DDMSence in their own projects. It contains the compiled DDMSence JAR files,
+<ul>
+	<li><b>Binary (<code>bin</code>)</b>: This download is intended for end users who wish to use DDMSence in their own projects. It contains the compiled DDMSence JAR files,
 the complete API documentation (which is also available <a href="/docs/">online</a>), source code for the sample applications,
-and supporting 3rd-party JAR files. Sample applications can be run from the <a href="documentation.jsp#started">command line</a>.</p>
+and supporting 3rd-party JAR files. Sample applications can be run from the <a href="documentation.jsp#started">command line</a>.</li>
 
-<p><b><code>ddmsence-src-version.zip</code></b>: This download is intended for developers who wish to see what DDMSence is doing under the hood. It contains source 
+	<li><p><b>Source (<code>src</code>)</b>: This download is intended for developers who wish to see what DDMSence is doing under the hood. It contains source 
 code for the main library, unit tests, and the sample applications, as well as supporting 3rd-party JAR files. The included <code>build.xml</code> 
 file allows you to compile source code, run unit tests, generate API documentation, or even generate the "bin"-flavored archive with <a href="http://ant.apache.org/">Apache Ant</a>. 
-I have also included a <code>.project</code> file if you wish to import the project into Eclipse.</p>
+I have also included a <code>.project</code> file if you wish to import the project into Eclipse.</li>
+</ul>
 
 <p>Regardless of your choice, you will need a <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_new">JRE or JDK</a> which supports Java 1.6 or higher.</p>
 
@@ -33,8 +35,6 @@ Additional information about JSON output can be found in <a href="tutorials-01.j
 <br />
 <li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v2.3.0">Complete List of Changes</a></li>
 </ul>
-
-<p>An upgrade guide is available if you need to <a href="upgrade-2.0.0.jsp">upgrade from v1.x.x</a>.</p>
 
 <h3>DDMSence and Maven</h3>
 

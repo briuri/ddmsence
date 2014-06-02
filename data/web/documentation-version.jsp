@@ -9,8 +9,6 @@
 
 <a name="top"></a><h1>Power Tip: Working with Different DDMS Versions</h1>
 
-<h2>Using Alternate Versions</h2>
-
 <p>DDMSence currently supports six versions of DDMS: 2.0, 3.0, 3.1, 4.0.1, 4.1, and 5.0. The DDMSReader class must be initialized with the DDMS version
 of files it will be loading.</p>
 
@@ -78,7 +76,7 @@ because this default changes as new versions of DDMS are released). The version 
 is not a thread-safe approach, but I believe that the most common use cases will deal with DDMS components of a single version at a time,
 and I wanted the versioning mechanism to be as unobtrusive as possible.</p>
 
-<h2>Differences Between Versions</h2>
+<h3>Differences Between Versions</h3>
 
 <p>The validation rules between versions of DDMS are very similar, but there are a few major differences. The API documentation for each class
 contains a helpful chart of validation rules that have changed over the years. For example, the 
