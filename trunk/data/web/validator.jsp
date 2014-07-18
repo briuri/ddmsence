@@ -401,7 +401,7 @@ public class ValidatorControl extends AbstractControl {
 }</pre>
 	<li>The ValidatorControl starts by creating a new form bean, ValidatorRecord, in the <code>newForm()</code> method. 
 	This is a simple data class which supports the form you see on this page.</li>
-<pre class="brush: java; collapse: true">package buri.web.ddmsence;
+<pre class="brush: java; collapse: true">package buri.urizone.web.control.ddmsence;
 
 import buri.ddmsence.util.Util;
 
