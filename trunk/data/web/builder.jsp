@@ -208,7 +208,7 @@ will be necessary to understand the code.</p>
 
 <ol>
 	<li>A Spring controller, BuilderControl, handles incoming requests at the URI, <code>builder.uri</code>.</li>
-<pre class="brush: java; collapse: true">package buri.web.ddmsence;
+<pre class="brush: java; collapse: true">package buri.urizone.web.control.ddmsence;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Set;
@@ -231,7 +231,7 @@ import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.ism.ISMVocabulary;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
-import buri.web.AbstractControl;
+import buri.urizone.web.AbstractControl;
 
 /**
  * Controller class for building DDMS Records

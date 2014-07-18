@@ -210,7 +210,7 @@ will be necessary to understand the code.</p>
 	<li>A Spring controller, ValidatorControl, handles incoming requests at the URI, <code>validator.uri</code>. 
 	The <code>type</code> parameter is used to determine what sort of form should be displayed -- changing
 	the "Record Location" drop-down selection redraws the form.</li>
-<pre class="brush: java; collapse: true">package buri.web.ddmsence;
+<pre class="brush: java; collapse: true">package buri.urizone.web.control.ddmsence;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -252,7 +252,7 @@ import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSReader;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
-import buri.web.AbstractControl;
+import buri.urizone.web.AbstractControl;
 
 /**
  * Controller class for validating DDMS Records
