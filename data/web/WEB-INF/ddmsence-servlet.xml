@@ -23,7 +23,7 @@
 			The DDMSence web application is deployed in an environment which already has
 			Spring JARs deployed.
 	-->
-	<context:component-scan base-package="buri.web.ddmsence" />	
+	<context:component-scan base-package="buri.urizone.web.ddmsence" />	
 	<mvc:annotation-driven/>
 	
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
