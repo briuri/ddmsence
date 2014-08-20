@@ -29,7 +29,7 @@ do not need to download them separately.</p>
 	<li><a href="http://www.xom.nu/">XOM 1.2.10</a>
 		(<a href="http://xom.nu/license.xhtml">GNU Lesser General Public License v2.1</a>): Core library needed for XML parsing (unmodified).</li>
 	<br />	
-	<li><a href="http://jquery.com/">jQuery 1.6.4</a>
+	<li><a href="http://jquery.com/">jQuery 1.10.2</a>
 		(<a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a>): Used on the DDMSence website (unmodified).</li>
 	<li><a href="http://bassistance.de/jquery-plugins/jquery-plugin-validation/">jQuery Validation 1.8.1</a>
 		(<a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a>): Used on the DDMSence website (unmodified).</li>
