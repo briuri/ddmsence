@@ -88,7 +88,7 @@
 	<div class="newsUpdate"><u>05/30/2014</u>: <a href="downloads.jsp">v2.3.0</a> released.</div>
 	<div class="newsUpdate"><u>05/13/2014</u>: <a href="downloads.jsp">v2.2.1</a> released.</div>
 	<div class="newsUpdate"><u>12/15/2013</u>: <a href="downloads.jsp">v2.2.0</a> released, adding support for DDMS 5.0.</div>
-	<div class="newsUpdate"><u>04/10/2013</u>: Statistics about the DDMSence codebase can now be viewed at <a href="https://www.ohloh.net/p/ddmsence" target="_new">Ohloh</a>.</div>
+	<div class="newsUpdate"><u>04/10/2013</u>: Statistics about the DDMSence codebase can now be viewed at <a href="https://www.openhub.net/p/ddmsence" target="_new">OpenHUB</a>.</div>
 	<div class="divExpand feed"><a href="#" onClick="return false;">more...</a></div>	
 	<div id="oldNews" class="divHidden">
 		<div class="newsUpdate"><u>04/01/2013</u>: Happy Birthday to DDMSence, celebrating 24 releases in 3 years!</div>
