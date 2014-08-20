@@ -230,6 +230,7 @@ import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.ism.ISMVocabulary;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 import buri.urizone.web.AbstractControl;
 
@@ -260,6 +261,8 @@ public class BuilderControl extends AbstractControl {
 		SessionStatus status, Model model) {
 		try {
 			DDMSVersion.setCurrentVersion("5.0");
+			PropertyReader.setProperty("output.json.prettyPrint", "true");
+			PropertyReader.setProperty("output.indexLevel", "1");
 			Resource resource = builder.commit();
 			if (resource == null)
 				throw new InvalidDDMSException("No information was entered to create a DDMS Resource.");
@@ -271,6 +274,9 @@ public class BuilderControl extends AbstractControl {
 			serializer.setMaxLength(120);
 			serializer.write(document);
 			model.addAttribute("xml", os.toString());
+			model.addAttribute("html", resource.toHTML());
+			model.addAttribute("text", resource.toText());
+			model.addAttribute("json", resource.toJSON());
 			model.addAttribute("warnings", resource.getValidationWarnings());
 			return ("builderResult");
 		}
