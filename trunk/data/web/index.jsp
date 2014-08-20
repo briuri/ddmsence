@@ -67,7 +67,7 @@
 	<meta name="temporalCoverage.start" content="2010-03-24T12:00:00Z" />
 	<meta name="temporalCoverage.end" content="Not Applicable" />
 		
-	<script type="text/javascript" src="./shared/jquery-1.6.4.min.js"></script>
+	<script type="text/javascript" src="./shared/jquery-1.10.2.min.js"></script>
 	<script type="text/javascript">
 
 	// Collapsible subsection code
