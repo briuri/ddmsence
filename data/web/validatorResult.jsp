@@ -31,9 +31,9 @@
 	<p>No errors or warnings were encountered in this DDMS record.</p>
 </c:if>
 
-<c:if test="${not empty record}">
+<c:if test="${not empty xml}">
 	<pre class="brush: xml">
-<c:out value="${record}" escapeXml="true" />
+<c:out value="${xml}" escapeXml="true" />
 	</pre>
 </c:if>	
 

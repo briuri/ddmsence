@@ -299,15 +299,20 @@ public class ValidatorControl extends AbstractControl {
 					throw new IOException("Could not connect to URL: " + fullUrl);
 				}
 			}
-			model.addAttribute("record", stringRepresentation);
+			model.addAttribute("xml", stringRepresentation);
 
 			DDMSVersion version = guessVersion(stringRepresentation);
+			PropertyReader.setProperty("output.json.prettyPrint", "true");
+			PropertyReader.setProperty("output.indexLevel", "1");
 			Resource resource = new DDMSReader(version).getDDMSResource(stringRepresentation);
 			if (isUnclassified(resource)) {
 				model.addAttribute("warnings", resource.getValidationWarnings());
+				model.addAttribute("html", resource.toHTML());
+				model.addAttribute("text", resource.toText());
+				model.addAttribute("json", resource.toJSON());
 			}
 			else {
-				model.addAttribute("record", null);
+				model.addAttribute("xml", null);
 				throw new InvalidDDMSException("This tool can only be used on Unclassified data.");
 			}
 		}
