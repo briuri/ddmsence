@@ -38,7 +38,7 @@ into a batch/shell script and running that script):</p>
 cd &lt;folderWhereDDMSenceIsUnzipped&gt;\ddmsence-bin-@ddmsence.version@
 set DDMSENCE_CLASSPATH=lib/saxon9he-9.6.0.2.jar;lib/xercesImpl-2.11.0.jar
 set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/xml-apis-1.4.01.jar;lib/xom-1.2.10.jar
-set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/gson-2.2.4.jar
+set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/gson-2.3.jar
 set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-@ddmsence.version@.jar
 set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-samples-@ddmsence.version@.jar
 java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre>
@@ -49,7 +49,7 @@ java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre>
 cd &lt;folderWhereDDMSenceIsUnzipped&gt;/ddmsence-bin-@ddmsence.version@
 ddmsence_classpath=lib/saxon9he-9.6.0.2.jar:lib/xercesImpl-2.11.0.jar
 ddmsence_classpath=$ddmsence_classpath:lib/xml-apis-1.4.01.jar:lib/xom-1.2.10.jar
-ddmsence_classpath=$ddmsence_classpath:lib/gson-2.2.4.jar
+ddmsence_classpath=$ddmsence_classpath:lib/gson-2.3.jar
 ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-@ddmsence.version@.jar
 ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-samples-@ddmsence.version@.jar
 java -cp $ddmsence_classpath buri.ddmsence.samples.Essentials</pre>

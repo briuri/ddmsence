@@ -9,8 +9,8 @@
 	<classpathentry kind="lib" path="lib/test/junit-4.10.jar"/>
 	<classpathentry kind="var" path="JDK_HOME/lib/tools.jar"/>
 	<classpathentry kind="lib" path="lib/xom-1.2.10.jar"/>
-	<classpathentry kind="lib" path="lib/gson-2.2.4.jar"/>
 	<classpathentry kind="lib" path="lib/joda-time-2.5.jar"/>
 	<classpathentry kind="lib" path="lib/saxon9he-9.6.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.3.jar"/>
 	<classpathentry kind="output" path="output/classes/samples"/>
 </classpath>
