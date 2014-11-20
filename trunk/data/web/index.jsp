@@ -85,9 +85,10 @@
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
 	<!-- TDF Location: http://www.dni.gov/index.php/about/organization/chief-information-officer/trusted-data-format -->
-	<div class="newsUpdate"><u>05/30/2014</u>: <a href="downloads.jsp">v2.3.0</a> released.</div>
-	<div class="newsUpdate"><u>05/13/2014</u>: <a href="downloads.jsp">v2.2.1</a> released.</div>
-	<div class="newsUpdate"><u>12/15/2013</u>: <a href="downloads.jsp">v2.2.0</a> released, adding support for DDMS 5.0.</div>
+	<div class="newsUpdate"><u>11/20/2014</u>: <a href="downloads.jsp">v2.4.0</a> released.</div>
+	<div class="newsUpdate"><u>05/30/2014</u>: v2.3.0 released.</div>
+	<div class="newsUpdate"><u>05/13/2014</u>: v2.2.1 released.</div>
+	<div class="newsUpdate"><u>12/15/2013</u>: v2.2.0 released, adding support for DDMS 5.0.</div>
 	<div class="newsUpdate"><u>04/10/2013</u>: Statistics about the DDMSence codebase can now be viewed at <a href="https://www.openhub.net/p/ddmsence" target="_new">OpenHUB</a>.</div>
 	<div class="divExpand feed"><a href="#" onClick="return false;">more...</a></div>	
 	<div id="oldNews" class="divHidden">
@@ -159,7 +160,7 @@ the context of a Java environment.
 <p><img src="./images/BU.jpg" width="90" height="90" title="BU" class="bordered" align="left" />
 <b><a href="http://www.linkedin.com/profile/view?id=10317277">Brian Uri!</a></b> is a Technical Lead at <a href="http://www.novetta.com/" target="_new">Novetta Solutions</a> 
 in Reston, Virginia. He has been involved with DISA's enterprise services and data strategy efforts (including DDMS, Universal Core, the 
-<a href="http://metadata.ces.mil/" target="_new">Data Services Environment</a>, Enterprise Service Monitoring and Strategic Knowledge Integration Web) since 
+<a href="http://metadata.ces.mil/" target="_new">Data Services Environment</a>, Enterprise Service Monitoring, and Strategic Knowledge Integration Web) since 
 the inception of the Net-Centric Enterprise Services (NCES) program in 2005.</p>
 
 <p>DDMSence was conceived in January 2010 and grew out of Brian's desire to gain more practical XML Schema experience, to write something useful which had never 
