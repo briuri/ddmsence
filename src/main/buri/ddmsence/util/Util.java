@@ -126,7 +126,7 @@ public class Util {
 	private Util() {}
 
 	/**
-	 * Accesor for the datatype factory
+	 * Accessor for the datatype factory
 	 */
 	public static DatatypeFactory getDataTypeFactory() {
 		return (_factory);
@@ -143,13 +143,13 @@ public class Util {
 	 */
 	public static XMLGregorianCalendar toXMLGregorianCalendar(String date) {
 		try {
-			return (Util.getDataTypeFactory().newXMLGregorianCalendar(date));
+			return (getDataTypeFactory().newXMLGregorianCalendar(date));
 		}
 		catch (IllegalArgumentException e) {
-			if (Util.isEmpty(date) || TemporalCoverage.EXTENDED_DATE_TYPES.contains(date))
+			if (isEmpty(date) || TemporalCoverage.EXTENDED_DATE_TYPES.contains(date))
 				return (null);
 			GregorianCalendar gregory = ISODateTimeFormat.dateTimeParser().parseDateTime(date).toGregorianCalendar();
-			return (Util.getDataTypeFactory().newXMLGregorianCalendar(gregory));		
+			return (getDataTypeFactory().newXMLGregorianCalendar(gregory));		
 		}
 	}
 	
