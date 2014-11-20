@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import nu.xom.Element;
@@ -295,18 +294,12 @@ public final class Dates extends AbstractBaseComponent {
 	/**
 	 * Accessor for the created date. Returns a copy.
 	 * 
-	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
-	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
-	 *             null for dates in the new format. Use <code>getCreatedString()</code> to
-	 *             access the raw XML format of the date instead.
+	 * <p>DDMS 4.1 added a new allowable date format (ddms:DateHourMinType). This method will convert values of that
+	 * type into an XMLGregorianCalendar, using intelligent defaults for any missing information (e.g. 00 for seconds).
+	 * <code>getCreatedString()</code> will return the raw XML format without any assumptions.</p>
 	 */
 	public XMLGregorianCalendar getCreated() {
-		try {
-			return (getFactory().newXMLGregorianCalendar(getCreatedString()));
-		}
-		catch (IllegalArgumentException e) {
-			return (null);
-		}
+		return (Util.toXMLGregorianCalendar(getCreatedString()));
 	}
 
 	/**
@@ -319,18 +312,12 @@ public final class Dates extends AbstractBaseComponent {
 	/**
 	 * Accessor for the posted date. Returns a copy.
 	 * 
-	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
-	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
-	 *             null for dates in the new format. Use <code>getPostedString()</code> to
-	 *             access the raw XML format of the date instead.
+	 * <p>DDMS 4.1 added a new allowable date format (ddms:DateHourMinType). This method will convert values of that
+	 * type into an XMLGregorianCalendar, using intelligent defaults for any missing information (e.g. 00 for seconds).
+	 * <code>getPostedString()</code> will return the raw XML format without any assumptions.</p>
 	 */
 	public XMLGregorianCalendar getPosted() {
-		try {
-			return (getFactory().newXMLGregorianCalendar(getPostedString()));
-		}
-		catch (IllegalArgumentException e) {
-			return (null);
-		}
+		return (Util.toXMLGregorianCalendar(getPostedString()));
 	}
 
 	/**
@@ -343,18 +330,12 @@ public final class Dates extends AbstractBaseComponent {
 	/**
 	 * Accessor for the expiration date. Returns a copy.
 	 * 
-	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
-	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
-	 *             null for dates in the new format. Use <code>getValidTilString()</code> to
-	 *             access the raw XML format of the date instead.
+	 * <p>DDMS 4.1 added a new allowable date format (ddms:DateHourMinType). This method will convert values of that
+	 * type into an XMLGregorianCalendar, using intelligent defaults for any missing information (e.g. 00 for seconds).
+	 * <code>getValidTilString()</code> will return the raw XML format without any assumptions.</p>
 	 */
 	public XMLGregorianCalendar getValidTil() {
-		try {
-			return (getFactory().newXMLGregorianCalendar(getValidTilString()));
-		}
-		catch (IllegalArgumentException e) {
-			return (null);
-		}
+		return (Util.toXMLGregorianCalendar(getValidTilString()));
 	}
 
 	/**
@@ -367,18 +348,12 @@ public final class Dates extends AbstractBaseComponent {
 	/**
 	 * Accessor for the cutoff date. Returns a copy.
 	 * 
-	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
-	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
-	 *             null for dates in the new format. Use <code>getInfoCutOffString()</code> to
-	 *             access the raw XML format of the date instead.
+	 * <p>DDMS 4.1 added a new allowable date format (ddms:DateHourMinType). This method will convert values of that
+	 * type into an XMLGregorianCalendar, using intelligent defaults for any missing information (e.g. 00 for seconds).
+	 * <code>getInfoCutOffString()</code> will return the raw XML format without any assumptions.</p>
 	 */
 	public XMLGregorianCalendar getInfoCutOff() {
-		try {
-			return (getFactory().newXMLGregorianCalendar(getInfoCutOffString()));
-		}
-		catch (IllegalArgumentException e) {
-			return (null);
-		}
+		return (Util.toXMLGregorianCalendar(getInfoCutOffString()));
 	}
 
 	/**
@@ -391,18 +366,12 @@ public final class Dates extends AbstractBaseComponent {
 	/**
 	 * Accessor for the approved on date. Returns a copy.
 	 * 
-	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
-	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
-	 *             null for dates in the new format. Use <code>getApprovedOnString()</code> to
-	 *             access the raw XML format of the date instead.
+	 * <p>DDMS 4.1 added a new allowable date format (ddms:DateHourMinType). This method will convert values of that
+	 * type into an XMLGregorianCalendar, using intelligent defaults for any missing information (e.g. 00 for seconds).
+	 * <code>getApprovedOnString()</code> will return the raw XML format without any assumptions.</p>
 	 */
 	public XMLGregorianCalendar getApprovedOn() {
-		try {
-			return (getFactory().newXMLGregorianCalendar(getApprovedOnString()));
-		}
-		catch (IllegalArgumentException e) {
-			return (null);
-		}
+		return (Util.toXMLGregorianCalendar(getApprovedOnString()));
 	}
 
 	/**
@@ -415,18 +384,12 @@ public final class Dates extends AbstractBaseComponent {
 	/**
 	 * Accessor for the received on date. Returns a copy.
 	 * 
-	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
-	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
-	 *             null for dates in the new format. Use <code>getReceivedOnString()</code> to
-	 *             access the raw XML format of the date instead.
+	 * <p>DDMS 4.1 added a new allowable date format (ddms:DateHourMinType). This method will convert values of that
+	 * type into an XMLGregorianCalendar, using intelligent defaults for any missing information (e.g. 00 for seconds).
+	 * <code>getReceivedOnString()</code> will return the raw XML format without any assumptions.</p>
 	 */
 	public XMLGregorianCalendar getReceivedOn() {
-		try {
-			return (getFactory().newXMLGregorianCalendar(getReceivedOnString()));
-		}
-		catch (IllegalArgumentException e) {
-			return (null);
-		}
+		return (Util.toXMLGregorianCalendar(getReceivedOnString()));
 	}
 
 	/**
@@ -441,13 +404,6 @@ public final class Dates extends AbstractBaseComponent {
 	 */
 	public List<ApproximableDate> getAcquiredOns() {
 		return (Collections.unmodifiableList(_acquiredOns));
-	}
-
-	/**
-	 * Accesor for the datatype factory
-	 */
-	private static DatatypeFactory getFactory() {
-		return (Util.getDataTypeFactory());
 	}
 
 	/**

@@ -28,6 +28,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -55,6 +56,7 @@ import nu.xom.ParsingException;
 import nu.xom.xslt.XSLException;
 import nu.xom.xslt.XSLTransform;
 
+import org.joda.time.format.ISODateTimeFormat;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
@@ -67,6 +69,7 @@ import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.OutputFormat;
 import buri.ddmsence.ddms.security.ism.Notice;
 import buri.ddmsence.ddms.security.ntk.Access;
+import buri.ddmsence.ddms.summary.TemporalCoverage;
 import buri.ddmsence.ddms.summary.gml.Point;
 import buri.ddmsence.ddms.summary.gml.Polygon;
 
@@ -127,6 +130,27 @@ public class Util {
 	 */
 	public static DatatypeFactory getDataTypeFactory() {
 		return (_factory);
+	}
+	
+	/**
+	 * Helper method for DDMS components that use the DDMS custom date. Converts date strings
+	 * in any of the valid DDMS date types (ddms:CombinedDateType) into an XMLGregorianCalendar.
+	 * 
+	 * Returns null if the string is empty or not a valid date type.
+	 * 
+	 * @param date the raw date string
+	 * @return an XMLGregorianCalendar for valid dates, null otherwise.
+	 */
+	public static XMLGregorianCalendar toXMLGregorianCalendar(String date) {
+		try {
+			return (Util.getDataTypeFactory().newXMLGregorianCalendar(date));
+		}
+		catch (IllegalArgumentException e) {
+			if (Util.isEmpty(date) || TemporalCoverage.EXTENDED_DATE_TYPES.contains(date))
+				return (null);
+			GregorianCalendar gregory = ISODateTimeFormat.dateTimeParser().parseDateTime(date).toGregorianCalendar();
+			return (Util.getDataTypeFactory().newXMLGregorianCalendar(gregory));		
+		}
 	}
 	
 	/**

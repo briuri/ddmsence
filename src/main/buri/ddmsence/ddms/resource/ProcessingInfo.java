@@ -19,7 +19,6 @@
  */
 package buri.ddmsence.ddms.resource;
 
-import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import nu.xom.Element;
@@ -165,18 +164,12 @@ public final class ProcessingInfo extends AbstractSimpleString {
 	/**
 	 * Accessor for the processing date. Returns a copy.
 	 * 
-	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
-	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
-	 *             null for dates in the new format. Use <code>getDateProcessedString()</code> to
-	 *             access the raw XML format of the date instead.
+	 * <p>DDMS 4.1 added a new allowable date format (ddms:DateHourMinType). This method will convert values of that
+	 * type into an XMLGregorianCalendar, using intelligent defaults for any missing information (e.g. 00 for seconds).
+	 * <code>getDateProcessedString()</code> will return the raw XML format without any assumptions.</p>
 	 */
 	public XMLGregorianCalendar getDateProcessed() {
-		try {
-			return (getFactory().newXMLGregorianCalendar(getDateProcessedString()));
-		}
-		catch (IllegalArgumentException e) {
-			return (null);
-		}
+		return (Util.toXMLGregorianCalendar(getDateProcessedString()));
 	}
 
 	/**
@@ -184,13 +177,6 @@ public final class ProcessingInfo extends AbstractSimpleString {
 	 */
 	public String getDateProcessedString() {
 		return (getAttributeValue(DATE_PROCESSED_NAME));
-	}
-
-	/**
-	 * Accesor for the datatype factory
-	 */
-	private static DatatypeFactory getFactory() {
-		return (Util.getDataTypeFactory());
 	}
 
 	/**

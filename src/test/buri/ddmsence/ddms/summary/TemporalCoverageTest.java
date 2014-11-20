@@ -19,7 +19,12 @@
  */
 package buri.ddmsence.ddms.summary;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import nu.xom.Element;
 
 import org.junit.Test;
@@ -498,9 +503,9 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 	}
 
 	@Test
-	public void testDeprecatedAccessors() throws InvalidDDMSException {
+	public void testDateAccessors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			Element periodElement = Util.buildDDMSElement("TimePeriod", null);
 			periodElement.appendChild(Util.buildDDMSElement("start", ""));
@@ -512,6 +517,25 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 			component = new TemporalCoverage("", TEST_START, TEST_START, null);
 			assertEquals(TEST_START, component.getStart().toXMLFormat());
 			assertEquals(TEST_START, component.getEnd().toXMLFormat());
+			
+			// ddms custom date types converted into XMLGregorianCalendar
+			if (version.isAtLeast("4.1")) {
+				component = new TemporalCoverage("", "2012-01-01T01:02Z", "2012-01-01T01:02Z", null);
+				assertNotNull(component.getStart());
+				assertNotNull(component.getEnd());
+				
+				component = new TemporalCoverage("", "Unknown", "Unknown", null);
+				assertNull(component.getStart());
+				assertNull(component.getEnd());
+				
+				component = new TemporalCoverage("", "Not Applicable", "Not Applicable", null);
+				assertNull(component.getStart());
+				assertNull(component.getEnd());
+				
+				component = new TemporalCoverage("", "", "", null);
+				assertNull(component.getStart());
+				assertNull(component.getEnd());
+			}
 		}
 	}
 }

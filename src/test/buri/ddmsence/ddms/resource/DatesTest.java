@@ -439,7 +439,7 @@ public class DatesTest extends AbstractBaseTestCase {
 	}
 
 	@Test
-	public void testDeprecatedAccessors() throws InvalidDDMSException {
+	public void testDateAccessors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
@@ -451,19 +451,23 @@ public class DatesTest extends AbstractBaseTestCase {
 			assertEquals(TEST_CUTOFF, component.getInfoCutOff().toXMLFormat());
 			if (version.isAtLeast("3.1"))
 				assertEquals(TEST_APPROVED, component.getApprovedOn().toXMLFormat());
+			else
+				assertNull(component.getApprovedOn());
 			if (version.isAtLeast("4.0.1"))
 				assertEquals(TEST_RECEIVED, component.getReceivedOn().toXMLFormat());
+			else
+				assertNull(component.getReceivedOn());
 
-			// Not compatible with XMLGregorianCalendar
+			// ddms custom date types converted into XMLGregorianCalendar
 			if (version.isAtLeast("4.1")) {
 				component = new Dates("2012-01-01T01:02Z", "2012-01-01T01:02Z", "2012-01-01T01:02Z",
 					"2012-01-01T01:02Z", "2012-01-01T01:02Z", "2012-01-01T01:02Z");
-				assertNull(component.getCreated());
-				assertNull(component.getPosted());
-				assertNull(component.getValidTil());
-				assertNull(component.getInfoCutOff());
-				assertNull(component.getApprovedOn());
-				assertNull(component.getReceivedOn());
+				assertNotNull(component.getCreated());
+				assertNotNull(component.getPosted());
+				assertNotNull(component.getValidTil());
+				assertNotNull(component.getInfoCutOff());
+				assertNotNull(component.getApprovedOn());
+				assertNotNull(component.getReceivedOn());
 			}
 		}
 	}
