@@ -116,7 +116,7 @@ None of the engines listed will work with XSLT 2 Schema-Aware (SA) Schematron fi
 
 <table>
 <tr><th>Name and Version</th><th>Class Name</th><th>XSLT1</th><th>XSLT2</th></tr>
-<tr><td>Saxon HE 9.5.1.1</td><td><code>net.sf.saxon.TransformerFactoryImpl</code></td><td>supported</td><td>supported</td></tr>
+<tr><td>Saxon HE 9.6.0.2</td><td><code>net.sf.saxon.TransformerFactoryImpl</code></td><td>supported</td><td>supported</td></tr>
 <tr><td>Xalan interpretive, v2.7.1</td><td><code>org.apache.xalan.processor.TransformerFactoryImpl</code></td><td>supported</td><td>fails, doesn't support XSLT 2.0</td></tr>
 <tr><td>Xalan XSLTC, v2.7.1</td><td><code>org.apache.xalan.xsltc.trax.TransformerFactoryImpl</code></td><td>fails, SVRL transformation doesn't seem to occur properly</td><td>fails, doesn't support XSLT 2.0</td></tr>
 <tr><td>Xalan XSLTC, bundled with Java 1.5</td><td><code>com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl</code></td><td>fails, Xalan bug treats XSLT warning as an error</td><td>fails, doesn't support XSLT 2.0</td></tr>
