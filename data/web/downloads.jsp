@@ -26,7 +26,7 @@ I have also included a <code>.project</code> file if you wish to import the proj
 
 <h1>Latest Release: v2.4.0</h1>
 
-<p>Version <b>2.4.0</b> (11/20/2014) is a stable release which improves the handling of date values in various components (<a href="http://code.google.com/p/ddmsence/issues/detail?id=221">Issue #221</a>)
+<p>Version <b>2.4.0</b> (11/20/2014) is a stable release which improves the handling of date values in various components (<a href="http://code.google.com/p/ddmsence/issues/detail?id=221">Issue #221</a>).
 It is backwards compatible with all versions since 2.0.0.</p>
 
 <ul>
