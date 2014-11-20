@@ -67,6 +67,42 @@ public class UtilTest extends AbstractBaseTestCase {
 	}
 	
 	@Test
+	public void testToXmlGregorianCalendar() {
+		// Standard XML dates
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08-04T11:57:00.1-00:00"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08-04T11:57:00.01"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08-04T11:57:00.001Z"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08-04T11:57:00-00:00"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08-04T11:57:00"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08-04T11:57:00Z"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08-04T11:57:22-00:00"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08-04T11:57:22"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08-04T11:57:22Z"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08-04T11:57:22.1-00:00"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08-04T11:57:22.01"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08-04T11:57:22.001Z"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08-04Z"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08-04"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08-04-00:00"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08Z"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08-00:00"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013Z"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-00:00"));
+
+		// Custom DDMS dates
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08-04T11:57-00:00"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08-04T11:57"));
+		assertNotNull(Util.toXMLGregorianCalendar("2013-08-04T11:57Z"));
+
+		// Other values
+		assertNull(Util.toXMLGregorianCalendar(""));
+		assertNull(Util.toXMLGregorianCalendar("Not Applicable"));
+		assertNull(Util.toXMLGregorianCalendar("Unknown"));
+	}
+	
+	@Test
 	public void testGetJSONArray() throws InvalidDDMSException {
 		// Double
 		List<Double> doubles = new ArrayList<Double>();

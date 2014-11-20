@@ -19,7 +19,13 @@
  */
 package buri.ddmsence.ddms.resource;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -303,17 +309,23 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 	}
 
 	@Test
-	public void testDeprecatedAccessors() throws InvalidDDMSException {
+	public void testDateAccessors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			ProcessingInfo component = getInstance(getValidElement(sVersion), SUCCESS);
 			assertEquals(TEST_DATE_PROCESSED, component.getDateProcessed().toXMLFormat());
 
-			// Not compatible with XMLGregorianCalendar
+			// ddms custom date types converted into XMLGregorianCalendar
 			if (version.isAtLeast("4.1")) {
 				component = new ProcessingInfo(TEST_VALUE, "2012-01-01T01:02Z", SecurityAttributesTest.getFixture());
-				assertNull(component.getDateProcessed());
+				assertNotNull(component.getDateProcessed());
+				
+				component = new ProcessingInfo(TEST_VALUE, "2012-01-01T01:02", SecurityAttributesTest.getFixture());
+				assertNotNull(component.getDateProcessed());
+				
+				component = new ProcessingInfo(TEST_VALUE, "2012-01-01T01:02-04:00", SecurityAttributesTest.getFixture());
+				assertNotNull(component.getDateProcessed());
 			}
 		}
 	}

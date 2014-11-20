@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import nu.xom.Element;
@@ -95,7 +94,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 
 	private static final String DEFAULT_VALUE = "Unknown";
 
-	private static Set<String> EXTENDED_DATE_TYPES = new HashSet<String>();
+	public static Set<String> EXTENDED_DATE_TYPES = new HashSet<String>();
 	static {
 		EXTENDED_DATE_TYPES.add("Not Applicable");
 		EXTENDED_DATE_TYPES.add("Unknown");
@@ -400,18 +399,12 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	/**
 	 * Accessor for the XML calendar representing the start date
 	 * 
-	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
-	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
-	 *             null for dates in the new format. Use <code>getStartString()</code> to
-	 *             access the raw XML format of the date, "Not Applicable", or "Unknown" values instead.
+	 * <p>DDMS 4.1 added a new allowable date format (ddms:DateHourMinType). This method will convert values of that
+	 * type into an XMLGregorianCalendar, using intelligent defaults for any missing information (e.g. 00 for seconds).
+	 * <code>getStartString()</code> will return the raw XML format without any assumptions.</p>
 	 */
 	public XMLGregorianCalendar getStart() {
-		try {
-			return (getFactory().newXMLGregorianCalendar(getStartString()));
-		}
-		catch (IllegalArgumentException e) {
-			return (null);
-		}
+		return (Util.toXMLGregorianCalendar(getStartString()));
 	}
 
 	/**
@@ -431,18 +424,12 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	/**
 	 * Accessor for the XML calendar representing the end date
 	 * 
-	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
-	 *             XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
-	 *             null for dates in the new format. Use <code>getEndString()</code> to
-	 *             access the raw XML format of the date, "Not Applicable", or "Unknown" values instead.
+	 * <p>DDMS 4.1 added a new allowable date format (ddms:DateHourMinType). This method will convert values of that
+	 * type into an XMLGregorianCalendar, using intelligent defaults for any missing information (e.g. 00 for seconds).
+	 * <code>getEndString()</code> will return the raw XML format without any assumptions.</p>
 	 */
 	public XMLGregorianCalendar getEnd() {
-		try {
-			return (getFactory().newXMLGregorianCalendar(getEndString()));
-		}
-		catch (IllegalArgumentException e) {
-			return (null);
-		}
+		return (Util.toXMLGregorianCalendar(getEndString()));
 	}
 
 	/**
@@ -476,13 +463,6 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_securityAttributes);
-	}
-
-	/**
-	 * Accesor for the datatype factory
-	 */
-	private static DatatypeFactory getFactory() {
-		return (Util.getDataTypeFactory());
 	}
 
 	/**
