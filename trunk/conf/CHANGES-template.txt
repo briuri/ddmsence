@@ -9,6 +9,10 @@ Copyright 2010 - 2014 by Brian Uri!
 Release History
 ===========================================================================
 
+v 2.4.0 (XX/YY/ZZZZ):
+This stable release improves the handling of date fields using the DDMS custom 
+date type (Issue #221).
+
 v 2.3.0 (05/30/2014):
 This stable release adds built-in support for JSON output.
 
