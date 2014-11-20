@@ -9,7 +9,7 @@ Copyright 2010 - 2014 by Brian Uri!
 Release History
 ===========================================================================
 
-v 2.4.0 (XX/YY/ZZZZ):
+v 2.4.0 (11/20/2014):
 This stable release improves the handling of date fields using the DDMS custom 
 date type (Issue #221).
 
