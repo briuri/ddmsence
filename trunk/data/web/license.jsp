@@ -16,13 +16,13 @@ complete text of this license can be found below.</p>
 do not need to download them separately.</p>
 
 <ul>
-	<li><a href="https://code.google.com/p/google-gson/">google-gson 2.2.4</a> 
+	<li><a href="https://code.google.com/p/google-gson/">google-gson 2.3.1</a> 
 		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Core library needed for JSON output (unmodified).</li>
 	<li><a href="http://www.joda.org/joda-time/">Joda-Time 2.5</a>
 		(<a href="http://joda-time.sourceforge.net/license.html">Apache License 2.0</a>): Core library used for date handling (unmodified).</li>
 	<li><a href="http://www.schematron.com/">Rick Jelliffe's ISO Schematron implementation 4-21-2010</a> 
 		(<a href="http://www.opensource.org/licenses/zlib-license.php">zlib/libpng License</a>): Core library needed for Schematron validation (unmodified).</li>
-	<li><a href="http://saxon.sourceforge.net/">Saxon HE 9.5.1.1</a> 
+	<li><a href="http://saxon.sourceforge.net/">Saxon HE 9.6.0.2</a> 
 		(<a href="http://www.opensource.org/licenses/MPL-1.1">Mozilla Public License v1.1</a>): Core library needed for Schematron validation (unmodified).</li>
 	<li><a href="http://xerces.apache.org/xerces2-j/">Xerces 2.11.0</a>
 		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Core library needed for XML parsing (unmodified).</li>

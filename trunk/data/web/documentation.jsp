@@ -36,7 +36,7 @@ into a batch/shell script and running that script):</p>
 
 <pre class="brush: xml">REM Windows Commands
 cd &lt;folderWhereDDMSenceIsUnzipped&gt;\ddmsence-bin-@ddmsence.version@
-set DDMSENCE_CLASSPATH=lib/saxon9he-9.5.1.1.jar;lib/xercesImpl-2.11.0.jar
+set DDMSENCE_CLASSPATH=lib/saxon9he-9.6.0.2.jar;lib/xercesImpl-2.11.0.jar
 set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/xml-apis-1.4.01.jar;lib/xom-1.2.10.jar
 set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/gson-2.2.4.jar
 set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-@ddmsence.version@.jar
@@ -47,7 +47,7 @@ java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre>
 <pre class="brush: xml">#!/bin/sh
 # Linux Commands
 cd &lt;folderWhereDDMSenceIsUnzipped&gt;/ddmsence-bin-@ddmsence.version@
-ddmsence_classpath=lib/saxon9he-9.5.1.1.jar:lib/xercesImpl-2.11.0.jar
+ddmsence_classpath=lib/saxon9he-9.6.0.2.jar:lib/xercesImpl-2.11.0.jar
 ddmsence_classpath=$ddmsence_classpath:lib/xml-apis-1.4.01.jar:lib/xom-1.2.10.jar
 ddmsence_classpath=$ddmsence_classpath:lib/gson-2.2.4.jar
 ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-@ddmsence.version@.jar

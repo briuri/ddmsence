@@ -44,7 +44,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
-import net.sf.saxon.om.Name10Checker;
+import net.sf.saxon.om.NameChecker;
 import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -525,7 +525,7 @@ public class Util {
 	 * @throws InvalidDDMSException if the name is not an NCName.
 	 */
 	public static void requireValidNCName(String name) throws InvalidDDMSException {
-		if (!(new Name10Checker().isValidNCName(getNonNullString(name))))
+		if (!(NameChecker.isValidNCName(getNonNullString(name))))
 			throw new InvalidDDMSException("\"" + name + "\" is not a valid NCName.");
 	}
 
@@ -537,7 +537,7 @@ public class Util {
 	 * @throws InvalidDDMSException if the name is not an NMTOKEN.
 	 */
 	public static void requireValidNMToken(String name) throws InvalidDDMSException {
-		if (!(new Name10Checker().isValidNmtoken(getNonNullString(name))))
+		if (!(NameChecker.isValidNmtoken(getNonNullString(name))))
 			throw new InvalidDDMSException("\"" + name + "\" is not a valid NMTOKEN.");
 	}
 
