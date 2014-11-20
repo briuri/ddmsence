@@ -24,27 +24,27 @@ I have also included a <code>.project</code> file if you wish to import the proj
 
 <p>Regardless of your choice, you will need a <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_new">JRE or JDK</a> which supports Java 1.6 or higher.</p>
 
-<h1>Latest Release: v2.3.0</h1>
+<h1>Latest Release: v2.4.0</h1>
 
-<p>Version <b>2.3.0</b> (05/30/2014) is a stable release which adds built-in support for JSON output. It is backwards compatible with all versions since 2.0.0.
-Additional information about JSON output can be found in <a href="tutorials-01.jsp">Tutorial #1: Essentials</a>.</p>
+<p>Version <b>2.4.0</b> (11/20/2014) is a stable release which improves the handling of date values in various components (<a href="http://code.google.com/p/ddmsence/issues/detail?id=221">Issue #221</a>)
+It is backwards compatible with all versions since 2.0.0.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-bin-2.3.0.zip"><code>ddmsence-bin-2.3.0.zip</code></a></b> (7.1 MB, compiled with JDK1.7.0_17, source level 1.6, target level 1.6)</li>
-<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-src-2.3.0.zip"><code>ddmsence-src-2.3.0.zip</code></a></b> (7.0 MB)</li>
+<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-bin-2.4.0.zip"><code>ddmsence-bin-2.4.0.zip</code></a></b> (8.4 MB, compiled with JDK1.7.0_17, source level 1.6, target level 1.6)</li>
+<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-src-2.4.0.zip"><code>ddmsence-src-2.4.0.zip</code></a></b> (8.3 MB)</li>
 <br />
-<li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v2.3.0">Complete List of Changes</a></li>
+<li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v2.4.0">Complete List of Changes</a></li>
 </ul>
 
 <h3>DDMSence and Maven</h3>
 
-<p>Starting with v2.1.0, the DDMSence JAR file is also available in the <a href="http://search.maven.org/#browse|57355829">Maven Central Repository</a>. It can be added to your <code>pom.xml</code>
+<p>The DDMSence JAR file is also available in the <a href="http://search.maven.org/#browse|57355829">Maven Central Repository</a>. It can be added to your <code>pom.xml</code>
 file as shown in Figure 1.</p>
 
 <pre class="brush: xml">&lt;dependency&gt;
    &lt;groupId&gt;net.urizone&lt;/groupId&gt;
    &lt;artifactId&gt;ddmsence&lt;/artifactId&gt;
-   &lt;version&gt;2.3.0&lt;/version&gt;
+   &lt;version&gt;2.4.0&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 <p class="figure">Figure 1. Setting up DDMSence as a Maven dependency</p>
 
@@ -60,51 +60,37 @@ file as shown in Figure 1.</p>
 <p>If a new version is listed as "backwards compatible", it means that you can update to the new version without changing any of your code that worked with the old version.  
 All changes which are not backwards compatible will be linked from this page with information on how to upgrade your old code.</p> 
 
-<h3>Older Releases</h3>
+<h3>Previous Release</h3>
 
 <!-- 184 downloads of 2.2.0 as of 5/13/2014 -->
 <!-- 345 downloads of 2.1.0 as of 12/15/2013 -->
 <!-- 339 downloads of 2.0.0 as of 1/19/2013 -->
 <!-- 828 downloads of 1.x -->
 
-<p>Version <b>2.2.1</b> (05/13/2014) is a stable release which is backwards compatible with all versions since 2.0.0. It is functionally equivalent
-to 2.2.0, but has been recompiled to run with Java 1.6 (<a href="https://code.google.com/p/ddmsence/issues/detail?id=215">Issue #215</a>). If 2.2.0 is already working for you, there is no need to upgrade at this time. 
-</p>
+<p>Version <b>2.3.0</b> (05/30/2014) is a stable release which adds built-in support for JSON output. It is backwards compatible with all versions since 2.0.0.
+Additional information about JSON output can be found in <a href="tutorials-01.jsp">Tutorial #1: Essentials</a>.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-bin-2.2.1.zip"><code>ddmsence-bin-2.2.1.zip</code></a></b> (6.8 MB, compiled with JDK1.7.0_17, source level 1.6, target level 1.6)</li>
-<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-src-2.2.1.zip"><code>ddmsence-src-2.2.1.zip</code></a></b> (6.8 MB)</li>
-<br />
-<li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v2.2.1">Complete List of Changes</a></li>
-</ul>
-
-<p>Version <b>2.2.0</b> (12/15/2013) is a stable release, which adds support for DDMS 5.0. It is backwards compatible with all versions since 2.0.0.
-<a href="documentation.jsp#javadoc">API documentation</a> has also been updated, making it easier to track components across DDMS versions. 
-</p>
-
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-2.2.0.zip"><code>ddmsence-bin-2.2.0.zip</code></a></b> (6.8 MB, compiled with JDK1.7.0_17, source level 1.6)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-2.2.0.zip"><code>ddmsence-src-2.2.0.zip</code></a></b> (6.8 MB)</li>
-<br />
-<li><a href="releaseNotes-2.2.0.jsp">What's New in DDMS 5.0 / DDMSence 2.2.0</a></li>
-<li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v2.2.0">Complete List of Changes</a></li>
-</ul>
-
-<p>Version <b>2.1.0</b> (01/19/2013) is a stable release, which adds support for DDMS 4.1. It is backwards compatible with 2.0.0. Because DDMS 4.1 shares an XML namespace with DDMS 4.0.1,
-older 4.0.1 metacards are validated against the DDMS 4.1 schemas in this release.</p>
-
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-2.1.0.zip"><code>ddmsence-bin-2.1.0.zip</code></a></b> (6.1 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-2.1.0.zip"><code>ddmsence-src-2.1.0.zip</code></a></b> (6.2 MB)</li>
-<br />
-<li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v2.1.0">Complete List of Changes</a></li>
-
+<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-bin-2.3.0.zip"><code>ddmsence-bin-2.3.0.zip</code></a></b> (7.1 MB, compiled with JDK1.7.0_17, source level 1.6, target level 1.6)</li>
+<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-src-2.3.0.zip"><code>ddmsence-src-2.3.0.zip</code></a></b> (7.0 MB)</li>
 </ul>
 
 <h3>Ancient Releases</h3>
 
-<p>Versions of DDMSence before 2.1.0 are no longer available for download (although they can still be built from the source code). Historical information about earlier releases can be
+<p>Earlier versions of DDMSence are no longer available for download (although they can still be built from the tagged source code). Historical information about earlier releases can be
 found below.</p>
+
+<p>Version <b>2.2.1</b> (05/13/2014) is a stable release which is backwards compatible with all versions since 2.0.0. It is functionally equivalent
+to 2.2.0, but has been recompiled to run with Java 1.6 (<a href="https://code.google.com/p/ddmsence/issues/detail?id=215">Issue #215</a>). If 2.2.0 is already working for you, there is no need to upgrade at this time. 
+</p>
+
+<p>Version <b>2.2.0</b> (12/15/2013) is a stable release, which adds support for DDMS 5.0. It is backwards compatible with all versions since 2.0.0.
+<a href="documentation.jsp#javadoc">API documentation</a> has also been updated, making it easier to track components across DDMS versions. 
+<a href="releaseNotes-2.2.0.jsp">Release notes</a> describing what's new in DDMS 5.0 and DDMSence 2.2.0 are also available.</a> 
+</p>
+
+<p>Version <b>2.1.0</b> (01/19/2013) is a stable release, which adds support for DDMS 4.1. It is backwards compatible with 2.0.0. Because DDMS 4.1 shares an XML namespace with DDMS 4.0.1,
+older 4.0.1 metacards are validated against the DDMS 4.1 schemas in this release.</p>
 
 <p>Version <b>2.0.0</b> (12/01/2011) is a stable, major release, which adds support for DDMS 4.0.1. It is <i>not</i> backwards compatible with previous versions. Upgrading your existing
 code to use this version should be straightforward, but may require a non-trivial effort. An <a href="upgrade-2.0.0.jsp">Upgrade Guide</a> is available for
