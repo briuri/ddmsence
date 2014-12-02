@@ -142,7 +142,7 @@ public class ISMVocabulary {
 	/** Filename for the enumerations allowed in a typeOfExemptedSource attribute */
 	public static final String CVE_TYPE_EXEMPTED_SOURCE = "CVEnumISMSourceMarked.xml";
 
-	private static Set<String> COMMON_NETWORK_TYPES = new HashSet<String>();
+	private static final Set<String> COMMON_NETWORK_TYPES = new HashSet<String>();
 	static {
 		COMMON_NETWORK_TYPES.add("NIPRNet");
 		COMMON_NETWORK_TYPES.add("SIPRNet");

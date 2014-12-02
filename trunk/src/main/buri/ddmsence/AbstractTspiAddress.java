@@ -77,7 +77,7 @@ public abstract class AbstractTspiAddress extends AbstractBaseComponent implemen
 	/** The value for a delete action. */
 	public static final String DELETE_ACTION = "DELETE";
 	
-	private static Set<String> ACTIONS = new HashSet<String>();
+	private static final Set<String> ACTIONS = new HashSet<String>();
 	static {
 		ACTIONS.add(ADD_ACTION);
 		ACTIONS.add(DELETE_ACTION);

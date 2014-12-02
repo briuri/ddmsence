@@ -114,7 +114,7 @@ public final class RevisionRecall extends AbstractBaseComponent {
 	private static final String NETWORK_NAME = "network";
 	private static final String OTHER_NETWORK_NAME = "otherNetwork";
 
-	private static Set<String> REVISION_TYPE_TYPES = new HashSet<String>();
+	private static final Set<String> REVISION_TYPE_TYPES = new HashSet<String>();
 	static {
 		REVISION_TYPE_TYPES.add("ADMINISTRATIVE RECALL");
 		REVISION_TYPE_TYPES.add("ADMINISTRATIVE REVISION");

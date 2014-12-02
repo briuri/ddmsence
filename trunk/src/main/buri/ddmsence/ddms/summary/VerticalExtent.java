@@ -80,14 +80,14 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	private Double _min = null;
 	private Double _max = null;
 
-	private static Set<String> VERTICAL_DATUM_TYPES = new HashSet<String>();
+	private static final Set<String> VERTICAL_DATUM_TYPES = new HashSet<String>();
 	static {
 		VERTICAL_DATUM_TYPES.add("MSL");
 		VERTICAL_DATUM_TYPES.add("AGL");
 		VERTICAL_DATUM_TYPES.add("HAE");
 	}
 
-	private static Set<String> LENGTH_MEASURE_TYPES = new HashSet<String>();
+	private static final Set<String> LENGTH_MEASURE_TYPES = new HashSet<String>();
 	static {
 		LENGTH_MEASURE_TYPES.add("Meter");
 		LENGTH_MEASURE_TYPES.add("Kilometer");

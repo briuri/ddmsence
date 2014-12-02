@@ -81,7 +81,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 	private static final String START_NAME = "start";
 	private static final String END_NAME = "end";
 
-	private static Set<String> APPROXIMATION_TYPES = new HashSet<String>();
+	private static final Set<String> APPROXIMATION_TYPES = new HashSet<String>();
 	static {
 		APPROXIMATION_TYPES.add("1st qtr");
 		APPROXIMATION_TYPES.add("2nd qtr");
@@ -93,7 +93,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 		APPROXIMATION_TYPES.add("late");
 	}
 
-	private static Set<String> NAME_TYPES = new HashSet<String>();
+	private static final Set<String> NAME_TYPES = new HashSet<String>();
 	static {
 		NAME_TYPES.add("acquiredOn");
 		NAME_TYPES.add("approximableStart");
