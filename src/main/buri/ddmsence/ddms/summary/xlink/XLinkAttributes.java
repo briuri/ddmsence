@@ -113,13 +113,13 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	private static final String TYPE_SIMPLE = "simple";
 	private static final String TYPE_RESOURCE = "resource";
 
-	private static Set<String> TYPE_TYPES = new HashSet<String>();
+	private static final Set<String> TYPE_TYPES = new HashSet<String>();
 	static {
 		TYPE_TYPES.add(TYPE_LOCATOR);
 		TYPE_TYPES.add(TYPE_SIMPLE);
 		TYPE_TYPES.add(TYPE_RESOURCE);
 	}
-	private static Set<String> SHOW_TYPES = new HashSet<String>();
+	private static final Set<String> SHOW_TYPES = new HashSet<String>();
 	static {
 		SHOW_TYPES.add("new");
 		SHOW_TYPES.add("replace");
@@ -128,7 +128,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 		SHOW_TYPES.add("none");
 	}
 
-	private static Set<String> ACTUATE_TYPES = new HashSet<String>();
+	private static final Set<String> ACTUATE_TYPES = new HashSet<String>();
 	static {
 		ACTUATE_TYPES.add("onLoad");
 		ACTUATE_TYPES.add("onRequest");

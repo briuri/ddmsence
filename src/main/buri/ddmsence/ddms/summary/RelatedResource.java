@@ -105,7 +105,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	/** The pre-DDMS 4.0.1 name of the nested resource elements */
 	public static final String OLD_INNER_NAME = "RelatedResource";
 
-	private static Set<String> RELATIONSHIP_DIRECTIONS = new HashSet<String>();
+	private static final Set<String> RELATIONSHIP_DIRECTIONS = new HashSet<String>();
 	static {
 		RELATIONSHIP_DIRECTIONS.add(INBOUND_DIRECTION);
 		RELATIONSHIP_DIRECTIONS.add(OUTBOUND_DIRECTION);
