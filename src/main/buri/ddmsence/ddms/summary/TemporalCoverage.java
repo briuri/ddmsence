@@ -94,7 +94,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 
 	private static final String DEFAULT_VALUE = "Unknown";
 
-	public static Set<String> EXTENDED_DATE_TYPES = new HashSet<String>();
+	public static final Set<String> EXTENDED_DATE_TYPES = new HashSet<String>();
 	static {
 		EXTENDED_DATE_TYPES.add("Not Applicable");
 		EXTENDED_DATE_TYPES.add("Unknown");
