@@ -21,6 +21,7 @@ package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -94,10 +95,12 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 
 	private static final String DEFAULT_VALUE = "Unknown";
 
-	public static final Set<String> EXTENDED_DATE_TYPES = new HashSet<String>();
+	public static final Set<String> EXTENDED_DATE_TYPES;
 	static {
-		EXTENDED_DATE_TYPES.add("Not Applicable");
-		EXTENDED_DATE_TYPES.add("Unknown");
+		final Set<String> PRIVATE_DATE_TYPES = new HashSet<String>();
+		PRIVATE_DATE_TYPES.add("Not Applicable");
+		PRIVATE_DATE_TYPES.add("Unknown");
+		EXTENDED_DATE_TYPES = Collections.unmodifiableSet(PRIVATE_DATE_TYPES);
 	}
 
 	// The name of the TimePeriod element itself
