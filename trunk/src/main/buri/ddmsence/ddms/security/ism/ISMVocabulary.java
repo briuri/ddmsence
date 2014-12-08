@@ -185,7 +185,6 @@ public class ISMVocabulary {
 	private static final String REG_EXP_NAME = "regularExpression";
 
 	private static String _lastEnumLocation = null;
-	private static DDMSVersion _ddmsVersion;
 	static {
 		setDDMSVersion(DDMSVersion.getCurrentVersion());
 	}
@@ -196,19 +195,13 @@ public class ISMVocabulary {
 	private ISMVocabulary() {}
 
 	/**
-	 * Maintains a DDMSVersion which will be used to look up the CVE files.
+	 * Maintains a DDMSVersion which will be used to look up the CVE files. If the version has changed from its previous
+	 * value, the new set of CVEs will be loaded and cached.
 	 * 
 	 * @param version the DDMS version
 	 */
 	public static synchronized void setDDMSVersion(DDMSVersion version) {
-		_ddmsVersion = version;
-	}
-
-	/**
-	 * Reloads CVEs if necessary.
-	 */
-	private static synchronized void updateEnumLocation() {
-		String enumLocation = PropertyReader.getProperty(getDDMSVersion().getVersion() + ".ism.cveLocation");
+		String enumLocation = PropertyReader.getProperty(version.getVersion() + ".ism.cveLocation");
 		if (getLastEnumLocation() == null || !getLastEnumLocation().equals(enumLocation)) {
 			_lastEnumLocation = enumLocation;
 			if (LOCATION_TO_ENUM_TOKENS.get(getLastEnumLocation()) == null) {
@@ -219,7 +212,8 @@ public class ISMVocabulary {
 					Builder builder = new Builder(reader, false);
 					for (String cve : ALL_ENUMS) {
 						try {
-							loadEnumeration(enumLocation, builder, cve);
+							String cveNamespace = PropertyReader.getProperty(version.getVersion() + ".ism.cve.xmlNamespace");
+							loadEnumeration(enumLocation, cveNamespace, builder, cve);
 						}
 						catch (Exception e) {
 							continue;
@@ -238,16 +232,16 @@ public class ISMVocabulary {
 	 * Stores them in the ENUM_TOKENS map with the key. If a pattern is discovered, it is stored in a separate mapping.
 	 * 
 	 * @param enumLocation the classpath resource location for the enumeration files
+	 * @param cveNamespace the XML namespace of entries in this enumeration
 	 * @param builder the XOM Builder to read the file with
 	 * @param enumerationKey the key for the enumeration, which doubles as the filename.
 	 */
-	private static void loadEnumeration(String enumLocation, Builder builder, String enumerationKey)
+	private static void loadEnumeration(String enumLocation, String cveNamespace, Builder builder, String enumerationKey)
 		throws ParsingException, IOException {
 		InputStream stream = new ISMVocabulary().getClass().getResourceAsStream(enumLocation + enumerationKey);
 		Document doc = builder.build(stream);
 		Set<String> tokens = new TreeSet<String>();
 		Set<String> patterns = new HashSet<String>();
-		String cveNamespace = PropertyReader.getProperty(getDDMSVersion().getVersion() + ".ism.cve.xmlNamespace");
 		Element enumerationElement = doc.getRootElement().getFirstChildElement(ENUMERATION_NAME, cveNamespace);
 		Elements terms = enumerationElement.getChildElements(TERM_NAME, cveNamespace);
 		for (int i = 0; i < terms.size(); i++) {
@@ -269,18 +263,17 @@ public class ISMVocabulary {
 	 * so that these tokens can be used as reference data (for example, a select box on a web form).
 	 * 
 	 * <p>
-	 * If you wish to use these tokens in that way, you must explicitly call <code>setISMVersion()</code>
-	 * in advance, to ensure that the appropriate set of CVE files is used to look up the tokens, OR
-	 * you may use the configurable property, <code>icism.cve.customEnumLocation</code>, to force the
-	 * use of a custom set of CVE files. If neither option is used, the default set of tokens returned
-	 * will be based on the current value of <code>DDMSVersion.getCurrentVersion()</code>.</p>
+	 * If you wish to use these tokens in that way, you must explicitly call
+	 * <code>setDDMSVersion()</code> in advance, to ensure that the appropriate set of CVE files is used
+	 * to look up the tokens, OR you may use the configurable property, <code>icism.cve.customEnumLocation</code>, to
+	 * force the use of a custom set of CVE files. If neither option is used, the default set of tokens returned will be
+	 * based on the current value of <code>DDMSVersion.getCurrentVersion()</code>.</p>
 	 * 
 	 * @param enumerationKey the key of the enumeration
 	 * @return an unmodifiable set of Strings
 	 * @throws IllegalArgumentException if the key does not match a controlled vocabulary
 	 */
 	public static Set<String> getEnumerationTokens(String enumerationKey) {
-		updateEnumLocation();
 		Set<String> vocabulary = LOCATION_TO_ENUM_TOKENS.get(getLastEnumLocation()).get(enumerationKey);
 		if (vocabulary == null) {
 			throw new IllegalArgumentException("No controlled vocabulary could be found for this key: "
@@ -296,7 +289,6 @@ public class ISMVocabulary {
 	 * @return an unmodifiable set of Strings
 	 */
 	private static Set<String> getEnumerationPatterns(String enumerationKey) {
-		updateEnumLocation();
 		Set<String> vocabulary = LOCATION_TO_ENUM_PATTERNS.get(getLastEnumLocation()).get(enumerationKey);
 		return (Collections.unmodifiableSet(vocabulary));
 	}
@@ -309,7 +301,6 @@ public class ISMVocabulary {
 	 * @throws InvalidDDMSException if the value is not and validation should result in errors
 	 */
 	public static void validateEnumeration(String enumerationKey, String value) throws InvalidDDMSException {
-		setDDMSVersion(getDDMSVersion());
 		if (!enumContains(enumerationKey, value)) {
 			String message = getInvalidMessage(enumerationKey, value);
 			throw new InvalidDDMSException(message);
@@ -381,12 +372,5 @@ public class ISMVocabulary {
 	 */
 	private static String getLastEnumLocation() {
 		return (_lastEnumLocation);
-	}
-
-	/**
-	 * Accessor for the currently set DDMS Version
-	 */
-	private static DDMSVersion getDDMSVersion() {
-		return (_ddmsVersion);
 	}
 }
