@@ -357,7 +357,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	}
 
 	/**
-	 * Accessor for the noticeDate attribute. May return null if not set.
+	 * Accessor for the noticeDate attribute. Returns a copy. May return null if not set.
 	 */
 	public XMLGregorianCalendar getNoticeDate() {
 		return (_noticeDate == null ? null : getFactory().newXMLGregorianCalendar(_noticeDate.toXMLFormat()));
