@@ -74,10 +74,12 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	private List<ValidationMessage> _warnings = null;
 	private Element _element = null;
 
-	public static final Map<OutputFormat, String> OUTPUT_TEMPLATES = new HashMap<OutputFormat, String>();
+	public static final Map<OutputFormat, String> OUTPUT_TEMPLATES;
 	static {
-		OUTPUT_TEMPLATES.put(OutputFormat.HTML, "<meta name=\"%s\" content=\"%s\" />\n");
-		OUTPUT_TEMPLATES.put(OutputFormat.TEXT, "%s: %s\n");
+		final Map<OutputFormat, String> PRIVATE_TEMPLATES = new HashMap<OutputFormat, String>();
+		PRIVATE_TEMPLATES.put(OutputFormat.HTML, "<meta name=\"%s\" content=\"%s\" />\n");
+		PRIVATE_TEMPLATES.put(OutputFormat.TEXT, "%s: %s\n");
+		OUTPUT_TEMPLATES = Collections.unmodifiableMap(PRIVATE_TEMPLATES);
 	}
 	
 	/**
