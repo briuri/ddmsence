@@ -400,7 +400,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the XML calendar representing the start date
+	 * Accessor for the XML calendar representing the start date. Returns a copy.
 	 * 
 	 * <p>DDMS 4.1 added a new allowable date format (ddms:DateHourMinType). This method will convert values of that
 	 * type into an XMLGregorianCalendar, using intelligent defaults for any missing information (e.g. 00 for seconds).
@@ -425,7 +425,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the XML calendar representing the end date
+	 * Accessor for the XML calendar representing the end date. Returns a copy.
 	 * 
 	 * <p>DDMS 4.1 added a new allowable date format (ddms:DateHourMinType). This method will convert values of that
 	 * type into an XMLGregorianCalendar, using intelligent defaults for any missing information (e.g. 00 for seconds).

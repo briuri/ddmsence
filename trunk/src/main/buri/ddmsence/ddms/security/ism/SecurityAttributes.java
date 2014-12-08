@@ -724,7 +724,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	}
 
 	/**
-	 * Accessor for the dateOfExemptedSource attribute. May return null if not set.
+	 * Accessor for the dateOfExemptedSource attribute. Returns a copy. May return null if not set.
 	 */
 	public XMLGregorianCalendar getDateOfExemptedSource() {
 		return (_dateOfExemptedSource == null ? null : getFactory().newXMLGregorianCalendar(
@@ -732,7 +732,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	}
 
 	/**
-	 * Accessor for the declassDate attribute. May return null if not set.
+	 * Accessor for the declassDate attribute. Returns a copy. May return null if not set.
 	 */
 	public XMLGregorianCalendar getDeclassDate() {
 		return (_declassDate == null ? null : getFactory().newXMLGregorianCalendar(_declassDate.toXMLFormat()));
