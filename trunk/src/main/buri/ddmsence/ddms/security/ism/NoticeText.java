@@ -198,7 +198,7 @@ public final class NoticeText extends AbstractSimpleString {
 	 * Accessor for the pocType attribute.
 	 */
 	public List<String> getPocTypes() {
-		return (_pocTypes);
+		return (Collections.unmodifiableList(_pocTypes));
 	}
 
 	/**

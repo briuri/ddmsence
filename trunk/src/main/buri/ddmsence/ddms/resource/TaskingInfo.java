@@ -232,14 +232,14 @@ public final class TaskingInfo extends AbstractBaseComponent {
 	 * Accessor for the requesterInfos
 	 */
 	public List<RequesterInfo> getRequesterInfos() {
-		return _requesterInfos;
+		return (Collections.unmodifiableList(_requesterInfos));
 	}
 
 	/**
 	 * Accessor for the addressees
 	 */
 	public List<Addressee> getAddressees() {
-		return _addressees;
+		return (Collections.unmodifiableList(_addressees));
 	}
 
 	/**

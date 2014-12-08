@@ -1044,7 +1044,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * Accessor for the subjectCoverage component
 	 */
 	public List<SubjectCoverage> getSubjectCoverages() {
-		return _subjectCoverages;
+		return (Collections.unmodifiableList(_subjectCoverages));
 	}
 
 	/**
