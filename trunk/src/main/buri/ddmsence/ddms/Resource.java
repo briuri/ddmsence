@@ -193,7 +193,7 @@ public final class Resource extends AbstractBaseComponent {
 	private List<IDDMSComponent> _orderedList = new ArrayList<IDDMSComponent>();
 
 	private XMLGregorianCalendar _createDate = null;
-	List<String> _compliesWiths = null;
+	private List<String> _compliesWiths = null;
 	private Integer _ismDESVersion = null;
 	private Integer _ntkDESVersion = null;
 	private NoticeAttributes _noticeAttributes = null;
