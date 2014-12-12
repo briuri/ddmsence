@@ -19,11 +19,18 @@
  */
 package buri.ddmsence.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.AccessorRunnable;
 import buri.ddmsence.ddms.UnsupportedVersionException;
 
 /**
@@ -246,6 +253,73 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		}
 		catch (UnsupportedVersionException e) {
 			expectMessage(e, "DDMS Version dog is not yet supported.");
+		}
+	}
+
+	@Test
+	public void testMultithreaded() throws InterruptedException {
+		List<Thread> threads = new ArrayList<Thread>();
+		List<AccessorRunnable> runnables = new ArrayList<AccessorRunnable>();
+		for (int i = 0; i < AccessorRunnable.NUM_THREADS; i++) {
+			runnables.add(new DDMSVersionRunnable(i));
+			threads.add(new Thread(runnables.get(i), runnables.get(i).getThreadName()));
+			threads.get(i).start();
+		}
+		for (int i = 0; i < AccessorRunnable.NUM_THREADS; i++) {
+			threads.get(i).join();
+		}
+
+		int numFailures = 0;
+		for (int i = 0; i < AccessorRunnable.NUM_THREADS; i++) {
+			if (!runnables.get(i).getMatch())
+				numFailures++;
+		}
+		if (numFailures > 0) {
+			fail(numFailures + " threads contained an incorrect version value.");
+		}
+	}
+
+	/**
+	 * Helper class to test DDMSVersion in multiple threads.
+	 */
+	public static class DDMSVersionRunnable extends AccessorRunnable {
+		private String _randomVersion;
+
+
+		public DDMSVersionRunnable(int threadNum) {
+			super("Thread" + threadNum);
+			setRandomVersion(threadNum);
+		}
+		
+		
+		@Override
+		public String getExpectedValue() {
+			return (getRandomVersion());
+		}
+		
+		@Override
+		public void callSet() {
+			DDMSVersion.setCurrentVersion(getRandomVersion());
+		}
+		
+		@Override
+		public String callGet() {
+			return (DDMSVersion.getCurrentVersion().getVersion());
+		}
+				
+		/**
+		 * Accessor for the version tested with this thread.
+		 */
+		public String getRandomVersion() {
+			return _randomVersion;
+		}
+
+		/**
+		 * Accessor for the version tested with this thread.
+		 */
+		public void setRandomVersion(int versionIndex) {
+			int listIndex = versionIndex % DDMSVersion.getSupportedVersions().size();
+			_randomVersion = DDMSVersion.getSupportedVersions().get(listIndex);
 		}
 	}
 }
