@@ -20,6 +20,8 @@
 package buri.ddmsence.util;
 
 import static org.junit.Assert.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -27,6 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.AccessorRunnable;
 
 /**
  * A collection of PropertyReader tests.
@@ -89,5 +92,53 @@ public class PropertyReaderTest extends AbstractBaseTestCase {
 	public void testSetPropertyValid() {
 		PropertyReader.setProperty("ddms.prefix", "DDMS");
 		assertEquals("DDMS", PropertyReader.getPrefix("ddms"));
+	}
+		
+	@Test
+	public void testMultithreaded() throws InterruptedException {
+		List<Thread> threads = new ArrayList<Thread>();
+		List<AccessorRunnable> runnables = new ArrayList<AccessorRunnable>();
+		for (int i = 0; i < AccessorRunnable.NUM_THREADS; i++) {
+			runnables.add(new PropertyReaderRunnable(i));
+			threads.add(new Thread(runnables.get(i), runnables.get(i).getThreadName()));
+			threads.get(i).start();
+		}
+		for (int i = 0; i < AccessorRunnable.NUM_THREADS; i++) {
+			threads.get(i).join();
+		}
+		
+		int numFailures = 0;
+		for (int i = 0; i < AccessorRunnable.NUM_THREADS; i++) {
+			if (!runnables.get(i).getMatch())
+				numFailures++;
+		}
+		if (numFailures > 0) {
+			fail(numFailures + " threads contained an incorrect property value.");
+		}
+	}
+	
+	/**
+	 * Helper class to test PropertyReader in multiple threads.
+	 */
+	public static class PropertyReaderRunnable extends AccessorRunnable {
+
+		public PropertyReaderRunnable(int threadNum) {
+			super("Thread" + threadNum);
+		}
+		
+		@Override
+		public String getExpectedValue() {
+			return (getThreadName());
+		}
+		
+		@Override
+		public void callSet() {
+			PropertyReader.setProperty("ddms.prefix", getThreadName());
+		}
+		
+		@Override
+		public String callGet() {
+			return (PropertyReader.getProperty("ddms.prefix"));
+		}
 	}
 }
