@@ -32,7 +32,6 @@ import org.junit.Test;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.AccessorRunnable;
 import buri.ddmsence.util.DDMSVersion;
-import buri.ddmsence.util.DDMSVersionTest.DDMSVersionRunnable;
 
 /**
  * <p> Tests related to the ISM Controlled Vocabularies </p>
