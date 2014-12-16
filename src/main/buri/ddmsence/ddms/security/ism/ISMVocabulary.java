@@ -223,7 +223,6 @@ public class ISMVocabulary {
 	 * @throws InvalidDDMSException if the value is not and validation should result in errors
 	 */
 	public static void validateEnumeration(DDMSVersion version, String enumerationKey, String value) throws InvalidDDMSException {
-		System.out.println("validation for v" + version);
 		if (!enumContains(version, enumerationKey, value)) {
 			String message = getInvalidMessage(enumerationKey, value);
 			throw new InvalidDDMSException(message);
