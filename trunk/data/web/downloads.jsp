@@ -24,16 +24,16 @@ I have also included a <code>.project</code> file if you wish to import the proj
 
 <p>Regardless of your choice, you will need a <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_new">JRE or JDK</a> which supports Java 1.6 or higher.</p>
 
-<h1>Latest Release: v2.4.0</h1>
+<h1>Latest Release: v2.5.0</h1>
 
-<p>Version <b>2.4.0</b> (11/20/2014) is a stable release which improves the handling of date values in various components (<a href="http://code.google.com/p/ddmsence/issues/detail?id=221">Issue #221</a>).
-It is backwards compatible with all versions since v2.0.0.</p>
+<p>Version <b>2.5.0</b> (XX/YY/ZZZZ) is a stable release which can now be used in <a href="documentation-multithreaded.jsp">multithreaded environments</a> 
+(<a href="http://code.google.com/p/ddmsence/issues/detail?id=222">Issue #222</a>). It is backwards compatible with all versions since v2.0.0.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-bin-2.4.0.zip"><code>ddmsence-bin-2.4.0.zip</code></a></b> (8.4 MB, compiled with JDK1.7.0_17, source level 1.6, target level 1.6)</li>
-<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-src-2.4.0.zip"><code>ddmsence-src-2.4.0.zip</code></a></b> (8.3 MB)</li>
+<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-bin-2.5.0.zip"><code>ddmsence-bin-2.5.0.zip</code></a></b> (8.4 MB, compiled with JDK1.7.0_17, source level 1.6, target level 1.6)</li>
+<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-src-2.5.0.zip"><code>ddmsence-src-2.5.0.zip</code></a></b> (8.3 MB)</li>
 <br />
-<li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v2.4.0">Complete List of Changes</a></li>
+<li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v2.5.0">Complete List of Changes</a></li>
 </ul>
 
 <h3>DDMSence and Maven</h3>
@@ -62,23 +62,21 @@ All changes which are not backwards compatible will be linked from this page wit
 
 <h3>Previous Release</h3>
 
-<!-- 184 downloads of 2.2.0 as of 5/13/2014 -->
-<!-- 345 downloads of 2.1.0 as of 12/15/2013 -->
-<!-- 339 downloads of 2.0.0 as of 1/19/2013 -->
-<!-- 828 downloads of 1.x -->
-
-<p>Version <b>2.3.0</b> (05/30/2014) is a stable release which adds built-in support for JSON output. It is backwards compatible with all versions since v2.0.0.
-Additional information about JSON output can be found in <a href="tutorials-01.jsp">Tutorial #1: Essentials</a>.</p>
+<p>Version <b>2.4.0</b> (11/20/2014) is a stable release which improves the handling of date values in various components (<a href="http://code.google.com/p/ddmsence/issues/detail?id=221">Issue #221</a>).
+It is backwards compatible with all versions since v2.0.0.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-bin-2.3.0.zip"><code>ddmsence-bin-2.3.0.zip</code></a></b> (7.1 MB, compiled with JDK1.7.0_17, source level 1.6, target level 1.6)</li>
-<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-src-2.3.0.zip"><code>ddmsence-src-2.3.0.zip</code></a></b> (7.0 MB)</li>
+<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-bin-2.4.0.zip"><code>ddmsence-bin-2.4.0.zip</code></a></b> (8.4 MB, compiled with JDK1.7.0_17, source level 1.6, target level 1.6)</li>
+<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-src-2.4.0.zip"><code>ddmsence-src-2.4.0.zip</code></a></b> (8.3 MB)</li>
 </ul>
 
 <h3>Ancient Releases</h3>
 
 <p>Earlier versions of DDMSence are no longer available for download (although they can still be built from the tagged source code). Historical information about earlier releases can be
 found below.</p>
+
+<p>Version <b>2.3.0</b> (05/30/2014) is a stable release which adds built-in support for JSON output. It is backwards compatible with all versions since v2.0.0.
+Additional information about JSON output can be found in <a href="tutorials-01.jsp">Tutorial #1: Essentials</a>.</p>
 
 <p>Version <b>2.2.1</b> (05/13/2014) is a stable release which is backwards compatible with all versions since v2.0.0. It is functionally equivalent
 to v2.2.0, but has been recompiled to run with Java 1.6 (<a href="https://code.google.com/p/ddmsence/issues/detail?id=215">Issue #215</a>). If v2.2.0 is already working for you, there is no need to upgrade at this time. 
@@ -167,6 +165,11 @@ for v1.0.0. It is backwards compatible with v0.9.c.</p>
 for early feedback. It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=32">backwards compatible</a> with earlier versions.</p>
 
 <p>Version <b>0.9.b</b> (03/24/2010) is the initial beta release. This version is believed to be stable, and is intended to be a limited audience release for early feedback.</p>
+
+<!-- 184 downloads of 2.2.0 as of 5/13/2014 -->
+<!-- 345 downloads of 2.1.0 as of 12/15/2013 -->
+<!-- 339 downloads of 2.0.0 as of 1/19/2013 -->
+<!-- 828 downloads of 1.x -->
 
 <div class="clear"></div>
 <%@ include file="../shared/footer.jspf" %>

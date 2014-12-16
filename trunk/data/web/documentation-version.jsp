@@ -72,9 +72,8 @@ Can we use components that were introduced in DDMS 3.1? true</pre>
 
 <p>Calling <code>DDMSVersion.setCurrentVersion("2.0")</code> will make any components you create from that point on obey DDMS 2.0 
 validation rules. The default version if you never call this method is "5.0" (but you should always explicitly set the current version yourself,
-because this default changes as new versions of DDMS are released). The version is maintained as a static variable, so this 
-is not a thread-safe approach, but I believe that the most common use cases will deal with DDMS components of a single version at a time,
-and I wanted the versioning mechanism to be as unobtrusive as possible.</p>
+because this default changes as new versions of DDMS are released). The version is maintained as a thread-local variable, so multiple Threads
+can operate on different versions at the same time.</p>
 
 <h3>Differences Between Versions</h3>
 

@@ -16,6 +16,9 @@ instead of "ISM", you would set the "ism.prefix" property with a custom value of
 <pre class="brush: java">PropertyReader.setProperty("ism.prefix", "ic");</pre>
 <p class="figure">Figure 1. Command to change a configurable property.</p>
 
+<p>If you are using DDMSence in a multithreaded environment, be aware that each running Thread has its own local PropertyReader. Changing properties in one
+Thread will not impact or overwrite properties in another Thread.</p>
+
 <p>Only the subset of properties listed below can be set programmatically. Attempts to change other DDMSence properties will result in an exception.</p>
 			
 <table>
