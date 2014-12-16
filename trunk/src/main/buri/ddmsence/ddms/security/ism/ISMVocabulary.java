@@ -306,7 +306,6 @@ public class ISMVocabulary {
 	private static void updateEnumLocation(DDMSVersion version) {
 		String enumLocation = PropertyReader.getProperty(version.getVersion() + ".ism.cveLocation");
 		if (LAST_ENUM_HOLDER.get() == null || !LAST_ENUM_HOLDER.get().equals(enumLocation)) {
-			System.out.println("Updating enumLocation from " + LAST_ENUM_HOLDER.get() + " to " + enumLocation);
 			LAST_ENUM_HOLDER.set(enumLocation);
 			try {
 				ENUM_TOKEN_HOLDER.get().clear();

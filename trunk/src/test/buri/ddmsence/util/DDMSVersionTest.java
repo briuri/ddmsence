@@ -285,13 +285,11 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 	public static class DDMSVersionRunnable extends AccessorRunnable {
 		private String _randomVersion;
 
-
 		public DDMSVersionRunnable(int threadNum) {
 			super("Thread" + threadNum);
 			setRandomVersion(threadNum);
 		}
-		
-		
+				
 		@Override
 		public String getExpectedValue() {
 			return (getRandomVersion());
