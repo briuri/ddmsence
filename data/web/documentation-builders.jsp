@@ -13,8 +13,7 @@
 which offers a mutable way to build components. A Builder class can be the form bean behind an HTML form on a website, allowing someone to fill in the details page
 by page (this is discussed more below). A Builder class can also be initialized with an existing component to allow for editing after it has already been saved. 
 Properties on a Builder class can be set or re-set, and the strict DDMSence validation does not occur until
-you are ready to <code>commit()</code> the changes.</p>
-
+you are ready to <code>commit()</code> the changes. Builders are not thread-safe, and should not be shared between multiple Threads.</p>
 <p>Builder classes for components that have child components flexibly handle any nested Builders, so you do not have to make your edits from the lowest level component. This differs
 from the approach described in <a href="tutorials-02.jsp">Tutorial #2: Escort</a>, where all child components must be complete and valid before proceeding up the hierarchy.
 The following three figures provide an example of this difference, using SubjectCoverage as a representative component.</p>

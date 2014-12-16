@@ -14,7 +14,7 @@ to validate correctness and syntax, a Schematron file can more easily address ru
 various elements and attributes. Please note that DDMSence currently validates these rules with Java instead of Schematron, for slightly increased performance.</p>
 
 <p>DDMS 5.0 introduced an official Schematron file as part of the specification, <code>DDMS-v5.sch</code>. This file currently validates new country code
-rules. I recently submitted a CR to incorporate some of the tests below into the official file.</p>
+rules. I submitted a CR in 2013 to incorporate some of the tests below into the official file, but the CR has not yet been reviewed.</p>
 
 <h4>Schematron File Template</h4>
 

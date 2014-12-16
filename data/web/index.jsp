@@ -85,7 +85,8 @@
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
 	<!-- TDF Location: http://www.dni.gov/index.php/about/organization/chief-information-officer/trusted-data-format -->
-	<div class="newsUpdate"><u>11/20/2014</u>: <a href="downloads.jsp">v2.4.0</a> released.</div>
+	<div class="newsUpdate"><u>XX/YY/ZZZZ</u>: <a href="downloads.jsp">v2.5.0</a> released, adding <a href="documentation-multithreaded.jsp">multithreaded support</a>.</div>
+	<div class="newsUpdate"><u>11/20/2014</u>: v2.4.0 released.</div>
 	<div class="newsUpdate"><u>05/30/2014</u>: v2.3.0 released.</div>
 	<div class="newsUpdate"><u>05/13/2014</u>: v2.2.1 released.</div>
 	<div class="newsUpdate"><u>12/15/2013</u>: v2.2.0 released, adding support for DDMS 5.0.</div>

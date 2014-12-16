@@ -208,10 +208,6 @@ ownerProducers.add("USA");
 List&lt;String&gt; ownerProducers = Util.getXsListAsList("AUS USA");</pre>
 <p class="figure">Figure 3. Conveniently creating a list of Strings from a space-delimited String</p>
 
-<h4>Thread Safety</h4>
-
-<p>Other than the immutability of objects, no special effort went into making DDMSence thread-safe, and no testing was done on its behavior in multithreaded environments.</p>
-
 <a name="tips"></a><h3>Power Tips</h3>
 
 <p>Power Tips provide instructions and sample code to maximize the benefits of DDMSence, once you are comfortable with the basics of the library.</p>
@@ -227,6 +223,8 @@ List&lt;String&gt; ownerProducers = Util.getXsListAsList("AUS USA");</pre>
 
 	<li><a href="documentation-schematron.jsp">Schematron Validation</a>: Explains the process for using custom Schematron files with DDMSence, and provides example
 	code for using the official ISM.XML Schematron files.</li><br />
+
+	<li><a href="documentation-multithreaded.jsp">Thread Safety</a>: Discusses how DDMSence can be used in multithreaded environments.</li><br />
 
 	<li><a href="documentation-differentIsm.jsp">Using Alternate Versions of Intelligence Community Specifications</a>: Shows how to use a local set of ISM/NTK/VIRT schemas and CVE files instead of the files bundled with DDMSence.</li><br />
 
