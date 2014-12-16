@@ -126,7 +126,7 @@ public final class NoticeText extends AbstractSimpleString {
 		Util.requireQName(getXOMElement(), getDDMSVersion().getIsmNamespace(), NoticeText.getName(getDDMSVersion()));
 		if (getDDMSVersion().isAtLeast("4.0.1")) {
 			for (String pocType : getPocTypes())
-				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_POC_TYPE, pocType);
+				ISMVocabulary.validateEnumeration(getDDMSVersion(), ISMVocabulary.CVE_POC_TYPE, pocType);
 		}
 		super.validate();
 	}

@@ -255,7 +255,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 			expectMessage(e, "DDMS Version dog is not yet supported.");
 		}
 	}
-
+	
 	@Test
 	public void testMultithreaded() throws InterruptedException {
 		List<Thread> threads = new ArrayList<Thread>();

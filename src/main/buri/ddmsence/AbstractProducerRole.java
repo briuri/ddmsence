@@ -159,7 +159,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 			throw new InvalidDDMSException("This component must not have a pocType until DDMS 4.0.1 or later.");
 		}
 		for (String pocType : getPocTypes())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_POC_TYPE, pocType);
+			ISMVocabulary.validateEnumeration(getDDMSVersion(), ISMVocabulary.CVE_POC_TYPE, pocType);
 		super.validate();
 	}
 

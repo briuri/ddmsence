@@ -34,8 +34,9 @@ import java.util.Set;
  * <p> Properties in DDMSence are found in the <code>ddmsence.properties</code> file. All properties are prefixed with
  * "buri.ddmsence.", so <code>getProperty</code> calls should be performed with just the property suffix. </p>
  * 
- * <p> The Property Reader supports several custom properties, which can be specified at runtime. The complete list of
- * configurable properties can be found on the DDMSence website at:
+ * <p> The Property Reader supports several custom properties, which can be specified at runtime. Property Readers are
+ * thread-local, so the properties set in one Thread will not conflict with properties in another Thread. The complete
+ * list of configurable properties can be found on the DDMSence website at:
  * http://ddmsence.urizone.net/documentation.jsp#tips-configuration. </p>
  * 
  * <p> Changing a namespace prefix will affect both components created from scratch and components loaded from XML
@@ -67,7 +68,15 @@ public class PropertyReader {
 		CUSTOM_PROPERTIES.add("xml.transform.TransformerFactory");
 	};
 
-	private static final PropertyReader INSTANCE = new PropertyReader();
+	/**
+	 * A thread-local instance of PropertyReader, to ensure that multiple Threads can each set their own properties.
+	 */
+	private static final ThreadLocal<PropertyReader> PROPERTY_READER_HOLDER = new ThreadLocal<PropertyReader>() {
+		@Override
+		protected PropertyReader initialValue() {
+			return new PropertyReader();
+		}
+	};
 
 	/**
 	 * Private to prevent instantiation
@@ -104,7 +113,7 @@ public class PropertyReader {
 	 * @throws IllegalArgumentException if the property does not exist.
 	 */
 	public static String getProperty(String name) {
-		String value = INSTANCE.getProperties().getProperty(PROPERTIES_PREFIX + name);
+		String value = PROPERTY_READER_HOLDER.get().getProperties().getProperty(PROPERTIES_PREFIX + name);
 		if (value == null)
 			throw new IllegalArgumentException(UNDEFINED_PROPERTY + PROPERTIES_PREFIX + name);
 		return (value);
@@ -120,7 +129,7 @@ public class PropertyReader {
 	public static void setProperty(String name, String value) {
 		if (!CUSTOM_PROPERTIES.contains(name))
 			throw new IllegalArgumentException(name + " is not a configurable property.");
-		INSTANCE.getProperties().setProperty(PROPERTIES_PREFIX + name, Util.getNonNullString(value).trim());
+		PROPERTY_READER_HOLDER.get().getProperties().setProperty(PROPERTIES_PREFIX + name, Util.getNonNullString(value).trim());
 	}
 
 	/**
