@@ -176,18 +176,38 @@ public class ISMVocabulary {
 		ALL_ENUMS.add(CVE_TYPE_EXEMPTED_SOURCE);
 	}
 
-	private static final Map<String, Map<String, Set<String>>> LOCATION_TO_ENUM_TOKENS = new HashMap<String, Map<String, Set<String>>>();
-	private static final Map<String, Map<String, Set<String>>> LOCATION_TO_ENUM_PATTERNS = new HashMap<String, Map<String, Set<String>>>();
-
 	private static final String ENUMERATION_NAME = "Enumeration";
 	private static final String TERM_NAME = "Term";
 	private static final String VALUE_NAME = "Value";
 	private static final String REG_EXP_NAME = "regularExpression";
 
-	private static String _lastEnumLocation = null;
-	static {
-		setDDMSVersion(DDMSVersion.getCurrentVersion());
-	}
+	/**
+	 * A thread-local instance of the last location where enumeration files were cached from. This is used to cache the
+	 * most recently used set of enumeration files for performance.
+	 */
+	private static final ThreadLocal<String> LAST_ENUM_HOLDER = new ThreadLocal<String>();
+	
+	/**
+	 * A thread-local cache of any enumeration tokens mapped to the <code>LAST_ENUM_HOLDER</code> location. This cache
+	 * is cleared whenever the <code>LAST_ENUM_HOLDER</code> changes.
+	 */
+	private static final ThreadLocal<Map<String, Set<String>>> ENUM_TOKEN_HOLDER = new ThreadLocal<Map<String, Set<String>>>() {
+		@Override
+		protected Map<String, Set<String>> initialValue() {
+			return new HashMap<String, Set<String>>();
+		}
+	};
+	
+	/**
+	 * A thread-local cache of any enumeration patterns mapped to the <code>LAST_ENUM_HOLDER</code> location. This cache
+	 * is cleared whenever the <code>LAST_ENUM_HOLDER</code> changes.
+	 */
+	private static final ThreadLocal<Map<String, Set<String>>> ENUM_PATTERN_HOLDER = new ThreadLocal<Map<String, Set<String>>>() {
+		@Override
+		protected Map<String, Set<String>> initialValue() {
+			return new HashMap<String, Set<String>>();
+		}
+	};
 
 	/**
 	 * Private to prevent instantiation
@@ -195,34 +215,116 @@ public class ISMVocabulary {
 	private ISMVocabulary() {}
 
 	/**
+	 * Helper method to validate a value from a controlled vocabulary.
+	 * 
+	 * @param version the DDMS Version which maps to the version of ISM you wish to use
+	 * @param enumerationKey the key of the enumeration
+	 * @param value the test value
+	 * @throws InvalidDDMSException if the value is not and validation should result in errors
+	 */
+	public static void validateEnumeration(DDMSVersion version, String enumerationKey, String value) throws InvalidDDMSException {
+		System.out.println("validation for v" + version);
+		if (!enumContains(version, enumerationKey, value)) {
+			String message = getInvalidMessage(enumerationKey, value);
+			throw new InvalidDDMSException(message);
+		}
+	}
+	
+	/**
+	 * Returns an unmodifiable set of controlled vocabulary tokens. This method is publicly available
+	 * so that these tokens can be used as reference data (for example, a select box on a web form).
+	 * 
+	 * <p>
+	 * If you wish to use these tokens in that way, you must explicitly call
+	 * <code>setDDMSVersion()</code> in advance, to ensure that the appropriate set of CVE files is used
+	 * to look up the tokens, OR you may use the configurable property, <code>icism.cve.customEnumLocation</code>, to
+	 * force the use of a custom set of CVE files. If neither option is used, the default set of tokens returned will be
+	 * based on the current value of <code>DDMSVersion.getCurrentVersion()</code>.</p>
+	 * 
+	 * @param version the DDMS Version which maps to the version of ISM you wish to use
+	 * @param enumerationKey the key of the enumeration
+	 * @return an unmodifiable set of Strings
+	 * @throws IllegalArgumentException if the key does not match a controlled vocabulary
+	 */
+	public static Set<String> getEnumerationTokens(DDMSVersion version, String enumerationKey) {
+		updateEnumLocation(version);
+		Set<String> vocabulary = ENUM_TOKEN_HOLDER.get().get(enumerationKey);
+		if (vocabulary == null) {
+			throw new IllegalArgumentException("No controlled vocabulary could be found for this key: "
+				+ enumerationKey);
+		}
+		return (Collections.unmodifiableSet(vocabulary));
+	}
+
+
+	/**
+	 * Checks if a value exists in the controlled vocabulary identified by the key. If the value does not match the
+	 * tokens, but the CVE also contains patterns, the regular expression pattern is checked next. If neither tokens or
+	 * patterns returns a match, return false.
+	 * 
+	 * @param version the DDMS Version which maps to the version of ISM you wish to use
+	 * @param enumerationKey the key of the enumeration
+	 * @param value the test value
+	 * @return true if the value exists in the enumeration, false otherwise
+	 * @throws IllegalArgumentException on an invalid key
+	 */
+	protected static boolean enumContains(DDMSVersion version, String enumerationKey, String value) {
+		Util.requireValue("key", enumerationKey);
+		boolean isValidToken = getEnumerationTokens(version, enumerationKey).contains(value);
+		if (!isValidToken) {
+			for (String patternString : getEnumerationPatterns(version, enumerationKey)) {
+				Pattern pattern = Pattern.compile(patternString);
+				Matcher matcher = pattern.matcher(value);
+				if (matcher.matches()) {
+					isValidToken = true;
+					break;
+				}
+			}
+		}
+		return (isValidToken);
+	}
+
+	/**
+	 * Returns an unmodifiable set of controlled vocabulary regular expression patterns.
+	 * 
+	 * @param version the DDMS Version which maps to the version of ISM you wish to use
+	 * @param enumerationKey the key of the enumeration
+	 * @return an unmodifiable set of Strings
+	 */
+	protected static Set<String> getEnumerationPatterns(DDMSVersion version, String enumerationKey) {
+		updateEnumLocation(version);
+		Set<String> vocabulary = ENUM_PATTERN_HOLDER.get().get(enumerationKey);
+		return (Collections.unmodifiableSet(vocabulary));
+	}
+
+	/**
 	 * Maintains a DDMSVersion which will be used to look up the CVE files. If the version has changed from its previous
 	 * value, the new set of CVEs will be loaded and cached.
 	 * 
 	 * @param version the DDMS version
 	 */
-	public static synchronized void setDDMSVersion(DDMSVersion version) {
+	private static void updateEnumLocation(DDMSVersion version) {
 		String enumLocation = PropertyReader.getProperty(version.getVersion() + ".ism.cveLocation");
-		if (getLastEnumLocation() == null || !getLastEnumLocation().equals(enumLocation)) {
-			_lastEnumLocation = enumLocation;
-			if (LOCATION_TO_ENUM_TOKENS.get(getLastEnumLocation()) == null) {
-				try {
-					LOCATION_TO_ENUM_TOKENS.put(getLastEnumLocation(), new HashMap<String, Set<String>>());
-					LOCATION_TO_ENUM_PATTERNS.put(getLastEnumLocation(), new HashMap<String, Set<String>>());
-					XMLReader reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xml.reader.class"));
-					Builder builder = new Builder(reader, false);
-					for (String cve : ALL_ENUMS) {
-						try {
-							String cveNamespace = PropertyReader.getProperty(version.getVersion() + ".ism.cve.xmlNamespace");
-							loadEnumeration(enumLocation, cveNamespace, builder, cve);
-						}
-						catch (Exception e) {
-							continue;
-						}
+		if (LAST_ENUM_HOLDER.get() == null || !LAST_ENUM_HOLDER.get().equals(enumLocation)) {
+			System.out.println("Updating enumLocation from " + LAST_ENUM_HOLDER.get() + " to " + enumLocation);
+			LAST_ENUM_HOLDER.set(enumLocation);
+			try {
+				ENUM_TOKEN_HOLDER.get().clear();
+				ENUM_PATTERN_HOLDER.get().clear();
+				XMLReader reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xml.reader.class"));
+				Builder builder = new Builder(reader, false);
+				for (String cve : ALL_ENUMS) {
+					try {
+						String cveNamespace = PropertyReader.getProperty(version.getVersion() + ".ism.cve.xmlNamespace");
+						loadEnumeration(enumLocation, cveNamespace, builder, cve);
+					}
+					catch (Exception e) {
+						continue;
 					}
 				}
-				catch (SAXException e) {
-					throw new RuntimeException("Could not load controlled vocabularies: " + e.getMessage());
-				}
+			}
+			catch (SAXException e) {
+				throw new RuntimeException("Could not load controlled vocabularies: " + e.getMessage());
 			}
 		}
 	}
@@ -254,85 +356,10 @@ public class ISMVocabulary {
 					tokens.add(value.getValue());
 			}
 		}
-		LOCATION_TO_ENUM_TOKENS.get(getLastEnumLocation()).put(enumerationKey, tokens);
-		LOCATION_TO_ENUM_PATTERNS.get(getLastEnumLocation()).put(enumerationKey, patterns);
+		ENUM_TOKEN_HOLDER.get().put(enumerationKey, tokens);
+		ENUM_PATTERN_HOLDER.get().put(enumerationKey, patterns);
 	}
-
-	/**
-	 * Returns an unmodifiable set of controlled vocabulary tokens. This method is publicly available
-	 * so that these tokens can be used as reference data (for example, a select box on a web form).
-	 * 
-	 * <p>
-	 * If you wish to use these tokens in that way, you must explicitly call
-	 * <code>setDDMSVersion()</code> in advance, to ensure that the appropriate set of CVE files is used
-	 * to look up the tokens, OR you may use the configurable property, <code>icism.cve.customEnumLocation</code>, to
-	 * force the use of a custom set of CVE files. If neither option is used, the default set of tokens returned will be
-	 * based on the current value of <code>DDMSVersion.getCurrentVersion()</code>.</p>
-	 * 
-	 * @param enumerationKey the key of the enumeration
-	 * @return an unmodifiable set of Strings
-	 * @throws IllegalArgumentException if the key does not match a controlled vocabulary
-	 */
-	public static Set<String> getEnumerationTokens(String enumerationKey) {
-		Set<String> vocabulary = LOCATION_TO_ENUM_TOKENS.get(getLastEnumLocation()).get(enumerationKey);
-		if (vocabulary == null) {
-			throw new IllegalArgumentException("No controlled vocabulary could be found for this key: "
-				+ enumerationKey);
-		}
-		return (Collections.unmodifiableSet(vocabulary));
-	}
-
-	/**
-	 * Returns an unmodifiable set of controlled vocabulary regular expression patterns.
-	 * 
-	 * @param enumerationKey the key of the enumeration
-	 * @return an unmodifiable set of Strings
-	 */
-	private static Set<String> getEnumerationPatterns(String enumerationKey) {
-		Set<String> vocabulary = LOCATION_TO_ENUM_PATTERNS.get(getLastEnumLocation()).get(enumerationKey);
-		return (Collections.unmodifiableSet(vocabulary));
-	}
-
-	/**
-	 * Helper method to validate a value from a controlled vocabulary.
-	 * 
-	 * @param enumerationKey the key of the enumeration
-	 * @param value the test value
-	 * @throws InvalidDDMSException if the value is not and validation should result in errors
-	 */
-	public static void validateEnumeration(String enumerationKey, String value) throws InvalidDDMSException {
-		if (!enumContains(enumerationKey, value)) {
-			String message = getInvalidMessage(enumerationKey, value);
-			throw new InvalidDDMSException(message);
-		}
-	}
-
-	/**
-	 * Checks if a value exists in the controlled vocabulary identified by the key. If the value does not match the
-	 * tokens, but the CVE also contains patterns, the regular expression pattern is checked next. If neither tokens or
-	 * patterns returns a match, return false.
-	 * 
-	 * @param enumerationKey the key of the enumeration
-	 * @param value the test value
-	 * @return true if the value exists in the enumeration, false otherwise
-	 * @throws IllegalArgumentException on an invalid key
-	 */
-	protected static boolean enumContains(String enumerationKey, String value) {
-		Util.requireValue("key", enumerationKey);
-		boolean isValidToken = getEnumerationTokens(enumerationKey).contains(value);
-		if (!isValidToken) {
-			for (String patternString : getEnumerationPatterns(enumerationKey)) {
-				Pattern pattern = Pattern.compile(patternString);
-				Matcher matcher = pattern.matcher(value);
-				if (matcher.matches()) {
-					isValidToken = true;
-					break;
-				}
-			}
-		}
-		return (isValidToken);
-	}
-
+	
 	/**
 	 * Checks if one of the classifications that existed in DDMS 2.0 but was removed for DDMS 3.0 is being used.
 	 * 
@@ -365,12 +392,5 @@ public class ISMVocabulary {
 	public static void requireValidNetwork(String network) throws InvalidDDMSException {
 		if (!COMMON_NETWORK_TYPES.contains(network))
 			throw new InvalidDDMSException("The network attribute must be one of " + COMMON_NETWORK_TYPES);
-	}
-
-	/**
-	 * Accessor for the last enum location.
-	 */
-	private static String getLastEnumLocation() {
-		return (_lastEnumLocation);
 	}
 }

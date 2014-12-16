@@ -26,17 +26,16 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import buri.ddmsence.ddms.UnsupportedVersionException;
-import buri.ddmsence.ddms.security.ism.ISMVocabulary;
 
 /**
  * Manages the supported versions of DDMS.
  * 
  * <p>
- * This class is the extension point for supporting new DDMS versions in the future. DDMSVersion maintains a static
+ * This class is the extension point for supporting new DDMS versions in the future. DDMSVersion maintains a thread-local
  * currentVersion variable which can be set at runtime. All DDMS component constructors which build components from
  * scratch can then call <code>DDMSVersion.getCurrentVersion()</code> to access various details such as schema
  * locations and namespace URIs. If no currentVersion has been set, a default will be used, which maps to
- * <code>buri.ddmsence.ddms.defaultVersion</code> in the properties file. This defaults to 4.1 right now.</p>
+ * <code>buri.ddmsence.ddms.defaultVersion</code> in the properties file. This defaults to 5.0 right now.</p>
  * 
  * <p>
  * The ddmsence.properties file has a property, <code>ddms.supportedVersions</code> which can be a comma-separated list
@@ -74,10 +73,6 @@ import buri.ddmsence.ddms.security.ism.ISMVocabulary;
  * will always return 4.1 (because it is newer). 4.0.1 is now an alias for 4.1, and warnings will appear when
  * using new 4.1 components.</p>
  * 
- * <p>
- * This class is intended for use in a single-threaded environment.
- * </p>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */
@@ -98,14 +93,17 @@ public class DDMSVersion {
 	private String _virtNamespace;
 	private String _xlinkNamespace;
 
-	private static DDMSVersion _currentVersion;
+	/**
+	 * A thread-local instance denoting the current DDMS version, to ensure that multiple Threads can each work on a
+	 * different version.
+	 */
+	private static final ThreadLocal<DDMSVersion> CURRENT_VERSION_HOLDER = new ThreadLocal<DDMSVersion>();
 
 	private static final Map<String, DDMSVersion> VERSIONS_TO_DETAILS = new TreeMap<String, DDMSVersion>();
 	static {
 		for (String version : PropertyReader.getListProperty("ddms.supportedVersions")) {
 			VERSIONS_TO_DETAILS.put(version, new DDMSVersion(version));
 		}
-		_currentVersion = getVersionFor(PropertyReader.getProperty("ddms.defaultVersion"));
 	}
 
 	/**
@@ -227,19 +225,17 @@ public class DDMSVersion {
 
 	/**
 	 * Sets the currentVersion which will be used for by DDMS component constructors to determine the namespace and
-	 * schema to use. Also updates the ISMVersion on the ISMVocabulary class, which is used to determine
-	 * which set of IC CVEs to validate with.
+	 * schema to use.
 	 * 
 	 * @param version the new version, which must be supported by DDMSence
 	 * @return the version which was just set, as a full-fledged DDMSVersion object
 	 * @throws UnsupportedVersionException if the version is not supported
 	 */
-	public static synchronized DDMSVersion setCurrentVersion(String version) {
+	public static DDMSVersion setCurrentVersion(String version) {
 		version = aliasVersion(version);
 		if (!getSupportedVersionsProperty().contains(version))
 			throw new UnsupportedVersionException(version);
-		_currentVersion = getVersionFor(version);
-		ISMVocabulary.setDDMSVersion(getCurrentVersion());
+		CURRENT_VERSION_HOLDER.set(getVersionFor(version));
 		return (getCurrentVersion());
 	}
 
@@ -263,14 +259,17 @@ public class DDMSVersion {
 	 * Accessor for the current version. If not set, returns the default from the properties file.
 	 */
 	public static DDMSVersion getCurrentVersion() {
-		return (_currentVersion);
+		if (CURRENT_VERSION_HOLDER.get() == null) {
+			setCurrentVersion(PropertyReader.getProperty("ddms.defaultVersion"));
+		}
+		return (CURRENT_VERSION_HOLDER.get());
 	}
 
 	/**
-	 * Resets the current version to the default value.
+	 * Clears the current version.
 	 */
 	public static void clearCurrentVersion() {
-		setCurrentVersion(PropertyReader.getProperty("ddms.defaultVersion"));
+		CURRENT_VERSION_HOLDER.remove();
 	}
 
 	/**

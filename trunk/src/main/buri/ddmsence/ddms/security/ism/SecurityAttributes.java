@@ -472,48 +472,48 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			throw new InvalidDDMSException("The declassManualReview attribute must only be used in DDMS 2.0.");
 
 		for (String atomic : getAtomicEnergyMarkings())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_ATOMIC_ENERGY_MARKINGS, atomic);
+			ISMVocabulary.validateEnumeration(version, ISMVocabulary.CVE_ATOMIC_ENERGY_MARKINGS, atomic);
 		if (!Util.isEmpty(getClassification())) {
 			if (isAtLeast30 || !ISMVocabulary.usingOldClassification(getClassification()))
-				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_ALL_CLASSIFICATIONS, getClassification());
+				ISMVocabulary.validateEnumeration(version, ISMVocabulary.CVE_ALL_CLASSIFICATIONS, getClassification());
 		}
 		if (!Util.isEmpty(getDeclassException())) {
 			if (isDDMS20) {
 				// In DDMS 2.0, this can be a list of tokens.
 				for (String value : Util.getXsListAsList(getDeclassException()))
-					ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_DECLASS_EXCEPTION, value);
+					ISMVocabulary.validateEnumeration(version, ISMVocabulary.CVE_DECLASS_EXCEPTION, value);
 			}
 			else
-				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_DECLASS_EXCEPTION, getDeclassException());
+				ISMVocabulary.validateEnumeration(version, ISMVocabulary.CVE_DECLASS_EXCEPTION, getDeclassException());
 		}
 		for (String display : getDisplayOnlyTo())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_DISPLAY_ONLY_TO, display);
+			ISMVocabulary.validateEnumeration(version, ISMVocabulary.CVE_DISPLAY_ONLY_TO, display);
 		for (String dissemination : getDisseminationControls())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_DISSEMINATION_CONTROLS, dissemination);
+			ISMVocabulary.validateEnumeration(version, ISMVocabulary.CVE_DISSEMINATION_CONTROLS, dissemination);
 		for (String fgiSourceOpen : getFGIsourceOpen())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_FGI_SOURCE_OPEN, fgiSourceOpen);
+			ISMVocabulary.validateEnumeration(version, ISMVocabulary.CVE_FGI_SOURCE_OPEN, fgiSourceOpen);
 		for (String fgiSourceProtected : getFGIsourceProtected())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_FGI_SOURCE_PROTECTED, fgiSourceProtected);
+			ISMVocabulary.validateEnumeration(version, ISMVocabulary.CVE_FGI_SOURCE_PROTECTED, fgiSourceProtected);
 		for (String nonIC : getNonICmarkings())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_NON_IC_MARKINGS, nonIC);
+			ISMVocabulary.validateEnumeration(version, ISMVocabulary.CVE_NON_IC_MARKINGS, nonIC);
 		for (String nonUS : getNonUSControls())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_NON_US_CONTROLS, nonUS);
+			ISMVocabulary.validateEnumeration(version, ISMVocabulary.CVE_NON_US_CONTROLS, nonUS);
 		for (String op : getOwnerProducers())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_OWNER_PRODUCERS, op);
+			ISMVocabulary.validateEnumeration(version, ISMVocabulary.CVE_OWNER_PRODUCERS, op);
 		for (String releasableTo : getReleasableTo())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_RELEASABLE_TO, releasableTo);
+			ISMVocabulary.validateEnumeration(version, ISMVocabulary.CVE_RELEASABLE_TO, releasableTo);
 		for (String sarId : getSARIdentifier())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_SAR_IDENTIFIER, sarId);
+			ISMVocabulary.validateEnumeration(version, ISMVocabulary.CVE_SAR_IDENTIFIER, sarId);
 		for (String sciControls : getSCIcontrols())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_SCI_CONTROLS, sciControls);
+			ISMVocabulary.validateEnumeration(version, ISMVocabulary.CVE_SCI_CONTROLS, sciControls);
 		if (!Util.isEmpty(getTypeOfExemptedSource())) {
 			if (isDDMS20) {
 				// In DDMS 2.0, this can be a list of tokens.
 				for (String value : Util.getXsListAsList(getTypeOfExemptedSource()))
-					ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, value);
+					ISMVocabulary.validateEnumeration(version, ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, value);
 			}
 			else if ("3.0".equals(version.getVersion())) {
-				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, getTypeOfExemptedSource());
+				ISMVocabulary.validateEnumeration(version, ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, getTypeOfExemptedSource());
 			}
 
 		}		

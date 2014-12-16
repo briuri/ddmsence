@@ -79,18 +79,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 /**
- * A collection of static utility methods.
+ * A collection of stateless utility methods.
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public class Util {
 
-	private static XSLTransform _schematronIncludeTransform;
-	private static XSLTransform _schematronAbstractTransform;
-	private static Map<String, XSLTransform> _schematronSvrlTransforms = new HashMap<String, XSLTransform>();
-
-	private static final String PROP_TRANSFORM_FACTORY = "javax.xml.transform.TransformerFactory";
 	private static final LinkedHashMap<String, String> XML_SPECIAL_CHARS = new LinkedHashMap<String, String>();
 	static {
 		XML_SPECIAL_CHARS.put("&", "&amp;");
@@ -101,7 +96,6 @@ public class Util {
 	}
 
 	private static final String DDMS_DATE_HOUR_MIN_PATTERN = "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}(Z|[\\-\\+][0-9]{2}:[0-9]{2})?";
-
 	private static final Set<QName> DATE_DATATYPES = new HashSet<QName>();
 	static {
 		DATE_DATATYPES.add(DatatypeConstants.DATE);
@@ -109,16 +103,43 @@ public class Util {
 		DATE_DATATYPES.add(DatatypeConstants.GYEARMONTH);
 		DATE_DATATYPES.add(DatatypeConstants.GYEAR);
 	}
+	private static final ThreadLocal<DatatypeFactory> DATATYPE_FACTORY_HOLDER = new ThreadLocal<DatatypeFactory>() {
+		@Override
+		protected DatatypeFactory initialValue() {
+			try {
+				return (DatatypeFactory.newInstance());
+			}
+			catch (DatatypeConfigurationException e) {
+				throw new RuntimeException("Could not load DatatypeFactory for date conversion.", e);
+			}
+		}
+	};
 
-	private static DatatypeFactory _factory;
-	static {
-		try {
-			_factory = DatatypeFactory.newInstance();
+	private static final String PROP_TRANSFORM_FACTORY = "javax.xml.transform.TransformerFactory";
+
+	/**
+	 * A thread-local cache of the Schematron Include XSL transformation file. This cache is only cleared if the
+	 * XMLTransformerFactory property changes after caching.
+	 */
+	private static final ThreadLocal<XSLTransform> SCH_INCLUDE_TRANSFORM_HOLDER = new ThreadLocal<XSLTransform>();
+
+	/**
+	 * A thread-local cache of the Schematron Abstract XSL transformation file. This cache is only cleared if the
+	 * XMLTransformerFactory property changes after caching.
+	 */
+	private static final ThreadLocal<XSLTransform> SCH_ABSTRACT_TRANSFORM_HOLDER = new ThreadLocal<XSLTransform>();
+
+	/**
+	 * A thread-local cache of the Schematron SVRL XSL transformation file. There can be one entry for each supported
+	 * queryBinder (xslt1 and xslt2). This cache is only cleared if the XMLTransformerFactory property changes after
+	 * caching.
+	 */
+	private static final ThreadLocal<Map<String, XSLTransform>> SCH_SVRL_TRANSFORM_HOLDER = new ThreadLocal<Map<String, XSLTransform>>() {
+		@Override
+		protected Map<String, XSLTransform> initialValue() {
+			return new HashMap<String, XSLTransform>();
 		}
-		catch (DatatypeConfigurationException e) {
-			throw new RuntimeException("Could not load DatatypeFactory for date conversion.", e);
-		}
-	}
+	};
 
 	/**
 	 * Private to prevent instantiation.
@@ -126,10 +147,10 @@ public class Util {
 	private Util() {}
 
 	/**
-	 * Accessor for the datatype factory
+	 * Accessor for the datatype factory, which is cached as a thread-local variable.
 	 */
 	public static DatatypeFactory getDataTypeFactory() {
-		return (_factory);
+		return (DATATYPE_FACTORY_HOLDER.get());
 	}
 	
 	/**
@@ -899,46 +920,49 @@ public class Util {
 	/**
 	 * Clears any previous instantiated transforms.
 	 */
-	private synchronized static void clearTransformCaches() {
-		_schematronIncludeTransform = null;
-		_schematronAbstractTransform = null;
-		_schematronSvrlTransforms.clear();
+	private static void clearTransformCaches() {
+		SCH_INCLUDE_TRANSFORM_HOLDER.remove();
+		SCH_ABSTRACT_TRANSFORM_HOLDER.remove();
+		SCH_SVRL_TRANSFORM_HOLDER.get().clear();;
 	}
 
 	/**
-	 * Lazy instantiation / cached accessor for the first step of Schematron validation.
+	 * Lazy instantiation / cached accessor for the first step of Schematron validation. The cached transform file is
+	 * thread-local.
 	 * 
 	 * @return the phase one transform
 	 */
-	private synchronized static XSLTransform getSchematronIncludeTransform() throws IOException, XSLException {
-		if (_schematronIncludeTransform == null) {
+	private static XSLTransform getSchematronIncludeTransform() throws IOException, XSLException {
+		if (SCH_INCLUDE_TRANSFORM_HOLDER.get() == null) {
 			InputStream includeStylesheet = getLoader().getResourceAsStream("schematron/iso_dsdl_include.xsl");
-			_schematronIncludeTransform = new XSLTransform(Util.buildXmlDocument(includeStylesheet));
+			SCH_INCLUDE_TRANSFORM_HOLDER.set(new XSLTransform(Util.buildXmlDocument(includeStylesheet)));
 		}
-		return (_schematronIncludeTransform);
+		return (SCH_INCLUDE_TRANSFORM_HOLDER.get());
 	}
 
 	/**
-	 * Lazy instantiation / cached accessor for the second step of Schematron validation.
+	 * Lazy instantiation / cached accessor for the second step of Schematron validation. The cached transform file is
+	 * thread-local.
 	 * 
 	 * @return the phase two transform
 	 */
-	private synchronized static XSLTransform getSchematronAbstractTransform() throws IOException, XSLException {
-		if (_schematronAbstractTransform == null) {
+	private static XSLTransform getSchematronAbstractTransform() throws IOException, XSLException {
+		if (SCH_ABSTRACT_TRANSFORM_HOLDER.get() == null) {
 			InputStream abstractStylesheet = getLoader().getResourceAsStream("schematron/iso_abstract_expand.xsl");
-			_schematronAbstractTransform = new XSLTransform(Util.buildXmlDocument(abstractStylesheet));
+			SCH_ABSTRACT_TRANSFORM_HOLDER.set(new XSLTransform(Util.buildXmlDocument(abstractStylesheet)));
 		}
-		return (_schematronAbstractTransform);
+		return (SCH_ABSTRACT_TRANSFORM_HOLDER.get());
 	}
 
 	/**
-	 * Lazy instantiation / cached accessor for the third step of Schematron validation, using XSLT1 or XSLT2
+	 * Lazy instantiation / cached accessor for the third step of Schematron validation, using XSLT1 or XSLT2. The
+	 * cached transform files are thread-local.
 	 * 
 	 * @param queryBinding the queryBinding value of the Schematron file. Currently "xslt" or "xslt2" are supported.
 	 * @return the phase three transform
 	 * @throws IllegalArgumentException if the queryBinding is unsupported
 	 */
-	private synchronized static XSLTransform getSchematronSvrlTransform(String queryBinding) throws IOException,
+	private static XSLTransform getSchematronSvrlTransform(String queryBinding) throws IOException,
 		XSLException {
 		String resourceName;
 		if ("xslt2".equals(queryBinding))
@@ -948,7 +972,7 @@ public class Util {
 		else
 			throw new IllegalArgumentException(
 				"DDMSence currently only supports Schematron files with a queryBinding attribute of \"xslt\" or \"xslt2\".");
-		if (_schematronSvrlTransforms.get(resourceName) == null) {
+		if (SCH_SVRL_TRANSFORM_HOLDER.get().get(resourceName) == null) {
 			try {
 				InputStream schematronStylesheet = getLoader().getResourceAsStream(resourceName);
 				Document svrlStylesheet = Util.buildXmlDocument(schematronStylesheet);
@@ -957,13 +981,13 @@ public class Util {
 				URI svrlUri = getLoader().getResource(resourceName).toURI();
 				svrlStylesheet.setBaseURI(svrlUri.toString());
 
-				_schematronSvrlTransforms.put(resourceName, new XSLTransform(svrlStylesheet));
+				SCH_SVRL_TRANSFORM_HOLDER.get().put(resourceName, new XSLTransform(svrlStylesheet));
 			}
 			catch (URISyntaxException e) {
 				throw new IOException(e.getMessage());
 			}
 		}
-		return (_schematronSvrlTransforms.get(resourceName));
+		return (SCH_SVRL_TRANSFORM_HOLDER.get().get(resourceName));
 	}
 
 	/**

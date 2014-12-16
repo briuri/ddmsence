@@ -734,7 +734,7 @@ public final class Resource extends AbstractBaseComponent {
 		if (getDDMSVersion().isAtLeast("3.1") && !isAtLeast50) {
 			// ism:compliesWith
 			for (String with : getCompliesWiths())
-				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_COMPLIES_WITH, with);
+				ISMVocabulary.validateEnumeration(getDDMSVersion(), ISMVocabulary.CVE_COMPLIES_WITH, with);
 		}
 
 		if (isAtLeast50) {
