@@ -90,7 +90,7 @@ Unknown unknown = new Unknown(names, null, null);</pre>
 <p>If you have a set of DDMS metacards from an older version of DDMS and wish to transform them to a newer version, you can do so with the <a href="documentation-builders.jsp">Component
 Builder</a> framework. Builders allow you to load the old metacard, add any new fields that are required, and save it in the new version.</p>
 
-<h2>DDMS 3.0.1</h2>
+<h4>DDMS 3.0.1</h4>
 
 <p>DDMS release 3.0.1 was merely a documentation release which clarified some of the supporting documentation on geospatial elements. Because none of the 
 schemas or components themselves were updated, 3.0.1 reuses all of the same technical information from 3.0 (including XML namespaces). DDMSence treats 3.0.1 as an alias 
@@ -101,7 +101,7 @@ System.out.println(DDMSVersion.getCurrentVersion().getVersion());
 </pre>
 <p class="figure">Figure 8. This code will print out "3.0".</p>
 
-<h2>DDMS 4.0</h2>
+<h4>DDMS 4.0</h4>
 
 <p>DDMS 4.0 was released in September 2011 with an oversight on the technical implementation of the <code>pocType</code> attribute on producer roles. DDMS 4.0
 contained a <code>ddms:POCType</code> attribute for this, but it was soon determined by the IC that this would break IRM instances. DDMS 4.0.1 was quickly released a month
@@ -111,7 +111,7 @@ later and employs <code>ISM:pocType</code> instead.</p>
 XML namespace, given that the adoption of DDMS 4.0 was assumed to be relatively low. Because DDMS 4.0 is considered to be "broken", I have elected not to
 support it in DDMSence.</p>
  
-<h2>DDMS 4.0.1</h2>
+<h4>DDMS 4.0.1</h4>
 
 <p>DDMS 4.0.1 was released in November 2011. It shares the same XML namespace as DDMS 4.1, and unfortunately DDMS offers no mechanism to tell the difference
 between 4.0.1 instances and 4.1 instances. Because of this, all instances with the shared XML namespace will be validated against 4.1 schemas. In cases where
