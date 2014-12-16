@@ -19,12 +19,20 @@
  */
 package buri.ddmsence.ddms.security.ism;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.AccessorRunnable;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.DDMSVersionTest.DDMSVersionRunnable;
 
 /**
  * <p> Tests related to the ISM Controlled Vocabularies </p>
@@ -151,5 +159,70 @@ public class ISMVocabularyTest extends AbstractBaseTestCase {
 	public void testInvalidMessage() {
 		assertEquals("Dog is not a valid enumeration token for this attribute, as specified in Cat.",
 			ISMVocabulary.getInvalidMessage("Cat", "Dog"));
+	}
+	
+	@Test
+	public void testMultithreaded() throws InterruptedException {
+		List<Thread> threads = new ArrayList<Thread>();
+		List<AccessorRunnable> runnables = new ArrayList<AccessorRunnable>();
+		for (int i = 0; i < AccessorRunnable.NUM_THREADS; i++) {
+			runnables.add(new ISMVocabularyRunnable(i));
+			threads.add(new Thread(runnables.get(i), runnables.get(i).getThreadName()));
+			threads.get(i).start();
+		}
+		for (int i = 0; i < AccessorRunnable.NUM_THREADS; i++) {
+			threads.get(i).join();
+		}
+
+		int numFailures = 0;
+		for (int i = 0; i < AccessorRunnable.NUM_THREADS; i++) {
+			if (!runnables.get(i).getMatch())
+				numFailures++;
+		}
+		if (numFailures > 0) {
+			fail(numFailures + " threads contained an invalid enumeration value.");
+		}
+	}
+	
+	/**
+	 * Helper class to test ISMVocabulary in multiple threads.
+	 */
+	public static class ISMVocabularyRunnable extends AccessorRunnable {
+		private DDMSVersion _randomVersion;
+		
+		public ISMVocabularyRunnable(int threadNum) {
+			super("Thread" + threadNum);
+			setRandomVersion(threadNum);
+		}
+		
+		@Override
+		public String getExpectedValue() {
+			return (String.valueOf(getRandomVersion().getVersion().equals("5.0")));
+		}
+		
+		@Override
+		public void callSet() {
+			// No set logic needed. Potentially unsafe operation is a single method call.
+		}
+		
+		@Override
+		public String callGet() {
+			return (String.valueOf(ISMVocabulary.enumContains(getRandomVersion(), ISMVocabulary.CVE_DECLASS_EXCEPTION, "50X1-HUM")));
+		}
+		
+		/**
+		 * Accessor for the version tested with this thread.
+		 */
+		public DDMSVersion getRandomVersion() {
+			return _randomVersion;
+		}
+
+		/**
+		 * Accessor for the version tested with this thread.
+		 */
+		public void setRandomVersion(int versionIndex) {
+			String sVersion = (versionIndex % 2 == 0 ? "2.0" : "5.0");
+			_randomVersion = DDMSVersion.getVersionFor(sVersion);
+		}
 	}
 }
