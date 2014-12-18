@@ -10,7 +10,7 @@ public abstract class AccessorRunnable implements Runnable {
 	private String _threadName;
 	private boolean _match;
 	
-	public static final int NUM_THREADS = 1000;
+	public static final int NUM_THREADS = 200;
 	
 	/**
 	 * Constructor stores the unique thread name for identification.
