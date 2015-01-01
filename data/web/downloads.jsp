@@ -44,7 +44,7 @@ file as shown in Figure 1.</p>
 <pre class="brush: xml">&lt;dependency&gt;
    &lt;groupId&gt;net.urizone&lt;/groupId&gt;
    &lt;artifactId&gt;ddmsence&lt;/artifactId&gt;
-   &lt;version&gt;2.4.0&lt;/version&gt;
+   &lt;version&gt;2.5.0&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 <p class="figure">Figure 1. Setting up DDMSence as a Maven dependency</p>
 
