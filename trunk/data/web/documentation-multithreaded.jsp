@@ -121,7 +121,7 @@ consider this approach to isolate and parallelize one of the steps for some reas
 <ol>
 	<li>Thread #1 parses the old XML file and sets up the initial mutable Builder.</li>
 	<li>Thread #2 listens to some data source for Builders in need of transformation. When one becomes available, this 
-		Thread transforms the the record to DDMS 4.1 and commits it as an immutable Resource.</li>
+		Thread transforms the record to DDMS 4.1 and commits it as an immutable Resource.</li>
 	<li>Thread #3 listens to some data source for finished Resources. When one becomes available, this Thread saves it to disk.</li>
 </ol>
 
