@@ -14,10 +14,10 @@
 		10) Test Validator and Builder webapps.
 		11) Commit any remaining changes and tag as new release.
 		12) Update version number in pom.xml, then manual sign-deploy steps for Maven Central Repository upload. 
-		13) Announcements (Google Groups / LinkedIn / OpenHUB)
+		13) Announcements (Google Groups / LinkedIn)
 	-->
 
-	<property name="version" value="2.5.0-unstable" />
+	<property name="version" value="2.5.0" />
 	<property name="conf.dir" value="conf" />
 	<property name="data.dir" value="data" />
 	<property name="local.web.dir" value="/projects/urizone/output/tomcat/webapps/ddmsence" />
