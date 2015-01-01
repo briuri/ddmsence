@@ -26,7 +26,7 @@ I have also included a <code>.project</code> file if you wish to import the proj
 
 <h1>Latest Release: v2.5.0</h1>
 
-<p>Version <b>2.5.0</b> (XX/YY/ZZZZ) is a stable release which can now be used in <a href="documentation-multithreaded.jsp">multithreaded environments</a> 
+<p>Version <b>2.5.0</b> (01/01/2015) is a stable release which can now be used in <a href="documentation-multithreaded.jsp">multithreaded environments</a> 
 (<a href="http://code.google.com/p/ddmsence/issues/detail?id=222">Issue #222</a>). It is backwards compatible with all versions since v2.0.0.</p>
 
 <ul>

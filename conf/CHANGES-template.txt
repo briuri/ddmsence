@@ -9,7 +9,7 @@ Copyright 2010 - 2015 by Brian Uri!
 Release History
 ===========================================================================
 
-v 2.5.0 (XX/YY/ZZZZ):
+v 2.5.0 (01/01/2015):
 This stable release adds thread safety for use in multithreaded environments 
 (Issue #222).
 

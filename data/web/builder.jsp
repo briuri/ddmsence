@@ -297,7 +297,7 @@ public class BuilderControl extends AbstractControl {
 	 */
 	@ModelAttribute(value = "ownerProducers")
 	private Set&lt;String&gt; getOwnerProducers() {
-		return (ISMVocabulary.getEnumerationTokens(ISMVocabulary.CVE_OWNER_PRODUCERS));
+		return (ISMVocabulary.getEnumerationTokens(DDMSVersion.getVersionFor("5.0"), ISMVocabulary.CVE_OWNER_PRODUCERS));
 	}
 }</pre>
 	<li>The BuilderControl starts by creating a new form bean, Resource.Builder, in the <code>newForm()</code> method. 
