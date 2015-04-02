@@ -134,7 +134,7 @@
 			form.stringRecord.value = exampleRecord;
 		</c:if>
 		<c:if test="${record.type eq 'url'}">
-			form.url.value = "ddmsence.googlecode.com/svn/trunk/data/sample/5.0-ddmsenceExample.xml";
+			form.url.value = "code.urizone.net/svn/ddmsence/trunk/data/sample/5.0-ddmsenceExample.xml";
 		</c:if>
 	}
 	
@@ -473,13 +473,13 @@ public class ValidatorRecord {
 	}
 }
 </pre>
-	<li>The <a href="http://ddmsence.googlecode.com/svn/trunk/data/web/validator.jsp">initial form view</a> is rendered. This is the page you are currently viewing. The JSP file also contains the JavaScript code used for client-side validation (with jQuery).</li>
+	<li>The <a href="http://code.urizone.net/svn/ddmsence/trunk/data/web/validator.jsp">initial form view</a> is rendered. This is the page you are currently viewing. The JSP file also contains the JavaScript code used for client-side validation (with jQuery).</li>
 	<li>Once the form has been filled in and submitted, the <code>validate()</code> method of the ValidatorControl is called. This method checks to see whether the DDMS 
 	Resource is coming in as text, an uploaded file, or a URL. Files and URLs are loaded and converted into text.</li>
 	<li>The DDMSReader method, <a href="/docs/buri/ddmsence/util/DDMSReader.html"><code>getDDMSResource()</code></a> attempts to build the entire DDMS Resource. 
 	It will fail immediately with an <code>InvalidDDMSException</code> if the Resource is invalid.</li>
 	<li>If the constructor succeeds, the Resource is proven to be valid, although there may still be warnings. The Map containing errors or warnings, <code>model</code>, 
-	is then used to render the <a href="http://ddmsence.googlecode.com/svn/trunk/data/web/validatorResult.jsp">Validation Results page</a>.</li>
+	is then used to render the <a href="http://code.urizone.net/svn/ddmsence/trunk/data/web/validatorResult.jsp">Validation Results page</a>.</li>
 </ol>	
 
 <p>

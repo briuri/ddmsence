@@ -303,12 +303,12 @@ public class BuilderControl extends AbstractControl {
 	<li>The BuilderControl starts by creating a new form bean, Resource.Builder, in the <code>newForm()</code> method. 
 	This is a Component Builder which supports the form you see on this page. If you wanted your form to edit an existing Resource, 
 	you could initialize the builder by passing in a Resource instance.</li>
-	<li>The <a href="http://ddmsence.googlecode.com/svn/trunk/data/web/builder.jsp">initial form view</a> is rendered. This is the page 
+	<li>The <a href="http://code.urizone.net/svn/ddmsence/trunk/data/web/builder.jsp">initial form view</a> is rendered. This is the page 
 	you are currently viewing. The JSP file also contains the JavaScript code used for client-side validation (with jQuery).</li>
 	<li>Once the form has been filled in and submitted, the <code>build()</code> method of the BuilderControl is called. This method commits the Resource.Builder.
 	It will fail immediately with an <code>InvalidDDMSException</code> if the Resource is invalid.</li>
 	<li>If the Resource is invalid, the control class returns to the initial form view, displaying the errors and allowing for editing.</li>
-	<li>If the Builder succeeds, the Resource is proven to be valid, although there may still be warnings. The warnings and the XML output of the Resource are stored in the model,	which is then used to render the <a href="http://ddmsence.googlecode.com/svn/trunk/data/web/builderResult.jsp">Builder Results page</a>.</li>
+	<li>If the Builder succeeds, the Resource is proven to be valid, although there may still be warnings. The warnings and the XML output of the Resource are stored in the model,	which is then used to render the <a href="http://code.urizone.net/svn/ddmsence/trunk/data/web/builderResult.jsp">Builder Results page</a>.</li>
 </ol>
 
 <p>
