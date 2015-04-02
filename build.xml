@@ -7,18 +7,18 @@
 		3) Update index and web downloads page with latest release.
 		4) Update CHANGES-template.txt.
 		5) Run "dist" target and review archives.
-		6) Sync the S3 content folder.
-		7) CodeDeploy the WAR File and deploy in AWS.
+		6) Run "localS3" and then run the local "pushContentDDMSence.bat" script.
+		7) Run "localWeb" and then run the local "pushWarDDMSence.bat" script.
+		8) Deploy the new WAR with CodeDeploy in AWS.
 		9) Test Validator and Builder webapps.
 		10) Commit any remaining changes and tag as new release.
 		11) Update version number in pom.xml, then manual sign-deploy steps for Maven Central Repository upload. 
 		12) Announcements (Google Groups / LinkedIn)
 	-->
 
-	<property name="version" value="2.6.0-unstable" />
+	<property name="version" value="2.5.0" />
 	<property name="conf.dir" value="conf" />
 	<property name="data.dir" value="data" />
-	<property name="local.web.dir" value="/projects/urizone/output/tomcat/webapps/ddmsence" />
 	<property name="src.main.dir" value="src/main" />
 	<property name="src.samples.dir" value="src/samples" />
 	<property name="src.test.dir" value="src/test" />
@@ -28,10 +28,10 @@
 	<property name="compile.test.dir" value="${output.dir}/classes/test/" />
 	<property name="docs.dir" value="${output.dir}/docs" />
 	<property name="jars.dir" value="${output.dir}/jars" />
+	<property name="deploy.dir" value="${output.dir}/deploy" />
 	<property name="dist.dir" value="${output.dir}/dist" />
 	<property name="dist.maven.dir" value="${dist.dir}/maven" />
 	<property name="reports.dir" value="${output.dir}/reports" />
-	<property name="s3.dir" value="/projects/s3/urizone-content/ddmsence" />
 	
 	<path id="classpath.compile">
 		<fileset dir="lib/" includes="*.jar" />
@@ -74,6 +74,7 @@
 		<mkdir dir="${compile.main.dir}" />
 		<mkdir dir="${compile.samples.dir}" />
 		<mkdir dir="${compile.test.dir}" />
+		<mkdir dir="${jars.dir}" />
 		<filter token="ddmsence.version" value="${version}"/>
 
 		<javac srcdir="${src.main.dir}" destdir="${compile.main.dir}" classpathref="classpath.compile" source="1.6" target="1.6" includeantruntime="false" />
@@ -87,17 +88,19 @@
 			<fileset refid="files.properties" />
 			<fileset refid="files.requiredData" />
 		</copy>
-				
-		<copy todir="${output.dir}" filtering="true">
-			<fileset refid="files.website" />
-		</copy>
-		<copy todir="${output.dir}">
-			<fileset refid="files.website.images" />
-		</copy>		
+		<jar destfile="${jars.dir}/ddmsence-${version}.jar" basedir="${compile.main.dir}">
+			<manifest>
+				<attribute name="Specification-Title" value="DDMSence"/>
+				<attribute name="Specification-Version" value="${version}"/>
+				<attribute name="Specification-Vendor" value="Brian Uri!"/>
+				<attribute name="Implementation-Title" value="DDMSence"/>
+				<attribute name="Implementation-Version" value="${version}"/>
+				<attribute name="Implementation-Vendor" value="Brian Uri!"/>				
+			</manifest>
+		</jar>
 	</target>	
 	
 	<target name="dist" depends="clean, compile, docs, tests" description="Performs a full build of the project and creates the bin/src downloads">
-		<mkdir dir="${jars.dir}" />
 		<mkdir dir="${dist.dir}/ddmsence-src-${version}" />
 		<mkdir dir="${dist.dir}/ddmsence-bin-${version}" />
 		<mkdir dir="${dist.maven.dir}" />
@@ -114,16 +117,6 @@
 		<zip destfile="${dist.dir}/ddmsence-src-${version}.zip" basedir="${dist.dir}" includes="ddmsence-src-${version}/**" />
 		
 		<!-- Build the bin-flavored download archive -->
-		<jar destfile="${jars.dir}/ddmsence-${version}.jar" basedir="${compile.main.dir}">
-			<manifest>
-				<attribute name="Specification-Title" value="DDMSence"/>
-				<attribute name="Specification-Version" value="${version}"/>
-				<attribute name="Specification-Vendor" value="Brian Uri!"/>
-				<attribute name="Implementation-Title" value="DDMSence"/>
-				<attribute name="Implementation-Version" value="${version}"/>
-				<attribute name="Implementation-Vendor" value="Brian Uri!"/>				
-			</manifest>
-		</jar>
 		<jar destfile="${jars.dir}/ddmsence-samples-${version}.jar" basedir="${compile.samples.dir}">
 			<manifest>
 				<attribute name="Specification-Title" value="DDMSence"/>
@@ -161,17 +154,6 @@
 			<fileset dir="${jars.dir}" />
 		</copy>
 		<zip destfile="${dist.dir}/ddmsence-bin-${version}.zip" basedir="${dist.dir}" includes="ddmsence-bin-${version}/**" />
-
-		<!-- Stage files to S3 -->
-		<delete quiet="true" dir="${s3.dir}/docs" />
-		<copy todir="${s3.dir}/docs">
-			<fileset dir="${docs.dir}" />
-		</copy>
-		<copy todir="${s3.dir}/files">
-			<fileset dir="${dist.dir}">
-				<include name="*.zip" />
-			</fileset>
-		</copy>
 		
 		<!-- Build the Maven Central Repository archive -->
 		<copy todir="${dist.maven.dir}" file="${jars.dir}/ddmsence-${version}.jar" />
@@ -238,14 +220,49 @@
 	      	</batchtest>
 	    </junit>
 	</target>	
-		
+	
+	<!-- Targets below this point have dependencies on the author's local environment. -->
+	<!-- They are not required to compile DDMSence. -->
+	<property name="local.web.dir" value="/projects/urizone/output/tomcat/webapps" />
+	<property name="local.lib.dir" value="/projects/urizone/lib" />
+	<property name="local.jar.dir" value="/projects/urizone/output/jars" />
+	<property name="local.s3.dir" value="/projects/s3/urizone-content/ddmsence" />
+
+	<target name="localS3" description="Pushes files to the S3 staging area for publishing. Run after dist.">
+		<delete quiet="true" dir="${local.s3.dir}/docs" />
+		<copy todir="${local.s3.dir}/docs">
+			<fileset dir="${docs.dir}" />
+		</copy>
+		<copy todir="${local.s3.dir}/files">
+			<fileset dir="${dist.dir}">
+				<include name="*.zip" />
+			</fileset>
+		</copy>
+	</target>
+	
 	<target name="localWeb" depends="compile" description="Deploys the website pages locally for testing">
 		<mkdir dir="${local.web.dir}" />
-		<copy todir="${local.web.dir}" includeEmptyDirs="false">
-			<fileset dir="${output.dir}/web">
-				<include name="**/**" />
-		    </fileset>
+		<copy todir="${output.dir}" filtering="true">
+			<fileset refid="files.website" />
 		</copy>
+		<copy todir="${output.dir}">
+			<fileset refid="files.website.images" />
+		</copy>
+		<copy todir="${output.dir}/web/WEB-INF/lib">
+			<fileset dir="lib/" includes="*.jar" />
+			<fileset dir="${jars.dir}" includes="ddmsence-${version}.jar" />
+			<fileset dir="${local.lib.dir}/commons" includes="*.jar" />
+			<fileset dir="${local.lib.dir}/javax" includes="*.jar" />
+			<fileset dir="${local.lib.dir}/logback" includes="*.jar" />
+			<fileset dir="${local.lib.dir}/spring" includes="*.jar" />
+			<fileset dir="${local.jar.dir}" includes="urizone.jar" />
+		</copy>
+		<buildWar distDir="${deploy.dir}" stagingDir="${output.dir}/web" warName="ROOT"/>
+		<copy todir="${deploy.dir}" file="${conf.dir}/appspec.yml" />
+		<delete quiet="true" dir="${output.dir}/web" />	
+		
+		<delete quiet="true" dir="${local.web.dir}/ROOT" />	
+		<copy todir="${local.web.dir}" file="${deploy.dir}/ROOT.war" />
 	</target>
 	
 	<target name="localZip" description="Creates a ZIP of the entire project">
@@ -253,5 +270,19 @@
 			<format property="backupStamp" pattern="yyMMdd-HHmm"/>
 		</tstamp>		
 		<zip destfile="../${backupStamp}-DDMSence-${version}.zip" basedir=".." includes="ddmsence/**" excludes="ddmsence/output/**" />
-	</target>	
+	</target>
+	
+	<macrodef name="buildWar" description="Creates a WAR file from a staged exploded WAR directory">
+		<attribute name="distDir"/>
+		<attribute name="stagingDir"/>
+		<attribute name="warName"/>
+		<sequential>
+			<war destfile="@{distDir}/@{warName}.war" webxml="@{stagingDir}/WEB-INF/web.xml">
+				<lib dir="@{stagingDir}/WEB-INF/lib"/>
+				<fileset dir="@{stagingDir}">
+					<exclude name="WEB-INF/lib/**"/>
+				</fileset>
+			</war>
+		</sequential>
+	</macrodef>
 </project>

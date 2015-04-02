@@ -1,0 +1,6 @@
+# This is an appspec.yml template file for use with AWS CodeDeploy.
+version: 0.0
+os: linux 
+files:
+  - source: ROOT.war
+    destination: /usr/share/tomcat8/webapps-ddmsence
