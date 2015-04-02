@@ -13,7 +13,7 @@
 
 <ul>
 	<li><b>Binary (<code>bin</code>)</b>: This download is intended for end users who wish to use DDMSence in their own projects. It contains the compiled DDMSence JAR files,
-the complete API documentation (which is also available <a href="/docs/">online</a>), source code for the sample applications,
+the complete API documentation (which is also available <a href="/docs/index.html">online</a>), source code for the sample applications,
 and supporting 3rd-party JAR files. Sample applications can be run from the <a href="documentation.jsp#started">command line</a>.</li>
 
 	<li><p><b>Source (<code>src</code>)</b>: This download is intended for developers who wish to see what DDMSence is doing under the hood. It contains source 
