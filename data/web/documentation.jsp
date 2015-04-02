@@ -106,7 +106,7 @@ be possible to plot Temporal Coverage on an
 <img src="./images/docSample.png" width="305" height="273" title="JavaDoc sample" align="right" />
 
 <ul>
-	<li><a href="docs/">Online API Documentation</a></li>
+	<li><a href="docs/index.html">Online API Documentation</a></li>
 </ul>
 The API documentation is also bundled with the "bin"-flavored download on the <a href="downloads.jsp">Downloads</a> page, and can be generated from source code 
 in the "src"-flavored download. Classes which represent DDMS elements are grouped into packages based on which of the five 
