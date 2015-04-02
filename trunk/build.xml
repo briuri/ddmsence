@@ -7,17 +7,15 @@
 		3) Update index and web downloads page with latest release.
 		4) Update CHANGES-template.txt.
 		5) Run "dist" target and review archives.
-		6) Upload archives to /files/.
-		7) Delete and reupload javadoc.
-		8) Upload web files.
-		9) Upload new DDMSence JAR to webserver and bounce.
-		10) Test Validator and Builder webapps.
-		11) Commit any remaining changes and tag as new release.
-		12) Update version number in pom.xml, then manual sign-deploy steps for Maven Central Repository upload. 
-		13) Announcements (Google Groups / LinkedIn)
+		6) Sync the S3 content folder.
+		7) CodeDeploy the WAR File and deploy in AWS.
+		9) Test Validator and Builder webapps.
+		10) Commit any remaining changes and tag as new release.
+		11) Update version number in pom.xml, then manual sign-deploy steps for Maven Central Repository upload. 
+		12) Announcements (Google Groups / LinkedIn)
 	-->
 
-	<property name="version" value="2.5.0" />
+	<property name="version" value="2.6.0-unstable" />
 	<property name="conf.dir" value="conf" />
 	<property name="data.dir" value="data" />
 	<property name="local.web.dir" value="/projects/urizone/output/tomcat/webapps/ddmsence" />
@@ -33,6 +31,7 @@
 	<property name="dist.dir" value="${output.dir}/dist" />
 	<property name="dist.maven.dir" value="${dist.dir}/maven" />
 	<property name="reports.dir" value="${output.dir}/reports" />
+	<property name="s3.dir" value="/projects/s3/urizone-content/ddmsence" />
 	
 	<path id="classpath.compile">
 		<fileset dir="lib/" includes="*.jar" />
@@ -162,7 +161,18 @@
 			<fileset dir="${jars.dir}" />
 		</copy>
 		<zip destfile="${dist.dir}/ddmsence-bin-${version}.zip" basedir="${dist.dir}" includes="ddmsence-bin-${version}/**" />
-				
+
+		<!-- Stage files to S3 -->
+		<delete quiet="true" dir="${s3.dir}/docs" />
+		<copy todir="${s3.dir}/docs">
+			<fileset dir="${docs.dir}" />
+		</copy>
+		<copy todir="${s3.dir}/files">
+			<fileset dir="${dist.dir}">
+				<include name="*.zip" />
+			</fileset>
+		</copy>
+		
 		<!-- Build the Maven Central Repository archive -->
 		<copy todir="${dist.maven.dir}" file="${jars.dir}/ddmsence-${version}.jar" />
 		<jar jarfile="${dist.maven.dir}/ddmsence-${version}-javadoc.jar">
