@@ -28,7 +28,6 @@
 	<property name="compile.test.dir" value="${output.dir}/classes/test/" />
 	<property name="docs.dir" value="${output.dir}/docs" />
 	<property name="jars.dir" value="${output.dir}/jars" />
-	<property name="deploy.dir" value="${output.dir}/deploy" />
 	<property name="dist.dir" value="${output.dir}/dist" />
 	<property name="dist.maven.dir" value="${dist.dir}/maven" />
 	<property name="reports.dir" value="${output.dir}/reports" />
@@ -51,7 +50,10 @@
 	
 	<fileset dir="${conf.dir}" id="files.properties">
 		<include name="*.properties" />
-	</fileset>				
+	</fileset>
+	<fileset dir="${data.dir}/deploy" id="files.deploy">
+		<include name="*" />
+	</fileset>
 	<fileset dir="${data.dir}" id="files.requiredData">
 		<include name="schemas/**" />
 		<include name="schematron/**" />
@@ -222,26 +224,28 @@
 	</target>	
 	
 	<!-- Targets below this point have dependencies on the author's local environment. -->
-	<!-- They are not required to compile DDMSence. -->
-	<property name="local.web.dir" value="/projects/urizone/output/tomcat/webapps" />
-	<property name="local.lib.dir" value="/projects/urizone/lib" />
-	<property name="local.jar.dir" value="/projects/urizone/output/jars" />
-	<property name="local.s3.dir" value="/projects/s3/urizone-content/ddmsence" />
+	<!-- They are not required to compile the core DDMSence library. -->
+	<property name="local.urizone.dir" value="/projects/urizone" />
+	<property name="local.lib.dir" value="${local.urizone.dir}/lib" />
+	<property name="local.content.dir" value="/projects/aws-stage/urizone-content/ddmsence" />
+	<property name="local.deploy.dir" value="${output.dir}/deploy" />
+	<property name="local.jar.dir" value="${local.urizone.dir}/output/jars" />
+	<property name="local.web.dir" value="${local.urizone.dir}/output/tomcat/webapps" />
 
-	<target name="localS3" description="Pushes files to the S3 staging area for publishing. Run after dist.">
-		<delete quiet="true" dir="${local.s3.dir}/docs" />
-		<copy todir="${local.s3.dir}/docs">
+	<target name="localStageContent" description="Copies docs and files to content staging area for publishing. Run after dist">
+		<delete quiet="true" dir="${local.content.dir}/docs" />
+		<copy todir="${local.content.dir}/docs">
 			<fileset dir="${docs.dir}" />
 		</copy>
-		<copy todir="${local.s3.dir}/files">
+		<copy todir="${local.content.dir}/files">
 			<fileset dir="${dist.dir}">
-				<include name="*.zip" />
+				<include name="ddmsence-*-${version}.zip" />
 			</fileset>
 		</copy>
 	</target>
 	
-	<target name="localWeb" depends="compile" description="Deploys the website pages locally for testing">
-		<mkdir dir="${local.web.dir}" />
+	<target name="localWeb" depends="compile" description="Creates a WAR and deploys the website pages locally for testing">
+		<!-- Stage exploded WAR -->
 		<copy todir="${output.dir}" filtering="true">
 			<fileset refid="files.website" />
 		</copy>
@@ -255,14 +259,25 @@
 			<fileset dir="${local.lib.dir}/javax" includes="*.jar" />
 			<fileset dir="${local.lib.dir}/logback" includes="*.jar" />
 			<fileset dir="${local.lib.dir}/spring" includes="*.jar" />
-			<fileset dir="${local.jar.dir}" includes="urizone.jar" />
+			<fileset dir="${local.jar.dir}" includes="urizone-ddmsence.jar" />
 		</copy>
-		<buildWar distDir="${deploy.dir}" stagingDir="${output.dir}/web" warName="ROOT"/>
-		<copy todir="${deploy.dir}" file="${conf.dir}/appspec.yml" />
-		<delete quiet="true" dir="${output.dir}/web" />	
 		
+		<!-- Create CodeDeploy WAR bundle for publishing -->
+		<war destfile="${local.deploy.dir}/ROOT.war" webxml="${output.dir}/web/WEB-INF/web.xml">
+			<lib dir="${output.dir}/web/WEB-INF/lib"/>
+			<fileset dir="${output.dir}/web">
+				<exclude name="WEB-INF/lib/**"/>
+			</fileset>
+		</war>
+		<copy todir="${local.deploy.dir}">
+			<fileset refid="files.deploy" />
+		</copy>
+		<delete quiet="true" dir="${output.dir}/web" />
+		
+		<!-- Deploy to local Tomcat for testing -->
 		<delete quiet="true" dir="${local.web.dir}/ROOT" />	
-		<copy todir="${local.web.dir}" file="${deploy.dir}/ROOT.war" />
+		<mkdir dir="${local.web.dir}" />
+		<copy todir="${local.web.dir}" file="${local.deploy.dir}/ROOT.war" />
 	</target>
 	
 	<target name="localZip" description="Creates a ZIP of the entire project">
@@ -271,18 +286,4 @@
 		</tstamp>		
 		<zip destfile="../${backupStamp}-DDMSence-${version}.zip" basedir=".." includes="ddmsence/**" excludes="ddmsence/output/**" />
 	</target>
-	
-	<macrodef name="buildWar" description="Creates a WAR file from a staged exploded WAR directory">
-		<attribute name="distDir"/>
-		<attribute name="stagingDir"/>
-		<attribute name="warName"/>
-		<sequential>
-			<war destfile="@{distDir}/@{warName}.war" webxml="@{stagingDir}/WEB-INF/web.xml">
-				<lib dir="@{stagingDir}/WEB-INF/lib"/>
-				<fileset dir="@{stagingDir}">
-					<exclude name="WEB-INF/lib/**"/>
-				</fileset>
-			</war>
-		</sequential>
-	</macrodef>
 </project>
