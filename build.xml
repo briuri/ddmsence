@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project name="DDMSence" default="compile" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+<project name="ddmsence" default="compile" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 		
 	<!-- Release Process (need to automate parts of this)
 		1) Update version in build.xml.
@@ -225,12 +225,13 @@
 	
 	<!-- Targets below this point have dependencies on the author's local environment. -->
 	<!-- They are not required to compile the core DDMSence library. -->
-	<property name="local.urizone.dir" value="/projects/urizone" />
-	<property name="local.lib.dir" value="${local.urizone.dir}/lib" />
+	<property name="local.ddmsence-web.dir" value="/projects/ddmsence-web-support" />
+	<property name="local.lib.dir" value="${local.ddmsence-web.dir}/lib" />
+	<property name="local.jar.dir" value="${local.ddmsence-web.dir}/output/jars" />
+	
 	<property name="local.content.dir" value="/projects/aws-stage/urizone-content/ddmsence" />
 	<property name="local.deploy.dir" value="${output.dir}/deploy" />
-	<property name="local.jar.dir" value="${local.urizone.dir}/output/jars" />
-	<property name="local.web.dir" value="${local.urizone.dir}/output/tomcat/webapps" />
+	<property name="local.web.dir" value="/projects/urizone/output/tomcat/webapps" />
 
 	<target name="localStageContent" description="Copies docs and files to content staging area for publishing. Run after dist">
 		<delete quiet="true" dir="${local.content.dir}/docs" />
@@ -259,7 +260,7 @@
 			<fileset dir="${local.lib.dir}/javax" includes="*.jar" />
 			<fileset dir="${local.lib.dir}/logback" includes="*.jar" />
 			<fileset dir="${local.lib.dir}/spring" includes="*.jar" />
-			<fileset dir="${local.jar.dir}" includes="urizone-ddmsence.jar" />
+			<fileset dir="${local.jar.dir}" includes="ddmsence-web-support.jar" />
 		</copy>
 		
 		<!-- Create CodeDeploy WAR bundle for publishing -->
