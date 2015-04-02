@@ -125,10 +125,6 @@
 		<div class="newsUpdate"><u>03/25/2010</u>: v0.9.c released.</div>
 		<div class="newsUpdate"><u>03/24/2010</u>: v0.9.b released.</div>
 	</div><br /><br />
-	
-	<div class="feed">SVN Code Feed: <a href="http://code.google.com/feeds/p/ddmsence/svnchanges/basic"><img border="0" src="./images/atom.png" width="14" height="14" title="Atom Feed" /></a></div>
-	<div class="feed">Issue Tracker Feed: <a href="http://code.google.com/feeds/p/ddmsence/issueupdates/basic"><img border="0" src="./images/atom.png" width="14" height="14" title="Atom Feed" /></a></div>
-	
 </div>
 
 <h1>DDMSence v@ddmsence.version@</h1>
