@@ -245,7 +245,7 @@
 		</copy>
 	</target>
 	
-	<target name="localWeb" depends="compile" description="Creates a WAR and deploys the website pages locally for testing">
+	<target name="localDeploy" depends="compile" description="Creates a WAR and deploys the website locally for testing">
 		<!-- Stage exploded WAR -->
 		<copy todir="${output.dir}" filtering="true">
 			<fileset refid="files.website" />
