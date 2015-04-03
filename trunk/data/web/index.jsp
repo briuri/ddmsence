@@ -6,7 +6,7 @@
 	
  	<meta property="og:title" content="DDMSence: The open-source Java library for DDMS"/>
 	<meta property="og:description" content="DDMSence is the only open-source Java library that fully supports the DoD Discovery Metadata Specification (DDMS)." />
-	<meta property="og:image" content="http://ddmsence.urizone.net/images/banner.png" />
+	<meta property="og:image" content="https://ddmsence.urizone.net/images/banner.png" />
 
 	<!-- DDMS Resource Record --> 	
 	<meta name="resource.resourceElement" content="true" />
@@ -61,7 +61,7 @@
 	<meta name="subjectCoverage.keyword" content="DDMEssence" />
 	<meta name="subjectCoverage.keyword" content="DDMSense" />
 	<meta name="subjectCoverage.keyword" content="Essence" />
-	<meta name="virtualCoverage.address" content="http://ddmsence.urizone.net/" />
+	<meta name="virtualCoverage.address" content="https://ddmsence.urizone.net/" />
 	<meta name="virtualCoverage.networkProtocol" content="URL" />
 	<meta name="temporalCoverage.name" content="Unknown" />
 	<meta name="temporalCoverage.start" content="2010-03-24T12:00:00Z" />

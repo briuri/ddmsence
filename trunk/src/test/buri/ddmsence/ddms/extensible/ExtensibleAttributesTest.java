@@ -15,7 +15,7 @@
    License along with DDMSence. If not, see <http://www.gnu.org/licenses/>.
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
-   home page is located at http://ddmsence.urizone.net/
+   home page is located at https://ddmsence.urizone.net/
  */
 package buri.ddmsence.ddms.extensible;
 
@@ -50,7 +50,7 @@ import com.google.gson.Gson;
  */
 public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 
-	private static final String TEST_NAMESPACE = "http://ddmsence.urizone.net/";
+	private static final String TEST_NAMESPACE = "https://ddmsence.urizone.net/";
 
 	/**
 	 * Constructor

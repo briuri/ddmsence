@@ -15,7 +15,7 @@
    License along with DDMSence. If not, see <http://www.gnu.org/licenses/>.
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
-   home page is located at http://ddmsence.urizone.net/
+   home page is located at https://ddmsence.urizone.net/
  */
 package buri.ddmsence.ddms.summary;
 
@@ -394,7 +394,7 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			Link.Builder emptyBuilder = new Link.Builder();
 			Link.Builder fullBuilder = new Link.Builder();
 			fullBuilder.getXLinkAttributes().setType("locator");
-			fullBuilder.getXLinkAttributes().setHref("http://ddmsence.urizone.net/");
+			fullBuilder.getXLinkAttributes().setHref("https://ddmsence.urizone.net/");
 			fullBuilder.getXLinkAttributes().setRole("role");
 			builder.getLinks().add(emptyBuilder);
 			builder.getLinks().add(fullBuilder);

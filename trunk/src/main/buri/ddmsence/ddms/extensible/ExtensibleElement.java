@@ -15,7 +15,7 @@
    License along with DDMSence. If not, see <http://www.gnu.org/licenses/>.
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
-   home page is located at http://ddmsence.urizone.net/
+   home page is located at https://ddmsence.urizone.net/
  */
 package buri.ddmsence.ddms.extensible;
 
@@ -46,7 +46,7 @@ import com.google.gson.JsonObject;
  * <p>XOM elements can be created as follows:</p>
  * 
  * <ul><code>
- * Element element = new Element("ddmsence:extension", "http://ddmsence.urizone.net/");<br />
+ * Element element = new Element("ddmsence:extension", "https://ddmsence.urizone.net/");<br />
  * element.appendChild("This will be the child text.");
  * </code></ul>
  * 

@@ -15,7 +15,7 @@
    License along with DDMSence. If not, see <http://www.gnu.org/licenses/>.
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
-   home page is located at http://ddmsence.urizone.net/
+   home page is located at https://ddmsence.urizone.net/
  */
 package buri.ddmsence.util;
 
@@ -292,7 +292,7 @@ public class UtilTest extends AbstractBaseTestCase {
 
 	@Test
 	public void testGetFirstDDMSChildValueWrongNamespace() {
-		Element element = Util.buildElement("ddmsence", "test", "http://ddmsence.urizone.net/", null);
+		Element element = Util.buildElement("ddmsence", "test", "https://ddmsence.urizone.net/", null);
 		try {
 			Util.getFirstDDMSChildValue(element, "child");
 			fail("Allowed invalid data.");
@@ -352,7 +352,7 @@ public class UtilTest extends AbstractBaseTestCase {
 
 	@Test
 	public void testGetDDMSChildValuesWrongNamespace() {
-		Element element = Util.buildElement("ddmsence", "test", "http://ddmsence.urizone.net/", null);
+		Element element = Util.buildElement("ddmsence", "test", "https://ddmsence.urizone.net/", null);
 		element.appendChild(Util.buildDDMSElement("child", "child1"));
 		element.appendChild(Util.buildDDMSElement("child", "child2"));
 		try {

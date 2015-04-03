@@ -39,7 +39,7 @@ SubjectCoverage subjectCoverage = builder.commit(); // All validation occurs her
 <p class="figure">Figure 3. The Builder approach for building a SubjectCoverage component</p>
 
 <p>As you can see, the Builder approach treats the building process from a "top-down" perspective. By using 
-a <a href="http://ddmsence.urizone.net/docs/buri/ddmsence/ddms/Resource.Builder.html">Resource.Builder</a> instance, you can edit and traverse
+a <a href="https://ddmsence.urizone.net/docs/buri/ddmsence/ddms/Resource.Builder.html">Resource.Builder</a> instance, you can edit and traverse
 a complete DDMS Resource, without necessarily needing to understand the intricacies of the components you aren't worried about. The code sample below
 takes a List of pre-existing DDMS Resources, uses the Builder framework to edit a <code>ddms:dates</code> attribute on each one, and saves the results in a new List.</p>
  

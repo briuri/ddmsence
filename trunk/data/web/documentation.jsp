@@ -253,7 +253,7 @@ or correct deficiencies!</p>
 
 <p>The source code for DDMSence can be found in the "src"-flavored download on the <a href="downloads.jsp">Downloads</a> page. If you are interested in viewing the latest
 (unreleased and possibly unstable) source code, you can download it with any Subversion client:</p>
-<pre>svn checkout <a href="http://code.urizone.net/svn/ddmsence/trunk/">http://code.urizone.net/svn/ddmsence/trunk/</a> ddmsence-read-only</pre>
+<pre>svn checkout <a href="https://code.urizone.net/svn/ddmsence/trunk/">https://code.urizone.net/svn/ddmsence/trunk/</a> ddmsence-read-only</pre>
 
 <a name="feedback"></a><h3>Feedback</h3>
 

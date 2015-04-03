@@ -189,7 +189,7 @@
             windowtitle="DDMSence ${version} API"
             docencoding="UTF-8" charset="UTF-8"
             doctitle="DDMSence ${version}"		
-            bottom="Copyright 2010 - 2015 by Brian Uri!&lt;br /&gt;Generated on ${javadoc.time}&lt;br /&gt;&lt;a target='_top' href='http://ddmsence.urizone.net/'&gt;http://ddmsence.urizone.net/&lt;/a&gt;"
+            bottom="Copyright 2010 - 2015 by Brian Uri!&lt;br /&gt;Generated on ${javadoc.time}&lt;br /&gt;&lt;a target='_top' href='https://ddmsence.urizone.net/'&gt;https://ddmsence.urizone.net/&lt;/a&gt;"
 			stylesheetfile="${conf.dir}/javadoc-stylesheet.css"
 		>
 			<taglet name="buri.ddmsence.util.taglet.DDMSChildInfoTaglet">

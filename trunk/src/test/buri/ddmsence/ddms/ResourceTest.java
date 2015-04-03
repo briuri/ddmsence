@@ -15,7 +15,7 @@
    License along with DDMSence. If not, see <http://www.gnu.org/licenses/>.
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
-   home page is located at http://ddmsence.urizone.net/
+   home page is located at https://ddmsence.urizone.net/
  */
 package buri.ddmsence.ddms;
 
@@ -1389,7 +1389,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 
 		// ddmsence:confidence in element
 		element = getTestResourceNoHeader();
-		Util.addAttribute(element, "ddmsence", "confidence", "http://ddmsence.urizone.net/", "95");
+		Util.addAttribute(element, "ddmsence", "confidence", "https://ddmsence.urizone.net/", "95");
 		component = new Resource(element);
 		assertTrue(component.getSecurityAttributes().isEmpty());
 		assertEquals(1, component.getExtensibleAttributes().getAttributes().size());
@@ -1399,7 +1399,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		// This can be a securityAttribute or an extensible.
 		Attribute secAttribute = new Attribute("ism:classification", version.getIsmNamespace(), "U");
 		// This can be an extensible.
-		Attribute uniqueAttribute = new Attribute("ddmsence:confidence", "http://ddmsence.urizone.net/", "95");
+		Attribute uniqueAttribute = new Attribute("ddmsence:confidence", "https://ddmsence.urizone.net/", "95");
 		List<Attribute> exAttr = new ArrayList<Attribute>();
 
 		// icAttribute as parameter, uniqueAttribute as extensibleAttribute
