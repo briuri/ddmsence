@@ -6,6 +6,6 @@
 		<script type="text/javascript">
 			document.write("<a href=\"mailto:" + eMail + "\">Brian Uri!</a>.");
 		</script>
-	<br /><div class="counter"><script type="text/javascript" src="http://www.statcounter.com/counter/counter.js"></script> visitors since March 2010</div>
+	<br /><div class="counter"><script type="text/javascript" src="https://secure.statcounter.com/counter/counter.js"></script> visitors since March 2010</div>
 	</div>
 </div>
