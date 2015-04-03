@@ -15,7 +15,7 @@
    License along with DDMSence. If not, see <http://www.gnu.org/licenses/>.
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
-   home page is located at http://ddmsence.urizone.net/
+   home page is located at https://ddmsence.urizone.net/
  */
 package buri.ddmsence.util;
 
@@ -37,7 +37,7 @@ import java.util.Set;
  * <p> The Property Reader supports several custom properties, which can be specified at runtime. Property Readers are
  * thread-local, so the properties set in one Thread will not conflict with properties in another Thread. The complete
  * list of configurable properties can be found on the DDMSence website at:
- * http://ddmsence.urizone.net/documentation.jsp#tips-configuration. </p>
+ * https://ddmsence.urizone.net/documentation.jsp#tips-configuration. </p>
  * 
  * <p> Changing a namespace prefix will affect both components created from scratch and components loaded from XML
  * files. </p>

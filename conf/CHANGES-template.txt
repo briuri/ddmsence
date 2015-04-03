@@ -2,7 +2,7 @@ DDMSence (pronounced "dee-dee-em-Essence") is the only open-source Java library
 that fully supports the DoD Discovery Metadata Specification (DDMS).
 
 You can contact the author at ddmsence@urizone.net. The DDMSence
-home page is located at http://ddmsence.urizone.net/ .
+home page is located at https://ddmsence.urizone.net/ .
 
 Copyright 2010 - 2015 by Brian Uri!
 ===========================================================================

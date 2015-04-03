@@ -30,8 +30,8 @@ I have also included a <code>.project</code> file if you wish to import the proj
 (<a href="http://code.google.com/p/ddmsence/issues/detail?id=222">Issue #222</a>). It is backwards compatible with all versions since v2.0.0.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-bin-2.5.0.zip"><code>ddmsence-bin-2.5.0.zip</code></a></b> (8.4 MB, compiled with JDK1.7.0_17, source level 1.6, target level 1.6)</li>
-<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-src-2.5.0.zip"><code>ddmsence-src-2.5.0.zip</code></a></b> (8.3 MB)</li>
+<li><b><a href="https://ddmsence.urizone.net/files/ddmsence-bin-2.5.0.zip"><code>ddmsence-bin-2.5.0.zip</code></a></b> (8.4 MB, compiled with JDK1.7.0_17, source level 1.6, target level 1.6)</li>
+<li><b><a href="https://ddmsence.urizone.net/files/ddmsence-src-2.5.0.zip"><code>ddmsence-src-2.5.0.zip</code></a></b> (8.3 MB)</li>
 <br />
 <li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v2.5.0">Complete List of Changes</a></li>
 </ul>
@@ -66,8 +66,8 @@ All changes which are not backwards compatible will be linked from this page wit
 It is backwards compatible with all versions since v2.0.0.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-bin-2.4.0.zip"><code>ddmsence-bin-2.4.0.zip</code></a></b> (8.4 MB, compiled with JDK1.7.0_17, source level 1.6, target level 1.6)</li>
-<li><b><a href="http://ddmsence.urizone.net/files/ddmsence-src-2.4.0.zip"><code>ddmsence-src-2.4.0.zip</code></a></b> (8.3 MB)</li>
+<li><b><a href="https://ddmsence.urizone.net/files/ddmsence-bin-2.4.0.zip"><code>ddmsence-bin-2.4.0.zip</code></a></b> (8.4 MB, compiled with JDK1.7.0_17, source level 1.6, target level 1.6)</li>
+<li><b><a href="https://ddmsence.urizone.net/files/ddmsence-src-2.4.0.zip"><code>ddmsence-src-2.4.0.zip</code></a></b> (8.3 MB)</li>
 </ul>
 
 <h3>Ancient Releases</h3>

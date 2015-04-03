@@ -35,7 +35,7 @@ example of an extensible element as it might appear in an XML file.</p>
 <pre class="brush: xml">   [...]
    &lt;/ddms:subjectCoverage&gt;
    &lt;ddms:security ISM:ownerProducer="USA" ISM:classification="U" ISM:excludeFromRollup="true"/&gt;
-   &lt;ddmsence:extension xmlns:ddmsence="http://ddmsence.urizone.net/"&gt;
+   &lt;ddmsence:extension xmlns:ddmsence="https://ddmsence.urizone.net/"&gt;
       This is an extensible element.
    &lt;/ddmsence:extension&gt;
 &lt;/ddms:resource&gt;</pre>
@@ -45,7 +45,7 @@ example of an extensible element as it might appear in an XML file.</p>
 (since the raw data is, itself, a XOM element). If you are using a DDMSReader instance to load data from an XML file, the ExtensibleElements will be created automatically,
 and can be accessed with <code>Resource.getExtensibleElements()</code>. Here is an example of how you might build a simple one from scratch:</p>
 
-<pre class="brush: java">Element element = new Element("ddmsence:extension", "http://ddmsence.urizone.net/");
+<pre class="brush: java">Element element = new Element("ddmsence:extension", "https://ddmsence.urizone.net/");
 element.appendChild("This is an extensible element.");
 ExtensibleElement component = new ExtensibleElement(element);</pre>
 <p class="figure">Figure 2. Creating a simple ExtensibleElement from scratch</p>
@@ -59,11 +59,11 @@ Creating more complex Elements from scratch requires XOM knowledge, and is outsi
 pattern as SecurityAttributes and SRSAttributes. The accessor, <code>getAttributes()</code> will return a read-only list of all the underlying XOM Attributes.
 Below is an example of an extensible attribute as it might appear in an XML file, and how it could be created from scratch:</p>
 
-<pre class="brush: xml">&lt;ddms:keyword xmlns:ddmsence="http://ddmsence.urizone.net/" ddms:value="XML" ddmsence:relevance="99" /&gt;</pre>
+<pre class="brush: xml">&lt;ddms:keyword xmlns:ddmsence="https://ddmsence.urizone.net/" ddms:value="XML" ddmsence:relevance="99" /&gt;</pre>
 <p class="figure">Figure 3. An XML element with extensible attributes</p>
 
 <pre class="brush: java">List&lt;Attribute&gt; extAttributes = new ArrayList&lt;Attribute&gt;();
-extAttributes.add(new Attribute("ddmsence:relevance", "http://ddmsence.urizone.net/", "99"));
+extAttributes.add(new Attribute("ddmsence:relevance", "https://ddmsence.urizone.net/", "99"));
 ExtensibleAttributes extensions = new ExtensibleAttributes(extAttributes);
 Keyword keyword = new Keyword("XML", extensions);</pre>
 <p class="figure">Figure 4. Creating the extensible attribute from scratch</p>

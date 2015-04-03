@@ -15,7 +15,7 @@
    License along with DDMSence. If not, see <http://www.gnu.org/licenses/>.
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
-   home page is located at http://ddmsence.urizone.net/
+   home page is located at https://ddmsence.urizone.net/
  */
 package buri.ddmsence.ddms.extensible;
 
@@ -39,7 +39,7 @@ public class ExtensibleElementTest extends AbstractBaseTestCase {
 
 	private static final String TEST_NAME = "extension";
 	private static final String TEST_PREFIX = "ddmsence";
-	private static final String TEST_NAMESPACE = "http://ddmsence.urizone.net/";
+	private static final String TEST_NAMESPACE = "https://ddmsence.urizone.net/";
 
 	/**
 	 * Constructor
@@ -104,7 +104,7 @@ public class ExtensibleElementTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddmsence:extension xmlns:ddmsence=\"http://ddmsence.urizone.net/\">");
+		xml.append("<ddmsence:extension xmlns:ddmsence=\"https://ddmsence.urizone.net/\">");
 		xml.append("This is an extensible element.</ddmsence:extension>");
 		return (xml.toString());
 	}

@@ -9,17 +9,17 @@
 	<name>DDMSence</name>
 	<version>2.5.0</version>	
 	<description>DDMSence (pronounced "dee-dee-em-Essence") is the only open-source Java library that fully supports the DoD Discovery Metadata Specification (DDMS).</description>
-	<url>http://ddmsence.urizone.net/</url>
+	<url>https://ddmsence.urizone.net/</url>
 	<licenses>
 		<license>
 			<name>GNU Lesser General Public License (LGPL)</name>
-			<url>http://ddmsence.urizone.net/license.jsp</url>
+			<url>https://ddmsence.urizone.net/license.jsp</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
 	<scm>
-		<url>http://code.urizone.net/svn/ddmsence/trunk/</url>
-		<connection>http://code.urizone.net/svn/ddmsence/trunk/</connection>
+		<url>https://code.urizone.net/svn/ddmsence/trunk/</url>
+		<connection>https://code.urizone.net/svn/ddmsence/trunk/</connection>
 	</scm>
 	<developers>
 		<developer>

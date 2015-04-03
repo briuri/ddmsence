@@ -17,8 +17,8 @@
 			distribution with these files, but you can find the source code on the website
 			by visiting the two example web applications at:
 			
-			http://ddmsence.urizone.net/validator.uri
-			http://ddmsence.urizone.net/builder.uri
+			https://ddmsence.urizone.net/validator.uri
+			https://ddmsence.urizone.net/builder.uri
 
 			The DDMSence web application is deployed in an environment which already has
 			Spring JARs deployed.
