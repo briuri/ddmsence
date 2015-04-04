@@ -3,6 +3,7 @@
 	<title>DDMSence: Power Tip - Thread Safety</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="The open-source Java library for the DoD Discovery Metadata Specification (DDMS)">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 <body>
 <%@ include file="../shared/header.jspf" %>
@@ -108,14 +109,14 @@ all up to DDMS 4.1. This operation has 3 discrete steps:</p>
 many Threads. Each Thread owns a separate batch of records, and is guaranteed to run without any dependency on 
 (or interference from) other Threads.</p>
 
-<img src="./images/multithreaded-1.png" width="540" height="213" title="Basic Approach" />
+<img src="./images/multithreaded-1.png" width="540" height="213" title="Basic Approach" class="diagram" />
 <p class="figure">Figure 1. The Basic Approach</p>
 
 <p>A more advanced approach would be to assign the responsibility of each step to a different Thread. By maintaining a 
 collection of partially completed objects, the outputs of one Thread become the inputs of the next Thread. You might 
 consider this approach to isolate and parallelize one of the steps for some reason, such as managing I/O bottlenecks.</p>
 
-<img src="./images/multithreaded-2.png" width="800" height="166" title="More Advanced Approach" />
+<img src="./images/multithreaded-2.png" width="800" height="166" title="More Advanced Approach" class="diagram" />
 <p class="figure">Figure 2. The More Advanced Approach</p>
 
 <ol>
