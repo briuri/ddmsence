@@ -3,6 +3,7 @@
 	<title>DDMSence: Tutorial #1 (Essentials)</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="The open-source Java library for the DoD Discovery Metadata Specification (DDMS)">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 <body>
 <%@ include file="../shared/header.jspf" %>
@@ -32,7 +33,7 @@ selecting the sample file, <code>3.1-identifierPostalAddressExample.xml</code> a
 
 <p>The application will convert the XML file into a Java object model and then display the results in four separate tabs.</p>
 
-<img src="./images/essentials-01.png" width="800" height="534" title="Essentials Screenshot" />
+<img src="./images/essentials-01.png" width="800" height="534" title="Essentials Screenshot" class="diagram" />
 <p class="figure">Figure 1. The four output formats</p>
 
 <p>The first tab contains the result of calling <code>toXML()</code> on the Resource object. It should be identical to the data from the file.

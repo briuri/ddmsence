@@ -3,6 +3,7 @@
 	<title>DDMSence: The open-source Java library for DDMS</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="keywords" content="DDMSence,DDMS,Metadata,Discovery,Java,DoD,XML,DDMEssence,DDMSense,Essence" />
+	<meta name="viewport" content="width=device-width,initial-scale=1">
 	
  	<meta property="og:title" content="DDMSence: The open-source Java library for DDMS"/>
 	<meta property="og:description" content="DDMSence is the only open-source Java library that fully supports the DoD Discovery Metadata Specification (DDMS)." />
@@ -150,7 +151,7 @@ the context of a Java environment.
 
 <p>DDMSence comes with a complete set of JUnit tests, and is released under the GNU Lesser General Public License (<a href="license.jsp">LGPL</a>).</p>
 
-<img src="./images/chart.png" width="720" height="280" title="DDMSence Flow Chart"  />
+<img src="./images/chart.png" width="720" height="280" title="DDMSence Flow Chart" class="diagram" />
 		
 <h1>About the Author</h1>
 

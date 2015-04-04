@@ -239,3 +239,56 @@ td.relOverviewLayer {
 td.relRules {
 	width: 200px;
 }
+
+/**
+ * Mobile
+ */
+@media screen and (max-width: 600px) {
+	#menu {
+		background-color: #1c4370;
+		font-size: 12pt;
+		height: auto;
+		line-height: 200%;
+	}
+	a.menu:before {
+		content: '\A';
+	}
+	body {
+		font-size: 14pt;
+	}
+	div.newsFeed {
+		display: block;
+		float: none;
+		font-size: 12pt;
+	}
+	#footer {
+		font-size: 11pt;
+		height: auto;
+	}
+	h1 {
+		font-size: 16pt;
+	}
+	h2 {
+		font-size: 14pt;
+	}
+	h3 {
+		font-size: 13pt;
+	}
+	h4 {
+		font-size: 13pt;
+	}
+	h5 {
+		font-size: 12pt;
+	}
+	img.diagram {
+		height: auto;
+		width: 100%;
+	}
+	input.button {
+		font-size: 12pt;
+		padding: 10px;
+	}
+	input[type=text], select, input[type=password], textarea {
+		width: 100%;
+	} 
+} 

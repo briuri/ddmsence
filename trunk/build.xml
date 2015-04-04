@@ -281,6 +281,20 @@
 		<copy todir="${local.web.dir}" file="${local.deploy.dir}/ROOT.war" />
 	</target>
 	
+	<target name="localReloadViews" description="Copies only the view files, without restarting the web application">
+		<copy todir="${local.web.dir}/ROOT" preservelastmodified="true" includeemptydirs="false">
+			<fileset dir="data/web">
+				<include name="**/*.css" />
+				<include name="**/*.gif" />
+				<include name="**/*.jpg" />
+				<include name="**/*.jsp" />
+				<include name="**/*.jspf" />
+				<include name="**/*.js" />
+				<include name="**/*.png" />
+			</fileset>
+		</copy>		
+	</target>
+
 	<target name="localZip" description="Creates a ZIP of the entire project">
 		<tstamp>
 			<format property="backupStamp" pattern="yyMMdd-HHmm"/>
