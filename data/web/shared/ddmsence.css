@@ -260,6 +260,7 @@ td.relRules {
 		display: block;
 		float: none;
 		font-size: 12pt;
+		width: 90%;
 	}
 	#footer {
 		font-size: 11pt;

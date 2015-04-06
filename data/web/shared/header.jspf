@@ -23,7 +23,7 @@
 		<a class="menu" href="downloads.jsp">Downloads</a> |
 		<a class="menu" href="documentation.jsp">Documentation</a> |
 		<a class="menu" href="license.jsp">License</a> |
-		<a class="menu" href="https://ddmsence.atlassian.net/projects/DDMSENCE">Issue Tracking</a> <img src="./images/external.png" width="10" height="10" title="Google Project Hosting" /> |
+		<a class="menu" href="https://ddmsence.atlassian.net/projects/DDMSENCE">Issue Tracking</a> <img src="./images/external.png" width="10" height="10" title="JIRA Cloud" /> |
 		<a class="menu" href="http://groups.google.com/group/ddmsence">Discussion</a> <img src="./images/external.png" width="10" height="10" title="Google Group" /> |
 		<a class="menu" href="validator.uri">DDMS Validator</a>
 	</div>
