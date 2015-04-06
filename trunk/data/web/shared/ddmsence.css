@@ -21,7 +21,7 @@ a:hover {
 	text-decoration: underline;
 }
 body {
-	background: #dde3e5 url(../images/headerBG.png) repeat-x left top;
+	background: #dde3e5 url(../images/headerBG.png);
 	color: #ffffff;
 	font-family: 'Noto Sans', sans-serif;
 	font-size: 10pt;
@@ -155,6 +155,7 @@ label.error {
 	width: auto;
 }
 #menu {
+	background: #1c4370 url(../images/menuBG.png);
 	height: 22px;
 	margin: 0px auto;
 	padding: 5px 0px 0px 10px;
@@ -243,9 +244,10 @@ td.relRules {
 /**
  * Mobile
  */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 650px) {
 	#menu {
 		background-color: #1c4370;
+		background-image: none;
 		font-size: 12pt;
 		height: auto;
 		line-height: 200%;
@@ -292,4 +294,9 @@ td.relRules {
 	input[type=text], select, input[type=password], textarea {
 		width: 100%;
 	} 
+}
+@media screen and (min-width: 1200px) {
+	#outerPosition {
+		max-width: 1200px;
+	}
 } 
