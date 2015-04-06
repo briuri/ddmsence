@@ -261,7 +261,7 @@ or correct deficiencies!</p>
 <p>I would love to hear about your experiences working with DDMSence, or suggestions for future functionality. Did you find it to be useful? Are there requirements that I
 should consider supporting? Is the documentation clear and complete?</p>
 
-<p>You can officially report a bug or enhancement suggestion on the <a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a> page,
+<p>You can officially report a bug or enhancement suggestion on the <a href="https://ddmsence.atlassian.net/projects/DDMSENCE">Issue Tracking</a> page,
 or use the <a href="http://groups.google.com/group/ddmsence">Discussion</a> area as a less formal method of discussion. Finally, you can
 contact me directly by email at
 	<script type="text/javascript">
