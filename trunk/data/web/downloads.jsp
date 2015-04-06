@@ -28,13 +28,13 @@ I have also included a <code>.project</code> file if you wish to import the proj
 <h1>Latest Release: v2.5.0</h1>
 
 <p>Version <b>2.5.0</b> (01/01/2015) is a stable release which can now be used in <a href="documentation-multithreaded.jsp">multithreaded environments</a> 
-(<a href="http://code.google.com/p/ddmsence/issues/detail?id=222">Issue #222</a>). It is backwards compatible with all versions since v2.0.0.</p>
+(<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-222">Issue #222</a>). It is backwards compatible with all versions since v2.0.0.</p>
 
 <ul>
 <li><b><a href="https://ddmsence.urizone.net/files/ddmsence-bin-2.5.0.zip"><code>ddmsence-bin-2.5.0.zip</code></a></b> (8.4 MB, compiled with JDK1.7.0_17, source level 1.6, target level 1.6)</li>
 <li><b><a href="https://ddmsence.urizone.net/files/ddmsence-src-2.5.0.zip"><code>ddmsence-src-2.5.0.zip</code></a></b> (8.3 MB)</li>
 <br />
-<li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v2.5.0">Complete List of Changes</a></li>
+<li><a href="https://ddmsence.atlassian.net/projects/DDMSENCE/versions/10027">Complete List of Changes</a></li>
 </ul>
 
 <h3>DDMSence and Maven</h3>
@@ -63,7 +63,7 @@ All changes which are not backwards compatible will be linked from this page wit
 
 <h3>Previous Release</h3>
 
-<p>Version <b>2.4.0</b> (11/20/2014) is a stable release which improves the handling of date values in various components (<a href="http://code.google.com/p/ddmsence/issues/detail?id=221">Issue #221</a>).
+<p>Version <b>2.4.0</b> (11/20/2014) is a stable release which improves the handling of date values in various components (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-221">Issue #221</a>).
 It is backwards compatible with all versions since v2.0.0.</p>
 
 <ul>
@@ -80,7 +80,7 @@ found below.</p>
 Additional information about JSON output can be found in <a href="tutorials-01.jsp">Tutorial #1: Essentials</a>.</p>
 
 <p>Version <b>2.2.1</b> (05/13/2014) is a stable release which is backwards compatible with all versions since v2.0.0. It is functionally equivalent
-to v2.2.0, but has been recompiled to run with Java 1.6 (<a href="https://code.google.com/p/ddmsence/issues/detail?id=215">Issue #215</a>). If v2.2.0 is already working for you, there is no need to upgrade at this time. 
+to v2.2.0, but has been recompiled to run with Java 1.6 (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-215">Issue #215</a>). If v2.2.0 is already working for you, there is no need to upgrade at this time. 
 </p>
 
 <p>Version <b>2.2.0</b> (12/15/2013) is a stable release, which adds support for DDMS 5.0. It is backwards compatible with all versions since v2.0.0.
@@ -96,51 +96,51 @@ code to use this version should be straightforward, but may require a non-trivia
 migrating from v1.x.x to v2.x.x.</p>
 
 <p>Version <b>1.11.0</b> (07/17/2011) is a stable release, which adds support for 
-<a href="documentation-schematron.jsp">XSLT2-based Schematron validation</a> (<a href="http://code.google.com/p/ddmsence/issues/detail?id=79">Issue #79</a>),
-improved performance when using multiple Controlled Vocabularies (<a href="http://code.google.com/p/ddmsence/issues/detail?id=90">Issue #90</a>), and a few 
+<a href="documentation-schematron.jsp">XSLT2-based Schematron validation</a> (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-79">Issue #79</a>),
+improved performance when using multiple Controlled Vocabularies (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-90">Issue #90</a>), and a few 
 minor bug fixes. This release is backwards compatible with v1.10.0.</p>
 
-<p>Version <b>1.10.0</b> (07/05/2011) is a stable release, which adds support for DDMS 3.1 (<a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v1.10.0">Issue #82 - 85</a>).
-It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=88">backwards compatible</a> with earlier versions.</p>
+<p>Version <b>1.10.0</b> (07/05/2011) is a stable release, which adds support for DDMS 3.1 (<a href="https://ddmsence.atlassian.net/projects/DDMSENCE/versions/10019">Issue #82 - 85</a>).
+It is not <a href="https://ddmsence.atlassian.net/browse/DDMSENCE-88">backwards compatible</a> with earlier versions.</p>
 
 <p>Version <b>1.9.1</b> (06/02/2011) is a stable patch release, which corrects a few minor bugs related to the lazily instantiated lists
-in the Component Builder framework (<a href="http://code.google.com/p/ddmsence/issues/detail?id=76">Issue #76</a>,
-<a href="http://code.google.com/p/ddmsence/issues/detail?id=77">Issue #77</a>
-and <a href="http://code.google.com/p/ddmsence/issues/detail?id=78">Issue #78</a>). It is backwards compatible with all versions since v1.4.0.</p>
+in the Component Builder framework (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-76">Issue #76</a>,
+<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-77">Issue #77</a>
+and <a href="https://ddmsence.atlassian.net/browse/DDMSENCE-78">Issue #78</a>). It is backwards compatible with all versions since v1.4.0.</p>
 
 <p>Version <b>1.9.0</b> (05/24/2011) is a stable release, which makes the Component Builder framework more amenable to web-based forms
-by implementing the Serializable interface and using lazily instantiated lists for child components (<a href="http://code.google.com/p/ddmsence/issues/detail?id=74">Issue #74</a>
-and <a href="http://code.google.com/p/ddmsence/issues/detail?id=75">Issue #75</a>). It is backwards compatible with all versions since v1.4.0.</p>
+by implementing the Serializable interface and using lazily instantiated lists for child components (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-74">Issue #74</a>
+and <a href="https://ddmsence.atlassian.net/browse/DDMSENCE-75">Issue #75</a>). It is backwards compatible with all versions since v1.4.0.</p>
 
 <p>Version <b>1.8.0</b> (05/13/2011) is a stable release, which adds <a href="documentation-builders.jsp">mutable Builders</a> for all DDMS components 
-(<a href="http://code.google.com/p/ddmsence/issues/detail?id=68">Issue #68</a>). It is backwards compatible with all versions since v1.4.0.</p>
+(<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-68">Issue #68</a>). It is backwards compatible with all versions since v1.4.0.</p>
 
 <p>Version <b>1.7.2</b> (03/10/2011) is a stable patch release, which corrects syntax errors in the sample Schematron files 
-(<a href="http://code.google.com/p/ddmsence/issues/detail?id=67">Issue #67</a>), and adds "3.0.1" as an alias for DDMS 3.0
-(<a href="http://code.google.com/p/ddmsence/issues/detail?id=69">Issue #69</a>). It is backwards compatible with all versions since v1.4.0.</p>
+(<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-67">Issue #67</a>), and adds "3.0.1" as an alias for DDMS 3.0
+(<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-69">Issue #69</a>). It is backwards compatible with all versions since v1.4.0.</p>
 
 <p>Version <b>1.7.1</b> (11/16/2010) is a stable patch release, which corrects a very minor issue where northbound latitude values were validated as longitudes 
- (<a href="http://code.google.com/p/ddmsence/issues/detail?id=65">Issue #65</a>). It is backwards compatible 
+ (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-65">Issue #65</a>). It is backwards compatible 
 with all versions since v1.4.0.</p>
 
 <p>Version <b>1.7.0</b> (09/18/2010) is a stable release, which allows toggling between errors and warnings on
-Intelligence Community Controlled Vocabulary validation (<a href="http://code.google.com/p/ddmsence/issues/detail?id=36">Issue #36</a>)
+Intelligence Community Controlled Vocabulary validation (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-36">Issue #36</a>)
 and adds support for swappable Controlled Vocabulary files
-(<a href="http://code.google.com/p/ddmsence/issues/detail?id=59">Issue #59</a>). It is backwards compatible 
+(<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-59">Issue #59</a>). It is backwards compatible 
 with all versions since v1.4.0.</p>
 
 <p>Version <b>1.6.0</b> (09/07/2010) is a stable release, which updates bundled schemas and files for DDMS 3.0. Because the changes
 mainly affected the ISM Controlled Vocabulary files, this release is still backwards compatible with all versions since v1.4.0.</p>
 
-<p>Version <b>1.5.1</b> (07/07/2010) is a stable patch release, which fixes a <a href="http://code.google.com/p/ddmsence/issues/detail?id=50">Glassfish deployment issue</a>. It is backwards compatible with all versions since v1.4.0.</p>
+<p>Version <b>1.5.1</b> (07/07/2010) is a stable patch release, which fixes a <a href="https://ddmsence.atlassian.net/browse/DDMSENCE-50">Glassfish deployment issue</a>. It is backwards compatible with all versions since v1.4.0.</p>
 
 <p>Version <b>1.5.0</b> (07/05/2010) is a stable release, and adds DDMSReader support for Strings, Readers, and InputStreams. It also updates the bundled version of XOM
 to 1.2.6. This release is backwards compatible with v1.4.0.</p>
 
 <p>Version <b>1.4.0</b> (06/08/2010) is a stable release, and changes configurable property support to be code-driven rather than property-file driven.
-It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=46">backwards compatible</a> with earlier versions.</p>
+It is not <a href="https://ddmsence.atlassian.net/browse/DDMSENCE-46">backwards compatible</a> with earlier versions.</p>
 
-<p>Version <b>1.3.2</b> (05/14/2010) is a stable patch release, which fixes <a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v1.3.2">four minor bugs</a>. It is backwards compatible with all versions since v1.1.0.</p>
+<p>Version <b>1.3.2</b> (05/14/2010) is a stable patch release, which fixes <a href="https://ddmsence.atlassian.net/projects/DDMSENCE/versions/10008">four minor bugs</a>. It is backwards compatible with all versions since v1.1.0.</p>
 
 <p>Version <b>1.3.1</b> (05/09/2010) is a stable patch release, which fixes a bug related to namespace resolution when working with more than one version
 of DDMS at a time. It is backwards compatible with all versions since v1.1.0.</p>
@@ -155,7 +155,7 @@ It is backwards compatible with v1.2.0 and v1.1.0.</p>
 compatible with v1.1.0.</p>
 
 <p>Version <b>1.1.0</b> (04/08/2010) is a stable release, and adds support for DDMS 2.0 and the Extensible Layer. 
-It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=31">backwards compatible</a> with earlier versions.</p>
+It is not <a href="https://ddmsence.atlassian.net/browse/DDMSENCE-31">backwards compatible</a> with earlier versions.</p>
 
 <p>Version <b>1.0.0</b> (04/01/2010) is the first official stable release of DDMSence. <!--  It is backwards compatible with v0.9.d and v0.9.c. --></p>
 
@@ -163,7 +163,7 @@ It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=31">backwa
 for v1.0.0. It is backwards compatible with v0.9.c.</p>
 
 <p>Version <b>0.9.c</b> (03/25/2010) adds warning support to the validation system. This version is believed to be stable, and is intended to be a limited audience release
-for early feedback. It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=32">backwards compatible</a> with earlier versions.</p>
+for early feedback. It is not <a href="https://ddmsence.atlassian.net/browse/DDMSENCE-32">backwards compatible</a> with earlier versions.</p>
 
 <p>Version <b>0.9.b</b> (03/24/2010) is the initial beta release. This version is believed to be stable, and is intended to be a limited audience release for early feedback.</p>
 

@@ -38,7 +38,7 @@ problems, I would be glad to assist you further.</p>
 
 <h3>Major Changes</h3>
 
-<a name="major-01"></a><h4>Swappable CVE feature expanded (<a href="http://code.google.com/p/ddmsence/issues/detail?id=95">Issue #95</a>, <a href="http://code.google.com/p/ddmsence/issues/detail?id=169">Issue #169</a>, and <a href="http://code.google.com/p/ddmsence/issues/detail?id=154">Issue #154</a>)</h4> 
+<a name="major-01"></a><h4>Swappable CVE feature expanded (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-95">Issue #95</a>, <a href="https://ddmsence.atlassian.net/browse/DDMSENCE-169">Issue #169</a>, and <a href="https://ddmsence.atlassian.net/browse/DDMSENCE-154">Issue #154</a>)</h4> 
 
 <div class="upgradeGuide">
 <p>In previous versions of DDMSence, you could point to a custom set of ISM Controlled Vocabulary Enumeration files
@@ -56,7 +56,7 @@ time. It is now possible to swap out your entire set of ISM schemas and vocabula
 as discussed in this <a href="documentation-differentIsm.jsp">Power Tip</a>.</p> 
 </div>
 
-<a name="major-02"></a><h4>Producer/Entity hierarchy changed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=153">Issue #153</a>)</h4>
+<a name="major-02"></a><h4>Producer/Entity hierarchy changed (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-153">Issue #153</a>)</h4>
 
 <div class="upgradeGuide">
 <p>In previous versions of DDMSence, the producer hierarchy was flattened to be more object-oriented. Consider this example:
@@ -92,7 +92,7 @@ in the producer role (Contributor, Creator, PointOfContact, or Publisher) instea
 
 </div>
 
-<a name="major-03"></a><h4>Related Resources hierarchy compressed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=130">Issue #130</a>)</h4>
+<a name="major-03"></a><h4>Related Resources hierarchy compressed (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-130">Issue #130</a>)</h4>
 <div class="upgradeGuide">
 <p>The hierarchy for related resources used to require both a RelatedResources class and a RelatedResource class:</p>
 
@@ -175,7 +175,7 @@ myTopLevelComponents.add(new RelatedResource(links, "http://purl.org/dc/terms/re
    
 </div>
 
-<a name="major-04"></a><h4>Non-XML Resources validated against DDMS schemas (<a href="http://code.google.com/p/ddmsence/issues/detail?id=28">Issue #28</a>)</h4>
+<a name="major-04"></a><h4>Non-XML Resources validated against DDMS schemas (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-28">Issue #28</a>)</h4>
 <div class="upgradeGuide">
 <p>DDMS metacards loaded from an XML file have always been validated against the DDMS schemas. However, DDMS metacards built from scratch (either with the data-driven constructors
 or the Component Builder framework) were not. Starting in this release, a metacard built from scratch is converted into XML and validated against the schemas, to elminate
@@ -188,7 +188,7 @@ ID value, which would result in an invalid XML record.</p>
 
 </div>
 
-<a name="major-05"></a><h4>DDMS 4.0 skipped in favor of DDMS 4.0.1 (<a href="http://code.google.com/p/ddmsence/issues/detail?id=174">Issue #174</a>)</h4>
+<a name="major-05"></a><h4>DDMS 4.0 skipped in favor of DDMS 4.0.1 (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-174">Issue #174</a>)</h4>
 <div class="upgradeGuide">
 
 <p>DDMS 4.0 was released in September 2011 with an oversight on the technical implementation of the <code>pocType</code> attribute on producer roles. DDMS 4.0
@@ -207,7 +207,7 @@ version of DDMS, the DDMS team is strongly encouraging that you go directly to 4
 
 <h3>Minor Changes</h3>
 
-<a name="minor-01"></a><h4>Validation for security rollup removed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=165">Issue #165</a>)</h4>
+<a name="minor-01"></a><h4>Validation for security rollup removed (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-165">Issue #165</a>)</h4>
 
 <div class="upgradeGuide">
 <p>Previously, DDMSence would do a basic check to see that security classifications of top-level components
@@ -222,7 +222,7 @@ security classifications.</p>
 in the Power Tip on <a href="documentation-schematron.jsp">Schematron Validation</a> which show how to use these files with DDMSence.
 </div>
 
-<a name="minor-02"></a><h4>Reusable components no longer track parentType (<a href="http://code.google.com/p/ddmsence/issues/detail?id=162">Issue #162</a>)</h4>
+<a name="minor-02"></a><h4>Reusable components no longer track parentType (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-162">Issue #162</a>)</h4>
 
 <div class="upgradeGuide">
 <p>Person, Organization, Service, Unknown, and CountryCode previously maintained a reference to the enclosing component 
@@ -244,28 +244,28 @@ in the Power Tip on <a href="documentation-schematron.jsp">Schematron Validation
 <p>Several methods have had their names changed for consistency, or have a different number of parameters.</p>
 
 <ul>
-<li><u>Category</u>: The constructor has additional parameters for optional attributes. (<a href="http://code.google.com/p/ddmsence/issues/detail?id=155">Issue #155</a>)</li>
-<li><u>Dates</u>: The constructor has additional parameters for optional dates. (<a href="http://code.google.com/p/ddmsence/issues/detail?id=117">Issue #117</a>)</li>
-<li><u>DDMSVersion</u>: getIcismNamespace() became getIsmNamespace() (<a href="http://code.google.com/p/ddmsence/issues/detail?id=95">Issue #95</a>).</li>
-<li><u>GeographicIdentifier</u>: The constructor has an additional parameter for optional subDivisionCode. (<a href="http://code.google.com/p/ddmsence/issues/detail?id=122">Issue #122</a>)</li>
-<li><u>ISMVocabulary</u>: setIsmVersion() became setDDMSVersion() (<a href="http://code.google.com/p/ddmsence/issues/detail?id=95">Issue #95</a>).</li>
-<li><u>Keyword</u>: The constructor has an additional parameter for optional attributes. (<a href="http://code.google.com/p/ddmsence/issues/detail?id=156">Issue #156</a>)</li>
-<li><u>Organization</u>: The constructor has additional parameters for optional subOrganization and acronym. (<a href="http://code.google.com/p/ddmsence/issues/detail?id=113">Issue #113</a>)</li>
-<li><u>Person</u>: The order of the constructor parameters has been reordered to match the DDMS 4.0.1 schema (<a href="http://code.google.com/p/ddmsence/issues/detail?id=114">Issue #114</a>)</li>
-<li><u>RelatedResource</u>: The constructor has additional parameters for new attributes. (<a href="http://code.google.com/p/ddmsence/issues/detail?id=130">Issue #130</a>)</li>
-<li><u>Resource</u>: getSubjectCoverage() became getSubjectCoverages() and now returns a list of SubjectCoverage components (<a href="http://code.google.com/p/ddmsence/issues/detail?id=126">Issue #126</a>)</li>
-<li><u>Resource</u>: getDESVersion() became getIsmDESVersion() to avoid conflict with ntk:DESVersion (<a href="http://code.google.com/p/ddmsence/issues/detail?id=131">Issue #131</a>)</li>
-<li><u>Resource</u>: Constructor updated to include ISM:compliesWith, which used to be part of SecurityAttributes (<a href="http://code.google.com/p/ddmsence/issues/detail?id=168">Issue #168</a>)</li>
-<li><u>Security</u>: The constructor has additional parametesr for access and noticeList. (<a href="http://code.google.com/p/ddmsence/issues/detail?id=111">Issue #111</a>)</li>
-<li><u>SubjectCoverage</u>: The constructor has additional parameters for productionMetrics and nonStateActors.  (<a href="http://code.google.com/p/ddmsence/issues/detail?id=126">Issue #126</a>)</li>
-<li><u>Type</u>: The constructor has an additional parameter for optional description. (<a href="http://code.google.com/p/ddmsence/issues/detail?id=118">Issue #118</a>)</li>
+<li><u>Category</u>: The constructor has additional parameters for optional attributes. (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-155">Issue #155</a>)</li>
+<li><u>Dates</u>: The constructor has additional parameters for optional dates. (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-117">Issue #117</a>)</li>
+<li><u>DDMSVersion</u>: getIcismNamespace() became getIsmNamespace() (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-95">Issue #95</a>).</li>
+<li><u>GeographicIdentifier</u>: The constructor has an additional parameter for optional subDivisionCode. (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-122">Issue #122</a>)</li>
+<li><u>ISMVocabulary</u>: setIsmVersion() became setDDMSVersion() (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-95">Issue #95</a>).</li>
+<li><u>Keyword</u>: The constructor has an additional parameter for optional attributes. (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-156">Issue #156</a>)</li>
+<li><u>Organization</u>: The constructor has additional parameters for optional subOrganization and acronym. (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-113">Issue #113</a>)</li>
+<li><u>Person</u>: The order of the constructor parameters has been reordered to match the DDMS 4.0.1 schema (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-114">Issue #114</a>)</li>
+<li><u>RelatedResource</u>: The constructor has additional parameters for new attributes. (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-130">Issue #130</a>)</li>
+<li><u>Resource</u>: getSubjectCoverage() became getSubjectCoverages() and now returns a list of SubjectCoverage components (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-126">Issue #126</a>)</li>
+<li><u>Resource</u>: getDESVersion() became getIsmDESVersion() to avoid conflict with ntk:DESVersion (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-131">Issue #131</a>)</li>
+<li><u>Resource</u>: Constructor updated to include ISM:compliesWith, which used to be part of SecurityAttributes (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-168">Issue #168</a>)</li>
+<li><u>Security</u>: The constructor has additional parametesr for access and noticeList. (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-111">Issue #111</a>)</li>
+<li><u>SubjectCoverage</u>: The constructor has additional parameters for productionMetrics and nonStateActors.  (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-126">Issue #126</a>)</li>
+<li><u>Type</u>: The constructor has an additional parameter for optional description. (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-118">Issue #118</a>)</li>
 </ul>
 <p><b>How to Upgrade:</b></p>
 <p>If any method calls show compiler errors after upgrading to DDMSence 2.0.0, consult the API documentation and update the method signature. If a constructor
 has additional parameters to support new data from DDMS 4.0.1 and you are using an older version of DDMS, you can probably get away with simply passing in a <code>null</code> value.</p>	
 </div>
 
-<a name="minor-04"></a><h4>XLink attributes encapsulated in a class (<a href="http://code.google.com/p/ddmsence/issues/detail?id=166">Issue #166</a>)</h4>
+<a name="minor-04"></a><h4>XLink attributes encapsulated in a class (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-166">Issue #166</a>)</h4>
 
 <div class="upgradeGuide">
 <p>The XLink attributes which decorate a ddms:link element (and other new DDMS 4.0.1 elements) have been extracted into a standalone attribute group called
@@ -283,7 +283,7 @@ Link link = new Link(attributes);
 String role = link.getXLinkAttributes().getRole();</pre>
 </div>
 
-<a name="minor-05"></a><h4>Public NAME constants removed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=152">Issue #152</a>)</h4>
+<a name="minor-05"></a><h4>Public NAME constants removed (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-152">Issue #152</a>)</h4>
 <div class="upgradeGuide">
 
 <p>Previously, all components had a public NAME field containing the expected name of the component. Because
@@ -299,7 +299,7 @@ classes now have a static method which returns a name for some DDMSVersion.</p>
 
 </div>
 
-<a name="minor-06"></a><h4>Non-DDMS classes moved into new packages (<a href="http://code.google.com/p/ddmsence/issues/detail?id=148">Issue #148</a>)</h4>
+<a name="minor-06"></a><h4>Non-DDMS classes moved into new packages (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-148">Issue #148</a>)</h4>
 
 <div class="upgradeGuide">
 
@@ -317,7 +317,7 @@ then on the XML namespace (ISM, GML, etc.).</p>
 
 </div>
 
-<a name="minor-07"></a><h4>Configurable property name changed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=95">Issue #95</a>)</h4>
+<a name="minor-07"></a><h4>Configurable property name changed (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-95">Issue #95</a>)</h4>
 
 <div class="upgradeGuide">
 <ul>
@@ -332,8 +332,8 @@ then on the XML namespace (ISM, GML, etc.).</p>
 <div class="upgradeGuide">
 
 <ul>
-<li>MediaExtent renamed to Extent: Because the Media wrapper was removed in DDMS 4.0.1, the old name no longer made sense. (<a href="http://code.google.com/p/ddmsence/issues/detail?id=127">Issue #127</a>).</li>
-<li>IProducerEntity renamed to IRoleEntity: Because Entities can now fulfill non-producer roles, the old name no longer made sense (<a href="http://code.google.com/p/ddmsence/issues/detail?id=163">Issue #163</a>).</li>
+<li>MediaExtent renamed to Extent: Because the Media wrapper was removed in DDMS 4.0.1, the old name no longer made sense. (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-127">Issue #127</a>).</li>
+<li>IProducerEntity renamed to IRoleEntity: Because Entities can now fulfill non-producer roles, the old name no longer made sense (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-163">Issue #163</a>).</li>
 </ul>
 
 <p><b>How to Upgrade:</b></p>

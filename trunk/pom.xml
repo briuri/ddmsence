@@ -1,7 +1,7 @@
 <project>
 	<!-- DDMSence is built with Apache Ant via the build.xml at the root of this project. 
 		This POM file is only used to sync the distributable JAR files to the Maven Central Repository.
-		For details, see: http://code.google.com/p/ddmsence/issues/detail?id=188 -->
+		For details, see: https://ddmsence.atlassian.net/browse/DDMSENCE-188 -->
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.urizone</groupId>
 	<artifactId>ddmsence</artifactId>
