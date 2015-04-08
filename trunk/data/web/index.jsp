@@ -67,7 +67,10 @@
 	<meta name="temporalCoverage.name" content="Unknown" />
 	<meta name="temporalCoverage.start" content="2010-03-24T12:00:00Z" />
 	<meta name="temporalCoverage.end" content="Not Applicable" />
-	<script type="text/javascript">
+</head>
+<body>
+<%@ include file="../shared/header.jspf" %>
+<script type="text/javascript">
 
 	// Collapsible subsection code
 	$(document).ready(function() {
@@ -77,10 +80,7 @@
 				$(this).next().show("fast");
 			});
 		});
-	</script>
-</head>
-<body>
-<%@ include file="../shared/header.jspf" %>
+</script>
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br />
 	<!-- TDF Location: http://www.dni.gov/index.php/about/organization/chief-information-officer/trusted-data-format -->
