@@ -67,8 +67,6 @@
 	<meta name="temporalCoverage.name" content="Unknown" />
 	<meta name="temporalCoverage.start" content="2010-03-24T12:00:00Z" />
 	<meta name="temporalCoverage.end" content="Not Applicable" />
-		
-	<script type="text/javascript" src="./shared/jquery-1.10.2.min.js"></script>
 	<script type="text/javascript">
 
 	// Collapsible subsection code
@@ -84,7 +82,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 <div class="newsFeed">
-	<b><u>Recent News</u></b><br /><br />
+	<b><u>Recent News</u></b><br />
 	<!-- TDF Location: http://www.dni.gov/index.php/about/organization/chief-information-officer/trusted-data-format -->
 	<div class="newsUpdate"><u>01/01/2015</u>: <a href="downloads.jsp">v2.5.0</a> released, adding <a href="documentation-multithreaded.jsp">multithreaded support</a>.</div>
 	<div class="newsUpdate"><u>11/20/2014</u>: v2.4.0 released.</div>
@@ -125,7 +123,7 @@
 		<div class="newsUpdate"><u>03/29/2010</u>: v0.9.d released.</div>
 		<div class="newsUpdate"><u>03/25/2010</u>: v0.9.c released.</div>
 		<div class="newsUpdate"><u>03/24/2010</u>: v0.9.b released.</div>
-	</div><br /><br />
+	</div><br />
 </div>
 
 <h1>DDMSence v@ddmsence.version@</h1>
