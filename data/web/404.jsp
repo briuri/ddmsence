@@ -3,6 +3,7 @@
 <head>
 	<title>404 Not Found</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 <body>
 <script type="text/javascript" src="/shared/ddmsence.js"></script>
@@ -15,15 +16,16 @@
 		</div>
 		<div class="clear"></div>
 	</div>
-	<div id="menu">&nbsp;</div>
-	<div id="page">
-		<div class="contentPane">
+	<div id="menuContainer">
+		<ul id="menu">
+		</ul>
+	</div>
+	<div id="contentPane">
 
-			<h1>404 Not Found</h1>
-			<p>The page you have requested could not be found.</p>
-			<div class="clear"></div>
+		<h1>404 Not Found</h1>
+		<p>The page you have requested could not be found.</p>
+		<div class="clear"></div>
 
-		</div>
 	</div>
 	<div id="footer"></div>
 </div>
