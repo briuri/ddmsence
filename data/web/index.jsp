@@ -84,13 +84,14 @@
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br />
 	<!-- TDF Location: http://www.dni.gov/index.php/about/organization/chief-information-officer/trusted-data-format -->
-	<div class="newsUpdate"><u>01/01/2015</u>: <a href="downloads.jsp">v2.5.0</a> released, adding <a href="documentation-multithreaded.jsp">multithreaded support</a>.</div>
+	<div class="newsUpdate"><u>07/03/2015</u>: <a href="downloads.jsp">v2.6.0</a> released, improving <a href="documentation-extensible.jsp#externalSchemas">Extensible Layer support</a>.</div>
+	<div class="newsUpdate"><u>01/01/2015</u>: v2.5.0 released, adding <a href="documentation-multithreaded.jsp">multithreaded support</a>.</div>
 	<div class="newsUpdate"><u>11/20/2014</u>: v2.4.0 released.</div>
-	<div class="newsUpdate"><u>05/30/2014</u>: v2.3.0 released.</div>
-	<div class="newsUpdate"><u>05/13/2014</u>: v2.2.1 released.</div>
-	<div class="newsUpdate"><u>12/15/2013</u>: v2.2.0 released, adding support for DDMS 5.0.</div>
 	<div class="divExpand feed"><a href="#" onClick="return false;">more...</a></div>	
 	<div id="oldNews" class="divHidden">
+		<div class="newsUpdate"><u>05/30/2014</u>: v2.3.0 released.</div>
+		<div class="newsUpdate"><u>05/13/2014</u>: v2.2.1 released.</div>
+		<div class="newsUpdate"><u>12/15/2013</u>: v2.2.0 released, adding support for DDMS 5.0.</div>
 		<div class="newsUpdate"><u>04/10/2013</u>: Statistics about the DDMSence codebase can now be viewed at <a href="https://www.openhub.net/p/ddmsence" target="_new">OpenHUB</a>.</div>
 		<div class="newsUpdate"><u>04/01/2013</u>: Happy Birthday to DDMSence, celebrating 24 releases in 3 years!</div>
 		<div class="newsUpdate"><u>01/19/2013</u>: v2.1.0 released, adding support for DDMS 4.1.</div>

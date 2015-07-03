@@ -25,16 +25,16 @@ I have also included a <code>.project</code> file if you wish to import the proj
 
 <p>Regardless of your choice, you will need a <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_new">JRE or JDK</a> which supports Java 1.6 or higher.</p>
 
-<h1>Latest Release: v2.5.0</h1>
+<h1>Latest Release: v2.6.0</h1>
 
-<p>Version <b>2.5.0</b> (01/01/2015) is a stable release which can now be used in <a href="documentation-multithreaded.jsp">multithreaded environments</a> 
-(<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-222">Issue #222</a>). It is backwards compatible with all versions since v2.0.0.</p>
+<p>Version <b>2.6.0</b> (07/03/2015) is a stable release which improves support for the <a href="documentation-extensible.jsp#externalSchemas">Extensible Layer</a> 
+(<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-223">Issue #223</a>). It is backwards compatible with all versions since v2.0.0.</p>
 
 <ul>
-<li><b><a href="https://ddmsence.urizone.net/files/ddmsence-bin-2.5.0.zip"><code>ddmsence-bin-2.5.0.zip</code></a></b> (8.4 MB, compiled with JDK1.7.0_17, source level 1.6, target level 1.6)</li>
-<li><b><a href="https://ddmsence.urizone.net/files/ddmsence-src-2.5.0.zip"><code>ddmsence-src-2.5.0.zip</code></a></b> (8.3 MB)</li>
+<li><b><a href="https://ddmsence.urizone.net/files/ddmsence-bin-2.6.0.zip"><code>ddmsence-bin-2.6.0.zip</code></a></b> (8.4 MB, compiled with JDK1.7.0_17, source level 1.6, target level 1.6)</li>
+<li><b><a href="https://ddmsence.urizone.net/files/ddmsence-src-2.6.0.zip"><code>ddmsence-src-2.6.0.zip</code></a></b> (8.4 MB)</li>
 <br />
-<li><a href="https://ddmsence.atlassian.net/projects/DDMSENCE/versions/10027">Complete List of Changes</a></li>
+<li><a href="https://ddmsence.atlassian.net/projects/DDMSENCE/versions/10100">Complete List of Changes</a></li>
 </ul>
 
 <h3>DDMSence and Maven</h3>
@@ -45,7 +45,7 @@ file as shown in Figure 1.</p>
 <pre class="brush: xml">&lt;dependency&gt;
    &lt;groupId&gt;net.urizone&lt;/groupId&gt;
    &lt;artifactId&gt;ddmsence&lt;/artifactId&gt;
-   &lt;version&gt;2.5.0&lt;/version&gt;
+   &lt;version&gt;2.6.0&lt;/version&gt;
 &lt;/dependency&gt;</pre>
 <p class="figure">Figure 1. Setting up DDMSence as a Maven dependency</p>
 
@@ -61,7 +61,15 @@ file as shown in Figure 1.</p>
 <p>If a new version is listed as "backwards compatible", it means that you can update to the new version without changing any of your code that worked with the old version.  
 All changes which are not backwards compatible will be linked from this page with information on how to upgrade your old code.</p> 
 
-<h3>Previous Release</h3>
+<h3>Previous Releases</h3>
+
+<p>Version <b>2.5.0</b> (01/01/2015) is a stable release which can now be used in <a href="documentation-multithreaded.jsp">multithreaded environments</a> 
+(<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-222">Issue #222</a>). It is backwards compatible with all versions since v2.0.0.</p>
+
+<ul>
+<li><b><a href="https://ddmsence.urizone.net/files/ddmsence-bin-2.5.0.zip"><code>ddmsence-bin-2.5.0.zip</code></a></b> (8.4 MB, compiled with JDK1.7.0_17, source level 1.6, target level 1.6)</li>
+<li><b><a href="https://ddmsence.urizone.net/files/ddmsence-src-2.5.0.zip"><code>ddmsence-src-2.5.0.zip</code></a></b> (8.3 MB)</li>
+</ul>
 
 <p>Version <b>2.4.0</b> (11/20/2014) is a stable release which improves the handling of date values in various components (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-221">Issue #221</a>).
 It is backwards compatible with all versions since v2.0.0.</p>

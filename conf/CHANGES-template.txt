@@ -8,6 +8,9 @@ Copyright 2010 - 2015 by Brian Uri!
 ===========================================================================
 Release History
 ===========================================================================
+v 2.6.0 (07/03/2015):
+This stable release improves support for the Extensible Layer 
+(Issue #223).
 
 v 2.5.0 (01/01/2015):
 This stable release adds thread safety for use in multithreaded environments 

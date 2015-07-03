@@ -26,6 +26,21 @@ XOM Elements and Attributes. Any business logic to be performed on this Layer is
 <p>The relevant code can be found in the <code>buri.ddmsence.ddms.extensible</code> package. It may also be useful to load the sample file,  
 <code>3.0-extensibleLayerExample.xml</code> into the <u>Essentials</u> application, because it has an example of each extension.</p>
 
+<a name="externalSchemas"></a><h2>Validating with External Schemas</h2>
+
+<p>Starting in DDMSence 2.6.0, you can register additional XML namespaces and associated external schemas in the DDMSReader so that custom content in the 
+Extensible Layer can be validated against third-party schemas. Only XML namespaces that are not already known to the DDMSReader can be registered. 
+It is not possible to overwrite the core DDMS schemas with this approach.</p>
+
+<pre class="brush: java">DDMSReader reader = new DDMSReader(DDMSVersion.getVersionFor("2.0"));
+reader.addExternalSchemaLocation("http://xmlNamespace.for.extensible.content/", "extensibleSchema.xsd");
+System.out.println(reader.getExternalSchemaLocations());
+
+Resource resource = reader.getDDMSResource(new FileReader(new File("metacardWithExtensibleLayer.xml"));
+</pre>
+<p class="figure">Figure 7. Registering additional schemas in a DDMSReader instance</p>
+
+
 <h2>ExtensibleElements</h2>
 
 <p>An unlimited number of elements from any XML namespace other than the DDMS namespace can appear at the end of a <code>ddms:resource</code>. (In DDMS 2.0,
