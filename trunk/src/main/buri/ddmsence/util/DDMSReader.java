@@ -260,7 +260,7 @@ public class DDMSReader {
 	}
 
 	/**
-	 * Returns the external schema locations for debugging. The returned string will contain a space-delimited set
+	 * Returns the external schema locations. The returned string will contain a space-delimited set
 	 * of XMLNamespace/SchemaLocation pairs.
 	 * 
 	 * @return the string containing all schema locations
@@ -275,6 +275,33 @@ public class DDMSReader {
 		}
 	}
 
+	/**
+	 * Add additional schema locations to those already known by this DDMSReader. This can be used to reference external schemas
+	 * for validation of the Extensible Layer in DDMS 2.0 - 4.1.
+	 * 
+	 * @param xmlNamespace the unique XML namespace for the schema content
+	 * @param schemaLocation the accessible location of the XML Schema file to be used for validation
+	 * @throws IllegalArgumentException if the DDMSReader already knows about the specified xmlNamespace
+	 */
+	public void addExternalSchemaLocation(String xmlNamespace, String schemaLocation) {
+		Util.requireValue("XML Namespace", xmlNamespace);
+		Util.requireValue("Schema Location", schemaLocation);
+		String currentSchemas = getExternalSchemaLocations();
+		if (currentSchemas.contains(xmlNamespace)) {
+			throw new IllegalArgumentException("XML Namespace has already been set on this DDMSReader: " + xmlNamespace);
+		}
+		schemaLocation = schemaLocation.replaceAll(" ", "%20");
+		StringBuffer buffer = new StringBuffer(currentSchemas);
+		buffer.append(" ").append(xmlNamespace).append(" ").append(schemaLocation).append(" ");
+		try {
+			getReader().setProperty(PROP_XERCES_EXTERNAL_LOCATION, buffer.toString().trim());
+		}
+		catch (SAXException e) {
+			throw new IllegalStateException(PROP_XERCES_EXTERNAL_LOCATION
+				+ " is not supported or recognized for this XMLReader.");
+		}
+	}
+	
 	/**
 	 * Accessor for the reader
 	 */
