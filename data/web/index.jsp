@@ -160,7 +160,8 @@ in Reston, Virginia. He has been involved with DISA's enterprise services and da
 the inception of the Net-Centric Enterprise Services (NCES) program in 2005.</p>
 
 <p>DDMSence was conceived in January 2010 and grew out of Brian's desire to gain more practical XML Schema experience, to write something useful which had never 
-been done before, and an unusually large amount of free time. Statistics about the DDMSence codebase can be viewed at <a href="https://www.openhub.net/p/ddmsence" target="_new">OpenHUB</a>.</p>
+been done before, and an unusually large amount of free time.</p>
+<!-- Statistics about the DDMSence codebase can be viewed at <a href="https://www.openhub.net/p/ddmsence" target="_new">OpenHUB</a>. -->
 
 <div class="clear"></div>
 <%@ include file="../shared/footer.jspf" %>
