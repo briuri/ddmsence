@@ -7,8 +7,8 @@
 		3) Update index and web downloads page with latest release.
 		4) Update CHANGES-template.txt.
 		5) Run "dist" target and review archives.
-		6) Run "localS3" and then run the local "pushContentDDMSence.bat" script.
-		7) Run "localWeb" and then run the local "pushWarDDMSence.bat" script.
+		6) Run "localStageContent" and then run the local "content-put-ddmsence.bat" script.
+		7) Run "localDeploy" and then run the local "code-push-ddmsence.bat" script.
 		8) Deploy the new WAR with CodeDeploy in AWS.
 		9) Test Validator and Builder webapps.
 		10) Commit any remaining changes and tag as new release.
@@ -16,7 +16,7 @@
 		12) Announcements (Google Groups / LinkedIn)
 	-->
 
-	<property name="version" value="2.5.0" />
+	<property name="version" value="2.6.0" />
 	<property name="conf.dir" value="conf" />
 	<property name="data.dir" value="data" />
 	<property name="src.main.dir" value="src/main" />
