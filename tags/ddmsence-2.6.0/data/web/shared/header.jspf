@@ -1,0 +1,40 @@
+<script type="text/javascript" src="./shared/ddmsence.js"></script>
+<script type="text/javascript" src="./shared/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="./shared/jquery.slicknav-1.0.2.min.js"></script>
+<script type="text/javascript" src="./shared/shCore.js"></script>
+<script type="text/javascript" src="./shared/shBrushJScript.js"></script>
+<script type="text/javascript" src="./shared/shBrushJava.js"></script>
+<script type="text/javascript" src="./shared/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="./shared/ddmsence.css"   />
+<link type="text/css" rel="stylesheet" href="./shared/jquery.slicknav-1.0.2.css"   />
+<link type="text/css" rel="stylesheet" href="./shared/shCoreDDMSence.css"/>
+<link href='https://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
+
+<script type="text/javascript">
+     SyntaxHighlighter.all();
+	$(function() {
+		$('#menu').slicknav({
+			label: '',
+			prependTo: '#menuContainer'
+		});
+	});
+</script>
+
+<div id="outerPosition">
+	<div id="header">
+		<div id="logo">
+			<a href="index.jsp"><img src="./images/banner.png" width="321" height="90" title="DDMSence" border="0" ></a>
+		</div>
+	</div>
+	<div id="menuContainer">
+		<ul id="menu">
+			<li><a href="index.jsp">Home</a></li>
+			<li><a href="downloads.jsp">Downloads</a></li>
+			<li><a href="documentation.jsp">Documentation</a></li>
+			<li><a href="license.jsp">License</a></li>
+			<li><a href="https://ddmsence.atlassian.net/projects/DDMSENCE">Issue Tracking</a></li>
+			<li><a href="http://groups.google.com/group/ddmsence">Discussion</a></li>
+			<li><a href="validator.uri">DDMS Validator</a></li>
+		</ul>
+	</div>
+	<div id="contentPane">
