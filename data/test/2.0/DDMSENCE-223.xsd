@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+	elementFormDefault="qualified"
+	xmlns:test="https://ddmsence.atlassian.net/browse/DDMSENCE-223"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="https://ddmsence.atlassian.net/browse/DDMSENCE-223">
+	
+	<xs:element name="abstract" nillable="true" type="test:AbstractType"/>
+	
+	<xs:complexType name="AbstractType" abstract="true">
+		<xs:sequence>
+			<xs:element name="newName" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ConcreteType">
+		<xs:complexContent>
+			<xs:extension base="test:AbstractType">
+				<xs:sequence>
+					<xs:element name="item" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

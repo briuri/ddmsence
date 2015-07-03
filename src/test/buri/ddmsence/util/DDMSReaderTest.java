@@ -254,6 +254,33 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 		}
 	}
 	
+	@Test
+	public void testTypeSubstitutionExtensibleLayer() throws InvalidDDMSException, IOException {
+		File metacard = new File(PropertyReader.getProperty("test.unit.data"), "2.0/DDMSENCE-223.xml");
+		try {
+			getReader("2.0").getDDMSResource(new FileReader(metacard));
+		}
+		catch (InvalidDDMSException e) {
+			expectMessage(e, "nu.xom.ValidityException: cvc-elt.4.2");
+		}
+		
+		DDMSReader reader = getReader("2.0");
+		reader.addExternalSchemaLocation("https://ddmsence.atlassian.net/browse/DDMSENCE-223",
+			PropertyReader.getProperty("test.unit.data") + "2.0/DDMSENCE-223.xsd");
+		reader.getDDMSResource(new FileReader(metacard));
+	}
+	
+	@Test
+	public void testAlreadyKnownXmlNamespace() {
+		DDMSReader reader = getReader("2.0");
+		try {
+			reader.addExternalSchemaLocation("http://metadata.dod.mil/mdr/ns/DDMS/2.0/", "somewhereElse");
+		}
+		catch (IllegalArgumentException e) {
+			expectMessage(e, "XML Namespace has already been set");
+		}
+	}
+	
 	/**
 	 * Accessor for the reader
 	 */

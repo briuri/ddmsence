@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ddms:Resource
+	xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/2.0/"
+	xmlns:test="https://ddmsence.atlassian.net/browse/DDMSENCE-223"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	  https://ddmsence.atlassian.net/browse/DDMSENCE-223 ./DDMSENCE-223.xsd
+	  http://metadata.dod.mil/mdr/ns/DDMS/2.0/ ../../schemas/2.0/DDMS/ddms.xsd
+	" 
+	>
+	<ddms:identifier ddms:qualifier="http://purl.org/dc/terms/URI" ddms:value="http://example.com"/>
+	<ddms:title xmlns:ICISM="urn:us:gov:ic:ism:v2" ICISM:classification="U" ICISM:ownerProducer="USA">Demo</ddms:title>
+	<ddms:creator xmlns:ICISM="urn:us:gov:ic:ism:v2" ICISM:classification="U" ICISM:ownerProducer="USA">
+		<ddms:Organization>
+			<ddms:name>Sample</ddms:name>
+		</ddms:Organization>
+	</ddms:creator>
+	<ddms:subjectCoverage>
+		<ddms:Subject>
+			<ddms:keyword ddms:value="sample"/>
+		</ddms:Subject>
+	</ddms:subjectCoverage>
+	<ddms:security xmlns:ICISM="urn:us:gov:ic:ism:v2" ICISM:classification="U" ICISM:ownerProducer="USA"/>
+	<test:abstract xsi:type="test:ConcreteType">
+	   <test:newName>name</test:newName> 
+	   <test:item>item1</test:item>
+	</test:abstract>
+</ddms:Resource>
