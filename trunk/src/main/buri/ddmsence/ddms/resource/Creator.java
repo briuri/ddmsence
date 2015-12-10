@@ -1,4 +1,4 @@
-/* Copyright 2010 - 2015 by Brian Uri!
+/* Copyright 2010 - 2016 by Brian Uri!
    
    This file is part of DDMSence.
    
