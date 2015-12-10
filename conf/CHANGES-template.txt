@@ -4,7 +4,7 @@ that fully supports the DoD Discovery Metadata Specification (DDMS).
 You can contact the author at ddmsence@urizone.net. The DDMSence
 home page is located at https://ddmsence.urizone.net/ .
 
-Copyright 2010 - 2015 by Brian Uri!
+Copyright 2010 - 2016 by Brian Uri!
 ===========================================================================
 Release History
 ===========================================================================
