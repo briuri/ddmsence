@@ -1,0 +1,16 @@
+User-agent: AhrefsBot
+User-agent: Baiduspider
+User-agent: Googlebot-Image
+User-agent: MLBot
+User-agent: URLAppendBot
+User-agent: yahoo-MMCrawler
+User-agent: YandexImages
+User-agent: bhc.collectionBot
+User-agent: MegaIndex.ru
+Disallow: /
+
+User-agent: Googlebot-Mobile
+User-agent: MJ12bot
+User-agent: XoviBot
+Disallow:
+Crawl-delay: 10
