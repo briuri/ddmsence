@@ -155,11 +155,8 @@ the context of a Java environment.
 <h1>About the Author</h1>
 
 <p><img src="./images/BU.jpg" width="104" height="120" title="BU" class="bordered" align="left" />
-<b><a href="http://www.linkedin.com/profile/view?id=10317277">Brian Uri!</a></b> is a Technical Lead at <a href="http://www.novetta.com/" target="_new">Novetta Solutions</a> 
-in Reston, Virginia. He has been involved with DISA's enterprise services and data strategy efforts (including DDMS, Universal Core, the 
-<a href="http://metadata.ces.mil/" target="_new">Data Services Environment</a>, Enterprise Service Monitoring, and Strategic Knowledge Integration Web) since 
-the inception of the Net-Centric Enterprise Services (NCES) program in 2005.</p>
-
+<b><a href="http://www.linkedin.com/profile/view?id=10317277">Brian Uri!</a></b> provides technical leadership, data strategy, and business development support across multiple DoD/IC projects for <a href="http://www.novetta.com/" target="_new">Novetta</a> in Reston, Virginia. 
+He has over a decade of experience in software development and government data standards, with an emphasis on the DoD's Service-Oriented Architecture (SOA) efforts.</p>
 <p>DDMSence was conceived in January 2010 and grew out of Brian's desire to gain more practical XML Schema experience, to write something useful which had never 
 been done before, and an unusually large amount of free time.</p>
 
