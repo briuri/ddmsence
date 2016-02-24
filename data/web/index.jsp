@@ -159,7 +159,7 @@ the context of a Java environment.
 has over a decade of experience in software development and government data standards,
 with an emphasis on the DoD's Service-Oriented Architecture (SOA) efforts. 
 He works for the advanced analytics company, <a href="http://www.novetta.com/" target="_new">Novetta</a>, where he provides
-technical leadership, data strategy, and business development support across multiple Department of Defense / Intelligence Community projects.
+technical leadership, data strategy, and business development support across multiple DoD / IC projects.
 
 <p>DDMSence was conceived in January 2010 and grew out of Brian's desire to gain more practical XML Schema experience, to write something useful which had never 
 been done before, and an unusually large amount of free time.</p>
