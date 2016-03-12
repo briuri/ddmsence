@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>DDMSence: What's New in DDMS 5.0 / DDMSence 2.2.0</title>
+	<title>What's New in DDMS 5.0 / DDMSence 2.2.0| DDMSence</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="The open-source Java library for the DoD Discovery Metadata Specification (DDMS)">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
