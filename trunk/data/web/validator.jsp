@@ -4,7 +4,7 @@
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 	<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-	<title>DDMSence: Online DDMS Validator</title>
+	<title>Online DDMS Validator| DDMSence</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="The open-source Java library for the DoD Discovery Metadata Specification (DDMS)">
 	<meta name="keywords" content="DDMSence,DDMS,Online,Validator,Validation,DoD" />
