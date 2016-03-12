@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Schematron Implementation for DDMS| DDMSence</title>
+	<title>Schematron Implementation for DDMS | DDMSence</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="The open-source Java library for the DoD Discovery Metadata Specification (DDMS)">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
