@@ -1,8 +1,7 @@
 <html>
 <head>
-	<title>The open-source Java library for DDMS| DDMSence</title>
+	<title>Home | DDMSence</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="keywords" content="DDMSence,DDMS,Metadata,Discovery,Java,DoD,XML,DDMEssence,DDMSense,Essence" />
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	
  	<meta property="og:title" content="DDMSence: The open-source Java library for DDMS"/>
