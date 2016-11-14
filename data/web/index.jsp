@@ -153,7 +153,7 @@ the context of a Java environment.
 		
 <h1>About the Author</h1>
 
-<p><img src="./images/BU.jpg" width="104" height="120" title="BU" class="bordered" align="left" />
+<p><img src="./images/BU.jpg" width="120" height="120" title="BU" class="bordered" align="left" />
 <b><a href="https://www.linkedin.com/in/urizone">Brian Uri!</a></b> is a software engineer at the advanced analytics company,
 <a href="http://www.novetta.com/">Novetta</a>, where he provides technical leadership, data strategy, and business development support
 across multiple DoD / IC projects. He has over a decade of experience in software development 
