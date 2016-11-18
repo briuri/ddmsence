@@ -154,14 +154,12 @@ the context of a Java environment.
 <h1>About the Author</h1>
 
 <p><img src="./images/BU.jpg" width="120" height="120" title="BU" class="bordered" align="left" />
-<b><a href="https://www.linkedin.com/in/urizone">Brian Uri!</a></b> is a software engineer at the advanced analytics company,
-<a href="http://www.novetta.com/">Novetta</a>, where he provides technical leadership, data strategy, and business development support
-across multiple DoD / IC projects. He has over a decade of experience in software development 
-and government data standards, with an emphasis on the DoD's Service-Oriented Architecture (SOA) efforts.
-Brian is also the creator of <a href="https://sparkour.urizone.net/">Sparkour</a>.</p>
+<b><a href="https://www.linkedin.com/in/urizone">Brian Uri!</a></b> is a software engineer with over a decade of experience in software development 
+and government data standards, with an emphasis on the DoD's Service-Oriented Architecture (SOA) efforts.</p>
 
-<p>DDMSence was conceived in January 2010 and grew out of Brian's desire to gain more practical XML Schema experience, to write something useful which had never 
-been done before, and an unusually large amount of free time.</p>
+<p>DDMSence was conceived in January 2010 and 
+grew out of Brian's desire to gain more practical XML Schema experience, to write something useful which had never been done before, and an unusually 
+large amount of free time. Brian is also the creator of <a href="https://sparkour.urizone.net/">Sparkour</a>.</p>
 
 <div class="clear"></div>
 <%@ include file="../shared/footer.jspf" %>
