@@ -154,7 +154,8 @@ the context of a Java environment.
 <h1>About the Author</h1>
 
 <p><img src="./images/BU.jpg" width="120" height="120" title="BU" class="bordered" align="left" />
-<b><a href="https://www.linkedin.com/in/urizone">Brian Uri!</a></b> is a software engineer with over a decade of experience in software development 
+<b><a href="https://www.linkedin.com/in/urizone">Brian Uri!</a></b> is a solutions architect at the advanced analytics company,
+<a href="http://www.novetta.com/">Novetta</a>. He has over a decade of experience in software development 
 and government data standards, with an emphasis on the DoD's Service-Oriented Architecture (SOA) efforts.</p>
 
 <p>DDMSence was conceived in January 2010 and 
