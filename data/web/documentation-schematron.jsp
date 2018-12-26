@@ -18,7 +18,7 @@ of ISO Schematron.</p>
 
 <p>Creating a custom Schematron file is outside the scope of this documentation, but there are plenty of Schematron tutorials available online, and I have also codified several
 complex rules from the DDMS Specification for example's sake in the <a href="#explorations">Explorations</a> section. There are two very simple examples in the 
-<code>/data/sample/schematron/</code> directory. The file, <code><a href="https://code.urizone.net/svn/ddmsence/trunk/data/sample/schematron/testPublisherValueXslt1.sch">testPublisherValueXslt1.sch</a></code> examines the surname of person designated as a publisher and 
+<code>/data/sample/schematron/</code> directory. The file, <code><a href="https://github.com/briuri/ddmsence/blob/master/data/sample/schematron/testPublisherValueXslt1.sch">testPublisherValueXslt1.sch</a></code> examines the surname of person designated as a publisher and 
 fails if the surname is "<b>Uri</b>".</p>
 
 <pre class="brush: xml">&lt;iso:pattern title="Fixed Surname Value"&gt;
@@ -28,7 +28,7 @@ fails if the surname is "<b>Uri</b>".</p>
 &lt;/iso:pattern&gt;</pre>
 <p class="figure">Figure 1. The test from testPublisherValueXslt1.sch</p>
 
-<p>The file, <code><a href="https://code.urizone.net/svn/ddmsence/trunk/data/sample/schematron/testPositionValuesXslt2.sch">testPositionValuesXslt2.sch</a></code> forces any positions to match an exact location in Reston, Virginia. It makes use of the
+<p>The file, <code><a href="https://github.com/briuri/ddmsence/blob/master/data/sample/schematron/testPositionValuesXslt2.sch">testPositionValuesXslt2.sch</a></code> forces any positions to match an exact location in Reston, Virginia. It makes use of the
 XPath 2.0 function, <code>tokenize()</code>, so it must be handled with an XSLT2-compatible engine. DDMSence decides whether to use XSLT1 or XSLT2 based on the <code>queryBinding</code>
 attribute on the root element of your Schematron file. The supported values are <code>xslt</code> or <code>xslt2</code>, and the former will be the default if this attribute does not exist.</p>
 

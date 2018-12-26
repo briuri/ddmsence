@@ -18,8 +18,8 @@
 		</license>
 	</licenses>
 	<scm>
-		<url>https://code.urizone.net/svn/ddmsence/trunk/</url>
-		<connection>https://code.urizone.net/svn/ddmsence/trunk/</connection>
+		<url>https://github.com/briuri/ddmsence.git</url>
+		<connection>https://github.com/briuri/ddmsence.git</connection>
 	</scm>
 	<developers>
 		<developer>
