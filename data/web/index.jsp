@@ -3,12 +3,12 @@
 	<title>Home | DDMSence</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	
+
  	<meta property="og:title" content="DDMSence: The open-source Java library for DDMS"/>
 	<meta property="og:description" content="DDMSence is the only open-source Java library that fully supports the DoD Discovery Metadata Specification (DDMS)." />
 	<meta property="og:image" content="https://ddmsence.urizone.net/images/banner.png" />
 
-	<!-- DDMS Resource Record --> 	
+	<!-- DDMS Resource Record -->
 	<meta name="resource.resourceElement" content="true" />
 	<meta name="resource.createDate" content="2010-01-21" />
 	<meta name="resource.ism.DESVersion" content="5" />
@@ -32,7 +32,7 @@
 	<meta name="rights.intellectualProperty" content="true" />
 	<meta name="rights.copyright" content="true" />
 	<meta name="type.qualifier" content="DCMITYPE" />
-	<meta name="type.value" content="http://purl.org/dc/dcmitype/Text" />	
+	<meta name="type.value" content="http://purl.org/dc/dcmitype/Text" />
 	<meta name="creator.entityType" content="person" />
 	<meta name="creator.name" content="Brian Uri" />
 	<meta name="creator.name" content="Brian" />
@@ -86,7 +86,7 @@
 	<div class="newsUpdate"><u>07/03/2015</u>: <a href="downloads.jsp">v2.6.0</a> released, improving <a href="documentation-extensible.jsp#externalSchemas">Extensible Layer support</a>.</div>
 	<div class="newsUpdate"><u>01/01/2015</u>: v2.5.0 released, adding <a href="documentation-multithreaded.jsp">multithreaded support</a>.</div>
 	<div class="newsUpdate"><u>11/20/2014</u>: v2.4.0 released.</div>
-	<div class="divExpand feed"><a href="#" onClick="return false;">more...</a></div>	
+	<div class="divExpand feed"><a href="#" onClick="return false;">more...</a></div>
 	<div id="oldNews" class="divHidden">
 		<div class="newsUpdate"><u>05/30/2014</u>: v2.3.0 released.</div>
 		<div class="newsUpdate"><u>05/13/2014</u>: v2.2.1 released.</div>
@@ -95,7 +95,7 @@
 		<div class="newsUpdate"><u>04/01/2013</u>: Happy Birthday to DDMSence, celebrating 24 releases in 3 years!</div>
 		<div class="newsUpdate"><u>01/19/2013</u>: v2.1.0 released, adding support for DDMS 4.1.</div>
 		<div class="newsUpdate"><u>12/01/2011</u>: v2.0.0 released, adding support for DDMS 4.0.1.</div>
-		<div class="newsUpdate"><u>10/20/2011</u>: I gave a <a href="https://metadata.ces.mil/dse/content_items/document/100100096">briefing</a> on DDMSence at the 
+		<div class="newsUpdate"><u>10/20/2011</u>: I gave a <a href="https://metadata.ces.mil/dse/content_items/document/100100096">briefing</a> on DDMSence at the
 			<a href="https://metadata.ces.mil/dse-help/en/Metadata_Working_Group">DoD Metadata Working Group Meeting</a> in Columbia, MD.</div>
 		<div class="newsUpdate"><u>07/17/2011</u>: v1.11.0 released, adding <a href="documentation-schematron.jsp">support for XSLT2-based Schematron validation</a>.</div>
 		<div class="newsUpdate"><u>07/05/2011</u>: v1.10.0 released, adding support for DDMS 3.1.</div>
@@ -106,7 +106,7 @@
 		<div class="newsUpdate"><u>03/10/2011</u>: v1.7.2 released.</div>
 		<div class="newsUpdate"><u>11/26/2010</u>: <a href="relationalTables.jsp">Relational Database Model for DDMS</a> published.</div>
 		<div class="newsUpdate"><u>11/16/2010</u>: v1.7.1 released.</div>
-		<div class="newsUpdate"><u>09/18/2010</u>: v1.7.0 released.</div>	
+		<div class="newsUpdate"><u>09/18/2010</u>: v1.7.0 released.</div>
 		<div class="newsUpdate"><u>09/07/2010</u>: v1.6.0 released.</div>
 		<div class="newsUpdate"><u>09/01/2010</u>: <a href="validator.uri">DDMS validator</a> released.</div>
 		<div class="newsUpdate"><u>07/07/2010</u>: v1.5.1 released.</div>
@@ -129,19 +129,19 @@
 <h1>DDMSence v@ddmsence.version@</h1>
 
 <p>
-DDMSence (pronounced "<i>dee-dee-em-<font color="#660000">Essence</font></i>") is the only open-source Java library that fully supports the 
-<a href="http://metadata.ces.mil/mdr/irs/DDMS/" target="_new">DoD Discovery Metadata Specification (DDMS)</a>. 
-It converts DDMS Resources (also called assertions or metacards) into a Java object model, allowing them to be manipulated or traversed within 
-the context of a Java environment. 
+DDMSence (pronounced "<i>dee-dee-em-<font color="#660000">Essence</font></i>") is the only open-source Java library that fully supports the
+<a href="http://metadata.ces.mil/mdr/irs/DDMS/" target="_new">DoD Discovery Metadata Specification (DDMS)</a>.
+It converts DDMS Resources (also called assertions or metacards) into a Java object model, allowing them to be manipulated or traversed within
+the context of a Java environment.
 </p>
 
 <ul>
 	<li>Provides a complete implementation of the DDMS specification using any version of DDMS between 2.0 and 5.0, suitable for several
 		<a href="documentation.jsp#useCases">use cases</a>.</li><br />
-	<li>Java object model can be created from existing XML files, or built up from scratch with basic Java data types. 
+	<li>Java object model can be created from existing XML files, or built up from scratch with basic Java data types.
 		Components automatically transform into well-formed XML, HTML, JSON, and Text output.</li><br />
-	<li>Validates assertions against the complete specification, not just the XML schemas. 
-		Integrated with the Controlled Vocabulary Enumerations for ISM attributes, as defined by the Intelligence Community, 
+	<li>Validates assertions against the complete specification, not just the XML schemas.
+		Integrated with the Controlled Vocabulary Enumerations for ISM attributes, as defined by the Intelligence Community,
 		and supports Schematron-based custom validation rules.</li><br />
 	<li>Three sample applications and accompanying <a href="documentation.jsp#started">tutorials</a> provide an introduction to the library,
 		and <a href="documentation.jsp#tips">Power Tips</a> are available for more experienced users.</li>
@@ -150,16 +150,17 @@ the context of a Java environment.
 <p>DDMSence comes with a complete set of JUnit tests, and is released under the GNU Lesser General Public License (<a href="license.jsp">LGPL</a>).</p>
 
 <img src="./images/chart.png" width="720" height="280" title="DDMSence Flow Chart" class="diagram" />
-		
+
 <h1>About the Author</h1>
 
 <p><img src="./images/BU.jpg" width="120" height="120" title="BU" class="bordered" align="left" />
-<b><a href="https://www.linkedin.com/in/urizone">Brian Uri!</a></b> is a solutions architect at the advanced analytics company,
-<a href="http://www.novetta.com/">Novetta</a>. He has over 15 years of experience in software engineering, proposal writing, and government data standards,  
+<b><a href="https://www.linkedin.com/in/urizone">Brian Uri!</a></b> is a solutions architect at
+<a href="https://www.accenture.com/us-en/services/us-federal-government/national-security">Accenture Federal Services</a>.
+He has nearly 20 years of experience in software engineering, proposal writing, and government data standards,
 with an emphasis on the DoD's Service-Oriented Architecture (SOA) efforts.</p>
 
-<p>DDMSence was conceived in January 2010 and 
-grew out of Brian's desire to gain more practical XML Schema experience, to write something useful which had never been done before, and an unusually 
+<p>DDMSence was conceived in January 2010 and
+grew out of Brian's desire to gain more practical XML Schema experience, to write something useful which had never been done before, and an unusually
 large amount of free time. Brian is also the creator of <a href="https://sparkour.urizone.net/">Sparkour</a>.</p>
 
 <div class="clear"></div>
