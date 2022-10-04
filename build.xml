@@ -223,9 +223,9 @@
 	
 	<!-- Targets below this point have dependencies on the author's local environment. -->
 	<!-- They are not required to compile the core DDMSence library. -->
-	<property name="local.ddmsence-web.dir" value="/projects/ddmsence-web-support" />
+	<property name="local.ddmsence-web.dir" value="/workspace/ddmsence/web-support" />
 	<property name="local.lib.dir" value="${local.ddmsence-web.dir}/lib" />
-	<property name="local.jar.dir" value="${local.ddmsence-web.dir}/output/jars" />
+	<property name="local.jar.dir" value="${local.ddmsence-web.dir}/out/jars" />
 	
 	<property name="local.content.dir" value="/workspace/aws-stage/urizone-content/ddmsence" />
 	<property name="local.deploy.dir" value="${output.dir}/deploy" />
