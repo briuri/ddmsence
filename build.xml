@@ -22,7 +22,7 @@
 	<property name="src.main.dir" value="src/main" />
 	<property name="src.samples.dir" value="src/samples" />
 	<property name="src.test.dir" value="src/test" />
-	<property name="output.dir" value="output" />
+	<property name="output.dir" value="out" />
 	<property name="compile.main.dir" value="${output.dir}/classes/main/" />
 	<property name="compile.samples.dir" value="${output.dir}/classes/samples/" />
 	<property name="compile.test.dir" value="${output.dir}/classes/test/" />
@@ -110,7 +110,7 @@
 		<!-- Build the src-flavored download archive -->
 		<copy todir="${dist.dir}/ddmsence-src-${version}" includeEmptyDirs="false">
 			<fileset dir=".">
-				<exclude name=".settings/**"/>
+				<exclude name=".idea/**"/>
 				<exclude name="${output.dir}/**"/>				
 		    </fileset>
 		</copy>
@@ -131,11 +131,9 @@
 		</jar>
 		<copy todir="${dist.dir}/ddmsence-bin-${version}" includeEmptyDirs="false">
 			<fileset dir=".">
-				<exclude name=".classpath"/>
-				<exclude name=".project"/>
 				<exclude name="build.xml"/>
 				<exclude name="pom.xml"/>
-				<exclude name=".settings/**"/>
+				<exclude name=".idea/**"/>
 				<exclude name="${src.main.dir}/**"/>
 				<exclude name="${src.test.dir}/**"/>
 				<exclude name="${conf.dir}/**"/>
@@ -229,9 +227,9 @@
 	<property name="local.lib.dir" value="${local.ddmsence-web.dir}/lib" />
 	<property name="local.jar.dir" value="${local.ddmsence-web.dir}/output/jars" />
 	
-	<property name="local.content.dir" value="/projects/aws-stage/urizone-content/ddmsence" />
+	<property name="local.content.dir" value="/workspace/aws-stage/urizone-content/ddmsence" />
 	<property name="local.deploy.dir" value="${output.dir}/deploy" />
-	<property name="local.web.dir" value="/projects/urizone/output/tomcat/webapps" />
+	<property name="local.web.dir" value="/workspace/urizone/out/tomcat/webapps" />
 
 	<target name="localStageContent" description="Copies docs and files to content staging area for publishing. Run after dist">
 		<delete quiet="true" dir="${local.content.dir}/docs" />
@@ -299,6 +297,6 @@
 		<tstamp>
 			<format property="backupStamp" pattern="yyMMdd-HHmm"/>
 		</tstamp>		
-		<zip destfile="../${backupStamp}-DDMSence-${version}.zip" basedir=".." includes="ddmsence/**" excludes="ddmsence/output/**" />
+		<zip destfile="../${backupStamp}-DDMSence-${version}.zip" basedir=".." includes="ddmsence/**" excludes="ddmsence/out/**" />
 	</target>
 </project>
