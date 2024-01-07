@@ -1,4 +1,4 @@
 #!/bin/bash
 #
 # Starts tomcat.
-/sbin/service tomcat8 start
+/sbin/service tomcat start

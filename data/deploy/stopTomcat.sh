@@ -1,4 +1,4 @@
 #!/bin/bash
 #
 # Stops tomcat.
-/sbin/service tomcat8 stop
+/sbin/service tomcat stop
