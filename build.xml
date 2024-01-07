@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="ddmsence" default="compile" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
-		
+
 	<!-- Release Process (need to automate parts of this)
 		1) Update version in build.xml.
 		2) Double-check @since tags on new classes.
@@ -12,7 +12,7 @@
 		8) Deploy the new WAR with CodeDeploy in AWS.
 		9) Test Validator and Builder webapps.
 		10) Commit any remaining changes and tag as new release.
-		11) Update version number in pom.xml, then manual sign-deploy steps for Maven Central Repository upload. 
+		11) Update version number in pom.xml, then manual sign-deploy steps for Maven Central Repository upload.
 		12) Announcements (Google Groups / LinkedIn)
 	-->
 
@@ -31,7 +31,7 @@
 	<property name="dist.dir" value="${output.dir}/dist" />
 	<property name="dist.maven.dir" value="${dist.dir}/maven" />
 	<property name="reports.dir" value="${output.dir}/reports" />
-	
+
 	<path id="classpath.compile">
 		<fileset dir="lib/" includes="*.jar" />
 	</path>
@@ -45,9 +45,9 @@
 		<pathelement location="${compile.test.dir}" />
 		<fileset dir="lib/test/" includes="*.jar" />
 		<!-- This is used to compile the DDMSVersionTaglet, which is used in generating docs -->
-		<fileset dir="${java.home}/../lib/" includes="tools.jar" />
+		<fileset dir="lib/tools/" includes="jdk*tools.jar" />
 	</path>
-	
+
 	<fileset dir="${conf.dir}" id="files.properties">
 		<include name="*.properties" />
 	</fileset>
@@ -57,7 +57,7 @@
 	<fileset dir="${data.dir}" id="files.requiredData">
 		<include name="schemas/**" />
 		<include name="schematron/**" />
-	</fileset>	
+	</fileset>
 	<fileset dir="${data.dir}" id="files.website">
 		<include name="web/**" />
 		<exclude name="web/images/**" />
@@ -67,11 +67,11 @@
 		<include name="web/images/**" />
 		<include name="web/favicon.ico" />
 	</fileset>
-		
+
 	<target name="clean" description="Removes the temporary build directories">
-		<delete quiet="true" dir="${output.dir}" />	
+		<delete quiet="true" dir="${output.dir}" />
 	</target>
-	
+
 	<target name="compile" description="Compiles the Java classes and copies property files">
 		<mkdir dir="${compile.main.dir}" />
 		<mkdir dir="${compile.samples.dir}" />
@@ -79,13 +79,13 @@
 		<mkdir dir="${jars.dir}" />
 		<filter token="ddmsence.version" value="${version}"/>
 
-		<javac srcdir="${src.main.dir}" destdir="${compile.main.dir}" classpathref="classpath.compile" source="1.6" target="1.6" includeantruntime="false" />
+		<javac srcdir="${src.main.dir}" destdir="${compile.main.dir}" classpathref="classpath.compile" source="1.7" target="1.7" includeantruntime="false" />
 		<copy todir="${compile.main.dir}" filtering="true">
 			<fileset refid="files.properties" />
 			<fileset refid="files.requiredData" />
 		</copy>
-		<javac srcdir="${src.samples.dir}" destdir="${compile.samples.dir}" classpathref="classpath.samples" source="1.6" target="1.6" includeantruntime="false" />
-		<javac srcdir="${src.test.dir}" destdir="${compile.test.dir}" classpathref="classpath.test" source="1.6" target="1.6" includeantruntime="false" />
+		<javac srcdir="${src.samples.dir}" destdir="${compile.samples.dir}" classpathref="classpath.samples" source="1.7" target="1.7" includeantruntime="false" />
+		<javac srcdir="${src.test.dir}" destdir="${compile.test.dir}" classpathref="classpath.test" source="1.7" target="1.7" includeantruntime="false" />
 		<copy todir="${compile.test.dir}" filtering="true">
 			<fileset refid="files.properties" />
 			<fileset refid="files.requiredData" />
@@ -97,11 +97,11 @@
 				<attribute name="Specification-Vendor" value="Brian Uri!"/>
 				<attribute name="Implementation-Title" value="DDMSence"/>
 				<attribute name="Implementation-Version" value="${version}"/>
-				<attribute name="Implementation-Vendor" value="Brian Uri!"/>				
+				<attribute name="Implementation-Vendor" value="Brian Uri!"/>
 			</manifest>
 		</jar>
-	</target>	
-	
+	</target>
+
 	<target name="dist" depends="clean, compile, docs, tests" description="Performs a full build of the project and creates the bin/src downloads">
 		<mkdir dir="${dist.dir}/ddmsence-src-${version}" />
 		<mkdir dir="${dist.dir}/ddmsence-bin-${version}" />
@@ -111,13 +111,13 @@
 		<copy todir="${dist.dir}/ddmsence-src-${version}" includeEmptyDirs="false">
 			<fileset dir=".">
 				<exclude name=".idea/**"/>
-				<exclude name="${output.dir}/**"/>				
+				<exclude name="${output.dir}/**"/>
 		    </fileset>
 		</copy>
 		<copy tofile="${dist.dir}/ddmsence-src-${version}/CHANGES.txt" file="${conf.dir}/CHANGES-template.txt" />
 		<copy tofile="${dist.dir}/ddmsence-src-${version}/LICENSE.txt" file="${conf.dir}/LICENSE-template.txt" />
 		<zip destfile="${dist.dir}/ddmsence-src-${version}.zip" basedir="${dist.dir}" includes="ddmsence-src-${version}/**" />
-		
+
 		<!-- Build the bin-flavored download archive -->
 		<jar destfile="${jars.dir}/ddmsence-samples-${version}.jar" basedir="${compile.samples.dir}">
 			<manifest>
@@ -126,8 +126,8 @@
 				<attribute name="Specification-Vendor" value="Brian Uri!"/>
 				<attribute name="Implementation-Title" value="DDMSence"/>
 				<attribute name="Implementation-Version" value="${version}"/>
-				<attribute name="Implementation-Vendor" value="Brian Uri!"/>				
-			</manifest>			
+				<attribute name="Implementation-Vendor" value="Brian Uri!"/>
+			</manifest>
 		</jar>
 		<copy todir="${dist.dir}/ddmsence-bin-${version}" includeEmptyDirs="false">
 			<fileset dir=".">
@@ -141,7 +141,7 @@
 				<exclude name="${data.dir}/schemas/**"/>
 				<exclude name="${data.dir}/schematron/**"/>
 				<exclude name="${data.dir}/test/**"/>
-				<exclude name="${data.dir}/web/**"/>	
+				<exclude name="${data.dir}/web/**"/>
 				<exclude name="lib/test/**"/>
 		    </fileset>
 			<fileset dir="${output.dir}">
@@ -154,7 +154,7 @@
 			<fileset dir="${jars.dir}" />
 		</copy>
 		<zip destfile="${dist.dir}/ddmsence-bin-${version}.zip" basedir="${dist.dir}" includes="ddmsence-bin-${version}/**" />
-		
+
 		<!-- Build the Maven Central Repository archive -->
 		<copy todir="${dist.maven.dir}" file="${jars.dir}/ddmsence-${version}.jar" />
 		<jar jarfile="${dist.maven.dir}/ddmsence-${version}-javadoc.jar">
@@ -167,15 +167,15 @@
 			mvn gpg:sign-and-deploy-file -DpomFile=pom.xml -Dfile=./output/dist/maven/ddmsence-2.4.0.jar -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging
 			mvn gpg:sign-and-deploy-file -DpomFile=pom.xml -Dfile=./output/dist/maven/ddmsence-2.4.0-sources.jar -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -Dclassifier=sources
 			mvn gpg:sign-and-deploy-file -DpomFile=pom.xml -Dfile=./output/dist/maven/ddmsence-2.4.0-javadoc.jar -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -Dclassifier=javadoc
-			
+
 			Then, Close and Release repository via Nexus UI.
 		-->
-			
+
 		<!-- Cleanup -->
 		<delete quiet="true" dir="${dist.dir}/ddmsence-src-${version}" />
 		<delete quiet="true" dir="${dist.dir}/ddmsence-bin-${version}" />
 	</target>
-	
+
 	<target name="docs" depends="compile" description="Generates API Documentation">
 		<tstamp>
 			<format property="javadoc.time" pattern="MM/dd/yyyy hh:mm aa" />
@@ -186,7 +186,7 @@
             use="true" splitindex="false"
             windowtitle="DDMSence ${version} API"
             docencoding="UTF-8" charset="UTF-8"
-            doctitle="DDMSence ${version}"		
+            doctitle="DDMSence ${version}"
             bottom="Copyright 2010 - 2019 by Brian Uri!&lt;br /&gt;Generated on ${javadoc.time}&lt;br /&gt;&lt;a target='_top' href='https://ddmsence.urizone.net/'&gt;https://ddmsence.urizone.net/&lt;/a&gt;"
 			stylesheetfile="${conf.dir}/javadoc-stylesheet.css"
 		>
@@ -207,7 +207,7 @@
 			</taglet>
 		</javadoc>
 	</target>
-	
+
 	<target name="tests" description="Runs unit tests">
 		<delete quiet="true" dir="${reports.dir}" />
 		<mkdir dir="${reports.dir}" />
@@ -219,14 +219,14 @@
 	        	<fileset dir="${compile.test.dir}" includes="**/*Test.class" />
 	      	</batchtest>
 	    </junit>
-	</target>	
-	
+	</target>
+
 	<!-- Targets below this point have dependencies on the author's local environment. -->
 	<!-- They are not required to compile the core DDMSence library. -->
 	<property name="local.ddmsence-web.dir" value="/workspace/ddmsence/web-support" />
 	<property name="local.lib.dir" value="${local.ddmsence-web.dir}/lib" />
 	<property name="local.jar.dir" value="${local.ddmsence-web.dir}/out/jars" />
-	
+
 	<property name="local.content.dir" value="/workspace/aws-stage/urizone-content/ddmsence" />
 	<property name="local.deploy.dir" value="${output.dir}/deploy" />
 	<property name="local.web.dir" value="/workspace/urizone/out/tomcat/webapps" />
@@ -242,7 +242,7 @@
 			</fileset>
 		</copy>
 	</target>
-	
+
 	<target name="localDeploy" depends="compile" description="Creates a WAR and deploys the website locally for testing">
 		<!-- Stage exploded WAR -->
 		<copy todir="${output.dir}" filtering="true">
@@ -254,13 +254,12 @@
 		<copy todir="${output.dir}/web/WEB-INF/lib">
 			<fileset dir="lib/" includes="*.jar" />
 			<fileset dir="${jars.dir}" includes="ddmsence-${version}.jar" />
-			<fileset dir="${local.lib.dir}/commons" includes="*.jar" />
-			<fileset dir="${local.lib.dir}/javax" includes="*.jar" />
+			<fileset dir="${local.lib.dir}/jakarta" includes="*.jar" />
 			<fileset dir="${local.lib.dir}/logback" includes="*.jar" />
 			<fileset dir="${local.lib.dir}/spring" includes="*.jar" />
 			<fileset dir="${local.jar.dir}" includes="ddmsence-web-support.jar" />
 		</copy>
-		
+
 		<!-- Create CodeDeploy WAR bundle for publishing -->
 		<war destfile="${local.deploy.dir}/ROOT.war" webxml="${output.dir}/web/WEB-INF/web.xml">
 			<lib dir="${output.dir}/web/WEB-INF/lib"/>
@@ -272,13 +271,13 @@
 			<fileset refid="files.deploy" />
 		</copy>
 		<delete quiet="true" dir="${output.dir}/web" />
-		
+
 		<!-- Deploy to local Tomcat for testing -->
-		<delete quiet="true" dir="${local.web.dir}/ROOT" />	
+		<delete quiet="true" dir="${local.web.dir}/ROOT" />
 		<mkdir dir="${local.web.dir}" />
 		<copy todir="${local.web.dir}" file="${local.deploy.dir}/ROOT.war" />
 	</target>
-	
+
 	<target name="localReloadViews" description="Copies only the view files, without restarting the web application">
 		<copy todir="${local.web.dir}/ROOT" preservelastmodified="true" includeemptydirs="false">
 			<fileset dir="data/web">
@@ -290,13 +289,13 @@
 				<include name="**/*.js" />
 				<include name="**/*.png" />
 			</fileset>
-		</copy>		
+		</copy>
 	</target>
 
 	<target name="localZip" description="Creates a ZIP of the entire project">
 		<tstamp>
 			<format property="backupStamp" pattern="yyMMdd-HHmm"/>
-		</tstamp>		
+		</tstamp>
 		<zip destfile="../${backupStamp}-DDMSence-${version}.zip" basedir=".." includes="ddmsence/**" excludes="ddmsence/out/**" />
 	</target>
 </project>
