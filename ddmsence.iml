@@ -14,11 +14,11 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../Program Files/Amazon Corretto/jdk1.8.0_232/lib/tools.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/tools/jdk1.8.0_382-tools.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$MODULE_DIR$/../../Program Files/Amazon Corretto/jdk1.8.0_232/lib/tools.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/tools/jdk1.8.0_382-tools.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
