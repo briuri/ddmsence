@@ -21,32 +21,23 @@
 
 	<display-name>DDMSence</display-name>
 	<description>Project page for the open-source DDMS library, written in Java</description>
-	
-	<error-page> 
-    	<error-code>404</error-code> 
-    	<location>/404.jsp</location> 
+
+	<error-page>
+    	<error-code>404</error-code>
+    	<location>/404.jsp</location>
 	</error-page>
-	
+
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			/WEB-INF/applicationContext.xml
 		</param-value>
 	</context-param>
-	
-	<filter>
-		<filter-name>JSessionIdFilter</filter-name>
-		<filter-class>buri.ddmsence.web.JSessionIdFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>JSessionIdFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	
+
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>		
-	
+	</listener>
+
 	<servlet>
 		<servlet-name>ddmsence</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -55,11 +46,11 @@
 			<param-value>
 				/WEB-INF/ddmsence-servlet.xml
 			</param-value>
-		</init-param>		
+		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ddmsence</servlet-name>
 		<url-pattern>*.uri</url-pattern>
-	</servlet-mapping>	
+	</servlet-mapping>
 </web-app>
