@@ -10,9 +10,9 @@
 	<meta name="keywords" content="DDMSence,DDMS,Online,Builder,DoD" />
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<script type="text/javascript" src="./shared/jquery-1.10.2.min.js"></script>
-	<script type="text/javascript" src="./shared/jquery.validate-1.8.1.min.js"></script>	
+	<script type="text/javascript" src="./shared/jquery.validate-1.8.1.min.js"></script>
 	<script type="text/javascript">
-		
+
 	$(function($){
 		// validate form on keyup and submit
 		$("#resource").validate({
@@ -46,14 +46,14 @@
 				},
 				'titles[0].securityAttributes.ownerProducers': {
 					required: true
-				},				
+				},
 				'creators[0].organization.names[0]': {
 					required: true
 				},
 				'subjectCoverage.keywords[0].value': {
 					required: true
 				}
-			}, 
+			},
 			messages: {
 				'metacardInfo.identifiers[0].qualifier': {
 					required: "A metacard identifier qualifier is required."
@@ -91,10 +91,10 @@
 				'subjectCoverages[0].keywords[0].value': {
 					required: "A keyword is required."
 				}
-			}		
+			}
 		});
 	});
-		
+
 	function showExample(form) {
 		form.elements['metacardInfo.identifiers[0].qualifier'].value = 'URI';
 		form.elements['metacardInfo.identifiers[0].value'].value = 'urn:buri:ddmsence';
@@ -111,8 +111,8 @@
 		form.elements['creators[0].organization.emails[0]'].value = 'ddmsence@urizone.net';
 		form.elements['creators[0].organization.acronym'].value = 'FGM';
 		form.elements['subjectCoverages[0].keywords[0].value'].value = 'DDMSence';
-	}	
-	
+	}
+
 	</script>
 </head>
 <body>
@@ -122,12 +122,12 @@
 
 <p>This experimental tool uses the DDMSence library to create a DDMS 5.0 assertion from form input. The assertion is not a complete record on its own,
 but is intended for insertion into a Trusted Data Object in the IC Trusted Data Format (TDF) specification. It uses
-the <a href="documentation-builders.jsp">Component Builder</a> framework. To simplify the example source code, the form only asks for a minimal subset of 
-elements and attributes required for a valid resource. Information submitted through this tool is not retained on the server.</p> 
+the <a href="documentation-builders.jsp">Component Builder</a> framework. To simplify the example source code, the form only asks for a minimal subset of
+elements and attributes required for a valid resource. Information submitted through this tool is not retained on the server.</p>
 
 <p>Starred fields (<b>*</b>) are required.</p>
 
-<form:form id="resource" commandName="resource" method="post">
+<form:form id="resource" modelAttribute="resource" method="post">
 
 	<label class="error"><form:errors path="*" htmlEscape="false" /></label><br />
 
@@ -145,7 +145,7 @@ elements and attributes required for a valid resource. Information submitted thr
 	<form:input path="metacardInfo.publishers[0].person.names[0]" size="25" maxlength="256" /></div>
 	<div class="clear"><label class="builderField" for="metacardInfo.publishers[0].person.surname">Publisher Person Surname: *</label>
 	<form:input path="metacardInfo.publishers[0].person.surname" size="25" maxlength="256" /></div>
-	
+
 	<br />
 	<label class="builderComponent">Identifier</label>
 	<div class="clear"></div>
@@ -153,7 +153,7 @@ elements and attributes required for a valid resource. Information submitted thr
 	<form:input path="identifiers[0].qualifier" size="25" maxlength="2048" /></div>
 	<div class="clear"><label class="builderField" for="identifiers[0].value">Value: *</label>
 	<form:input path="identifiers[0].value" size="25" maxlength="256" /></div>
-			
+
 	<br />
 	<label class="builderComponent">Title</label>
 	<div class="clear"></div>
@@ -170,7 +170,7 @@ elements and attributes required for a valid resource. Information submitted thr
 			<form:option value="${ownerProducer}">${ownerProducer}</form:option>
 		</c:forEach>
 	</form:select></div>
-				
+
 	<br />
 	<label class="builderComponent">Creator</label>
 	<div class="clear"><label class="builderField" for="creators[0].entityType">Entity Type: *</label>
@@ -183,7 +183,7 @@ elements and attributes required for a valid resource. Information submitted thr
 	<form:input path="creators[0].organization.emails[0]" size="25" maxlength="2048" /></div>
 	<div class="clear"><label class="builderField" for="creators[0].organization.acronym">Organization Acronym:</label>
 	<form:input path="creators[0].organization.acronym" size="25" maxlength="256" /></div>
-	
+
 	<br />
 	<label class="builderComponent">SubjectCoverage</label>
 	<div class="clear"></div>
@@ -191,7 +191,7 @@ elements and attributes required for a valid resource. Information submitted thr
 	<form:input path="subjectCoverages[0].keywords[0].value" size="25" maxlength="256" /></div>
 	<div class="clear"><label class="builderField" for="subjectCoverages[0].keywords[1].value">Keyword #2:</label>
 	<form:input path="subjectCoverages[0].keywords[1].value" size="25" maxlength="256" /></div>
-	
+
 	<br />
 	<label class="error"><form:errors path="*" htmlEscape="false" /></label><br />
 	<span class="formElement">
@@ -203,8 +203,8 @@ elements and attributes required for a valid resource. Information submitted thr
 
 <h3>How This Works</h3>
 
-<p>Compilable source code for this tool is not bundled with DDMSence, because it has dependencies on the Spring Framework (v3.2.2). However, all of the pieces you need create 
-a similar web application are shown below. A basic understanding of <a href="http://en.wikipedia.org/wiki/Spring_Framework#Model-view-controller_framework">Spring MVC</a> 
+<p>Compilable source code for this tool is not bundled with DDMSence, because it has dependencies on the Spring Framework (v3.2.2). However, all of the pieces you need create
+a similar web application are shown below. A basic understanding of <a href="http://en.wikipedia.org/wiki/Spring_Framework#Model-view-controller_framework">Spring MVC</a>
 will be necessary to understand the code.</p>
 
 <ol>
@@ -237,7 +237,7 @@ import buri.urizone.web.AbstractControl;
 
 /**
  * Controller class for building DDMS Records
- * 
+ *
  * @author Brian Uri!
  */
 @Controller
@@ -301,10 +301,10 @@ public class BuilderControl extends AbstractControl {
 		return (ISMVocabulary.getEnumerationTokens(DDMSVersion.getVersionFor("5.0"), ISMVocabulary.CVE_OWNER_PRODUCERS));
 	}
 }</pre>
-	<li>The BuilderControl starts by creating a new form bean, Resource.Builder, in the <code>newForm()</code> method. 
-	This is a Component Builder which supports the form you see on this page. If you wanted your form to edit an existing Resource, 
+	<li>The BuilderControl starts by creating a new form bean, Resource.Builder, in the <code>newForm()</code> method.
+	This is a Component Builder which supports the form you see on this page. If you wanted your form to edit an existing Resource,
 	you could initialize the builder by passing in a Resource instance.</li>
-	<li>The <a href="https://github.com/briuri/ddmsence/blob/master/data/web/builder.jsp">initial form view</a> is rendered. This is the page 
+	<li>The <a href="https://github.com/briuri/ddmsence/blob/master/data/web/builder.jsp">initial form view</a> is rendered. This is the page
 	you are currently viewing. The JSP file also contains the JavaScript code used for client-side validation (with jQuery).</li>
 	<li>Once the form has been filled in and submitted, the <code>build()</code> method of the BuilderControl is called. This method commits the Resource.Builder.
 	It will fail immediately with an <code>InvalidDDMSException</code> if the Resource is invalid.</li>
