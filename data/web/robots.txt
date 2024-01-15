@@ -1,16 +1,24 @@
 User-agent: AhrefsBot
+User-agent: Amazonbot
 User-agent: Baiduspider
+User-agent: Barkrowler
+User-agent: Bytespider
+User-agent: ChatGPT-User
+User-agent: FriendlyCrawler
+User-agent: Google-Extended
 User-agent: Googlebot-Image
+User-agent: MJ12bot
+User-agent: SemrushBot
 User-agent: MLBot
+User-agent: PetalBot
+User-agent: PhxBot
+User-agent: SeekportBot
+User-agent: SemrushBot
+User-agent: SeznamBot
 User-agent: URLAppendBot
 User-agent: yahoo-MMCrawler
+User-agent: YandexBot
 User-agent: YandexImages
 User-agent: bhc.collectionBot
 User-agent: MegaIndex.ru
 Disallow: /
-
-User-agent: Googlebot-Mobile
-User-agent: MJ12bot
-User-agent: XoviBot
-Disallow:
-Crawl-delay: 10
