@@ -154,9 +154,7 @@ the context of a Java environment.
 <h1>About the Author</h1>
 
 <p><img src="./images/BU.jpg" width="120" height="120" title="BU" class="bordered" align="left" />
-<b><a href="https://www.linkedin.com/in/urizone">Brian Uri!</a></b> works at
-<a href="https://www.accenture.com/us-en/services/us-federal-government/national-security">Accenture Federal Services</a>.
-He has nearly 20 years of experience in software engineering, proposal writing, and government data standards,
+<b><a href="https://www.linkedin.com/in/urizone">Brian Uri!</a></b> has over 20 years of experience in software engineering, proposal writing, and government data standards,
 with an emphasis on the DoD's Service-Oriented Architecture (SOA) efforts.</p>
 
 <p>DDMSence was conceived in January 2010 and
