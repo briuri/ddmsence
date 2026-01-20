@@ -61,28 +61,16 @@ file as shown in Figure 1.</p>
 <p>If a new version is listed as "backwards compatible", it means that you can update to the new version without changing any of your code that worked with the old version.  
 All changes which are not backwards compatible will be linked from this page with information on how to upgrade your old code.</p> 
 
-<h3>Previous Releases</h3>
-
-<p>Version <b>2.5.0</b> (01/01/2015) is a stable release which can now be used in <a href="documentation-multithreaded.jsp">multithreaded environments</a> 
-(<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-222">Issue #222</a>). It is backwards compatible with all versions since v2.0.0.</p>
-
-<ul>
-<li><b><a href="https://ddmsence.urizone.net/files/ddmsence-bin-2.5.0.zip"><code>ddmsence-bin-2.5.0.zip</code></a></b> (8.4 MB, compiled with JDK1.7.0_17, source level 1.6, target level 1.6)</li>
-<li><b><a href="https://ddmsence.urizone.net/files/ddmsence-src-2.5.0.zip"><code>ddmsence-src-2.5.0.zip</code></a></b> (8.3 MB)</li>
-</ul>
-
-<p>Version <b>2.4.0</b> (11/20/2014) is a stable release which improves the handling of date values in various components (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-221">Issue #221</a>).
-It is backwards compatible with all versions since v2.0.0.</p>
-
-<ul>
-<li><b><a href="https://ddmsence.urizone.net/files/ddmsence-bin-2.4.0.zip"><code>ddmsence-bin-2.4.0.zip</code></a></b> (8.4 MB, compiled with JDK1.7.0_17, source level 1.6, target level 1.6)</li>
-<li><b><a href="https://ddmsence.urizone.net/files/ddmsence-src-2.4.0.zip"><code>ddmsence-src-2.4.0.zip</code></a></b> (8.3 MB)</li>
-</ul>
-
 <h3>Ancient Releases</h3>
 
 <p>Earlier versions of DDMSence are no longer available for download (although they can still be built from the tagged source code). Historical information about earlier releases can be
 found below.</p>
+
+<p>Version <b>2.5.0</b> (01/01/2015) is a stable release which can now be used in <a href="documentation-multithreaded.jsp">multithreaded environments</a>
+	(<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-222">Issue #222</a>). It is backwards compatible with all versions since v2.0.0.</p>
+
+<p>Version <b>2.4.0</b> (11/20/2014) is a stable release which improves the handling of date values in various components (<a href="https://ddmsence.atlassian.net/browse/DDMSENCE-221">Issue #221</a>).
+	It is backwards compatible with all versions since v2.0.0.</p>
 
 <p>Version <b>2.3.0</b> (05/30/2014) is a stable release which adds built-in support for JSON output. It is backwards compatible with all versions since v2.0.0.
 Additional information about JSON output can be found in <a href="tutorials-01.jsp">Tutorial #1: Essentials</a>.</p>
