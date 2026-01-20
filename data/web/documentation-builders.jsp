@@ -143,9 +143,7 @@ web library like Spring MVC might resolve that field into Java:
 builder.getMetacardInfo().getPublishers().get(0).setEntityType("person");
 builder.getMetacardInfo().getPublishers().get(0).getPerson().setSurname("Uri");</pre>
 <p class="figure">Figure 7. Comparable Builder code to the form fields in Figure 6</p>
-
-<p>I have created a sample <a href="builder.uri">DDMS Builder</a> web application which provides an example of this behavior.</li></p> 
-
+ 
 <h2>Builders for TSPI Components</h2>
 
 <p>DDMS 5.0 introduced the Time-Space-Position Information specification for geospatial shapes and addresses. The TSPI specification is incredibly complex and 

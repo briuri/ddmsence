@@ -9,23 +9,6 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-	<!--
-		DDMSence Controls:
-			This code is not checked into the DDMSence project, because
-			it has dependencies on Spring and other libraries which are ancillary
-			to the main purpose of the library. I did not want to bloat up the main
-			distribution with these files, but you can find the source code on the website
-			by visiting the two example web applications at:
-
-			https://ddmsence.urizone.net/validator.uri
-			https://ddmsence.urizone.net/builder.uri
-
-			The DDMSence web application is deployed in an environment which already has
-			Spring JARs deployed.
-	-->
-	<context:component-scan base-package="buri.ddmsence.web.control" />
-	<mvc:annotation-driven/>
-
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
 		<property name="prefix" value="/" />

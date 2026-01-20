@@ -100,7 +100,7 @@
 		<div class="newsUpdate"><u>07/17/2011</u>: v1.11.0 released, adding <a href="documentation-schematron.jsp">support for XSLT2-based Schematron validation</a>.</div>
 		<div class="newsUpdate"><u>07/05/2011</u>: v1.10.0 released, adding support for DDMS 3.1.</div>
 		<div class="newsUpdate"><u>06/06/2011</u>: <a href="schematron.jsp">Schematron Implementation for DDMS</a> published.</div>
-		<div class="newsUpdate"><u>06/02/2011</u>: v1.9.1 released. Example code for <a href="validator.uri">DDMS Validator</a> and <a href="builder.uri">DDMS Builder</a> posted.</div>
+		<div class="newsUpdate"><u>06/02/2011</u>: v1.9.1 released. Example code for DDMS Validator and DDMS Builder posted.</div>
 		<div class="newsUpdate"><u>05/24/2011</u>: v1.9.0 released.</div>
 		<div class="newsUpdate"><u>05/13/2011</u>: v1.8.0 released, introducing the Component Builder framework.</div>
 		<div class="newsUpdate"><u>03/10/2011</u>: v1.7.2 released.</div>
@@ -108,7 +108,7 @@
 		<div class="newsUpdate"><u>11/16/2010</u>: v1.7.1 released.</div>
 		<div class="newsUpdate"><u>09/18/2010</u>: v1.7.0 released.</div>
 		<div class="newsUpdate"><u>09/07/2010</u>: v1.6.0 released.</div>
-		<div class="newsUpdate"><u>09/01/2010</u>: <a href="validator.uri">DDMS validator</a> released.</div>
+		<div class="newsUpdate"><u>09/01/2010</u>: DDMS validator released.</div>
 		<div class="newsUpdate"><u>07/07/2010</u>: v1.5.1 released.</div>
 		<div class="newsUpdate"><u>07/05/2010</u>: v1.5.0 released.</div>
 		<div class="newsUpdate"><u>06/08/2010</u>: v1.4.0 released.</div>

@@ -240,8 +240,6 @@ List&lt;String&gt; ownerProducers = Util.getXsListAsList("AUS USA");</pre>
 <p>This section contains links to DDMS-related research and personal experimentation which may be useful to DDMSence in the future.</p>
 
 <ul>
-	<li><a href="builder.uri">DDMS Builder</a>: An experimental tool to build DDMS metacards with a form-based UI.</li><br />
-	<li><a href="validator.uri">DDMS Validator</a>: An experimental tool to validate DDMS metacards and assertions.</li><br />
 	<li><a href="relationalTables.jsp">Relational Database Model for DDMS 3.1</a>: A mapping of the DDMS 3.1 specification to relational database tables (database-agnostic).</li><br />
 	<li><a href="schematron.jsp">Schematron Implementation for DDMS 5.0</a>: An attempt to model some of the more complex rules in the DDMS specification with ISO Schematron.</li>
 </ul>

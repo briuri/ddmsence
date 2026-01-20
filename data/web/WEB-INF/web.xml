@@ -27,17 +27,6 @@
     	<location>/404.jsp</location>
 	</error-page>
 
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>
-			/WEB-INF/applicationContext.xml
-		</param-value>
-	</context-param>
-
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
-
 	<servlet>
 		<servlet-name>ddmsence</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -49,8 +38,4 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	<servlet-mapping>
-		<servlet-name>ddmsence</servlet-name>
-		<url-pattern>*.uri</url-pattern>
-	</servlet-mapping>
 </web-app>

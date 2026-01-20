@@ -253,11 +253,7 @@
 		</copy>
 		<copy todir="${output.dir}/web/WEB-INF/lib">
 			<fileset dir="lib/" includes="*.jar" />
-			<fileset dir="${jars.dir}" includes="ddmsence-${version}.jar" />
-			<fileset dir="${local.lib.dir}/jakarta" includes="*.jar" />
-			<fileset dir="${local.lib.dir}/logback" includes="*.jar" />
 			<fileset dir="${local.lib.dir}/spring" includes="*.jar" />
-			<fileset dir="${local.jar.dir}" includes="ddmsence-web-support.jar" />
 		</copy>
 
 		<!-- Create CodeDeploy WAR bundle for publishing -->

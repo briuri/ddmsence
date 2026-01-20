@@ -32,7 +32,6 @@
 			<li><a href="downloads.jsp">Downloads</a></li>
 			<li><a href="documentation.jsp">Documentation</a></li>
 			<li><a href="license.jsp">License</a></li>
-			<li><a href="validator.uri">DDMS Validator</a></li>
 			<li><a href="https://ddmsence.atlassian.net/projects/DDMSENCE">Issues &rArr;</a></li>
 			<li><a href="http://groups.google.com/group/ddmsence">Discussion &rArr;</a></li>
 		</ul>
