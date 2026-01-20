@@ -227,7 +227,7 @@
 	<property name="local.lib.dir" value="${local.ddmsence-web.dir}/lib" />
 	<property name="local.jar.dir" value="${local.ddmsence-web.dir}/out/jars" />
 
-	<property name="local.content.dir" value="/workspace/aws-stage/urizone-content/ddmsence" />
+	<property name="local.content.dir" value="/workspace/aws-stage/urizone-content/ddmsence.urizone.net" />
 	<property name="local.deploy.dir" value="${output.dir}/deploy" />
 	<property name="local.web.dir" value="/workspace/urizone/out/tomcat/webapps" />
 
