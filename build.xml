@@ -223,16 +223,11 @@
 
 	<!-- Targets below this point have dependencies on the author's local environment. -->
 	<!-- They are not required to compile the core DDMSence library. -->
-	<property name="local.ddmsence-web.dir" value="/workspace/ddmsence/web-support" />
-	<property name="local.lib.dir" value="${local.ddmsence-web.dir}/lib" />
-	<property name="local.jar.dir" value="${local.ddmsence-web.dir}/out/jars" />
-
 	<property name="local.content.dir" value="/workspace/aws-stage/urizone-content/ddmsence.urizone.net" />
 	<property name="local.deploy.dir" value="${output.dir}/deploy" />
-	<property name="local.web.dir" value="/workspace/urizone/out/tomcat/webapps" />
+	<property name="local.web.dir" value="/tomcat/webapps" />
 
 	<target name="localStageContent" description="Copies docs and files to content staging area for publishing. Run after dist">
-		<delete quiet="true" dir="${local.content.dir}/docs" />
 		<copy todir="${local.content.dir}/docs">
 			<fileset dir="${docs.dir}" />
 		</copy>
@@ -251,14 +246,9 @@
 		<copy todir="${output.dir}">
 			<fileset refid="files.website.images" />
 		</copy>
-		<copy todir="${output.dir}/web/WEB-INF/lib">
-			<fileset dir="lib/" includes="*.jar" />
-			<fileset dir="${local.lib.dir}/spring" includes="*.jar" />
-		</copy>
 
 		<!-- Create CodeDeploy WAR bundle for publishing -->
 		<war destfile="${local.deploy.dir}/ROOT.war" webxml="${output.dir}/web/WEB-INF/web.xml">
-			<lib dir="${output.dir}/web/WEB-INF/lib"/>
 			<fileset dir="${output.dir}/web">
 				<exclude name="WEB-INF/lib/**"/>
 			</fileset>
