@@ -1,0 +1,22 @@
+# This is an appspec.yml template file for use with AWS CodeDeploy.
+version: 0.0
+os: linux
+files:
+  - source: ddmsence.service
+    destination: /usr/lib/systemd/system
+  - source: ddmsence-all.jar
+    destination: /opt/webapps
+file_exists_behavior: OVERWRITE
+hooks:
+  ApplicationStop:
+    - location: stop-ddmsence.sh
+      timeout: 300
+      runas: root
+  BeforeInstall:
+    - location: clean-ddmsence.sh
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: start-ddmsence.sh
+      timeout: 300
+      runas: root

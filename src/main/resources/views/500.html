@@ -1,0 +1,18 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{shared :: head}"></head>
+<body>
+<div id="outerPosition">
+    <div th:replace="~{shared :: header }"></div>
+    <div th:replace="~{shared :: menubar }"></div>
+    <div id="contentPane">
+        <!--/* ------------------------------------------------- */-->
+        <p th:text="${message}" /></p>
+        <pre class="exception" th:utext="${stackTrace}"></pre>
+        <!--/* ------------------------------------------------- */-->
+        <div class="clear"></div>
+    </div>
+    <div th:replace="~{shared :: footer }"></div>
+</div>
+</body>
+</html>

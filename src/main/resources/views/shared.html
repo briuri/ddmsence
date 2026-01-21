@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:fragment="head">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta property="description" content="DDMSence is the only open-source Java library that fully supports the DoD Discovery Metadata Specification (DDMS)." />
+    <meta property="og:description" content="DDMSence is the only open-source Java library that fully supports the DoD Discovery Metadata Specification (DDMS)." />
+    <meta property="og:image" content="https://ddmsence.urizone.net/images/banner.png" />
+    <meta property="og:title" content="DDMSence: The open-source Java library for DDMS"/>
+    <meta property="og:url" th:content="${baseUrl} + ${path}"/>
+
+    <script type="text/javascript" src="/js/ddmsence.js"></script>
+    <script type="text/javascript" src="/js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.slicknav-1.0.2.min.js"></script>
+    <script type="text/javascript" src="/js/shCore.js"></script>
+    <script type="text/javascript" src="/js/shBrushJScript.js"></script>
+    <script type="text/javascript" src="/js/shBrushJava.js"></script>
+    <script type="text/javascript" src="/js/shBrushXml.js"></script>
+
+    <link href='https://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
+    <link type="text/css" rel="stylesheet" href="/css/ddmsence.css"   />
+    <link type="text/css" rel="stylesheet" href="/css/jquery.slicknav-1.0.2.css"   />
+    <link type="text/css" rel="stylesheet" href="/css/shCoreDDMSence.css"/>
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+    <title th:text="${title} + ' | DDMSence'"></title>
+    <script type="text/javascript">
+        SyntaxHighlighter.all();
+        $(function() {
+            $('#menu').slicknav({
+                label: '',
+                prependTo: '#menuContainer'
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+    <div th:fragment="header" id="header">
+        <div id="logo">
+            <a href="index.jsp"><img src="./images/banner.png" width="321" height="90" title="DDMSence" border="0" ></a>
+        </div>
+    </div>
+
+        <div th:fragment="footer">
+            <div id="footer">DDMSence is an independent project, and is not endorsed or supported by the
+                Department of Defense (DoD), or Defense Information Systems Agency (DISA).
+                <br />The DDMSence website is &copy; 2010 - 2026 by
+                <script type="text/javascript">
+                    document.write("<a href=\"mailto:" + eMail + "\">Brian Uri!</a>.");
+                </script>
+                <br /><div class="counter"><script type="text/javascript" src="https://secure.statcounter.com/counter/counter.js"></script> visitors since March 2010</div>
+            </div>
+        </div>
+        
+        <a th:fragment="recipeLink(id, anchor, text)" th:href="'/recipes/' + ${id} + '/' + ${anchor}" th:text="${text}"></a>
+        
+    <div th:fragment="menubar">
+        <div id="menuContainer">
+            <ul id="menu">
+                <li><a href="index.jsp">Home</a></li>
+                <li><a href="downloads.jsp">Downloads</a></li>
+                <li><a href="documentation.jsp">Documentation</a></li>
+                <li><a href="license.jsp">License</a></li>
+                <li><a href="https://ddmsence.atlassian.net/projects/DDMSENCE">Issues &rArr;</a></li>
+                <li><a href="http://groups.google.com/group/ddmsence">Discussion &rArr;</a></li>
+            </ul>
+        </div>      
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+[Unit]
+After=network.target
+[Service]
+Type=simple
+Restart=always
+RestartSec=5
+ExecStart=/usr/bin/java -jar /opt/webapps/ddmsence-all.jar
+StandardOutput=journal
+StandardError=journal
+[Install]
+WantedBy=multi-user.target
