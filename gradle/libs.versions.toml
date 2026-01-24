@@ -1,8 +1,8 @@
 [versions]
-kotlin-version = "2.1.0"
-kotlinx-coroutines-version = "1.10.0"
-ktor-version = "3.0.3"
-logback-version = "1.5.16"
+kotlin-version = "2.3.0"
+kotlinx-coroutines-version = "1.10.2"
+ktor-version = "3.4.0"
+logback-version = "1.5.25"
 
 [libraries]
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-version" }

@@ -18,6 +18,6 @@
 	
 	<logger name="buri.ddmsence" level="debug"/>
 	<root level="warn">
-		<appender-ref ref="console" />
+		<appender-ref ref="STDOUT" />
 	</root>
 </configuration>
